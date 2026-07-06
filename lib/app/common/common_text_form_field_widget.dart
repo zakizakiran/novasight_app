@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
+import 'package:novasight_app/app/core/dimens.dart';
 
 class CommonTextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;

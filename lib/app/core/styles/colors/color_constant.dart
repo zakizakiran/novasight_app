@@ -12,9 +12,11 @@ class ColorConstant {
 
   static const Color grey = Color(0xFFE2E4E9);
   static const Color borderGrey = Color(0xFFE5E8EC);
+
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color shadowColor = Color.fromARGB(60, 0, 0, 0);
+  static const Color whiteShadowColor = Color(0x33FFFFFF);
 
   static const Color textPrimaryColor = Color(0xFF2977E5);
   static const Color textGreyColor = Color(0xFF99A6B2);

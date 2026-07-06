@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 
-import '../core/Dimens.dart';
+import '../core/dimens.dart';
 
 class CommonButtonWidget extends StatelessWidget {
   final String buttonName;
@@ -11,6 +11,7 @@ class CommonButtonWidget extends StatelessWidget {
   final Color? buttonColor;
   final Function() onPressed;
   final TextStyle? textStyle;
+  final bool isLoading;
   final BorderSide? border;
   final Widget? child;
   const CommonButtonWidget({
@@ -24,6 +25,7 @@ class CommonButtonWidget extends StatelessWidget {
     this.buttonWidth,
     this.border,
     this.child,
+    this.isLoading = false,
   });
 
   @override
@@ -59,7 +61,14 @@ class CommonButtonWidget extends StatelessWidget {
             ),
           ),
           child: Center(
-            child: child ??
+            child: isLoading ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: ColorConstant.white,
+              ),
+            ) : child ??
                 Text(
                   buttonName,
                   style:

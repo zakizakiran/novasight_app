@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/styles/textTheme.dart';
+import 'package:novasight_app/app/core/styles/text_theme.dart';
 
 
 import 'colors/color_constant.dart';

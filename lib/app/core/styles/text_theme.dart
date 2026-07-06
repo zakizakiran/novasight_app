@@ -4,8 +4,8 @@ class MainTextTheme extends TextTheme {
   const MainTextTheme()
       : super(
           headlineLarge: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
           ),
           headlineMedium: const TextStyle(
             fontSize: 17,
