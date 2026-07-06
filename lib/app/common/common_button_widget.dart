@@ -12,6 +12,7 @@ class CommonButtonWidget extends StatelessWidget {
   final Function() onPressed;
   final TextStyle? textStyle;
   final bool isLoading;
+  final bool isValid;
   final BorderSide? border;
   final Widget? child;
   const CommonButtonWidget({
@@ -26,6 +27,7 @@ class CommonButtonWidget extends StatelessWidget {
     this.border,
     this.child,
     this.isLoading = false,
+    this.isValid = true,
   });
 
   @override
@@ -46,12 +48,16 @@ class CommonButtonWidget extends StatelessWidget {
           ],
         ),
         child: ElevatedButton(
-          onPressed: onPressed,
+          onPressed: (){
+            if(isValid && !isLoading){
+                onPressed();
+            }
+          },
           style: ButtonStyle(
             side: WidgetStatePropertyAll(border),
             elevation: const WidgetStatePropertyAll(0),
             shadowColor: const WidgetStatePropertyAll(Colors.transparent),
-            backgroundColor: WidgetStatePropertyAll(buttonColor),
+            backgroundColor: WidgetStatePropertyAll(isValid ? buttonColor : ColorConstant.grey),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
@@ -65,7 +71,7 @@ class CommonButtonWidget extends StatelessWidget {
               width: 20,
               height: 20,
               child: CircularProgressIndicator(
-                strokeWidth: 2.5,
+                strokeWidth: 3.5,
                 color: ColorConstant.white,
               ),
             ) : child ??

@@ -6,4 +6,6 @@ class Dimens {
 
   static const double iconBigSize = 64;
   static const double iconMediumSize = 32;
+  static const double iconRegularSize = 16;
+  static const double iconSmallSize = 8;
 }
