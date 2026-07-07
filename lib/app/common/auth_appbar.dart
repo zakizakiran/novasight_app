@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/styles/icon_txt.dart';
 
-import '../modules/auth/login/views/widgets/icon_auth_app.dart';
+import '../modules/auth/widgets/icon_auth_app.dart';
 
 class AuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String icon;
+  final String? iconSvg;
   final double height;
   final String title;
   final String description;
   final VoidCallback? onClickBack;
-  const AuthAppbar({super.key, required this.icon, required this.title, required this.description, this.onClickBack,this.height = 180});
+  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.onClickBack,this.height = 180});
 
   @override
   Size get preferredSize => Size.fromHeight(height);
 
   @override
   Widget build(BuildContext context) {
+
     return ClipPath(
       clipper: BottomCurveClipper(),
       child: Container(
@@ -40,9 +43,10 @@ class AuthAppbar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconAuthApp(
-                  icon: icon,
-                  padding: Dimens.innerPadding,
-                  size: Dimens.iconMediumSize,
+                    icon: icon,
+                    iconSvg : iconSvg,
+                    padding: Dimens.innerPadding,
+                    size: Dimens.iconMediumSize,
                 ),
                 const SizedBox(height: Dimens.spacePadding),
                 Text(

@@ -3,4 +3,9 @@ class IconTxt {
   static const key = "🔑";
   static const check = "✓";
   static const lock = "🔒";
+  static const module = "📚";
+  static const pencil = "✏";
+  static const chat = "💬";
+  static const classIcon = "🏫";
+  static const arrowLeft = "→";
 }

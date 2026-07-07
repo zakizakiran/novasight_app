@@ -1,78 +1,77 @@
+import 'package:flutter/material.dart';
+
 class ValidateHelper {
-  //String
-  static String? isPasswordValidate(String? value) {
-    if (value == null || value.isEmpty) {
+  // Live Validation (String) buat check input validawsi
+  static FormFieldValidator<String> isPasswordValidate() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+
+      if (value.length < 8) {
+        return "Password minimal 8 karakter";
+      }
+
       return null;
-    }
-    if (value.length >= 8) {
-      return null; // Password is valid
-    }
-    return "Password minimal 8 karakter";
+    };
   }
 
-  static String? isEmailValidate(String? value) {
-    if (value == null || value.isEmpty) {
+  static FormFieldValidator<String> isEmailValidate() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+
+      if (!value.contains("@") || !value.contains(".com")) {
+        return "Email Address tidak valid";
+      }
+
       return null;
-    }
+    };
+  }
 
-    if (value.contains("@") && value.contains(".com")) {
+  static FormFieldValidator<String> isNormalValidate(String title) {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return "$title tidak boleh kosong";
+      }
+
       return null;
-    }
-
-    return "Email Address tidak valid";
+    };
   }
 
-  static String? isNormalValidate(String value, String? title) {
-    if (value.isEmpty) {
-      return "${title}Tidak Boleh Kosong";
-    }
-    return null;
+  static FormFieldValidator<String> isPasswordConfirmationValidate(
+      String Function() secondValue,
+      ) {
+    return (String? value) {
+      if (value != secondValue()) {
+        return "Kata sandi tidak sama dengan kata sandi baru";
+      }
+
+      return null;
+    };
   }
 
-  static String? isPasswordConfirmation(String? value, {String? secondValue}) {
-    if (value != secondValue) {
-      return "kata sandi tidak sama dengan kata sandi baru";
-    }
-    return null;
-  }
+  // Live Validation (bool) buat check
 
-  //Bool
   static bool isPasswordValidateBool(String value) {
-    if (value.isEmpty) {
-      return false;
-    }
-    if (value.length < 8) {
-      return false;
-    }
-    return true;
+    return value.isNotEmpty && value.length >= 8;
   }
 
   static bool isEmailValidateBool(String value) {
-    if (value.isEmpty) {
-      return true;
-    }
-    if (value.contains("@") && value.contains(".com")) {
-      return true;
-    }
-    return false;
+    return value.isNotEmpty && value.contains("@") && value.contains(".com");
   }
 
-  static bool isNormalValidateBool(
-      String value,
+  static bool isNormalValidateBool(String value) {
+    return value.isNotEmpty;
+  }
+
+  static bool isPasswordConfirmationBool(
+      String? value,
+      String? secondValue,
       ) {
-    if (value.isEmpty) {
-      return false;
-    }
-    return true;
-  }
-
-  static bool isPasswordConfirmationBool(String? value, String? secondValue) {
-    if (value?.isEmpty ?? true) {
-      return false;
-    }
-    if (value != secondValue) {
-      return false;
-    }
-    return true;
+    return value != null &&
+        value.isNotEmpty &&
+        value == secondValue;
   }
 }

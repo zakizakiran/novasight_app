@@ -5,7 +5,8 @@ import '../../../../../core/styles/colors/color_constant.dart';
 class FooterAuthButton extends StatelessWidget {
   final String title;
   final String description;
-  const FooterAuthButton({super.key,required this.title,required this.description});
+  final Function() onClick;
+  const FooterAuthButton({super.key,required this.title,required this.description, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,13 @@ class FooterAuthButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(description),
-        Text(title,style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-            color: ColorConstant.primary
-        ),)
+        GestureDetector(
+          onTap: onClick,
+          child: Text(title,style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: ColorConstant.primary
+          ),),
+        )
       ],
     );
   }
