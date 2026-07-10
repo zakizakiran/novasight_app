@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/utils/text_input_formatter.dart';
 
-import '../../../../common/auth_appbar.dart';
+import '../../widgets/auth_appbar.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_text_form_field_widget.dart';
 import '../../../../core/Dimens.dart';

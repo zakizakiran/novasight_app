@@ -13,10 +13,10 @@ class CardAuthForm extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-              color: ColorConstant.shadowColor,
-              blurRadius: 10,
+              color: ColorConstant.shadowAuthColor,
+              blurRadius: 24,
               spreadRadius: 0,
-              offset: Offset(0, 0)
+              offset: Offset(0, 8)
           )
         ],
         color: ColorConstant.white,

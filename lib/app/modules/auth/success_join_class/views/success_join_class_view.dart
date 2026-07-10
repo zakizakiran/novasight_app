@@ -6,7 +6,7 @@ import 'package:novasight_app/app/data/model/class_model.dart';
 import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/class_card.dart';
 import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/feature_card.dart';
 
-import '../../../../common/auth_appbar.dart';
+import '../../widgets/auth_appbar.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';

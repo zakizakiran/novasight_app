@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../data/repositories/AuthRepository.dart';
+import '../../../data/repositories/auth_repository.dart';
 
 class SplashController extends GetxController {
   final AuthRepository authRepository;

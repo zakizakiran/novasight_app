@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/auth_appbar.dart';
+import 'package:novasight_app/app/modules/auth/widgets/auth_appbar.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';

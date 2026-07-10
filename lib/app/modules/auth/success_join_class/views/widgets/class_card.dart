@@ -15,7 +15,7 @@ class ClassCard extends StatelessWidget {
         color: ColorConstant.background,
         border: BoxBorder.all(
           width: 1,
-          color: ColorConstant.borderGrey
+          color: ColorConstant.borderBlueGrey
         ),
         borderRadius: BorderRadius.circular(Dimens.radius)
       ),
