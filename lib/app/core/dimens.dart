@@ -1,4 +1,5 @@
 class Dimens {
+  static const double spaceBigPadding = 16;
   static const double spacePadding = 10;
   static const double spaceMediumPadding = 6;
   static const double spaceSmallPadding = 2;
@@ -6,6 +7,7 @@ class Dimens {
   static const double innerPadding = 16;
   static const double innerMediumPadding = 8;
   static const double innerSmallPadding = 4;
+  static const double radiusMedium = 20;
   static const double radius = 10;
   static const double circle = 999;
   static const double mediumPadding = 32;

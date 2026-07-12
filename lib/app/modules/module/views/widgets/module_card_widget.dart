@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
+import 'package:novasight_app/app/core/styles/border_style.dart';
+import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/data/model/module_model.dart';
 import 'package:novasight_app/app/modules/module/views/widgets/gradient_progress_bar_widget.dart';
@@ -15,24 +18,11 @@ class ModuleCardWidget extends StatelessWidget {
       onTap: (){
         onDetail(module);
       },
-      child: Container(
-        padding: EdgeInsets.all(Dimens.innerPadding),
-        decoration: BoxDecoration(
-          color: ColorConstant.white,
-          border: BoxBorder.all(
-            color:ColorConstant.borderNormalGrey,
-            width: Dimens.border
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: ColorConstant.shadowColor,
-                blurRadius: 4,
-                spreadRadius: 0,
-                offset: Offset(0, 4)
-            )
-          ],
-          borderRadius: BorderRadius.circular(Dimens.radius),
-        ),
+      child: CommonCardWidget(
+        border: BorderStyleConstant.outlineBorderCard,
+        boxShadow: [
+          BoxShadowConstant.module,
+        ],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: Dimens.spaceSmallPadding,

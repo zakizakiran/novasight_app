@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
+import 'package:novasight_app/app/data/model/subject_model.dart';
+import 'package:novasight_app/app/data/model/subject_page_module.dart';
 
 class ModuleModel extends Equatable {
   final int id;
@@ -7,8 +9,22 @@ class ModuleModel extends Equatable {
   final String description;
   final List<SubjectModel> subjects;
   final ModuleStatus status;
-  const ModuleModel({required this.title, required this.id, required this.description, required this.subjects, this.status = ModuleStatus.notDone});
+  const ModuleModel({required this.id, required this.title, required this.description, required this.subjects, this.status = ModuleStatus.notDone});
 
+  ModuleModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    List<SubjectModel>? subjects,
+    ModuleStatus? status
+  }){
+    return ModuleModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        subjects: subjects ?? this.subjects
+    );
+  }
   int toPercentageDone() {
     return subjects.isEmpty
         ? 0
@@ -20,31 +36,12 @@ class ModuleModel extends Equatable {
   List<Object?> get props => [id,title,description,subjects,status];
 }
 
-class SubjectModel extends Equatable {
-  final String title;
-  final bool isDone;
-  final List<SubjectPageModel> pages;
-  const SubjectModel({required this.title, required this.isDone, required this.pages});
-
-  @override
-  List<Object?> get props => [title,isDone,pages];
-}
-
-class SubjectPageModel extends Equatable{
-  final String subject;
-
-  const SubjectPageModel({required this.subject});
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [subject];
-}
-
 // ==========================
 // MODULE 1 : EKSPONEN & LOGARITMA
 // ==========================
 
-List<ModuleModel> listModule = [moduleEksponen,moduleHimpunan];
+List<ModuleModel> listModule = [moduleEksponen, moduleHimpunan];
+
 ModuleModel moduleEksponen = ModuleModel(
   id: 1,
   title: "BAB 1 : Eksponen dan Logaritma",
@@ -60,10 +57,12 @@ ModuleModel moduleEksponen = ModuleModel(
 
 // Pengertian Eksponen
 SubjectModel subjectModel1 = SubjectModel(
+  id: 1,
   title: "Pengertian Eksponen",
   isDone: true,
   pages: [
     SubjectPageModel(
+      title: "Pengertian Eksponen",
       subject: '''
 Eksponen adalah suatu bentuk perkalian berulang dari suatu bilangan yang sama.
 
@@ -79,6 +78,7 @@ Artinya, a dikalikan dengan dirinya sendiri sebanyak n kali.
 ''',
     ),
     SubjectPageModel(
+      title: "Penerapan Eksponen",
       subject: '''
 Eksponen digunakan dalam berbagai bidang, seperti:
 
@@ -95,12 +95,14 @@ Contoh:
   ],
 );
 
-// Sifat Eksponen
+// Sifat-sifat Eksponen
 SubjectModel subjectModel2 = SubjectModel(
+  id: 2,
   title: "Sifat-sifat Eksponen",
   isDone: true,
   pages: [
     SubjectPageModel(
+      title: "Sifat-sifat Eksponen",
       subject: '''
 Beberapa sifat dasar eksponen:
 
@@ -110,6 +112,7 @@ Beberapa sifat dasar eksponen:
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Penerapan Sifat Eksponen",
       subject: '''
 Contoh penggunaan:
 
@@ -125,10 +128,12 @@ Contoh penggunaan:
 
 // Pengertian Logaritma
 SubjectModel subjectModel3 = SubjectModel(
+  id: 3,
   title: "Pengertian Logaritma",
   isDone: true,
   pages: [
     SubjectPageModel(
+      title: "Pengertian Logaritma",
       subject: '''
 Logaritma merupakan operasi kebalikan dari eksponen.
 
@@ -142,6 +147,7 @@ logₐ(b) = n
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Bentuk Logaritma",
       subject: '''
 Contoh:
 
@@ -157,12 +163,14 @@ Artinya, logaritma mencari nilai pangkat dari suatu bilangan.
   ],
 );
 
-// Hubungan Eksponen dan Logaritma
+// Hubungan Logaritma dengan Eksponen
 SubjectModel subjectModel4 = SubjectModel(
+  id: 4,
   title: "Hubungan Logaritma dengan Eksponen",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Hubungan Logaritma dengan Eksponen",
       subject: '''
 Eksponen dan logaritma saling berkebalikan.
 
@@ -171,6 +179,7 @@ maka dapat diubah menjadi bentuk logaritma, begitu juga sebaliknya.
 ''',
     ),
     SubjectPageModel(
+      title: "Konversi Bentuk Eksponen dan Logaritma",
       subject: '''
 Contoh:
 
@@ -186,12 +195,14 @@ Keduanya menyatakan informasi yang sama dalam bentuk berbeda.
   ],
 );
 
-// Sifat Logaritma
+// Sifat-sifat Logaritma
 SubjectModel subjectModel5 = SubjectModel(
+  id: 5,
   title: "Sifat-sifat Logaritma",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Sifat-sifat Logaritma",
       subject: '''
 Beberapa sifat logaritma:
 
@@ -203,6 +214,7 @@ Beberapa sifat logaritma:
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Penggunaan Sifat Logaritma",
       subject: '''
 Contoh:
 
@@ -217,7 +229,6 @@ log₂(8 × 4)
     ),
   ],
 );
-
 
 // ==========================
 // MODULE 2 : HIMPUNAN
@@ -238,20 +249,24 @@ ModuleModel moduleHimpunan = ModuleModel(
 
 // Pengertian Himpunan
 SubjectModel subjectModel6 = SubjectModel(
+  id: 6,
   title: "Pengertian Himpunan",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Pengertian Himpunan",
       subject: '''
 Himpunan adalah kumpulan objek yang terdefinisi dengan jelas.
 
 Anggota himpunan ditulis di dalam kurung kurawal.
+
 Contoh:
 
 A = {1,2,3,4}
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Himpunan",
       subject: '''
 Contoh himpunan:
 
@@ -265,12 +280,14 @@ Contoh himpunan:
   ],
 );
 
-// Jenis Himpunan
+// Jenis-jenis Himpunan
 SubjectModel subjectModel7 = SubjectModel(
+  id: 7,
   title: "Jenis-jenis Himpunan",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Jenis-jenis Himpunan",
       subject: '''
 Beberapa jenis himpunan:
 
@@ -281,6 +298,7 @@ Beberapa jenis himpunan:
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Jenis Himpunan",
       subject: '''
 Contoh:
 
@@ -294,12 +312,14 @@ A ⊂ B berarti A merupakan bagian dari B.
   ],
 );
 
-// Irisan
+// Irisan Himpunan
 SubjectModel subjectModel8 = SubjectModel(
+  id: 8,
   title: "Irisan Himpunan",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Irisan Himpunan",
       subject: '''
 Irisan adalah anggota yang terdapat pada dua himpunan sekaligus.
 
@@ -309,6 +329,7 @@ A ∩ B
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Irisan Himpunan",
       subject: '''
 Contoh:
 
@@ -322,12 +343,14 @@ A ∩ B = {3,4}
   ],
 );
 
-// Gabungan
+// Gabungan Himpunan
 SubjectModel subjectModel9 = SubjectModel(
+  id: 9,
   title: "Gabungan Himpunan",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Gabungan Himpunan",
       subject: '''
 Gabungan merupakan semua anggota dari dua himpunan tanpa pengulangan.
 
@@ -337,6 +360,7 @@ A ∪ B
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Gabungan Himpunan",
       subject: '''
 Contoh:
 
@@ -350,12 +374,14 @@ A ∪ B = {1,2,3,4,5}
   ],
 );
 
-// Selisih
+// Selisih Himpunan
 SubjectModel subjectModel10 = SubjectModel(
+  id: 10,
   title: "Selisih Himpunan",
   isDone: false,
   pages: [
     SubjectPageModel(
+      title: "Selisih Himpunan",
       subject: '''
 Selisih himpunan adalah anggota suatu himpunan yang tidak dimiliki himpunan lainnya.
 
@@ -365,6 +391,7 @@ A − B
 ''',
     ),
     SubjectPageModel(
+      title: "Contoh Selisih Himpunan",
       subject: '''
 Contoh:
 

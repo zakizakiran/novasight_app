@@ -14,6 +14,8 @@ import '../modules/module_detail/bindings/module_detail_binding.dart';
 import '../modules/module_detail/views/module_detail_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/subject/bindings/subject_binding.dart';
+import '../modules/subject/views/subject_view.dart';
 
 part 'app_routes.dart';
 
@@ -57,6 +59,11 @@ class AppPages {
       name: _Paths.MODULE_DETAIL,
       page: () => const ModuleDetailView(),
       binding: ModuleDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUBJECT,
+      page: () => const SubjectView(),
+      binding: SubjectBinding(),
     ),
   ];
 }

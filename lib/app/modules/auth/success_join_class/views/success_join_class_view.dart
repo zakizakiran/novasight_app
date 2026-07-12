@@ -6,12 +6,13 @@ import 'package:novasight_app/app/data/model/class_model.dart';
 import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/class_card.dart';
 import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/feature_card.dart';
 
+import '../../../../core/styles/box_shadow_style.dart';
 import '../../widgets/auth_appbar.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/icon_txt.dart';
-import '../../login/views/widgets/card_auth_form.dart';
+import '../../../../common/common_card_widget.dart';
 import '../controllers/success_join_class_controller.dart';
 
 class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
@@ -27,7 +28,11 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
             AuthAppbar(iconSvg: SvgConstant.iconCheck, title: "Berhasil", description: "Kamu sudah bergabung ke kelas",height: appBarHeight,),
             Padding(
               padding: EdgeInsets.all(Dimens.innerPadding),
-              child: CardAuthForm(
+              child: CommonCardWidget(
+                boxShadow: [
+                  BoxShadowConstant.auth,
+                ],
+                margin: EdgeInsets.only(top: Dimens.innerPadding),
                 child: Column(
                   spacing: Dimens.spacePadding,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,6 +45,7 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
                     FeatureCard(iconTxt: IconTxt.chat, description: "Diskusi materi dengan AI"),
                     Obx(
                             () => CommonButtonWidget(
+                            buttonWidth: double.infinity,
                             isLoading: controller.isLoading.value,
                             buttonName: "Mulai Belajar →",
                             child: Row(

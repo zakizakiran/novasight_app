@@ -32,21 +32,22 @@ class ModuleView extends GetView<ModuleController> {
                     Expanded(
                       child: Obx(() {
                         final state = controller.state.value;
+                        final modules = controller.filteredModules;
                         return switch (state) {
-                          UiStateInitial<List<ModuleModel>>() ||
-                          UiStateLoading<List<ModuleModel>>() =>
+                          UiStateInitial<void>() ||
+                          UiStateLoading<void>() =>
                           const Center(
                             child: CircularProgressIndicator(),
                           ),
 
-                          UiStateFailure<List<ModuleModel>>(:final error) =>
+                          UiStateFailure<void>(:final error) =>
                               Center(
                                 child: Text(error),
                               ),
 
-                          UiStateSuccess<List<ModuleModel>>(:final data) =>
+                          UiStateSuccess<void>(:final data) =>
                               _buildModuleColumn(
-                                modules: data,
+                                modules: modules,
                                 onDetail: controller.onDetail,
                               ),
                         };

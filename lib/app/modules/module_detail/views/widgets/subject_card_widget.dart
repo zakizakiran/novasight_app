@@ -1,54 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
+import 'package:novasight_app/app/core/styles/border_style.dart';
+import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/data/model/module_model.dart';
-
 import '../../../../core/styles/svg/svg_constant.dart';
+import '../../../../data/model/subject_model.dart';
 class SubjectCardWidget extends StatelessWidget {
   final SubjectModel subjectModel;
   final int number;
-  const SubjectCardWidget({super.key,required this.number, required this.subjectModel});
+  final void Function() onDetail;
+  const SubjectCardWidget({super.key,required this.number, required this.subjectModel, required this.onDetail});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(Dimens.innerPadding),
-      decoration: BoxDecoration(
-        border: BoxBorder.all(
-          color: ColorConstant.borderNormalGrey,
-          width: 1
-        ),
-        color: ColorConstant.white,
+    return CommonCardWidget(
+        onPressed: onDetail,
+        border: BorderStyleConstant.outlineBorderCard,
         boxShadow: [
-          BoxShadow(
-              color: ColorConstant.shadowColor,
-              blurRadius: 4,
-              spreadRadius: 0,
-              offset: Offset(0, 4)
-          ),
+          BoxShadowConstant.module
         ],
-        borderRadius:BorderRadius.circular(Dimens.radius)
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: Dimens.spacePadding,
-        children: [
-          _numberWidget(number: number, context: context),
-          Expanded(
-            child: Text(
-              subjectModel.title,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.textDarkGreyColor
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: Dimens.spacePadding,
+          children: [
+            _numberWidget(number: number, context: context),
+            Expanded(
+              child: Text(
+                subjectModel.title,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstant.textDarkGreyColor
+                ),
               ),
             ),
-          ),
-          _checkWidget(isDone: subjectModel.isDone, context: context)
-        ],
-      ),
-    );
-  }
+            _checkWidget(isDone: subjectModel.isDone, context: context)
+          ],
+        ),
+      );
+    }
 
   Widget _numberWidget({
     required int number,

@@ -10,6 +10,7 @@ abstract class Routes {
   static const SUCCESS_JOIN_CLASS = _Paths.SUCCESS_JOIN_CLASS;
   static const MODULE = _Paths.MODULE;
   static const MODULE_DETAIL = _Paths.MODULE_DETAIL;
+  static const SUBJECT = _Paths.SUBJECT;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const SUCCESS_JOIN_CLASS = '/success-join-class';
   static const MODULE = '/module';
   static const MODULE_DETAIL = '/module-detail';
+  static const SUBJECT = '/subject';
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/modules/auth/widgets/auth_appbar.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
@@ -10,7 +11,7 @@ import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/validate_helper.dart';
-import 'package:novasight_app/app/modules/auth/login/views/widgets/card_auth_form.dart';
+import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/modules/auth/login/views/widgets/role_switch_widget.dart';
 
 import '../controllers/login_controller.dart';
@@ -32,7 +33,11 @@ class LoginView extends GetView<LoginController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: Dimens.innerPadding,
                 children: [
-                  CardAuthForm(
+                  CommonCardWidget(
+                    margin: EdgeInsets.only(top: Dimens.innerPadding),
+                    boxShadow: [
+                      BoxShadowConstant.auth,
+                    ],
                     child: Column(
                       spacing: Dimens.spacePadding,
                       children: [
@@ -125,6 +130,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                         Obx(
                             () => CommonButtonWidget(
+                                buttonWidth: double.infinity,
                                 isLoading: controller.isLoading.value,
                                 isValid: controller.isValid.value,
                                 buttonName: "Login",
