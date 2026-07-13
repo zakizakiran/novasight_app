@@ -133,7 +133,7 @@ class LoginView extends GetView<LoginController> {
                                 buttonWidth: double.infinity,
                                 isLoading: controller.isLoading.value,
                                 isValid: controller.isValid.value,
-                                buttonName: "Login",
+                                buttonName: "Masuk",
                                 onPressed: controller.onLogin
                             )
                         )

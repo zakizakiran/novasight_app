@@ -11,8 +11,7 @@ class CommonAppBar extends StatelessWidget {
   final double? height;
   final String? title;
   final String description;
-  final VoidCallback? onClickBack;
-  const CommonAppBar({super.key,this.icon = IconTxt.chat, this.iconSvg, this.title, required this.description, this.onClickBack,this.height});
+  const CommonAppBar({super.key,this.icon = IconTxt.chat, this.iconSvg, this.title, required this.description,this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +30,19 @@ class CommonAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: Dimens.spacePadding,
         children: [
-          if (onClickBack != null || canGoBack)
-            GestureDetector(
-              onTap: Get.back,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.arrow_back_ios_sharp,
-                  color: ColorConstant.white,
-                  size: Dimens.iconMediumSize,
+          if (canGoBack)
+            Semantics(
+              button: true,
+              label: "Kembali",
+              child: GestureDetector(
+                onTap: Get.back,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.arrow_back_ios_sharp,
+                    color: ColorConstant.white,
+                    size: Dimens.iconMediumSize,
+                  ),
                 ),
               ),
             ),

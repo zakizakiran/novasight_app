@@ -72,6 +72,7 @@ class SubjectView extends GetView<SubjectController> {
               final condition = currentPageNumber == length;
               return RowSubjectButtonWidget(
                 onNext: condition ? (){
+                  controller.onConfirmSubject();
                   DialogHelper.show(
                       icon: SvgPicture.asset(
                         SvgConstant.iconMedal,

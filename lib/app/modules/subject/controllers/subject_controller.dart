@@ -29,8 +29,11 @@ class SubjectController extends GetxController {
   }
 
   void onDone(){
+    Get.back();
+    Get.back();
+  }
+
+  void onConfirmSubject(){
     _repository.onDoneSubject(subject.id);
-    Get.back();
-    Get.back();
   }
 }

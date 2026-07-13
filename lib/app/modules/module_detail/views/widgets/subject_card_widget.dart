@@ -82,37 +82,40 @@ class SubjectCardWidget extends StatelessWidget {
     final borderColor = isDone ? ColorConstant.green : ColorConstant.borderNormalGrey;
     final double borderWidth = isDone ? 0 : Dimens.border;
     final double blur = isDone ? 8 : 10;
-    return Container(
-      width: 50,
-      height: 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: backgroundColor,
-        border: Border.all(
-            color: borderColor,
-            width: borderWidth
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor,
-            blurRadius: blur,
-            offset: const Offset(0, 4),
+    return Semantics(
+      label: isDone ? "Selesai" : 'Belum Selesai',
+      child: Container(
+        width: 50,
+        height: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: backgroundColor,
+          border: Border.all(
+              color: borderColor,
+              width: borderWidth
           ),
-        ],
-      ),
-      child: Visibility(
-        visible: isDone,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: SvgPicture.asset(
-          SvgConstant.iconCheck,
-          width: 24,
-          height: 24,
-          colorFilter: const ColorFilter.mode(
-            ColorConstant.white,
-            BlendMode.srcIn,
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor,
+              blurRadius: blur,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Visibility(
+          visible: isDone,
+          maintainSize: true,
+          maintainAnimation: true,
+          maintainState: true,
+          child: SvgPicture.asset(
+            SvgConstant.iconCheck,
+            width: 24,
+            height: 24,
+            colorFilter: const ColorFilter.mode(
+              ColorConstant.white,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ),
