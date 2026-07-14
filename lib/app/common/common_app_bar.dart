@@ -36,13 +36,10 @@ class CommonAppBar extends StatelessWidget {
               label: "Kembali",
               child: GestureDetector(
                 onTap: Get.back,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    Icons.arrow_back_ios_sharp,
-                    color: ColorConstant.white,
-                    size: Dimens.iconMediumSize,
-                  ),
+                child: Icon(
+                  Icons.arrow_back_ios_sharp,
+                  color: ColorConstant.white,
+                  size: Dimens.iconMediumSize,
                 ),
               ),
             ),

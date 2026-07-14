@@ -67,7 +67,6 @@ class ModuleView extends GetView<ModuleController> {
   }){
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         spacing: Dimens.spaceMediumPadding,
@@ -86,7 +85,7 @@ class ModuleView extends GetView<ModuleController> {
 }){
     return ListView.separated(
         itemCount: modules.length,
-
+        padding: EdgeInsets.zero,
         itemBuilder: (context, i) {
           return ModuleCardWidget(module: modules[i],onDetail: onDetail,);
         },
