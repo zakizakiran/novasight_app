@@ -12,6 +12,11 @@ abstract class Routes {
   static const MODULE_DETAIL = _Paths.MODULE_DETAIL;
   static const SUBJECT = _Paths.SUBJECT;
   static const REGISTER_ACCOUNT = _Paths.REGISTER_ACCOUNT;
+  static const MAIN_LAYOUT = _Paths.MAIN_LAYOUT;
+  static const EXAM = _Paths.EXAM;
+  static const CHATBOT = _Paths.CHATBOT;
+  static const PROFILE = _Paths.PROFILE;
+  static const STUDENT_DASHBOARD = _Paths.STUDENT_DASHBOARD;
 }
 
 abstract class _Paths {
@@ -25,4 +30,9 @@ abstract class _Paths {
   static const MODULE_DETAIL = '/module-detail';
   static const SUBJECT = '/subject';
   static const REGISTER_ACCOUNT = '/register-account';
+  static const MAIN_LAYOUT = '/main-layout';
+  static const EXAM = '/exam';
+  static const CHATBOT = '/chatbot';
+  static const PROFILE = '/profile';
+  static const STUDENT_DASHBOARD = '/student-dashboard';
 }

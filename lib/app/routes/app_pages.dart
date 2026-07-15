@@ -8,14 +8,19 @@ import '../modules/auth/register_class/bindings/register_class_binding.dart';
 import '../modules/auth/register_class/views/register_class_view.dart';
 import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
-import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
+import '../modules/chatbot/views/chatbot_view.dart';
+import '../modules/exam/views/exam_view.dart';
+import '../modules/main_layout/bindings/main_layout_binding.dart';
+import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
 import '../modules/module/views/module_view.dart';
 import '../modules/module_detail/bindings/module_detail_binding.dart';
 import '../modules/module_detail/views/module_detail_view.dart';
+import '../modules/profile/views/profile_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/student-dashboard/bindings/student_dashboard_binding.dart';
+import '../modules/student-dashboard/views/student_dashboard_view.dart';
 import '../modules/subject/bindings/subject_binding.dart';
 import '../modules/subject/views/subject_view.dart';
 
@@ -34,8 +39,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOME,
-      page: () => const HomeView(),
-      binding: HomeBinding(),
+      page: () => const StudentDashboardView(),
+      binding: StudentDashboardBinding(),
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -71,6 +76,19 @@ class AppPages {
       name: _Paths.REGISTER_ACCOUNT,
       page: () => const RegisterAccountView(),
       binding: RegisterAccountBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAIN_LAYOUT,
+      page: () => const MainLayoutView(),
+      binding: MainLayoutBinding(),
+    ),
+    GetPage(name: _Paths.EXAM, page: () => const ExamView()),
+    GetPage(name: _Paths.CHATBOT, page: () => const ChatbotView()),
+    GetPage(name: _Paths.PROFILE, page: () => const ProfileView()),
+    GetPage(
+      name: _Paths.STUDENT_DASHBOARD,
+      page: () => const StudentDashboardView(),
+      binding: StudentDashboardBinding(),
     ),
   ];
 }
