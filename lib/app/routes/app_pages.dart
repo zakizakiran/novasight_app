@@ -8,6 +8,8 @@ import '../modules/auth/register_class/bindings/register_class_binding.dart';
 import '../modules/auth/register_class/views/register_class_view.dart';
 import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
+import '../modules/create_class/bindings/create_class_binding.dart';
+import '../modules/create_class/views/create_class_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/module/bindings/module_binding.dart';
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.REGISTER_ACCOUNT,
       page: () => const RegisterAccountView(),
       binding: RegisterAccountBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_CLASS,
+      page: () => const CreateClassView(),
+      binding: CreateClassBinding(),
     ),
   ];
 }

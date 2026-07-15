@@ -12,6 +12,7 @@ abstract class Routes {
   static const MODULE_DETAIL = _Paths.MODULE_DETAIL;
   static const SUBJECT = _Paths.SUBJECT;
   static const REGISTER_ACCOUNT = _Paths.REGISTER_ACCOUNT;
+  static const CREATE_CLASS = _Paths.CREATE_CLASS;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const MODULE_DETAIL = '/module-detail';
   static const SUBJECT = '/subject';
   static const REGISTER_ACCOUNT = '/register-account';
+  static const CREATE_CLASS = '/create-class';
 }
