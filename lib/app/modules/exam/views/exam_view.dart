@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/data/model/module_model.dart';
-import 'package:novasight_app/app/modules/module/views/widgets/module_card_widget.dart';
+import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
+import 'package:novasight_app/app/modules/exam/views/widgets/exam_card_widget.dart';
+import 'package:novasight_app/app/routes/app_pages.dart';
 
-import '../../../core/utils/module_status.dart';
-import '../../../core/utils/ui_state.dart';
-import '../controllers/module_controller.dart';
+import '../controllers/exam_controller.dart';
 
-class ModuleView extends GetView<ModuleController> {
-  const ModuleView({super.key});
+class ExamView extends GetView<ExamController> {
+  const ExamView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          const CommonAppBar(description: "Modul Pembelajaran", showBackButton: false),
+          const CommonAppBar(description: "Soal Ujian", showBackButton: false),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -33,21 +31,22 @@ class ModuleView extends GetView<ModuleController> {
                   ),
                   Expanded(
                     child: Obx(() {
-                      final state = controller.state.value;
-                      final modules = controller.filteredModules;
-                      return switch (state) {
-                        UiStateInitial<void>() || UiStateLoading<void>() =>
-                          const Center(child: CircularProgressIndicator()),
-
-                        UiStateFailure<void>(:final error) => Center(
-                          child: Text(error),
-                        ),
-
-                        UiStateSuccess<void>() => _buildModuleColumn(
-                          modules: modules,
-                          onDetail: controller.onDetail,
-                        ),
-                      };
+                      final exams = controller.filteredExams;
+                      return ListView.separated(
+                        itemCount: exams.length,
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, i) {
+                          return ExamCardWidget(
+                            exam: exams[i],
+                            onDetail: () {
+                              Get.toNamed(Routes.EXAM_DETAIL, arguments: exams[i].id);
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: Dimens.spacePadding);
+                        },
+                      );
                     }),
                   ),
                 ],
@@ -83,22 +82,6 @@ class ModuleView extends GetView<ModuleController> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildModuleColumn({
-    required List<ModuleModel> modules,
-    required void Function(ModuleModel) onDetail,
-  }) {
-    return ListView.separated(
-        itemCount: modules.length,
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, i) {
-          return ModuleCardWidget(module: modules[i],onDetail: onDetail,);
-        },
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(height: Dimens.spacePadding);
-      }
     );
   }
 }
