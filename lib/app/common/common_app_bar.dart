@@ -11,12 +11,13 @@ class CommonAppBar extends StatelessWidget {
   final double? height;
   final String? title;
   final String description;
-  const CommonAppBar({super.key,this.icon = IconTxt.chat, this.iconSvg, this.title, required this.description,this.height});
+  final bool? showBackButton;
+  const CommonAppBar({super.key,this.icon = IconTxt.chat, this.iconSvg, this.title, required this.description,this.height, this.showBackButton});
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final canGoBack = Get.key.currentState?.canPop() ?? false;
+    final canGoBack = showBackButton ?? (Get.key.currentState?.canPop() ?? false);
     return Container(
       constraints: BoxConstraints(
         minHeight: height * 0.13
