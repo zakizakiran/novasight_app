@@ -54,7 +54,7 @@ class CommonButtonWidget extends StatelessWidget {
             }
           },
           style: ButtonStyle(
-            minimumSize: WidgetStatePropertyAll(Size.zero),
+            minimumSize: const WidgetStatePropertyAll(Size.zero),
             side: WidgetStatePropertyAll(border),
             elevation: const WidgetStatePropertyAll(0),
             shadowColor: const WidgetStatePropertyAll(Colors.transparent),

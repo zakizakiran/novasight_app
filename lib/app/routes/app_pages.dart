@@ -2,8 +2,10 @@ import 'package:get/get.dart';
 
 import '../modules/auth/login/bindings/login_binding.dart';
 import '../modules/auth/login/views/login_view.dart';
-import '../modules/auth/register/bindings/register_binding.dart';
-import '../modules/auth/register/views/register_view.dart';
+import '../modules/auth/register_account/bindings/register_account_binding.dart';
+import '../modules/auth/register_account/views/register_account_view.dart';
+import '../modules/auth/register_class/bindings/register_class_binding.dart';
+import '../modules/auth/register_class/views/register_class_view.dart';
 import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -22,7 +24,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MODULE;
+  static const INITIAL = Routes.LOGIN;
 
   static final routes = [
     GetPage(
@@ -41,7 +43,7 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage(
-      name: _Paths.REGISTER,
+      name: _Paths.REGISTER_CLASS,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
     ),
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.SUBJECT,
       page: () => const SubjectView(),
       binding: SubjectBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER_ACCOUNT,
+      page: () => const RegisterAccountView(),
+      binding: RegisterAccountBinding(),
     ),
   ];
 }

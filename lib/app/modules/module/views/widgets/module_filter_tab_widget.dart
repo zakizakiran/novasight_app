@@ -23,7 +23,7 @@ class ModuleFilterTabWidget extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            gradient: condition ? LinearGradient(
+            gradient: condition ? const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -41,14 +41,14 @@ class ModuleFilterTabWidget extends StatelessWidget {
               width: 2
             )
           ),
-          padding: EdgeInsets.all(Dimens.innerMediumPadding),
+          padding: const EdgeInsets.all(Dimens.innerMediumPadding),
           child: Row(
             spacing: Dimens.spaceMediumPadding,
             children: [
               if(condition)
                 SvgPicture.asset(
                   SvgConstant.iconCheck,
-                  colorFilter: ColorFilter.mode(
+                  colorFilter: const ColorFilter.mode(
                       ColorConstant.white,
                       BlendMode.srcIn
                   ),

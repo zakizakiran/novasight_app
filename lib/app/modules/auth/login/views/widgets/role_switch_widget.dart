@@ -17,36 +17,48 @@ class RoleSwitchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return Container(
-      height: 60,
+      height: 50,
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: ColorConstant.secondary,
-        borderRadius: BorderRadius.circular(Dimens.radius),
+        borderRadius: BorderRadius.all(
+          Radius.circular(Dimens.radius),
+        ),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
             children: [
               AnimatedAlign(
-                duration: const Duration(milliseconds: 250),
+                duration: _animationDuration, // can use your const variable
                 curve: Curves.easeInOut,
                 alignment: selectedRole == UserRoles.guru
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
                 child: Container(
                   width: constraints.maxWidth / 2,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: ColorConstant.primary,
-                    borderRadius: BorderRadius.circular(Dimens.radius),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(Dimens.radius),
+                    ),
                   ),
                 ),
               ),
-
               Row(
                 children: [
-                  _buildRoleButton(context: context, textTheme: textTheme, role: UserRoles.guru),
-                  _buildRoleButton(context: context, textTheme: textTheme, role: UserRoles.siswa)
+                  _buildRoleButton(
+                    context: context,
+                    textTheme: textTheme,
+                    role: UserRoles.guru,
+                  ),
+                  _buildRoleButton(
+                    context: context,
+                    textTheme: textTheme,
+                    role: UserRoles.siswa,
+                  ),
                 ],
               ),
             ],
@@ -72,8 +84,9 @@ class RoleSwitchWidget extends StatelessWidget {
             duration: _animationDuration,
             curve: Curves.easeInOut,
             style: textTheme.titleMedium!.copyWith(
-              fontWeight:
-              isSelected ? FontWeight.w700 : FontWeight.w500,
+              fontWeight: isSelected
+                  ? FontWeight.w700
+                  : FontWeight.w500,
               color: isSelected
                   ? ColorConstant.white
                   : ColorConstant.textGreyColor,

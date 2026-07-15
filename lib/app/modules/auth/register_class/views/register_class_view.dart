@@ -12,7 +12,7 @@ import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/icon_txt.dart';
 import '../../../../core/utils/validate_helper.dart';
 import '../../../../common/common_card_widget.dart';
-import '../controllers/register_controller.dart';
+import '../controllers/register_class_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
   const RegisterView({super.key});
@@ -26,12 +26,13 @@ class RegisterView extends GetView<RegisterController> {
           children: [
             AuthAppbar(icon: IconTxt.key, title: "Masuk ke Kelas", description: "Masukkan kode kelas dari gurumu",height: appBarHeight,),
             Padding(
-              padding: EdgeInsets.all(Dimens.innerPadding),
+              padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(
-                boxShadow: [
+                boxShadow: const [
+                  BoxShadowConstant.authPrimary,
                   BoxShadowConstant.auth,
                 ],
-                margin: EdgeInsets.only(top: Dimens.innerPadding),
+                margin: const EdgeInsets.only(top: Dimens.innerPadding),
                 child: Column(
                   spacing: Dimens.spacePadding,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,10 +77,10 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                       successColor: ColorConstant.primary,
                       focusedColor: ColorConstant.primary,
-                      borderSideFocused: BorderSide(
+                      borderSideFocused: const BorderSide(
                           width: 2
                       ),
-                      borderSideEnable: BorderSide(
+                      borderSideEnable: const BorderSide(
                           width: 2
                       ),
                     )

@@ -18,7 +18,7 @@ class ModuleView extends GetView<ModuleController> {
     return Scaffold(
       body: Column(
         children: [
-          CommonAppBar(description: "Modul Pembelajaran"),
+          const CommonAppBar(description: "Modul Pembelajaran"),
           Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -90,7 +90,7 @@ class ModuleView extends GetView<ModuleController> {
           return ModuleCardWidget(module: modules[i],onDetail: onDetail,);
         },
       separatorBuilder: (BuildContext context, int index) { 
-          return SizedBox(height: Dimens.spacePadding);
+          return const SizedBox(height: Dimens.spacePadding);
       },
     );
   }

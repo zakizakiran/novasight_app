@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
+import 'package:novasight_app/app/modules/auth/login/views/widgets/footer_auth_button.dart';
 import 'package:novasight_app/app/modules/auth/widgets/auth_appbar.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
@@ -13,6 +14,7 @@ import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/validate_helper.dart';
 import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/modules/auth/login/views/widgets/role_switch_widget.dart';
+import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -28,14 +30,15 @@ class LoginView extends GetView<LoginController> {
           children: [
             AuthAppbar(icon: IconTxt.eye, title: "NovaSight", description: "Aplikasi Matematika Inklusif",height: appBarHeight,),
             Padding(
-              padding: EdgeInsets.all(Dimens.innerPadding),
+              padding: const EdgeInsets.all(Dimens.innerPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: Dimens.innerPadding,
                 children: [
                   CommonCardWidget(
-                    margin: EdgeInsets.only(top: Dimens.innerPadding),
-                    boxShadow: [
+                    margin: const EdgeInsets.only(top: Dimens.innerPadding),
+                    boxShadow: const [
+                      BoxShadowConstant.authPrimary,
                       BoxShadowConstant.auth,
                     ],
                     child: Column(
@@ -60,56 +63,59 @@ class LoginView extends GetView<LoginController> {
                         Form(
                           key: controller.formKey,
                           child: Column(
+                            spacing: Dimens.spacePadding,
                             children: [
-                              CommonTextFormFieldWidget(
-                                title: "Email",
-                                controller: controller.emailController,
-                                hint: "Masukkan Email",
-                                isReadOnly: controller.isLoading.value,
-                                onChanged: controller.onChange,
-                                validator: ValidateHelper.isEmailValidate(),
-                                prefixIcon: SvgPicture.asset(
-                                  SvgConstant.iconEmail,
-                                  width: Dimens.iconRegularSize,
-                                  height: Dimens.iconRegularSize,
-                                ),
+                              Obx(() => CommonTextFormFieldWidget(
+                                  title: "Email",
+                                  controller: controller.emailController,
+                                  hint: "Masukkan Email",
+                                  isReadOnly: controller.isLoading.value,
+                                  onChanged: controller.onChange,
+                                  validator: ValidateHelper.isEmailValidate(),
+                                  prefixIcon: SvgPicture.asset(
+                                    SvgConstant.iconEmail,
+                                    width: Dimens.iconRegularSize,
+                                    height: Dimens.iconRegularSize,
+                                  ),
 
-                                borderSideFocused: BorderSide(
-                                    width: 1.5
-                                ),
-                                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: ColorConstant.textGreyColor
-                                ),
-                                borderSideEnable: BorderSide(
-                                    width: 1.5
-                                ),
-                              ),
-                              CommonTextFormFieldWidget(
-                                controller: controller.passwordController,
-                                title: "Password",
-                                hint: "Masukkan Password",
-                                isPassword: true,
-                                isReadOnly: controller.isLoading.value,
-                                onChanged: controller.onChange,
-                                validator: ValidateHelper.isPasswordValidate(),
-                                prefixIcon: Center(
-                                  widthFactor: 1,
-                                  child: Text(
-                                    textAlign: TextAlign.center,
-                                    IconTxt.lock,
-                                    style: TextStyle(
-                                        fontSize: Dimens.iconRegularSize
-                                    ),
+                                  borderSideFocused: const BorderSide(
+                                      width: 1.5
+                                  ),
+                                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: ColorConstant.textGreyColor
+                                  ),
+                                  borderSideEnable: const BorderSide(
+                                      width: 1.5
                                   ),
                                 ),
-                                borderSideFocused: BorderSide(
-                                    width: 1.5
-                                ),
-                                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: ColorConstant.textGreyColor
-                                ),
-                                borderSideEnable: BorderSide(
-                                    width: 1.5
+                              ),
+                              Obx(() => CommonTextFormFieldWidget(
+                                  controller: controller.passwordController,
+                                  title: "Kata Sandi",
+                                  hint: "Masukkan Kata Sandi",
+                                  isPassword: true,
+                                  isReadOnly: controller.isLoading.value,
+                                  onChanged: controller.onChange,
+                                  validator: ValidateHelper.isPasswordValidate(),
+                                  prefixIcon: const Center(
+                                    widthFactor: 1,
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      IconTxt.lock,
+                                      style: TextStyle(
+                                          fontSize: Dimens.iconRegularSize
+                                      ),
+                                    ),
+                                  ),
+                                  borderSideFocused: const BorderSide(
+                                      width: 1.5
+                                  ),
+                                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: ColorConstant.textGreyColor
+                                  ),
+                                  borderSideEnable: const BorderSide(
+                                      width: 1.5
+                                  ),
                                 ),
                               ),
                             ],
@@ -140,6 +146,13 @@ class LoginView extends GetView<LoginController> {
                       ],
                     ),
                   ),
+                  FooterAuthButton(
+                      title: "Daftar",
+                      description: "Belum punya akun? ",
+                      onClick: (){
+                        Get.toNamed(Routes.REGISTER_ACCOUNT);
+                      }
+                  )
                 ],
               ),
             ),

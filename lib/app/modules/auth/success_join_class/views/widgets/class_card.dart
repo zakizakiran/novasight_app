@@ -10,7 +10,7 @@ class ClassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(Dimens.innerPadding),
+      padding: const EdgeInsets.all(Dimens.innerPadding),
       decoration: BoxDecoration(
         color: ColorConstant.background,
         border: BoxBorder.all(
@@ -23,7 +23,7 @@ class ClassCard extends StatelessWidget {
         spacing: Dimens.spacePadding,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             IconTxt.classIcon,
             style: TextStyle(
                 fontSize: Dimens.iconMediumSize

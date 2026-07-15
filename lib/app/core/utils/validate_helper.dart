@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 
 class ValidateHelper {
   // Live Validation (String) buat check input validawsi
@@ -41,10 +42,10 @@ class ValidateHelper {
   }
 
   static FormFieldValidator<String> isPasswordConfirmationValidate(
-      String Function() secondValue,
+      String secondValue,
       ) {
     return (String? value) {
-      if (value != secondValue()) {
+      if (value != secondValue) {
         return "Kata sandi tidak sama dengan kata sandi baru";
       }
 
@@ -73,5 +74,36 @@ class ValidateHelper {
     return value != null &&
         value.isNotEmpty &&
         value == secondValue;
+  }
+
+//   Percantage
+  static double passwordToPercentage(
+      String value
+      ){
+    if(value.isEmpty){
+      return 0.0;
+    }
+    if(value.length < 8){
+      return 0.5;
+    }
+    if (RegExp(r'[!@#$%^&*(),.?":{}|<>_\-+=/\\[\]~`]').hasMatch(value) ||
+        value.length >= 13) {
+      return 1;
+    }
+    return 0.8;
+  }
+
+  static String passwordIndicator(double percentage) {
+    if (percentage == 0) return "Kosong";
+    if (percentage <= 0.5) return "Lemah";
+    if (percentage < 1.0) return "Kuat";
+    return "Sangat Kuat";
+  }
+
+  static Color passwordColorIndicator(double percentage) {
+    if (percentage == 0) return ColorConstant.redColor;
+    if (percentage <= 0.5) return ColorConstant.yellowColor;
+    if (percentage < 1.0) return ColorConstant.green;
+    return ColorConstant.green;
   }
 }

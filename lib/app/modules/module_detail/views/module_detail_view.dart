@@ -26,8 +26,8 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
 
               return switch (state) {
                 UiStateInitial<void>() ||
-                UiStateLoading<void>() => Center(
-                  child: const CircularProgressIndicator(),
+                UiStateLoading<void>() => const Center(
+                  child: CircularProgressIndicator(),
                 ),
 
                 UiStateFailure<void>(:final error) => Center(

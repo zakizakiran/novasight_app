@@ -13,22 +13,26 @@ class CommonCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: ColorConstant.white,
-      borderRadius: BorderRadius.circular(Dimens.radius),
-      child: InkWell(
-        onTap: onPressed,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: boxShadow,
         borderRadius: BorderRadius.circular(Dimens.radius),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: boxShadow,
-            border: border,
-            color: ColorConstant.white,
-            borderRadius: BorderRadius.circular(Dimens.radius),
+      ),
+      child: Material(
+        color: ColorConstant.white,
+        borderRadius: BorderRadius.circular(Dimens.radius),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(Dimens.radius),
+          onTap: onPressed,
+          child: Container(
+            decoration: BoxDecoration(
+              border: border,
+              borderRadius: BorderRadius.circular(Dimens.radius),
+            ),
+            margin: margin,
+            padding: const EdgeInsets.all(Dimens.innerPadding),
+            child: child,
           ),
-          margin: margin,
-          padding: EdgeInsets.all(Dimens.innerPadding),
-          child: child,
         ),
       ),
     );

@@ -22,8 +22,8 @@ class CommonAppBar extends StatelessWidget {
         minHeight: height * 0.13
       ),
       width: double.infinity,
-      padding: EdgeInsets.all(Dimens.innerPadding),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(Dimens.innerPadding),
+      decoration: const BoxDecoration(
         color: ColorConstant.primary,
       ),
       child: Row(
@@ -36,7 +36,7 @@ class CommonAppBar extends StatelessWidget {
               label: "Kembali",
               child: GestureDetector(
                 onTap: Get.back,
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back_ios_sharp,
                   color: ColorConstant.white,
                   size: Dimens.iconMediumSize,

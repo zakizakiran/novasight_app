@@ -18,7 +18,7 @@ class SubjectCardWidget extends StatelessWidget {
     return CommonCardWidget(
         onPressed: onDetail,
         border: BorderStyleConstant.outlineBorderCard,
-        boxShadow: [
+        boxShadow: const [
           BoxShadowConstant.module
         ],
         child: Row(
@@ -49,7 +49,7 @@ class SubjectCardWidget extends StatelessWidget {
       width: 50,
       height: 50,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -57,7 +57,7 @@ class SubjectCardWidget extends StatelessWidget {
                 ColorConstant.linearSecondary,
                 ColorConstant.linearPrimary,
               ],
-              stops: const [
+              stops: [
                 0.1,
                 1.0
               ]

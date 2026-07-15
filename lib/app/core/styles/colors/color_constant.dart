@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class ColorConstant {
   static const Color primary = Color(0xFF2563EB);
   static const Color primaryShadow = Color(0x332563EB);
+  static const Color primaryShadowMedium = Color(0x1F2563EB);
+
   static const Color secondary = Color(0xFFEFF1FE);
   static const Color card = Color(0xFFEEF5FF);
   static const Color background = Color(0xFFF9FAFC);
@@ -19,7 +21,7 @@ class ColorConstant {
   static const Color black = Color(0xFF000000);
   static const Color shadowColor = Color.fromARGB(13, 0, 0, 0);
   static const Color shadowAuthColor = Color.fromARGB(20, 0, 0, 0);
-  static const Color whiteShadowColor = Color(0x33FFFFFF);
+  static const Color whiteShadowColor = Color(0x4DFFFFFF);
 
   static const Color textPrimaryColor = Color(0xFF2977E5);
   static const Color textDarkGreyColor = Color(0xFF404040);

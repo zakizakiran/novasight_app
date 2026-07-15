@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -32,9 +31,9 @@ class LoginController extends GetxController {
 
   Future<void> onLogin() async {
     isLoading.value = true;
-    await Future.delayed(Duration(milliseconds: 900));
+    await Future.delayed(const Duration(milliseconds: 900));
     isLoading.value = false;
-    Get.toNamed(Routes.REGISTER);
+    Get.toNamed(Routes.REGISTER_CLASS);
   }
   @override
   void onClose() {

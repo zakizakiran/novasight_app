@@ -13,7 +13,12 @@ class FooterAuthButton extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(description),
+        Text(
+            description,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w400
+          ),
+        ),
         GestureDetector(
           onTap: onClick,
           child: Text(title,style: Theme.of(context).textTheme.bodyMedium?.copyWith(

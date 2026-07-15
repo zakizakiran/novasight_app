@@ -7,9 +7,13 @@ class IconAuthApp extends StatelessWidget {
   final String icon;
   final double? padding;
   final String? iconSvg;
-  final double size;
+  final double? size;
+  final Color color;
+  final Color shadowColor;
   final VoidCallback? onClick;
-  const IconAuthApp({super.key,this.iconSvg, required this.icon, this.padding, this.onClick, this.size = 12});
+  const IconAuthApp({super.key,this.iconSvg, required this.icon, this.padding, this.onClick, this.size = 12,
+    this.color = ColorConstant.white, this.shadowColor = ColorConstant.whiteShadowColor
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,27 +21,28 @@ class IconAuthApp extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onClick,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: const BorderRadius.all(Radius.circular(Dimens.circle)),
         child: Container(
           padding: EdgeInsets.all(padding ?? Dimens.mediumPadding),
           decoration: BoxDecoration(
-            color: ColorConstant.whiteShadowColor,
+            color: shadowColor,
             shape: BoxShape.circle,
           ),
           child:
           iconSvg == null ? Text(
               icon,
             style: TextStyle(
-              fontSize: size
+              fontSize: size,
+              color: color
             ),
           ) : SvgPicture.asset(
             iconSvg!,
             colorFilter: ColorFilter.mode(
-                ColorConstant.white,
+                color,
                 BlendMode.srcIn
             ),
-            height: Dimens.iconMediumSize,
-            width: Dimens.iconMediumSize,
+            height: size ?? Dimens.iconMediumSize,
+            width: size ?? Dimens.iconMediumSize,
             // color: ColorConstant.white,
             // size: Dimens.iconMediumSize,
           ),

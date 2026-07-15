@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
@@ -11,7 +10,7 @@ class FeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(Dimens.innerPadding),
+      padding: const EdgeInsets.all(Dimens.innerPadding),
       decoration: BoxDecoration(
         color: ColorConstant.secondary,
         borderRadius: BorderRadius.circular(Dimens.radius),
@@ -23,7 +22,7 @@ class FeatureCard extends StatelessWidget {
         children: [
           Text(
             iconTxt,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: Dimens.iconRegularSize
             ),
           ),

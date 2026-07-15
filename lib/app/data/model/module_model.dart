@@ -56,7 +56,7 @@ ModuleModel moduleEksponen = ModuleModel(
 );
 
 // Pengertian Eksponen
-SubjectModel subjectModel1 = SubjectModel(
+SubjectModel subjectModel1 = const SubjectModel(
   id: 1,
   title: "Pengertian Eksponen",
   isDone: true,
@@ -96,7 +96,7 @@ Contoh:
 );
 
 // Sifat-sifat Eksponen
-SubjectModel subjectModel2 = SubjectModel(
+SubjectModel subjectModel2 = const SubjectModel(
   id: 2,
   title: "Sifat-sifat Eksponen",
   isDone: true,
@@ -127,7 +127,7 @@ Contoh penggunaan:
 );
 
 // Pengertian Logaritma
-SubjectModel subjectModel3 = SubjectModel(
+SubjectModel subjectModel3 = const SubjectModel(
   id: 3,
   title: "Pengertian Logaritma",
   isDone: true,
@@ -164,7 +164,7 @@ Artinya, logaritma mencari nilai pangkat dari suatu bilangan.
 );
 
 // Hubungan Logaritma dengan Eksponen
-SubjectModel subjectModel4 = SubjectModel(
+SubjectModel subjectModel4 = const SubjectModel(
   id: 4,
   title: "Hubungan Logaritma dengan Eksponen",
   isDone: false,
@@ -196,7 +196,7 @@ Keduanya menyatakan informasi yang sama dalam bentuk berbeda.
 );
 
 // Sifat-sifat Logaritma
-SubjectModel subjectModel5 = SubjectModel(
+SubjectModel subjectModel5 = const SubjectModel(
   id: 5,
   title: "Sifat-sifat Logaritma",
   isDone: false,
@@ -248,7 +248,7 @@ ModuleModel moduleHimpunan = ModuleModel(
 );
 
 // Pengertian Himpunan
-SubjectModel subjectModel6 = SubjectModel(
+SubjectModel subjectModel6 = const SubjectModel(
   id: 6,
   title: "Pengertian Himpunan",
   isDone: false,
@@ -281,7 +281,7 @@ Contoh himpunan:
 );
 
 // Jenis-jenis Himpunan
-SubjectModel subjectModel7 = SubjectModel(
+SubjectModel subjectModel7 = const SubjectModel(
   id: 7,
   title: "Jenis-jenis Himpunan",
   isDone: false,
@@ -313,7 +313,7 @@ A ⊂ B berarti A merupakan bagian dari B.
 );
 
 // Irisan Himpunan
-SubjectModel subjectModel8 = SubjectModel(
+SubjectModel subjectModel8 = const SubjectModel(
   id: 8,
   title: "Irisan Himpunan",
   isDone: false,
@@ -344,7 +344,7 @@ A ∩ B = {3,4}
 );
 
 // Gabungan Himpunan
-SubjectModel subjectModel9 = SubjectModel(
+SubjectModel subjectModel9 = const SubjectModel(
   id: 9,
   title: "Gabungan Himpunan",
   isDone: false,
@@ -375,7 +375,7 @@ A ∪ B = {1,2,3,4,5}
 );
 
 // Selisih Himpunan
-SubjectModel subjectModel10 = SubjectModel(
+SubjectModel subjectModel10 = const SubjectModel(
   id: 10,
   title: "Selisih Himpunan",
   isDone: false,

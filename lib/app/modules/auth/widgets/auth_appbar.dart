@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
+import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 
 import 'icon_auth_app.dart';
 
@@ -11,32 +13,39 @@ class AuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final String title;
   final String description;
-  final VoidCallback? onClickBack;
-  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.onClickBack,this.height = 180});
+  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.height = 180});
 
   @override
   Size get preferredSize => Size.fromHeight(height);
 
   @override
   Widget build(BuildContext context) {
-
+    final canGoBack = Get.key.currentState?.canPop() ?? false;
     return ClipPath(
       clipper: BottomCurveClipper(),
       child: Container(
         width: double.infinity,
         height: height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: ColorConstant.primary,
         ),
         child: Stack(
           alignment: Alignment.center,
           children: [
-            if (onClickBack != null)
+            if (canGoBack)
               Align(
                 alignment: Alignment.centerLeft,
-                child: IconAuthApp(
-                  icon: "←",
-                  onClick: onClickBack,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: Dimens.innerMediumPadding),
+                  child: IconAuthApp(
+                    icon: "",
+                    iconSvg: SvgConstant.iconAuthArrowBack,
+                    padding: Dimens.spacePadding,
+                    size: Dimens.iconRegularSize + 5,
+                    onClick: (){
+                      Get.back();
+                    },
+                  ),
                 ),
               ),
             Column(

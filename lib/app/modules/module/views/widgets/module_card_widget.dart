@@ -5,7 +5,7 @@ import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/data/model/module_model.dart';
-import 'package:novasight_app/app/modules/module/views/widgets/gradient_progress_bar_widget.dart';
+import 'package:novasight_app/app/common/common_gradient_progress_bar_widget.dart';
 class ModuleCardWidget extends StatelessWidget {
   final ModuleModel module;
   final void Function(ModuleModel) onDetail;
@@ -20,7 +20,7 @@ class ModuleCardWidget extends StatelessWidget {
       },
       child: CommonCardWidget(
         border: BorderStyleConstant.outlineBorderCard,
-        boxShadow: [
+        boxShadow: const [
           BoxShadowConstant.module,
         ],
         child: Column(
@@ -44,8 +44,16 @@ class ModuleCardWidget extends StatelessWidget {
                   color: ColorConstant.textDarkGreyColor
               ),
             ),
-            GradientProgressBarWidget(
-              percantage: module.toPercentageDone() / 100,
+            CommonGradientProgressBarWidget(
+              percentage: module.toPercentageDone() / 100,
+              colors: const [
+                ColorConstant.linearSecondary,
+                ColorConstant.linearPrimary,
+              ],
+              stops: const [
+                0.2,
+                1.0
+              ],
             ),
             Text(
               "${module.toPercentageDone()}% Selesai",

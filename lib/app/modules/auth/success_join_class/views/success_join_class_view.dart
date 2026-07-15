@@ -28,12 +28,12 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
           children: [
             AuthAppbar(iconSvg: SvgConstant.iconCheck, title: "Berhasil", description: "Kamu sudah bergabung ke kelas",height: appBarHeight,),
             Padding(
-              padding: EdgeInsets.all(Dimens.innerPadding),
+              padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(
-                boxShadow: [
+                boxShadow: const [
                   BoxShadowConstant.auth,
                 ],
-                margin: EdgeInsets.only(top: Dimens.innerPadding),
+                margin: const EdgeInsets.only(top: Dimens.innerPadding),
                 child: Column(
                   spacing: Dimens.spacePadding,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,9 +41,9 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
                     _titleField(context: context, title: "Kelas Ditemukan"),
                     ClassCard(classModel: class1),
                     _titleField(context: context, title: "Selanjutnya kamu bisa:"),
-                    FeatureCard(iconTxt: IconTxt.module, description: "Baca modul pelajaran dari gurumu"),
-                    FeatureCard(iconTxt: IconTxt.pencil, description: "Kerjakan soal ujian yang diberikan"),
-                    FeatureCard(iconTxt: IconTxt.chat, description: "Diskusi materi dengan AI"),
+                    const FeatureCard(iconTxt: IconTxt.module, description: "Baca modul pelajaran dari gurumu"),
+                    const FeatureCard(iconTxt: IconTxt.pencil, description: "Kerjakan soal ujian yang diberikan"),
+                    const FeatureCard(iconTxt: IconTxt.chat, description: "Diskusi materi dengan AI"),
                     Obx(
                             () => CommonButtonWidget(
                             buttonWidth: double.infinity,
@@ -60,7 +60,7 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_right_alt_rounded,
                                   color: ColorConstant.white,
                                   size: Dimens.iconMediumSize,

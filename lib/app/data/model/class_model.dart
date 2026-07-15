@@ -10,4 +10,4 @@ class ClassModel extends Equatable{
   List<Object?> get props => [className,schoolName,teacherName];
 }
 
-ClassModel class1 = ClassModel(className: "Matematika Kelas 10 — 2026", schoolName: "SLBN-A CITEUREUP", teacherName: "Bayu");
+ClassModel class1 = const ClassModel(className: "Matematika Kelas 10 — 2026", schoolName: "SLBN-A CITEUREUP", teacherName: "Bayu");
