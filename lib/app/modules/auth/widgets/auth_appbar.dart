@@ -13,8 +13,9 @@ class AuthAppbar extends StatelessWidget{
   final double? height;
   final String title;
   final String description;
+  final bool showBack;
   final Widget? top;
-  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.height, this.top});
+  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.height, this.top, this.showBack = true});
 
 
   @override
@@ -31,7 +32,7 @@ class AuthAppbar extends StatelessWidget{
         child: Stack(
           alignment: Alignment.center,
           children: [
-            if (canGoBack)
+            if (canGoBack && showBack)
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(

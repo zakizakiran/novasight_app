@@ -11,7 +11,7 @@ import '../../../../core/Dimens.dart';
 import '../../../../core/styles/box_shadow_style.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/svg/svg_constant.dart';
-import '../../create_class/views/widgets/step_indicator_widget.dart';
+import '../../widgets/step_indicator_widget.dart';
 import '../../widgets/auth_appbar.dart';
 import '../controllers/success_create_class_controller.dart';
 
@@ -26,7 +26,7 @@ class SuccessCreateClassView extends GetView<SuccessCreateClassController> {
         child: Column(
           children: [
             AuthAppbar(iconSvg: SvgConstant.iconCheck, title: "Kelas Berhasil Dibuat!", description: "Bagikan kode dibawah ke siswamu", height: appBarHeight,
-              top: const StepIndicatorWidget(step: 2),),
+              top: const StepIndicatorWidget(step: 2,maxStep: 2,),),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: Column(

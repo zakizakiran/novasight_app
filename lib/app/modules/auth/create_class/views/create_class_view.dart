@@ -6,7 +6,7 @@ import 'package:novasight_app/app/data/model/city_model.dart';
 import 'package:novasight_app/app/data/model/school_model.dart';
 import 'package:novasight_app/app/modules/auth/create_class/views/widgets/chip_grade_level_widget.dart';
 import 'package:novasight_app/app/modules/auth/create_class/views/widgets/information_widget.dart';
-import 'package:novasight_app/app/modules/auth/create_class/views/widgets/step_indicator_widget.dart';
+import 'package:novasight_app/app/modules/auth/widgets/step_indicator_widget.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_card_widget.dart';
 import '../../../../common/common_text_form_field_widget.dart';
@@ -29,7 +29,7 @@ class CreateClassView extends GetView<CreateClassController> {
         child: Column(
           children: [
             AuthAppbar(icon: IconTxt.classIcon, title: "Buat Kelas Kamu", description: "Isi informasi kelas untuk memulai",height: appBarHeight,
-              top: const StepIndicatorWidget(step: 1),),
+              top: const StepIndicatorWidget(step: 1,maxStep: 2,),),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(

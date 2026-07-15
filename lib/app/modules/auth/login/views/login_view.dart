@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
+import 'package:novasight_app/app/modules/auth/forgot_password/controllers/forgot_password_controller.dart';
 import 'package:novasight_app/app/modules/auth/login/views/widgets/footer_auth_button.dart';
 import 'package:novasight_app/app/modules/auth/widgets/auth_appbar.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
@@ -10,7 +9,6 @@ import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/validate_helper.dart';
 import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/modules/auth/login/views/widgets/role_switch_widget.dart';
@@ -28,7 +26,7 @@ class LoginView extends GetView<LoginController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(icon: IconTxt.eye, title: "NovaSight", description: "Aplikasi Matematika Inklusif",height: appBarHeight,),
+            AuthAppbar(icon: IconTxt.eye, title: "NovaSight", description: "Aplikasi Matematika Inklusif",height: appBarHeight,showBack: false,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: Column(
@@ -124,7 +122,12 @@ class LoginView extends GetView<LoginController> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(
+                                  Routes.FORGOT_PASSWORD,
+                                  arguments: ForgotPasswordStep.email
+                              );
+                            },
                             child: Text(
                               "Lupa kata sandi?",
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.7.3
   shimmer: ^3.0.0
+  pinput: ^5.0.1
   fpdart: ^1.2.0
   equatable: 
   flutter_svg: ^2.2.1

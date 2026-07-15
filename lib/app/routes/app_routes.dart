@@ -23,6 +23,7 @@ abstract class Routes {
   static const EXAM_ACTIVE = _Paths.EXAM_ACTIVE;
   static const NOTE = _Paths.NOTE;
   static const SUCCESS_CREATE_CLASS = _Paths.SUCCESS_CREATE_CLASS;
+  static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
 }
 
 abstract class _Paths {
@@ -47,4 +48,5 @@ abstract class _Paths {
   static const EXAM_ACTIVE = '/exam-active';
   static const NOTE = '/note';
   static const SUCCESS_CREATE_CLASS = '/success-create-class';
+  static const FORGOT_PASSWORD = '/forgot-password';
 }

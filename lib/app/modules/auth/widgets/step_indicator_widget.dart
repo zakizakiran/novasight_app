@@ -3,7 +3,8 @@ import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 class StepIndicatorWidget extends StatelessWidget {
   final int step;
-  const StepIndicatorWidget({super.key, required this.step});
+  final int maxStep;
+  const StepIndicatorWidget({super.key, required this.step, required this.maxStep});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class StepIndicatorWidget extends StatelessWidget {
         vertical: Dimens.spaceSmallPadding,
       ),
       child: Text(
-          "Langkah $step / 2",
+          "Langkah $step / $maxStep",
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
           color: ColorConstant.white
         ),

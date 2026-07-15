@@ -8,6 +8,8 @@ import '../modules/auth/register_account/bindings/register_account_binding.dart'
 import '../modules/auth/register_account/views/register_account_view.dart';
 import '../modules/auth/register_class/bindings/register_class_binding.dart';
 import '../modules/auth/register_class/views/register_class_view.dart';
+import '../modules/auth/success_create_class/bindings/success_create_class_binding.dart';
+import '../modules/auth/success_create_class/views/success_create_class_view.dart';
 import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
 import '../modules/chatbot/views/chatbot_view.dart';
@@ -17,6 +19,8 @@ import '../modules/exam_active/bindings/exam_active_binding.dart';
 import '../modules/exam_active/views/exam_active_view.dart';
 import '../modules/exam_detail/bindings/exam_detail_binding.dart';
 import '../modules/exam_detail/views/exam_detail_view.dart';
+import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/main_layout/bindings/main_layout_binding.dart';
 import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
@@ -32,15 +36,13 @@ import '../modules/student-dashboard/bindings/student_dashboard_binding.dart';
 import '../modules/student-dashboard/views/student_dashboard_view.dart';
 import '../modules/subject/bindings/subject_binding.dart';
 import '../modules/subject/views/subject_view.dart';
-import '../modules/auth/success_create_class/bindings/success_create_class_binding.dart';
-import '../modules/auth/success_create_class/views/success_create_class_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.FORGOT_PASSWORD;
 
   static final routes = [
     GetPage(
@@ -131,6 +133,11 @@ class AppPages {
       name: _Paths.SUCCESS_CREATE_CLASS,
       page: () => const SuccessCreateClassView(),
       binding: SuccessCreateClassBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }
