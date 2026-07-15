@@ -1,0 +1,3 @@
+class FailureMapper implements Exception {
+
+}

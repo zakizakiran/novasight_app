@@ -33,7 +33,7 @@ class CommonButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: buttonWidth ?? double.infinity,
+      width: buttonWidth,
       height: buttonHeight,
       child: Container(
         decoration: BoxDecoration(
@@ -54,6 +54,7 @@ class CommonButtonWidget extends StatelessWidget {
             }
           },
           style: ButtonStyle(
+            minimumSize: WidgetStatePropertyAll(Size.zero),
             side: WidgetStatePropertyAll(border),
             elevation: const WidgetStatePropertyAll(0),
             shadowColor: const WidgetStatePropertyAll(Colors.transparent),

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/data/repositories/AuthRepository.dart';
+import 'package:novasight_app/app/data/repositories/auth_repository.dart';
 
 import '../controllers/splash_controller.dart';
 

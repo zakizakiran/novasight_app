@@ -2,17 +2,39 @@ import 'package:get/get.dart';
 
 import '../modules/auth/login/bindings/login_binding.dart';
 import '../modules/auth/login/views/login_view.dart';
-import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
+import '../modules/auth/register/bindings/register_binding.dart';
+import '../modules/auth/register/views/register_view.dart';
+import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
+import '../modules/auth/success_join_class/views/success_join_class_view.dart';
+import '../modules/chatbot/views/chatbot_view.dart';
+import '../modules/exam/bindings/exam_binding.dart';
+import '../modules/exam/views/exam_view.dart';
+import '../modules/exam_active/bindings/exam_active_binding.dart';
+import '../modules/exam_active/views/exam_active_view.dart';
+import '../modules/exam_detail/bindings/exam_detail_binding.dart';
+import '../modules/exam_detail/views/exam_detail_view.dart';
+import '../modules/main_layout/bindings/main_layout_binding.dart';
+import '../modules/main_layout/views/main_layout_view.dart';
+import '../modules/module/bindings/module_binding.dart';
+import '../modules/module/views/module_view.dart';
+import '../modules/module_detail/bindings/module_detail_binding.dart';
+import '../modules/module_detail/views/module_detail_view.dart';
+import '../modules/note/bindings/note_binding.dart';
+import '../modules/note/views/note_view.dart';
+import '../modules/profile/views/profile_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/student-dashboard/bindings/student_dashboard_binding.dart';
+import '../modules/student-dashboard/views/student_dashboard_view.dart';
+import '../modules/subject/bindings/subject_binding.dart';
+import '../modules/subject/views/subject_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.MAIN_LAYOUT;
 
   static final routes = [
     GetPage(
@@ -22,13 +44,73 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOME,
-      page: () => const HomeView(),
-      binding: HomeBinding(),
+      page: () => const StudentDashboardView(),
+      binding: StudentDashboardBinding(),
     ),
     GetPage(
       name: _Paths.LOGIN,
       page: () => const LoginView(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUCCESS_JOIN_CLASS,
+      page: () => const SuccessJoinClassView(),
+      binding: SuccessJoinClassBinding(),
+    ),
+    GetPage(
+      name: _Paths.MODULE,
+      page: () => const ModuleView(),
+      binding: ModuleBinding(),
+    ),
+    GetPage(
+      name: _Paths.MODULE_DETAIL,
+      page: () => const ModuleDetailView(),
+      binding: ModuleDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUBJECT,
+      page: () => const SubjectView(),
+      binding: SubjectBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAIN_LAYOUT,
+      page: () => const MainLayoutView(),
+      binding: MainLayoutBinding(),
+      children: [
+        GetPage(
+          name: _Paths.EXAM,
+          page: () => const ExamView(),
+          binding: ExamBinding(),
+        ),
+      ],
+    ),
+
+    GetPage(name: _Paths.CHATBOT, page: () => const ChatbotView()),
+    GetPage(name: _Paths.PROFILE, page: () => const ProfileView()),
+    GetPage(
+      name: _Paths.STUDENT_DASHBOARD,
+      page: () => const StudentDashboardView(),
+      binding: StudentDashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXAM_DETAIL,
+      page: () => const ExamDetailView(),
+      binding: ExamDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXAM_ACTIVE,
+      page: () => const ExamActiveView(),
+      binding: ExamActiveBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTE,
+      page: () => const NoteView(),
+      binding: NoteBinding(),
     ),
   ];
 }
