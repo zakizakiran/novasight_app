@@ -16,6 +16,10 @@ abstract class Routes {
   static const CHATBOT = _Paths.CHATBOT;
   static const PROFILE = _Paths.PROFILE;
   static const STUDENT_DASHBOARD = _Paths.STUDENT_DASHBOARD;
+  static const QUIZ = _Paths.QUIZ;
+  static const EXAM_DETAIL = _Paths.EXAM_DETAIL;
+  static const EXAM_ACTIVE = _Paths.EXAM_ACTIVE;
+  static const NOTE = _Paths.NOTE;
 }
 
 abstract class _Paths {
@@ -33,4 +37,8 @@ abstract class _Paths {
   static const CHATBOT = '/chatbot';
   static const PROFILE = '/profile';
   static const STUDENT_DASHBOARD = '/student-dashboard';
+  static const QUIZ = '/quiz';
+  static const EXAM_DETAIL = '/exam-detail';
+  static const EXAM_ACTIVE = '/exam-active';
+  static const NOTE = '/note';
 }

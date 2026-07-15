@@ -18,62 +18,69 @@ class ModuleView extends GetView<ModuleController> {
     return Scaffold(
       body: Column(
         children: [
-          CommonAppBar(description: "Modul Pembelajaran"),
+          const CommonAppBar(description: "Modul Pembelajaran", showBackButton: false),
           Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(Dimens.innerPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: Dimens.spacePadding,
-                  children: [
-                    Obx(
-                            () => _buildRowTab(selectedStatus: controller.selectedStatus.value)
+            child: Padding(
+              padding: const EdgeInsets.all(Dimens.innerPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: Dimens.spacePadding,
+                children: [
+                  Obx(
+                    () => _buildRowTab(
+                      selectedStatus: controller.selectedStatus.value,
                     ),
-                    Expanded(
-                      child: Obx(() {
-                        final state = controller.state.value;
-                        final modules = controller.filteredModules;
-                        return switch (state) {
-                          UiStateInitial<void>() ||
-                          UiStateLoading<void>() =>
-                          const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                  ),
+                  Expanded(
+                    child: Obx(() {
+                      final state = controller.state.value;
+                      final modules = controller.filteredModules;
+                      return switch (state) {
+                        UiStateInitial<void>() || UiStateLoading<void>() =>
+                          const Center(child: CircularProgressIndicator()),
 
-                          UiStateFailure<void>(:final error) =>
-                              Center(
-                                child: Text(error),
-                              ),
+                        UiStateFailure<void>(:final error) => Center(
+                          child: Text(error),
+                        ),
 
-                          UiStateSuccess<void>(:final data) =>
-                              _buildModuleColumn(
-                                modules: modules,
-                                onDetail: controller.onDetail,
-                              ),
-                        };
-                      }),
-                    ),
-                  ],
-                ),
+                        UiStateSuccess<void>() => _buildModuleColumn(
+                          modules: modules,
+                          onDetail: controller.onDetail,
+                        ),
+                      };
+                    }),
+                  ),
+                ],
               ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRowTab({
-    required ModuleStatus selectedStatus
-  }){
+  Widget _buildRowTab({required ModuleStatus selectedStatus}) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         spacing: Dimens.spaceMediumPadding,
         children: [
-          ModuleFilterTabWidget(status: ModuleStatus.all, selectedStatus: selectedStatus,onChanged: controller.onChangeStatus,),
-          ModuleFilterTabWidget(status: ModuleStatus.notDone, selectedStatus: selectedStatus,onChanged: controller.onChangeStatus),
-          ModuleFilterTabWidget(status: ModuleStatus.done, selectedStatus: selectedStatus,onChanged: controller.onChangeStatus)
+          ModuleFilterTabWidget(
+            status: ModuleStatus.all,
+            selectedStatus: selectedStatus,
+            onChanged: controller.onChangeStatus,
+          ),
+          ModuleFilterTabWidget(
+            status: ModuleStatus.notDone,
+            selectedStatus: selectedStatus,
+            onChanged: controller.onChangeStatus,
+          ),
+          ModuleFilterTabWidget(
+            status: ModuleStatus.done,
+            selectedStatus: selectedStatus,
+            onChanged: controller.onChangeStatus,
+          ),
         ],
       ),
     );
@@ -81,16 +88,16 @@ class ModuleView extends GetView<ModuleController> {
 
   Widget _buildModuleColumn({
     required List<ModuleModel> modules,
-    required void Function(ModuleModel) onDetail
-}){
+    required void Function(ModuleModel) onDetail,
+  }) {
     return ListView.separated(
-        itemCount: modules.length,
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, i) {
-          return ModuleCardWidget(module: modules[i],onDetail: onDetail,);
-        },
-      separatorBuilder: (BuildContext context, int index) { 
-          return SizedBox(height: Dimens.spacePadding);
+      itemCount: modules.length,
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, i) {
+        return ModuleCardWidget(module: modules[i], onDetail: onDetail);
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(height: Dimens.spacePadding);
       },
     );
   }
