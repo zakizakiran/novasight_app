@@ -3,5 +3,6 @@ class SvgConstant {
   static const String iconCheck = 'assets/svg/check.svg';
   static const String iconMedal = 'assets/svg/medal.svg';
   static const String iconAuthArrowBack = 'assets/svg/auth_arrow_back.svg';
+  static const String iconInformation = 'assets/svg/information.svg';
 }
 

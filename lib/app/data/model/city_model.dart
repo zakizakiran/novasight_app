@@ -6,6 +6,11 @@ class CityModel extends Equatable {
   const CityModel({ required this.id, required this.name});
 
   @override
+  String toString() {
+    return name;
+  }
+
+  @override
   List<Object?> get props => [id,name];
 }
 List<CityModel> listCities = const [

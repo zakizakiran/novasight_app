@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/auth/create_class/bindings/create_class_binding.dart';
+import '../modules/auth/create_class/views/create_class_view.dart';
 import '../modules/auth/login/bindings/login_binding.dart';
 import '../modules/auth/login/views/login_view.dart';
 import '../modules/auth/register_account/bindings/register_account_binding.dart';
@@ -8,8 +10,6 @@ import '../modules/auth/register_class/bindings/register_class_binding.dart';
 import '../modules/auth/register_class/views/register_class_view.dart';
 import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
-import '../modules/create_class/bindings/create_class_binding.dart';
-import '../modules/create_class/views/create_class_view.dart';
 import '../modules/chatbot/views/chatbot_view.dart';
 import '../modules/exam/bindings/exam_binding.dart';
 import '../modules/exam/views/exam_view.dart';
@@ -32,13 +32,15 @@ import '../modules/student-dashboard/bindings/student_dashboard_binding.dart';
 import '../modules/student-dashboard/views/student_dashboard_view.dart';
 import '../modules/subject/bindings/subject_binding.dart';
 import '../modules/subject/views/subject_view.dart';
+import '../modules/auth/success_create_class/bindings/success_create_class_binding.dart';
+import '../modules/auth/success_create_class/views/success_create_class_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.SUCCESS_CREATE_CLASS;
 
   static final routes = [
     GetPage(
@@ -103,7 +105,6 @@ class AppPages {
         ),
       ],
     ),
-
     GetPage(name: _Paths.CHATBOT, page: () => const ChatbotView()),
     GetPage(name: _Paths.PROFILE, page: () => const ProfileView()),
     GetPage(
@@ -125,6 +126,11 @@ class AppPages {
       name: _Paths.NOTE,
       page: () => const NoteView(),
       binding: NoteBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUCCESS_CREATE_CLASS,
+      page: () => const SuccessCreateClassView(),
+      binding: SuccessCreateClassBinding(),
     ),
   ];
 }

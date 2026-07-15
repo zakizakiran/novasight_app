@@ -25,3 +25,10 @@ class SubjectModel extends Equatable {
   @override
   List<Object?> get props => [id,title,isDone,pages];
 }
+
+enum SubjectType {
+  math("Matematika");
+
+  const SubjectType(this.name);
+  final String name;
+}

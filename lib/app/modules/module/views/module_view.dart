@@ -96,9 +96,9 @@ class ModuleView extends GetView<ModuleController> {
         itemBuilder: (context, i) {
           return ModuleCardWidget(module: modules[i],onDetail: onDetail,);
         },
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(height: Dimens.spacePadding);
-      }
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: Dimens.spacePadding);
+        }
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../../../../core/utils/validate_helper.dart';
 
@@ -33,7 +34,7 @@ class RegisterAccountController extends GetxController {
   }
 
   void onRegister(){
-
+    Get.offNamed(Routes.CREATE_CLASS);
   }
 
   @override

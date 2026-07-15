@@ -43,8 +43,6 @@ class IconAuthApp extends StatelessWidget {
             ),
             height: size ?? Dimens.iconMediumSize,
             width: size ?? Dimens.iconMediumSize,
-            // color: ColorConstant.white,
-            // size: Dimens.iconMediumSize,
           ),
         ),
       ),

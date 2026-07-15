@@ -10,16 +10,15 @@ class ClassModel extends Equatable{
   List<Object?> get props => [className,schoolName,teacherName];
 }
 
-enum ClassType {
+enum ClassGradeType {
   classTen("Kelas 10"),
   classEleven("Kelas 11"),
   classTwelve("Kelas 12");
 
-  const ClassType(this.name);
+  const ClassGradeType(this.name);
 
   final String name;
 }
-
 
 
 ClassModel class1 = const ClassModel(className: "Matematika Kelas 10 — 2026", schoolName: "SLBN-A CITEUREUP", teacherName: "Bayu");

@@ -22,6 +22,7 @@ abstract class Routes {
   static const EXAM_DETAIL = _Paths.EXAM_DETAIL;
   static const EXAM_ACTIVE = _Paths.EXAM_ACTIVE;
   static const NOTE = _Paths.NOTE;
+  static const SUCCESS_CREATE_CLASS = _Paths.SUCCESS_CREATE_CLASS;
 }
 
 abstract class _Paths {
@@ -45,4 +46,5 @@ abstract class _Paths {
   static const EXAM_DETAIL = '/exam-detail';
   static const EXAM_ACTIVE = '/exam-active';
   static const NOTE = '/note';
+  static const SUCCESS_CREATE_CLASS = '/success-create-class';
 }

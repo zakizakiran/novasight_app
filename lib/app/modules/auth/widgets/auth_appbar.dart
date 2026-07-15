@@ -7,16 +7,15 @@ import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 
 import 'icon_auth_app.dart';
 
-class AuthAppbar extends StatelessWidget implements PreferredSizeWidget {
+class AuthAppbar extends StatelessWidget{
   final String icon;
   final String? iconSvg;
-  final double height;
+  final double? height;
   final String title;
   final String description;
-  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.height = 180});
+  final Widget? top;
+  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.height, this.top});
 
-  @override
-  Size get preferredSize => Size.fromHeight(height);
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +50,7 @@ class AuthAppbar extends StatelessWidget implements PreferredSizeWidget {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                ?top,
                 IconAuthApp(
                     icon: icon,
                     iconSvg : iconSvg,

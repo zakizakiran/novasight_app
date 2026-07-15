@@ -76,9 +76,11 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if(widget.title != null)
-          Text("${widget.title}",style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w700
-          )),
+          Text("${widget.title}",
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700
+              )
+          ),
 
         ValueListenableBuilder<TextEditingValue>(
             valueListenable: widget.controller,
@@ -97,7 +99,7 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                     readOnly: widget.isReadOnly,
                     onChanged: widget.onChanged,
                     textAlign: widget.textAlign,
-                    style: widget.textStyle,
+                    style: widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
                     autovalidateMode: widget.autovalidateMode,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(

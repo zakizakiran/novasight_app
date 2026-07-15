@@ -69,7 +69,6 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                             hint: "Masukkan Email",
                             isReadOnly: controller.isLoading.value,
                             onChanged: controller.onChange,
-                            // suffixIcon: controller.isValidEmail ? :,
                             validator: ValidateHelper.isEmailValidate(),
                             borderSideFocused: const BorderSide(
                                 width: 1.5
@@ -165,5 +164,4 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
         )
     );
   }
-
 }

@@ -12,6 +12,7 @@ class CommonButtonWidget extends StatelessWidget {
   final Function() onPressed;
   final TextStyle? textStyle;
   final bool isLoading;
+  final List<BoxShadow> boxShadows;
   final bool isValid;
   final BorderSide? border;
   final Widget? child;
@@ -28,6 +29,14 @@ class CommonButtonWidget extends StatelessWidget {
     this.child,
     this.isLoading = false,
     this.isValid = true,
+    this.boxShadows = const [
+      BoxShadow(
+        color: ColorConstant.primaryShadow,
+        offset: Offset(0, 4),
+        blurRadius: 10,
+        spreadRadius: 2,
+      ),
+    ],
   });
 
   @override
@@ -38,14 +47,7 @@ class CommonButtonWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(rounded!),
-          boxShadow: const [
-            BoxShadow(
-              color: ColorConstant.primaryShadow,
-              offset: Offset(0, 4),
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-          ],
+          boxShadow: boxShadows,
         ),
         child: ElevatedButton(
           onPressed: (){
