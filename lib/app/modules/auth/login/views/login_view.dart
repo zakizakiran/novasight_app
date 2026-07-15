@@ -72,12 +72,14 @@ class LoginView extends GetView<LoginController> {
                                   isReadOnly: controller.isLoading.value,
                                   onChanged: controller.onChange,
                                   validator: ValidateHelper.isEmailValidate(),
-                                  prefixIcon: SvgPicture.asset(
-                                    SvgConstant.iconEmail,
-                                    width: Dimens.iconRegularSize,
-                                    height: Dimens.iconRegularSize,
+                                  prefixIcon: const Center(
+                                    widthFactor: 1,
+                                    child: Icon(
+                                      Icons.mail_outline_rounded,
+                                      size: Dimens.iconMidSize,
+                                      color: ColorConstant.textGreyColor,
+                                    ),
                                   ),
-
                                   borderSideFocused: const BorderSide(
                                       width: 1.5
                                   ),
@@ -99,12 +101,10 @@ class LoginView extends GetView<LoginController> {
                                   validator: ValidateHelper.isPasswordValidate(),
                                   prefixIcon: const Center(
                                     widthFactor: 1,
-                                    child: Text(
-                                      textAlign: TextAlign.center,
-                                      IconTxt.lock,
-                                      style: TextStyle(
-                                          fontSize: Dimens.iconRegularSize
-                                      ),
+                                    child: Icon(
+                                      Icons.lock_outline_rounded,
+                                      color: ColorConstant.textGreyColor,
+                                      size: Dimens.iconMidSize,
                                     ),
                                   ),
                                   borderSideFocused: const BorderSide(
