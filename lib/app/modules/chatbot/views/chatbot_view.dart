@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
+class ChatbotView extends StatelessWidget {
+  const ChatbotView({super.key});
 
-import '../controllers/home_controller.dart';
-
-class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomeView'),
+        title: const Text('Chatbot'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'HomeView is working',
+          'Halaman Chatbot (Placeholder)',
           style: TextStyle(fontSize: 20),
         ),
       ),
