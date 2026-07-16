@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
-
 import '../../../../core/utils/ui_state.dart';
 
 
@@ -51,17 +50,14 @@ class ModuleTeacherController extends GetxController {
     );
   }
 
-
   void onChange(String value) {
     searchQuery.value = value;
   }
-
 
   void onSelectedStatus(ModuleTeacherStatus status) {
     selectedStatus.value = status;
     _filterModules();
   }
-
 
   void _filterModules() {
     final query = searchQuery.value.toLowerCase().trim();
@@ -88,7 +84,12 @@ class ModuleTeacherController extends GetxController {
 
 
   void onDeleteModule(ModuleTeacherModel module) {
+    _repository.onRemoveModule(module);
     Get.back();
+  }
+
+  void onPublishModule(ModuleTeacherModel module){
+    _repository.onPublishModule(module);
   }
 
 

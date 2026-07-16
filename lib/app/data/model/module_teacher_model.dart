@@ -4,26 +4,46 @@ import 'package:novasight_app/app/data/model/class_model.dart';
 import '../../core/styles/img/img_constant.dart';
 
 sealed class ModuleChunk extends Equatable {
+  final int id;
   final String? annotation;
-  const ModuleChunk({this.annotation});
+  const ModuleChunk({this.annotation, required this.id});
+
+  // Base signature
+  ModuleChunk copyWith({int? id, String? annotation});
 }
 
 class TextChunk extends ModuleChunk {
   final String text;
-
-  const TextChunk({required this.text, super.annotation});
+  const TextChunk({required this.text, super.annotation, required super.id});
 
   @override
-  List<Object?> get props => [text,annotation];
+  TextChunk copyWith({int? id, String? annotation, String? text}) {
+    return TextChunk(
+      id: id ?? this.id,
+      annotation: annotation ?? this.annotation,
+      text: text ?? this.text,
+    );
+  }
+
+  @override
+  List<Object?> get props => [id, annotation, text];
 }
 
 class ImageChunk extends ModuleChunk {
   final String imagePath;
-
-  const ImageChunk({required this.imagePath, super.annotation});
+  const ImageChunk({required this.imagePath, super.annotation, required super.id});
 
   @override
-  List<Object?> get props => [imagePath, annotation];
+  ImageChunk copyWith({int? id, String? annotation, String? imagePath}) {
+    return ImageChunk(
+      id: id ?? this.id,
+      annotation: annotation ?? this.annotation,
+      imagePath: imagePath ?? this.imagePath,
+    );
+  }
+
+  @override
+  List<Object?> get props => [id, annotation, imagePath];
 }
 
 class ModuleTeacherModel extends Equatable {
@@ -43,7 +63,7 @@ class ModuleTeacherModel extends Equatable {
     required this.listChunks});
 
   @override
-  List<Object?> get props => [id,name,type,status,gradeType,listChunks];
+  List<Object?> get props => [id, name, type, status, gradeType, listChunks];
 
   ModuleTeacherModel copyWith({
     int? id,
@@ -66,7 +86,6 @@ class ModuleTeacherModel extends Equatable {
 
 enum ModuleTeacherType {
   pdf("PDF");
-  // docs("DOCX");
 
   final String name;
   const ModuleTeacherType(this.name);
@@ -81,7 +100,18 @@ enum ModuleTeacherStatus{
   const ModuleTeacherStatus(this.name);
 }
 
-
+const newestAnnotation = [
+  TextChunk(
+      id: 2,
+      text: "",
+      annotation: "Mengidentifikasi berbagai macam strategi pemecahan masalah."
+  ),
+  TextChunk(
+      id: 3,
+      text: "",
+      annotation: "Memberikan contoh langkah demi langkah penyelesaian SPLDV."
+  ),
+];
 final List<ModuleTeacherModel> listDummyModuleTeacher = [
   const ModuleTeacherModel(
     id: 1,
@@ -91,17 +121,20 @@ final List<ModuleTeacherModel> listDummyModuleTeacher = [
     gradeType: ClassGradeType.classTen,
     listChunks: [
       TextChunk(
+        id: 1,
         text:
         "Himpunan adalah kumpulan objek atau anggota yang didefinisikan dengan jelas sehingga dapat ditentukan apakah suatu objek termasuk ke dalam himpunan tersebut atau tidak.",
         annotation:
         "Bagian ini menjelaskan pengertian dasar himpunan sebagai konsep utama dalam materi.",
       ),
       ImageChunk(
+        id: 2,
         imagePath: ImgConstant.diagramHimpunan,
         annotation:
         "Diagram memperlihatkan hubungan antarhimpunan menggunakan diagram Venn. Diagram ini membantu memahami konsep irisan (∩), gabungan (∪), dan himpunan semesta (U).",
       ),
       TextChunk(
+        id: 3,
         text:
         "Misalnya, A = {1, 2, 3, 4} dan B = {3, 4, 5, 6}. Irisan kedua himpunan tersebut adalah {3, 4}, sedangkan gabungannya adalah {1, 2, 3, 4, 5, 6}.",
         annotation:
@@ -117,18 +150,21 @@ final List<ModuleTeacherModel> listDummyModuleTeacher = [
     gradeType: ClassGradeType.classEleven,
     listChunks: [
       TextChunk(
+        id: 1,
         text:
         "Persamaan linear satu variabel adalah persamaan yang hanya memiliki satu variabel berpangkat satu.",
         annotation:
         "Memperkenalkan definisi persamaan linear satu variabel.",
       ),
       TextChunk(
+        id: 2,
         text:
         "Contoh: x + 5 = 12, maka nilai x adalah 7.",
         annotation:
         "Memberikan contoh sederhana penyelesaian persamaan linear.",
       ),
       TextChunk(
+        id: 3,
         text:
         "Untuk menyelesaikan persamaan linear, lakukan operasi yang sama pada kedua ruas persamaan.",
         annotation:
@@ -146,24 +182,28 @@ const ModuleTeacherModel newModuleTeacher = ModuleTeacherModel(
   gradeType: ClassGradeType.classTen, // Or classEleven depending on your curriculum layout
   listChunks: [
     TextChunk(
+      id: 1,
       text:
       "Sistem Persamaan Linear Dua Variabel (SPLDV) adalah kumpulan dua atau lebih persamaan linear yang memiliki dua variabel yang sama.",
       annotation:
       "Menjelaskan pengertian dasar SPLDV dan karakteristik variabelnya.",
     ),
     TextChunk(
+      id: 2,
       text:
       "Metode penyelesaian SPLDV yang umum digunakan antara lain adalah metode substitusi, eliminasi, campuran, dan grafik.",
       annotation:
       "Mengidentifikasi berbagai macam strategi pemecahan masalah untuk menemukan nilai variabel.",
     ),
     TextChunk(
+      id: 3,
       text:
       "Contoh: Diberikan x + y = 5 dan 2x - y = 4. Dengan menjumlahkan kedua persamaan (eliminasi y), didapat 3x = 9, sehingga x = 3. Substitusi x ke persamaan pertama menghasilkan 3 + y = 5, sehingga y = 2.",
       annotation:
       "Memberikan contoh langkah demi langkah penyelesaian SPLDV menggunakan metode campuran (eliminasi-substitusi).",
     ),
     TextChunk(
+      id: 4,
       text:
       "Dalam kehidupan sehari-hari, SPLDV sering digunakan untuk memodelkan masalah kontekstual, seperti menentukan harga satuan barang atau memprediksi kombinasi keuntungan maksimal.",
       annotation:

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/module_result_args.dart';
 import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 
@@ -15,8 +16,9 @@ class ModuleResultAnnotationView extends GetView<ModuleResultAnnotationControlle
   const ModuleResultAnnotationView({super.key});
   @override
   Widget build(BuildContext context) {
+    final canPop = (Get.arguments as ModuleResultArgs).canPop;
     return PopScope(
-      canPop: false,
+      canPop: canPop,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         DialogHelper.show(

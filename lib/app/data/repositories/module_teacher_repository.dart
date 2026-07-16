@@ -30,7 +30,19 @@ class ModuleTeacherRepository {
     }
   }
   //
-  void onAddModule(){
-    return _service.onAddModule();
+  void onAddModule(ModuleTeacherModel module){
+    return _service.onAddModule(module);
+  }
+
+  void onRemoveModule(ModuleTeacherModel module){
+    return _service.onRemoveModule(module);
+  }
+
+  void onPublishModule(ModuleTeacherModel module){
+    return _service.onPublishModule(module);
+  }
+
+  ModuleTeacherModel onAddAdvice(ModuleTeacherModel module,List<int> idChunks){
+    return _service.onAddAdvice(module,idChunks);
   }
 }

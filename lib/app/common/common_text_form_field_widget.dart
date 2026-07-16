@@ -12,6 +12,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
   final String? title;
   final bool isReadOnly;
   final int minLines;
+  final int? maxLength;
   final TextAlign textAlign;
   final TextStyle? textStyle;
   final List<TextInputFormatter> inputFormatters;
@@ -41,6 +42,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
     this.isReadOnly = false,
     required this.hint,
     this.minLines = 1,
+    this.maxLength,
     this.isPassword,
     this.enableLinearPassword = false,
     this.inputFormatters = const [],
@@ -95,6 +97,7 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                 spacing: Dimens.spacePadding,
                 children: [
                   TextFormField(
+                    maxLength: widget.maxLength,
                     maxLines: widget.minLines,
                     minLines: widget.minLines,
                     obscureText: _obscureText,

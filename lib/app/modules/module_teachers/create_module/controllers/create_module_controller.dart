@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/module_result_args.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/data/model/class_model.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
@@ -74,7 +75,7 @@ class CreateModuleController extends GetxController {
       if (_isCancelled) return;
       Get.offNamed(
           Routes.MODULE_RESULT_ANNOTATION,
-        arguments: listDummyModuleTeacher.first
+        arguments: const ModuleResultArgs(module: newModuleTeacher, canPop: false)
       );
       SnackbarHelper.showSuccess(title: "Modul Berhasil diproses", message: "Anotasi AI sudah siap digunakan.");
 
@@ -103,7 +104,6 @@ class CreateModuleController extends GetxController {
   void cancelLoadingProcess() {
     _isCancelled = true;
     isLoading.value = false;
-    debugPrint("Process aborted by user.");
   }
 
   Future<void> onPickModule() async {
@@ -141,11 +141,6 @@ class CreateModuleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override
