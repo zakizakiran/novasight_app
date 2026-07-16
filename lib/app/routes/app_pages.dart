@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/auth/create_class/bindings/create_class_binding.dart';
 import '../modules/auth/create_class/views/create_class_view.dart';
+import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/auth/login/bindings/login_binding.dart';
 import '../modules/auth/login/views/login_view.dart';
 import '../modules/auth/register_account/bindings/register_account_binding.dart';
@@ -19,14 +21,20 @@ import '../modules/exam_active/bindings/exam_active_binding.dart';
 import '../modules/exam_active/views/exam_active_view.dart';
 import '../modules/exam_detail/bindings/exam_detail_binding.dart';
 import '../modules/exam_detail/views/exam_detail_view.dart';
-import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
-import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/main_layout/bindings/main_layout_binding.dart';
 import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
 import '../modules/module/views/module_view.dart';
 import '../modules/module_detail/bindings/module_detail_binding.dart';
 import '../modules/module_detail/views/module_detail_view.dart';
+import '../modules/module_teachers/module_result_annotation/bindings/module_result_annotation_binding.dart';
+import '../modules/module_teachers/module_result_annotation/views/module_result_annotation_view.dart';
+import '../modules/module_teachers/create_module/bindings/create_module_binding.dart';
+import '../modules/module_teachers/create_module/controllers/create_module_controller.dart';
+import '../modules/module_teachers/create_module/views/create_module_loading_view.dart';
+import '../modules/module_teachers/create_module/views/create_module_view.dart';
+import '../modules/module_teachers/module_teacher/bindings/module_teacher_binding.dart';
+import '../modules/module_teachers/module_teacher/views/module_teacher_view.dart';
 import '../modules/note/bindings/note_binding.dart';
 import '../modules/note/views/note_view.dart';
 import '../modules/profile/views/profile_view.dart';
@@ -42,7 +50,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.FORGOT_PASSWORD;
+  static const INITIAL = Routes.MODULE_TEACHER;
 
   static final routes = [
     GetPage(
@@ -138,6 +146,27 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.MODULE_TEACHER,
+      page: () => const ModuleTeacherView(),
+      binding: ModuleTeacherBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_MODULE,
+      page: () => const CreateModuleView(),
+      binding: CreateModuleBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_MODULE_LOADING,
+      page: () => const CreateModuleLoadingView(),
+      binding:
+          BindingsBuilder(() => Get.lazyPut(() => CreateModuleController())),
+    ),
+    GetPage(
+      name: _Paths.MODULE_RESULT_ANNOTATION,
+      page: () => const ModuleResultAnnotationView(),
+      binding: ModuleResultAnnotationBinding(),
     ),
   ];
 }
