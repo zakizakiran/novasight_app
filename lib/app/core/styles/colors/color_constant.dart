@@ -28,6 +28,7 @@ class ColorConstant {
   static const Color textPrimaryColor = Color(0xFF2977E5);
   static const Color textDarkGreyColor = Color(0xFF404040);
   static const Color textGreyColor = Color(0xFF99A6B2);
+  static const Color snackbarDescColor = Color(0xFFB2BFCC);
 
   static const Color yellowColor = Color(0xFFF3C82F);
 

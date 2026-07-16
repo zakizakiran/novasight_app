@@ -26,6 +26,7 @@ abstract class Routes {
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
   static const MODULE_TEACHER = _Paths.MODULE_TEACHER;
   static const CREATE_MODULE = _Paths.CREATE_MODULE;
+  static const CREATE_MODULE_LOADING = _Paths.CREATE_MODULE_LOADING;
 }
 
 abstract class _Paths {
@@ -53,4 +54,5 @@ abstract class _Paths {
   static const FORGOT_PASSWORD = '/forgot-password';
   static const MODULE_TEACHER = '/module-teacher';
   static const CREATE_MODULE = '/create-module';
+  static const CREATE_MODULE_LOADING = '/create-module-loading';
 }
