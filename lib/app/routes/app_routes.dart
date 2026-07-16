@@ -27,6 +27,7 @@ abstract class Routes {
   static const MODULE_TEACHER = _Paths.MODULE_TEACHER;
   static const CREATE_MODULE = _Paths.CREATE_MODULE;
   static const CREATE_MODULE_LOADING = _Paths.CREATE_MODULE_LOADING;
+  static const MODULE_RESULT_ANNOTATION = _Paths.MODULE_RESULT_ANNOTATION;
 }
 
 abstract class _Paths {
@@ -55,4 +56,5 @@ abstract class _Paths {
   static const MODULE_TEACHER = '/module-teacher';
   static const CREATE_MODULE = '/create-module';
   static const CREATE_MODULE_LOADING = '/create-module-loading';
+  static const MODULE_RESULT_ANNOTATION = '/module-result-annotation';
 }
