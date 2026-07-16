@@ -6,10 +6,14 @@ import '../core/styles/colors/color_constant.dart';
 class CommonTeacherAppbar extends StatelessWidget {
   final String title;
   final Color backgroundColor;
+  final bool? showBack;
+  final BoxBorder? border;
   const CommonTeacherAppbar({
     super.key,
     required this.title,
-    this.backgroundColor = ColorConstant.background
+    this.backgroundColor = ColorConstant.background,
+    this.showBack,
+    this.border
   });
 
   @override
@@ -24,12 +28,13 @@ class CommonTeacherAppbar extends StatelessWidget {
         padding: const EdgeInsets.all(Dimens.innerPadding),
         decoration: BoxDecoration(
           color: backgroundColor,
+          border: border
         ),
         child: Stack(
           alignment: Alignment.center,
           children: [
 
-            if (canGoBack)
+            if (showBack ?? canGoBack)
               Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(

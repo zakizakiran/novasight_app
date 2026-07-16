@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
+import 'package:novasight_app/app/core/args/module_result_args.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
@@ -10,6 +11,7 @@ import 'package:novasight_app/app/core/utils/dialog_helper.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 
 import '../../../../../core/Dimens.dart';
+import '../../../../../routes/app_pages.dart';
 import '../../controllers/module_teacher_controller.dart';
 
 
@@ -71,7 +73,14 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
             Expanded(
               child: CommonButtonWidget(
                 buttonName: "Lihat Modul",
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed(
+                      Routes.MODULE_RESULT_ANNOTATION,
+                      arguments: ModuleResultArgs(
+                          module: module,
+                          canPop: true)
+                  );
+                },
                 buttonColor: ColorConstant.white,
                 border: const BorderSide(
                   color: ColorConstant.borderBlueGrey,
@@ -92,7 +101,9 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
                 buttonName: "Publish Modul",
                 isValid: module.status != ModuleTeacherStatus.publish,
                 boxShadows: const [],
-                onPressed: () {},
+                onPressed: (){
+                  controller.onPublishModule(module);
+                },
               ),
             ),
 
