@@ -59,7 +59,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.GENERATE_EXAM;
+  static const INITIAL = Routes.EXAM_TEACHERS;
 
   static final routes = [
     GetPage(
