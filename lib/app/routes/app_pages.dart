@@ -30,6 +30,14 @@ import '../modules/module/bindings/module_binding.dart';
 import '../modules/module/views/module_view.dart';
 import '../modules/module_detail/bindings/module_detail_binding.dart';
 import '../modules/module_detail/views/module_detail_view.dart';
+import '../modules/module_teachers/module_result_annotation/bindings/module_result_annotation_binding.dart';
+import '../modules/module_teachers/module_result_annotation/views/module_result_annotation_view.dart';
+import '../modules/module_teachers/create_module/bindings/create_module_binding.dart';
+import '../modules/module_teachers/create_module/controllers/create_module_controller.dart';
+import '../modules/module_teachers/create_module/views/create_module_loading_view.dart';
+import '../modules/module_teachers/create_module/views/create_module_view.dart';
+import '../modules/module_teachers/module_teacher/bindings/module_teacher_binding.dart';
+import '../modules/module_teachers/module_teacher/views/module_teacher_view.dart';
 import '../modules/note/bindings/note_binding.dart';
 import '../modules/note/views/note_view.dart';
 import '../modules/profile/views/profile_view.dart';
@@ -153,6 +161,28 @@ class AppPages {
       name: _Paths.EXAM_REVIEW,
       page: () => const ExamReviewView(),
       binding: ExamReviewBinding(),
+    ),
+    GetPage(
+      name: _Paths.MODULE_TEACHER,
+      page: () => const ModuleTeacherView(),
+      binding: ModuleTeacherBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_MODULE,
+      page: () => const CreateModuleView(),
+      binding: CreateModuleBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_MODULE_LOADING,
+      page: () => const CreateModuleLoadingView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => CreateModuleController()),
+      ),
+    ),
+    GetPage(
+      name: _Paths.MODULE_RESULT_ANNOTATION,
+      page: () => const ModuleResultAnnotationView(),
+      binding: ModuleResultAnnotationBinding(),
     ),
   ];
 }

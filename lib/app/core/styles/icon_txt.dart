@@ -7,4 +7,5 @@ class IconTxt {
   static const chat = "💬";
   static const classIcon = "🏫";
   static const copyIcon = "⎘";
+  static const lens = "🔍";
 }
