@@ -22,6 +22,8 @@ import '../modules/exam_active/bindings/exam_active_binding.dart';
 import '../modules/exam_active/views/exam_active_view.dart';
 import '../modules/exam_detail/bindings/exam_detail_binding.dart';
 import '../modules/exam_detail/views/exam_detail_view.dart';
+import '../modules/exam_review/bindings/exam_review_binding.dart';
+import '../modules/exam_review/views/exam_review_view.dart';
 import '../modules/main_layout/bindings/main_layout_binding.dart';
 import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
@@ -146,6 +148,11 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXAM_REVIEW,
+      page: () => const ExamReviewView(),
+      binding: ExamReviewBinding(),
     ),
   ];
 }

@@ -39,7 +39,11 @@ class ExamView extends GetView<ExamController> {
                           return ExamCardWidget(
                             exam: exams[i],
                             onDetail: () {
-                              Get.toNamed(Routes.EXAM_DETAIL, arguments: exams[i].id);
+                              if (exams[i].status == ModuleStatus.done) {
+                                Get.toNamed(Routes.EXAM_REVIEW, arguments: exams[i].id);
+                              } else {
+                                Get.toNamed(Routes.EXAM_DETAIL, arguments: exams[i].id);
+                              }
                             },
                           );
                         },

@@ -88,7 +88,8 @@ class ChatbotView extends GetView<ChatbotController> {
                                 children: [
                                   Text(
                                     item.title,
-                                    style: const MainTextTheme().titleLarge?.copyWith(
+                                    style: const MainTextTheme().titleLarge
+                                        ?.copyWith(
                                           color: ColorConstant.informationColor,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -98,7 +99,8 @@ class ChatbotView extends GetView<ChatbotController> {
                                   const SizedBox(height: 4),
                                   Text(
                                     item.subtitle,
-                                    style: const MainTextTheme().bodyLarge?.copyWith(
+                                    style: const MainTextTheme().bodyLarge
+                                        ?.copyWith(
                                           color: ColorConstant.textGreyColor,
                                         ),
                                     maxLines: 2,
@@ -173,7 +175,9 @@ class ChatbotView extends GetView<ChatbotController> {
                                   left: isAi ? 0 : 32,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: isAi ? ColorConstant.white : ColorConstant.primary,
+                                  color: isAi
+                                      ? ColorConstant.white
+                                      : ColorConstant.primary,
                                   borderRadius: BorderRadius.only(
                                     topLeft: const Radius.circular(16),
                                     topRight: const Radius.circular(16),
@@ -190,9 +194,11 @@ class ChatbotView extends GetView<ChatbotController> {
                                 ),
                                 child: Text(
                                   msg.message,
-                                  style: const MainTextTheme().bodyLarge?.copyWith(
+                                  style: const MainTextTheme().bodyLarge
+                                      ?.copyWith(
                                         color: isAi
-                                            ? ColorConstant.lightInformationColor
+                                            ? ColorConstant
+                                                  .lightInformationColor
                                             : ColorConstant.white,
                                         height: 1.5,
                                       ),
@@ -200,7 +206,8 @@ class ChatbotView extends GetView<ChatbotController> {
                               ),
                               Text(
                                 msg.time,
-                                style: const MainTextTheme().bodyMedium?.copyWith(
+                                style: const MainTextTheme().bodyMedium
+                                    ?.copyWith(
                                       color: ColorConstant.textGreyColor,
                                     ),
                               ),
@@ -350,18 +357,22 @@ class ChatbotView extends GetView<ChatbotController> {
               label: 'Kirim pesan',
               child: GestureDetector(
                 onTap: controller.sendMessage,
-                child: Obx(() => Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: controller.hasInput.value ? ColorConstant.primary : const Color(0xFFB4C0DA),
-                    shape: BoxShape.circle,
+                child: Obx(
+                  () => Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: controller.hasInput.value
+                          ? ColorConstant.primary
+                          : const Color(0xFFB4C0DA),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: ColorConstant.white,
+                      size: 24,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: ColorConstant.white,
-                    size: 24,
-                  ),
-                )),
+                ),
               ),
             ),
           ],
