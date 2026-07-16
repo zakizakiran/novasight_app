@@ -9,6 +9,7 @@ class DialogHelper {
   static Future<T?> show<T>({
     required String title,
     String? description,
+    Color? colorDescription,
     Widget? icon,
     Widget? actions,
   }) {
@@ -17,6 +18,7 @@ class DialogHelper {
         title: title,
         description: description,
         icon: icon,
+        colorDescription: colorDescription,
         actions: actions,
       ),
     );

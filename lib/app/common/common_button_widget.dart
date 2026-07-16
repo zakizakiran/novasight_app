@@ -10,6 +10,7 @@ class CommonButtonWidget extends StatelessWidget {
   final double? rounded;
   final Color? buttonColor;
   final Function() onPressed;
+  final EdgeInsets? padding;
   final TextStyle? textStyle;
   final bool isLoading;
   final List<BoxShadow> boxShadows;
@@ -37,6 +38,7 @@ class CommonButtonWidget extends StatelessWidget {
         spreadRadius: 2,
       ),
     ],
+    this.padding,
   });
 
   @override
@@ -56,6 +58,9 @@ class CommonButtonWidget extends StatelessWidget {
             }
           },
           style: ButtonStyle(
+            padding: padding == null
+                ? null
+                : WidgetStatePropertyAll(padding),
             minimumSize: const WidgetStatePropertyAll(Size.zero),
             side: WidgetStatePropertyAll(border),
             elevation: const WidgetStatePropertyAll(0),
