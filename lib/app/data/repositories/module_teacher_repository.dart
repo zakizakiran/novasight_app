@@ -30,7 +30,7 @@ class ModuleTeacherRepository {
     }
   }
   //
-  // void onDoneSubject(int subjectId){
-  //   return _service.onUpdateSubject(subjectId);
-  // }
+  void onAddModule(){
+    return _service.onAddModule();
+  }
 }

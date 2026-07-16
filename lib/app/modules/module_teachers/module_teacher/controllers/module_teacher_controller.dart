@@ -18,6 +18,7 @@ class ModuleTeacherController extends GetxController {
       <ModuleTeacherModel>[].obs;
 
   late Worker _searchWorker;
+  late Worker _modulesWorker;
 
   final ModuleTeacherRepository _repository;
 
@@ -94,14 +95,14 @@ class ModuleTeacherController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     onLoad();
-
     _searchWorker = debounce(
       searchQuery,
           (_) => _filterModules(),
       time: const Duration(milliseconds: 400),
     );
+
+    _modulesWorker = ever<List<ModuleTeacherModel>>(modules, (_) => _filterModules());
   }
 
 
@@ -109,6 +110,7 @@ class ModuleTeacherController extends GetxController {
   void onClose() {
     searchController.dispose();
     _searchWorker.dispose();
+    _modulesWorker.dispose();
     super.onClose();
   }
 }

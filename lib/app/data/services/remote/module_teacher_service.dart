@@ -19,20 +19,7 @@ class ModuleTeacherService {
     }
   }
 
-  // void onUpdateSubject(int subjectId){
-  //   final updatedModules = modules.map((module) {
-  //     final subjects = module.subjects.map((subject) {
-  //       if(subject.id == subjectId){
-  //         return subject.copyWith(isDone: true);
-  //       }else{
-  //         return subject;
-  //       }
-  //     }).toList();
-  //
-  //     return module.copyWith(
-  //         subjects: subjects
-  //     );
-  //   }).toList();
-  //   modules.value = updatedModules;
-  // }
+  void onAddModule() {
+    modules.add(newModuleTeacher);
+  }
 }

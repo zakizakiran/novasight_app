@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/data/model/class_model.dart';
+import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/data/model/selected_pdf_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
@@ -13,6 +14,7 @@ class CreateModuleController extends GetxController {
   final TextEditingController descriptionModuleController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  bool _isCancelled = false;
 
   final Rxn<SelectedPdfModel> selectedPdf = Rxn<SelectedPdfModel>();
 
@@ -41,6 +43,7 @@ class CreateModuleController extends GetxController {
   }
 
   Future<void> onUploadModule() async {
+    _isCancelled = false;
     isLoading.value = true;
     progress.value = 0.0;
     for (var step in uploadSteps) {
@@ -50,26 +53,34 @@ class CreateModuleController extends GetxController {
     Get.toNamed(Routes.CREATE_MODULE_LOADING);
     try {
       // --- STEP 1: Membaca Dokumen ---
+      if (_isCancelled) return;
       uploadSteps[0].status.value = LoadingStepStatus.processing;
       await _simulateProgress(start: 0.0, end: 0.3, durationMs: 1500);
       uploadSteps[0].status.value = LoadingStepStatus.completed;
 
       // --- STEP 2: Menganalisis Konten ---
+      if (_isCancelled) return;
       uploadSteps[1].status.value = LoadingStepStatus.processing;
       await _simulateProgress(start: 0.3, end: 0.6, durationMs: 2000);
       uploadSteps[1].status.value = LoadingStepStatus.completed;
 
       // --- STEP 3: Membuat Anotasi ---
+      if (_isCancelled) return;
       uploadSteps[2].status.value = LoadingStepStatus.processing;
       await _simulateProgress(start: 0.6, end: 1.0, durationMs: 1500);
       uploadSteps[2].status.value = LoadingStepStatus.completed;
 
       await Future.delayed(const Duration(milliseconds: 500));
-      // Get.offToNamed(); // Close dialog
+      if (_isCancelled) return;
+      Get.offNamed(
+          Routes.MODULE_RESULT_ANNOTATION,
+        arguments: listDummyModuleTeacher.first
+      );
       SnackbarHelper.showSuccess(title: "Modul Berhasil diproses", message: "Anotasi AI sudah siap digunakan.");
 
 
     } catch (e) {
+      if (!_isCancelled) Get.back();
       Get.back();
       Get.snackbar("Error", "Gagal memproses modul.");
     } finally {
@@ -83,9 +94,16 @@ class CreateModuleController extends GetxController {
     final increment = (end - start) / steps;
 
     for (int i = 0; i <= steps; i++) {
+      if (_isCancelled) break;
       progress.value = start + (increment * i);
       await Future.delayed(Duration(milliseconds: stepDuration));
     }
+  }
+
+  void cancelLoadingProcess() {
+    _isCancelled = true;
+    isLoading.value = false;
+    debugPrint("Process aborted by user.");
   }
 
   Future<void> onPickModule() async {

@@ -137,3 +137,37 @@ final List<ModuleTeacherModel> listDummyModuleTeacher = [
     ],
   ),
 ];
+
+const ModuleTeacherModel newModuleTeacher = ModuleTeacherModel(
+  id: 3,
+  name: "Sistem Persamaan Linear Dua Variabel (SPLDV)",
+  type: ModuleTeacherType.pdf,
+  status: ModuleTeacherStatus.draft,
+  gradeType: ClassGradeType.classTen, // Or classEleven depending on your curriculum layout
+  listChunks: [
+    TextChunk(
+      text:
+      "Sistem Persamaan Linear Dua Variabel (SPLDV) adalah kumpulan dua atau lebih persamaan linear yang memiliki dua variabel yang sama.",
+      annotation:
+      "Menjelaskan pengertian dasar SPLDV dan karakteristik variabelnya.",
+    ),
+    TextChunk(
+      text:
+      "Metode penyelesaian SPLDV yang umum digunakan antara lain adalah metode substitusi, eliminasi, campuran, dan grafik.",
+      annotation:
+      "Mengidentifikasi berbagai macam strategi pemecahan masalah untuk menemukan nilai variabel.",
+    ),
+    TextChunk(
+      text:
+      "Contoh: Diberikan x + y = 5 dan 2x - y = 4. Dengan menjumlahkan kedua persamaan (eliminasi y), didapat 3x = 9, sehingga x = 3. Substitusi x ke persamaan pertama menghasilkan 3 + y = 5, sehingga y = 2.",
+      annotation:
+      "Memberikan contoh langkah demi langkah penyelesaian SPLDV menggunakan metode campuran (eliminasi-substitusi).",
+    ),
+    TextChunk(
+      text:
+      "Dalam kehidupan sehari-hari, SPLDV sering digunakan untuk memodelkan masalah kontekstual, seperti menentukan harga satuan barang atau memprediksi kombinasi keuntungan maksimal.",
+      annotation:
+      "Menghubungkan konsep abstrak matematika dengan aplikasi atau implementasi di dunia nyata.",
+    ),
+  ],
+);

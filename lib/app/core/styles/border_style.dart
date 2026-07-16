@@ -11,4 +11,11 @@ class BorderStyleConstant {
         width: Dimens.border
     )
   );
+
+  static const borderTeacherAppbar = BoxBorder.symmetric(
+    horizontal: BorderSide(
+      color: ColorConstant.borderBlueGrey,
+      width: 1
+    )
+  );
 }
