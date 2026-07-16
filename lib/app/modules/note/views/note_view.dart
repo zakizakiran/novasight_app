@@ -150,7 +150,7 @@ class NoteView extends GetView<NoteController> {
     return Padding(
       padding: const EdgeInsets.only(bottom: Dimens.spacePadding),
       child: Semantics(
-        label: "Langkah ${index + 1}: $text",
+        label: "Langkah ${index + 1}, $text",
         child: Container(
           padding: const EdgeInsets.symmetric(
             vertical: Dimens.innerBigPadding,
