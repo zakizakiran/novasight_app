@@ -29,6 +29,9 @@ abstract class Routes {
   static const CREATE_MODULE = _Paths.CREATE_MODULE;
   static const CREATE_MODULE_LOADING = _Paths.CREATE_MODULE_LOADING;
   static const MODULE_RESULT_ANNOTATION = _Paths.MODULE_RESULT_ANNOTATION;
+  static const TEACHER_DASHBOARD = _Paths.TEACHER_DASHBOARD;
+  static const GENERATE_EXAM = _Paths.GENERATE_EXAM;
+  static const EXAM_TEACHERS = _Paths.EXAM_TEACHERS;
 }
 
 abstract class _Paths {
@@ -59,4 +62,7 @@ abstract class _Paths {
   static const CREATE_MODULE = '/create-module';
   static const CREATE_MODULE_LOADING = '/create-module-loading';
   static const MODULE_RESULT_ANNOTATION = '/module-result-annotation';
+  static const TEACHER_DASHBOARD = '/teacher-dashboard';
+  static const GENERATE_EXAM = '/generate-exam';
+  static const EXAM_TEACHERS = '/exam-teachers';
 }

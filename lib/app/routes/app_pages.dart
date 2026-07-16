@@ -16,6 +16,8 @@ import '../modules/auth/success_join_class/bindings/success_join_class_binding.d
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
 import '../modules/chatbot/bindings/chatbot_binding.dart';
 import '../modules/chatbot/views/chatbot_view.dart';
+import '../modules/exam-teachers/bindings/exam_teachers_binding.dart';
+import '../modules/exam-teachers/views/exam_teachers_view.dart';
 import '../modules/exam/bindings/exam_binding.dart';
 import '../modules/exam/views/exam_view.dart';
 import '../modules/exam_active/bindings/exam_active_binding.dart';
@@ -24,18 +26,20 @@ import '../modules/exam_detail/bindings/exam_detail_binding.dart';
 import '../modules/exam_detail/views/exam_detail_view.dart';
 import '../modules/exam_review/bindings/exam_review_binding.dart';
 import '../modules/exam_review/views/exam_review_view.dart';
+import '../modules/generate-exam/bindings/generate_exam_binding.dart';
+import '../modules/generate-exam/views/generate_exam_view.dart';
 import '../modules/main_layout/bindings/main_layout_binding.dart';
 import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
 import '../modules/module/views/module_view.dart';
 import '../modules/module_detail/bindings/module_detail_binding.dart';
 import '../modules/module_detail/views/module_detail_view.dart';
-import '../modules/module_teachers/module_result_annotation/bindings/module_result_annotation_binding.dart';
-import '../modules/module_teachers/module_result_annotation/views/module_result_annotation_view.dart';
 import '../modules/module_teachers/create_module/bindings/create_module_binding.dart';
 import '../modules/module_teachers/create_module/controllers/create_module_controller.dart';
 import '../modules/module_teachers/create_module/views/create_module_loading_view.dart';
 import '../modules/module_teachers/create_module/views/create_module_view.dart';
+import '../modules/module_teachers/module_result_annotation/bindings/module_result_annotation_binding.dart';
+import '../modules/module_teachers/module_result_annotation/views/module_result_annotation_view.dart';
 import '../modules/module_teachers/module_teacher/bindings/module_teacher_binding.dart';
 import '../modules/module_teachers/module_teacher/views/module_teacher_view.dart';
 import '../modules/note/bindings/note_binding.dart';
@@ -47,13 +51,15 @@ import '../modules/student-dashboard/bindings/student_dashboard_binding.dart';
 import '../modules/student-dashboard/views/student_dashboard_view.dart';
 import '../modules/subject/bindings/subject_binding.dart';
 import '../modules/subject/views/subject_view.dart';
+import '../modules/teacher-dashboard/bindings/teacher_dashboard_binding.dart';
+import '../modules/teacher-dashboard/views/teacher_dashboard_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MAIN_LAYOUT;
+  static const INITIAL = Routes.GENERATE_EXAM;
 
   static final routes = [
     GetPage(
@@ -183,6 +189,21 @@ class AppPages {
       name: _Paths.MODULE_RESULT_ANNOTATION,
       page: () => const ModuleResultAnnotationView(),
       binding: ModuleResultAnnotationBinding(),
+    ),
+    GetPage(
+      name: _Paths.TEACHER_DASHBOARD,
+      page: () => const TeacherDashboardView(),
+      binding: TeacherDashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.GENERATE_EXAM,
+      page: () => const GenerateExamView(),
+      binding: GenerateExamBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXAM_TEACHERS,
+      page: () => const ExamTeachersView(),
+      binding: ExamTeachersBinding(),
     ),
   ];
 }
