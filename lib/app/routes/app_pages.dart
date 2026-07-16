@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/auth/create_class/bindings/create_class_binding.dart';
 import '../modules/auth/create_class/views/create_class_view.dart';
+import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/auth/login/bindings/login_binding.dart';
 import '../modules/auth/login/views/login_view.dart';
 import '../modules/auth/register_account/bindings/register_account_binding.dart';
@@ -12,6 +14,7 @@ import '../modules/auth/success_create_class/bindings/success_create_class_bindi
 import '../modules/auth/success_create_class/views/success_create_class_view.dart';
 import '../modules/auth/success_join_class/bindings/success_join_class_binding.dart';
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
+import '../modules/chatbot/bindings/chatbot_binding.dart';
 import '../modules/chatbot/views/chatbot_view.dart';
 import '../modules/exam/bindings/exam_binding.dart';
 import '../modules/exam/views/exam_view.dart';
@@ -19,8 +22,6 @@ import '../modules/exam_active/bindings/exam_active_binding.dart';
 import '../modules/exam_active/views/exam_active_view.dart';
 import '../modules/exam_detail/bindings/exam_detail_binding.dart';
 import '../modules/exam_detail/views/exam_detail_view.dart';
-import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
-import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/main_layout/bindings/main_layout_binding.dart';
 import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
@@ -42,7 +43,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.FORGOT_PASSWORD;
+  static const INITIAL = Routes.MAIN_LAYOUT;
 
   static final routes = [
     GetPage(
@@ -104,6 +105,13 @@ class AppPages {
           name: _Paths.EXAM,
           page: () => const ExamView(),
           binding: ExamBinding(),
+          children: [
+            GetPage(
+              name: _Paths.CHATBOT,
+              page: () => const ChatbotView(),
+              binding: ChatbotBinding(),
+            ),
+          ],
         ),
       ],
     ),
