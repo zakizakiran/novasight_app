@@ -42,6 +42,7 @@ dependencies:
   fpdart: ^1.2.0
   equatable: 
   flutter_svg: ^2.2.1
+  file_picker: 10.3.8
   flutter_secure_storage: ^10.3.1
   shared_preferences: ^2.5.5
   google_nav_bar: ^5.0.7

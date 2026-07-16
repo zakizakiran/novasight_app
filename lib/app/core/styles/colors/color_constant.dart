@@ -11,6 +11,7 @@ class ColorConstant {
 
   static const Color green = Color(0xFF10B981);
   static const Color greenShadow = Color(0x6610B981);
+  static const Color secondaryLightGreen = Color(0xFFD3F5E3);
   static const Color lightGreen = Color(0xFFE0F9F0);
 
   static const Color darkGrey = Color(0xFF6B7280);

@@ -11,6 +11,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
   final String? Function(String?)? validator;
   final String? title;
   final bool isReadOnly;
+  final int minLines;
   final TextAlign textAlign;
   final TextStyle? textStyle;
   final List<TextInputFormatter> inputFormatters;
@@ -39,6 +40,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
     this.prefixIcon,
     this.isReadOnly = false,
     required this.hint,
+    this.minLines = 1,
     this.isPassword,
     this.enableLinearPassword = false,
     this.inputFormatters = const [],
@@ -93,6 +95,8 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                 spacing: Dimens.spacePadding,
                 children: [
                   TextFormField(
+                    maxLines: widget.minLines,
+                    minLines: widget.minLines,
                     obscureText: _obscureText,
                     validator: widget.validator,
                     controller: widget.controller,
@@ -144,11 +148,11 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                         ),
                       )
                           : null),
-                      prefixIcon: widget.prefixIcon == null ? null : Container(margin: const EdgeInsets.all(Dimens.spacePadding),
+                      prefixIcon: widget.prefixIcon == null ? null : Container(margin: const EdgeInsets.only(left: Dimens.spacePadding, right: Dimens.spaceMediumPadding),
                         child: widget.prefixIcon,),
                       prefixIconConstraints: const BoxConstraints(
                           minWidth: Dimens.iconRegularSize,
-                          minHeight: Dimens.iconRegularSize
+                          minHeight: Dimens.iconRegularSize,
                       ),
                       suffixIconConstraints: const BoxConstraints(
                           minWidth: Dimens.iconRegularSize,

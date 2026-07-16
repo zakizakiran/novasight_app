@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/modules/module_teacher/controllers/module_teacher_controller.dart';
+import 'package:novasight_app/app/routes/app_pages.dart';
 class ModuleTeacherAppbar extends StatelessWidget {
   const ModuleTeacherAppbar({super.key});
 
@@ -21,9 +21,9 @@ class ModuleTeacherAppbar extends StatelessWidget {
         ),
         CommonButtonWidget(
             buttonName: "+ Unggah Modul",
-            boxShadows: [],
+            boxShadows: const [],
             onPressed: (){
-
+              Get.toNamed(Routes.CREATE_MODULE);
             }
         )
       ],

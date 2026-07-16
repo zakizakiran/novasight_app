@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/modules/module_teacher/views/widgets/module_card_widget.dart';
-import 'package:novasight_app/app/modules/module_teacher/views/widgets/module_filter_status_widget.dart';
-import 'package:novasight_app/app/modules/module_teacher/views/widgets/module_search_bar_widget.dart';
-import 'package:novasight_app/app/modules/module_teacher/views/widgets/module_teacher_appbar.dart';
-
-import '../../../core/utils/ui_state.dart';
+import 'package:novasight_app/app/modules/module_teachers/module_teacher/views/widgets/module_card_widget.dart';
+import 'package:novasight_app/app/modules/module_teachers/module_teacher/views/widgets/module_filter_status_widget.dart';
+import 'package:novasight_app/app/modules/module_teachers/module_teacher/views/widgets/module_search_bar_widget.dart';
+import 'package:novasight_app/app/modules/module_teachers/module_teacher/views/widgets/module_teacher_appbar.dart';
+import '../../../../core/utils/ui_state.dart';
 import '../controllers/module_teacher_controller.dart';
 
 class ModuleTeacherView extends GetView<ModuleTeacherController> {
@@ -41,7 +40,7 @@ class ModuleTeacherView extends GetView<ModuleTeacherController> {
                       UiStateSuccess<void>() => ListView.builder(
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, i){
-                            return ModuleCardWidget(module: modules[i]);
+                            return ModuleTeacherCardWidget(module: modules[i]);
                           },
                           itemCount: modules.length
                       ),

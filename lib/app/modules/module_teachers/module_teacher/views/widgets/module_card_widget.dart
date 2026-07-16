@@ -8,13 +8,14 @@ import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/date_helper.dart';
 import 'package:novasight_app/app/core/utils/dialog_helper.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/modules/module_teacher/controllers/module_teacher_controller.dart';
 
-import '../../../../core/Dimens.dart';
+import '../../../../../core/Dimens.dart';
+import '../../controllers/module_teacher_controller.dart';
 
-class ModuleCardWidget extends GetView<ModuleTeacherController> {
+
+class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
   final ModuleTeacherModel module;
-  const ModuleCardWidget({super.key, required this.module});
+  const ModuleTeacherCardWidget({super.key, required this.module});
 
   @override
   Widget build(BuildContext context) {

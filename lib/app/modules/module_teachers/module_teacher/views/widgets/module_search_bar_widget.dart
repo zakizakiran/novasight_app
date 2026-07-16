@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
-import 'package:novasight_app/app/modules/module_teacher/controllers/module_teacher_controller.dart';
+
+import '../../controllers/module_teacher_controller.dart';
 class ModuleSearchBarWidget extends GetView<ModuleTeacherController> {
   const ModuleSearchBarWidget({super.key});
 
@@ -11,7 +12,8 @@ class ModuleSearchBarWidget extends GetView<ModuleTeacherController> {
   Widget build(BuildContext context) {
     return CommonTextFormFieldWidget(
         controller: controller.searchController,
-        hint: "${IconTxt.lens} Cari modul...",
+        prefixIcon: const Text(IconTxt.lens),
+        hint: "Cari modul...",
         onChanged: controller.onChange,
         fillColor: ColorConstant.white,
         borderSideFocused: const BorderSide(

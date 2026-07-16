@@ -8,5 +8,4 @@ class IconTxt {
   static const classIcon = "🏫";
   static const copyIcon = "⎘";
   static const lens = "🔍";
-  static const trash = "🗑";
 }

@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/modules/module_teacher/controllers/module_teacher_controller.dart';
+
+import '../../controllers/module_teacher_controller.dart';
 class ModuleFilterStatusWidget extends GetView<ModuleTeacherController> {
   final ModuleTeacherStatus status;
   const ModuleFilterStatusWidget({super.key, required this.status});

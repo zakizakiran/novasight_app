@@ -65,8 +65,8 @@ class ModuleTeacherModel extends Equatable {
 }
 
 enum ModuleTeacherType {
-  pdf("PDF"),
-  docs("DOCX");
+  pdf("PDF");
+  // docs("DOCX");
 
   final String name;
   const ModuleTeacherType(this.name);
@@ -112,7 +112,7 @@ final List<ModuleTeacherModel> listDummyModuleTeacher = [
   const ModuleTeacherModel(
     id: 2,
     name: "Persamaan Linear",
-    type: ModuleTeacherType.docs,
+    type: ModuleTeacherType.pdf,
     status: ModuleTeacherStatus.draft,
     gradeType: ClassGradeType.classEleven,
     listChunks: [
