@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../../../core/styles/img/img_constant.dart';
 import '../controllers/splash_controller.dart';

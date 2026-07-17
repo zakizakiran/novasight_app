@@ -132,87 +132,76 @@ class ChatbotView extends GetView<ChatbotController> {
       children: [
         _buildHeader(context, isHistory: false),
         Expanded(
-          child: ListView(
-            controller: controller.scrollController,
-            padding: const EdgeInsets.all(20),
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                    'Hari ini',
-                    style: const MainTextTheme().bodyLarge?.copyWith(
-                      color: ColorConstant.textGreyColor,
-                    ),
-                  ),
-                ),
-              ),
-              Obx(
-                () => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: controller.messages.map<Widget>((ChatMessage msg) {
-                    final isAi = msg.sender == 'ai';
-                    return Semantics(
-                      label:
-                          'Pesan dari ${isAi ? 'NovaSight AI' : 'Anda'}: ${msg.message} pada ${msg.time}',
-                      child: ExcludeSemantics(
-                        child: Align(
-                          alignment: isAi
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Column(
-                            crossAxisAlignment: isAi
-                                ? CrossAxisAlignment.start
-                                : CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                margin: EdgeInsets.only(
-                                  bottom: 8,
-                                  right: isAi ? 32 : 0,
-                                  left: isAi ? 0 : 32,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isAi ? ColorConstant.white : ColorConstant.primary,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(16),
-                                    topRight: const Radius.circular(16),
-                                    bottomRight: Radius.circular(isAi ? 16 : 4),
-                                    bottomLeft: Radius.circular(isAi ? 4 : 16),
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: ColorConstant.shadowColor,
-                                      blurRadius: 10,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  msg.message,
-                                  style: const MainTextTheme().bodyLarge?.copyWith(
-                                        color: isAi
-                                            ? ColorConstant.lightInformationColor
-                                            : ColorConstant.white,
-                                        height: 1.5,
-                                      ),
-                                ),
-                              ),
-                              Text(
-                                msg.time,
-                                style: const MainTextTheme().bodyMedium?.copyWith(
-                                      color: ColorConstant.textGreyColor,
-                                    ),
-                              ),
-                            ],
-                          ),
+          child: Obx(
+            () => ListView.builder(
+              controller: controller.scrollController,
+              padding: const EdgeInsets.all(20),
+              itemCount: controller.messages.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Text(
+                        'Hari ini',
+                        style: const MainTextTheme().bodyLarge?.copyWith(
+                          color: ColorConstant.textGreyColor,
                         ),
                       ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
+                    ),
+                  );
+                }
+
+                final msg = controller.messages[index - 1];
+                final isAi = msg.sender == 'ai';
+                return Semantics(
+                  container: true,
+                  label:
+                      'Pesan dari ${isAi ? 'NovaSight AI' : 'Anda'}: ${msg.message}',
+                  child: ExcludeSemantics(
+                    child: Align(
+                      alignment:
+                          isAi ? Alignment.centerLeft : Alignment.centerRight,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        margin: EdgeInsets.only(
+                          bottom: 16,
+                          right: isAi ? 32 : 0,
+                          left: isAi ? 0 : 32,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isAi
+                              ? ColorConstant.white
+                              : ColorConstant.primary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(16),
+                            topRight: const Radius.circular(16),
+                            bottomRight: Radius.circular(isAi ? 16 : 4),
+                            bottomLeft: Radius.circular(isAi ? 4 : 16),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: ColorConstant.shadowColor,
+                              blurRadius: 10,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          msg.message,
+                          style: const MainTextTheme().bodyLarge?.copyWith(
+                                color: isAi
+                                    ? ColorConstant.lightInformationColor
+                                    : ColorConstant.white,
+                                height: 1.5,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
         _buildChatInput(),
