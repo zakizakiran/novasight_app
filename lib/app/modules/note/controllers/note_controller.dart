@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,23 @@ class NoteController extends GetxController {
   final activeInputText = "".obs;
   final isInputActive = false.obs;
   final activeKeyboardTab = "Math".obs;
+
+  final keyboardCategories = [
+    {
+      "name": "Aritmatika Dasar",
+      "keys": ["+", "-", "×", "÷", "=", "(", ")"]
+    },
+    {
+      "name": "Aljabar",
+      "keys": ["x", "y", "z", "a", "b", "^", "√"]
+    },
+    {
+      "name": "Logika",
+      "keys": ["<", ">", "≤", "≥", "≠", "!", "%"]
+    }
+  ];
+
+  final currentCategoryIndex = 0.obs;
 
   final ScrollController scrollController = ScrollController();
 
@@ -121,18 +137,48 @@ class NoteController extends GetxController {
     }
   }
 
+  String getMathSemanticText(String text) {
+    return text
+        .replaceAll('-', ' kurang ')
+        .replaceAll('+', ' tambah ')
+        .replaceAll('×', ' kali ')
+        .replaceAll('÷', ' bagi ')
+        .replaceAll('=', ' sama dengan ')
+        .replaceAll('<', ' lebih kecil dari ')
+        .replaceAll('>', ' lebih besar dari ')
+        .replaceAll('^', ' pangkat ')
+        .replaceAll('√', ' akar ')
+        .replaceAll('!', ' faktorial ')
+        .replaceAll('%', ' persen ')
+        .replaceAll('(', ' kurung buka ')
+        .replaceAll(')', ' kurung tutup ')
+        .replaceAll('?', ' tanda tanya ')
+        .replaceAll('.', ' titik ')
+        .replaceAll(',', ' koma ')
+        .replaceAll('log', ' logaritma ');
+  }
+
   void readAloud() {
-    String textToRead = "Soal: ${question?.questionText ?? ''}. ";
+    String textToRead = "Soal, ${getMathSemanticText(question?.questionText ?? '')}. ";
     if (steps.isNotEmpty) {
       textToRead += "Langkah pengerjaan yang sudah dibuat: ";
       for (int i = 0; i < steps.length; i++) {
-        textToRead += "Langkah ${i + 1}: ${steps[i]}. ";
+        textToRead += "Langkah ${i + 1}, ${getMathSemanticText(steps[i])}. ";
       }
     } else {
       textToRead += "Belum ada langkah pengerjaan yang dibuat.";
     }
     
+    // ignore: deprecated_member_use
     SemanticsService.announce(textToRead, TextDirection.ltr);
+  }
+
+  void swapKeyboardCategory() {
+    currentCategoryIndex.value = (currentCategoryIndex.value + 1) % keyboardCategories.length;
+    String categoryName = keyboardCategories[currentCategoryIndex.value]["name"] as String;
+    
+    // ignore: deprecated_member_use
+    SemanticsService.announce("Keyboard beralih ke kelompok simbol $categoryName", TextDirection.ltr);
   }
 }
 
