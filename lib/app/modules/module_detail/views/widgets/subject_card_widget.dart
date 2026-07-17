@@ -110,8 +110,8 @@ class SubjectCardWidget extends StatelessWidget {
           maintainState: true,
           child: SvgPicture.asset(
             SvgConstant.iconCheck,
-            width: 24,
-            height: 24,
+            width: Dimens.iconMidSize,
+            height: Dimens.iconMidSize,
             colorFilter: const ColorFilter.mode(
               ColorConstant.white,
               BlendMode.srcIn,

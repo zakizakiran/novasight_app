@@ -10,7 +10,9 @@ class CommonButtonWidget extends StatelessWidget {
   final double? rounded;
   final Color? buttonColor;
   final Function() onPressed;
+  final EdgeInsets? padding;
   final TextStyle? textStyle;
+  final Color? textColor;
   final bool isLoading;
   final List<BoxShadow> boxShadows;
   final bool isValid;
@@ -27,6 +29,7 @@ class CommonButtonWidget extends StatelessWidget {
     this.buttonWidth,
     this.border,
     this.child,
+    this.textColor = ColorConstant.white,
     this.isLoading = false,
     this.isValid = true,
     this.boxShadows = const [
@@ -37,6 +40,7 @@ class CommonButtonWidget extends StatelessWidget {
         spreadRadius: 2,
       ),
     ],
+    this.padding,
   });
 
   @override
@@ -56,6 +60,9 @@ class CommonButtonWidget extends StatelessWidget {
             }
           },
           style: ButtonStyle(
+            padding: padding == null
+                ? null
+                : WidgetStatePropertyAll(padding),
             minimumSize: const WidgetStatePropertyAll(Size.zero),
             side: WidgetStatePropertyAll(border),
             elevation: const WidgetStatePropertyAll(0),
@@ -82,7 +89,7 @@ class CommonButtonWidget extends StatelessWidget {
                   buttonName,
                   style:
                   textStyle ?? Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: ColorConstant.white
+                    color: textColor
                   ),
                   textAlign: TextAlign.center,
                 ),

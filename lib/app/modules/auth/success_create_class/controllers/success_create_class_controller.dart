@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
+import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 class SuccessCreateClassController extends GetxController {
@@ -29,7 +30,10 @@ class SuccessCreateClassController extends GetxController {
   }
 
   void onManageClass(){
-    Get.offAllNamed(Routes.SPLASH);
+    Get.offAllNamed(
+        Routes.SPLASH,
+        arguments: UserRoles.guru
+    );
   }
 
   @override

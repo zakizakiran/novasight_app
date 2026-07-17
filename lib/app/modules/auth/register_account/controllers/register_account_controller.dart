@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../../../../core/utils/validate_helper.dart';
@@ -11,6 +12,8 @@ class RegisterAccountController extends GetxController {
   final TextEditingController confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  final Rx<UserRoles> selectedRole = UserRoles.guru.obs;
+
   final Rx<bool> isValid = false.obs;
   final Rx<bool> isValidFullName = false.obs;
   final Rx<bool> isValidEmail = false.obs;
@@ -18,7 +21,9 @@ class RegisterAccountController extends GetxController {
   final Rx<bool> isValidConfirmationPassword = false.obs;
   final Rx<bool> isLoading = false.obs;
 
-  final count = 0.obs;
+  void onSelectedRole(UserRoles role){
+    selectedRole.value = role;
+  }
 
   void onChange(String _){
     isValidEmail.value = ValidateHelper.isEmailValidateBool(emailController.text) && emailController.text.isNotEmpty;
@@ -34,7 +39,8 @@ class RegisterAccountController extends GetxController {
   }
 
   void onRegister(){
-    Get.offNamed(Routes.CREATE_CLASS);
+    final String route = selectedRole.value == UserRoles.guru ? Routes.CREATE_CLASS : Routes.REGISTER_CLASS;
+    Get.offNamed(route);
   }
 
   @override
@@ -45,6 +51,4 @@ class RegisterAccountController extends GetxController {
     confirmPasswordController.dispose();
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

@@ -28,6 +28,7 @@ class CreateClassController extends GetxController {
     }
     selectedCity.value = city;
     schools.value = listSchool.where((s) => s.cityId == city.id).toList();
+    onChange(city.name);
   }
 
   void onSelectSchool(SchoolModel school){

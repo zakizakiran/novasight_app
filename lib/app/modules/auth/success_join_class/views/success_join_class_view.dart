@@ -8,6 +8,7 @@ import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../../../../core/styles/box_shadow_style.dart';
+import '../../../../core/utils/user_roles.dart';
 import '../../widgets/auth_appbar.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../core/Dimens.dart';
@@ -68,7 +69,10 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
                               ],
                             ),
                             onPressed: (){
-                              Get.offAllNamed(Routes.MODULE);
+                              Get.offAllNamed(
+                                  Routes.SPLASH,
+                                  arguments: UserRoles.siswa
+                              );
                             }
                         )
                     )

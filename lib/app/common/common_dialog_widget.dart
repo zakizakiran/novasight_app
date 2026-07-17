@@ -7,6 +7,7 @@ import '../core/styles/colors/color_constant.dart';
 class CommonDialogWidget extends StatelessWidget {
   final String title;
   final String? description;
+  final Color? colorDescription;
   final Widget? icon;
   final Widget? actions;
 
@@ -14,6 +15,7 @@ class CommonDialogWidget extends StatelessWidget {
     super.key,
     required this.title,
     this.description,
+    this.colorDescription = ColorConstant.linearPrimary,
     this.icon,
     this.actions,
   });
@@ -59,7 +61,7 @@ class CommonDialogWidget extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w500,
-                  color: ColorConstant.linearPrimary,
+                  color: colorDescription,
                 ),
               ),
             ],

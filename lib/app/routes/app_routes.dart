@@ -24,6 +24,11 @@ abstract class Routes {
   static const NOTE = _Paths.NOTE;
   static const SUCCESS_CREATE_CLASS = _Paths.SUCCESS_CREATE_CLASS;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const MODULE_TEACHER = _Paths.MODULE_TEACHER;
+  static const CREATE_MODULE = _Paths.CREATE_MODULE;
+  static const CREATE_MODULE_LOADING = _Paths.CREATE_MODULE_LOADING;
+  static const MODULE_RESULT_ANNOTATION = _Paths.MODULE_RESULT_ANNOTATION;
+  static const MODULE_EVALUATION = _Paths.MODULE_EVALUATION;
 }
 
 abstract class _Paths {
@@ -49,4 +54,9 @@ abstract class _Paths {
   static const NOTE = '/note';
   static const SUCCESS_CREATE_CLASS = '/success-create-class';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const MODULE_TEACHER = '/module-teacher';
+  static const CREATE_MODULE = '/create-module';
+  static const CREATE_MODULE_LOADING = '/create-module-loading';
+  static const MODULE_RESULT_ANNOTATION = '/module-result-annotation';
+  static const MODULE_EVALUATION = '/module-evaluation';
 }
