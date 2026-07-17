@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
-
 import '../../../../core/utils/ui_state.dart';
 
 
@@ -18,6 +17,7 @@ class ModuleTeacherController extends GetxController {
       <ModuleTeacherModel>[].obs;
 
   late Worker _searchWorker;
+  late Worker _modulesWorker;
 
   final ModuleTeacherRepository _repository;
 
@@ -50,17 +50,14 @@ class ModuleTeacherController extends GetxController {
     );
   }
 
-
   void onChange(String value) {
     searchQuery.value = value;
   }
-
 
   void onSelectedStatus(ModuleTeacherStatus status) {
     selectedStatus.value = status;
     _filterModules();
   }
-
 
   void _filterModules() {
     final query = searchQuery.value.toLowerCase().trim();
@@ -87,21 +84,26 @@ class ModuleTeacherController extends GetxController {
 
 
   void onDeleteModule(ModuleTeacherModel module) {
+    _repository.onRemoveModule(module);
     Get.back();
+  }
+
+  void onPublishModule(ModuleTeacherModel module){
+    _repository.onPublishModule(module);
   }
 
 
   @override
   void onInit() {
     super.onInit();
-
     onLoad();
-
     _searchWorker = debounce(
       searchQuery,
           (_) => _filterModules(),
       time: const Duration(milliseconds: 400),
     );
+
+    _modulesWorker = ever<List<ModuleTeacherModel>>(modules, (_) => _filterModules());
   }
 
 
@@ -109,6 +111,7 @@ class ModuleTeacherController extends GetxController {
   void onClose() {
     searchController.dispose();
     _searchWorker.dispose();
+    _modulesWorker.dispose();
     super.onClose();
   }
 }

@@ -11,7 +11,7 @@ import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
 import 'package:novasight_app/app/core/utils/validate_helper.dart';
 import 'package:novasight_app/app/common/common_card_widget.dart';
-import 'package:novasight_app/app/modules/auth/login/views/widgets/role_switch_widget.dart';
+import 'package:novasight_app/app/modules/auth/widgets/role_switch_widget.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
@@ -26,7 +26,7 @@ class LoginView extends GetView<LoginController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(icon: IconTxt.eye, title: "NovaSight", description: "Aplikasi Matematika Inklusif",height: appBarHeight,showBack: false,),
+            AuthAppbar(icon: IconTxt.eye, title: "Lydera", description: "Aplikasi Matematika Inklusif",height: appBarHeight,showBack: false,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: Column(

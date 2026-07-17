@@ -11,7 +11,7 @@ class RegisterController extends GetxController {
   final Rx<bool> isLoading = false.obs;
 
   void onChange(String value){
-    isValid.value = ValidateHelper.isNormalValidateBool(value);
+    isValid.value = ValidateHelper.isNormalValidateBool(value) && codeController.text.length > 7;
   }
 
   Future<void> onRegister() async {

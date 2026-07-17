@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 
-import '../../../../../core/utils/user_roles.dart';
+import '../../../core/utils/user_roles.dart';
 
 class RoleSwitchWidget extends StatelessWidget {
   final UserRoles selectedRole;

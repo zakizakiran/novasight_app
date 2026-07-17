@@ -16,10 +16,12 @@ class ColorConstant {
 
   static const Color darkGrey = Color(0xFF6B7280);
   static const Color grey = Color(0xFFE2E4E9);
+  static const Color borderLightBlue = Color(0xFFB2D1FA);
   static const Color borderBlueGrey = Color(0xFFE5E8EC);
   static const Color borderNormalGrey = Color(0xFFE5E5E5);
 
   static const Color white = Color(0xFFFFFFFF);
+  static const Color darkWhite = Color(0xFFF5F6F8);
   static const Color black = Color(0xFF000000);
   static const Color shadowColor = Color.fromARGB(13, 0, 0, 0);
   static const Color shadowAuthColor = Color.fromARGB(20, 0, 0, 0);
@@ -33,6 +35,8 @@ class ColorConstant {
   static const Color yellowColor = Color(0xFFF3C82F);
 
   static const Color redColor = Color(0xFFEF4444);
+  static const Color redColorShadow = Color(0x33EF4444);
+
   static const Color lightRedColor = Color(0xFFFEE6E6);
 
   static const Color informationColor = Color(0xFF1F2937);

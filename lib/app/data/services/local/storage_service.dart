@@ -1,10 +1,30 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/user_roles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class StorageService {
   static const String _PASSWORD_KEY = "passwordKey";
   static const String _ACCESS_TOKEN_KEY = "accessTokenKey";
+  static const String _USER_ROLE_KEY = "roleKey";
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions()
   );
+  late final SharedPreferences _prefs;
+
+  Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+
+  Future<void> writeUserRole(UserRoles value) async {
+    await _prefs.setString(_USER_ROLE_KEY, value.name);
+  }
+
+  UserRoles? getRole() {
+    final value = _prefs.getString(_USER_ROLE_KEY);
+    return UserRoles.values.firstWhereOrNull((e) => e.name == value);
+  }
 
   Future<void> writePassword(String value) async {
     await _storage.write(key: _PASSWORD_KEY, value: value);
@@ -24,6 +44,7 @@ class StorageService {
 
   Future<void> clearAll() async{
     await _storage.deleteAll();
+    await _prefs.clear();
   }
 
   Future<void> clearAccessToken() async {

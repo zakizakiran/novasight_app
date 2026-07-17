@@ -24,6 +24,12 @@ class BoxShadowConstant {
       offset: Offset(0, 8)
   );
 
+  static const redShadowColor = BoxShadow(
+      color: ColorConstant.redColorShadow,
+      blurRadius: 24,
+      offset: Offset(0, 8)
+  );
+
   static const module = BoxShadow(
     color: ColorConstant.shadowColor,
     blurRadius: 4,
