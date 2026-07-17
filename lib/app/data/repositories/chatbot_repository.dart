@@ -26,7 +26,7 @@ class ChatbotRepository {
     return [
       ChatMessage(
         sender: 'ai',
-        message: 'Halo fariz! 👋 Aku NovaSight AI, siap membantu kamu memahami materi matematika. Ada yang ingin kamu tanyakan?',
+        message: 'Halo! 👋 Aku NovaSight AI. Ada materi matematika yang bikin kamu bingung hari ini?',
         time: '09.15',
       ),
     ];
@@ -36,9 +36,23 @@ class ChatbotRepository {
     // Simulate network delay
     await Future.delayed(const Duration(seconds: 1));
     final timeNow = '${DateTime.now().hour.toString().padLeft(2, '0')}.${DateTime.now().minute.toString().padLeft(2, '0')}';
+    
+    String aiResponse = '';
+    final lowerMsg = message.toLowerCase();
+
+    if (lowerMsg.contains('pangkat') || lowerMsg.contains('eksponen')) {
+      aiResponse = 'Gampang kok! Eksponen negatif itu artinya kebalikan. Misalnya 2 pangkat -3, itu sama dengan 1 dibagi 2 pangkat 3 (1/2³). Hasilnya jadi 1/8. Paham kan? 😉';
+    } else if (lowerMsg.contains('pecahan')) {
+      aiResponse = 'Kalau pecahan dipangkatkan negatif, tinggal dibalik aja pecahannya lalu dipangkatkan positif. Misal (2/3)⁻² jadinya (3/2)², yang berarti 9/4.';
+    } else if (lowerMsg.contains('makasih') || lowerMsg.contains('terima kasih') || lowerMsg.contains('paham')) {
+      aiResponse = 'Sama-sama! Jangan ragu buat tanya lagi kalau ada soal yang susah ya. Semangat belajarnya! 🚀';
+    } else {
+      aiResponse = 'Wah, pertanyaan yang bagus! Coba jelaskan lebih detail angka atau soalnya supaya aku bisa bantu hitung ya.';
+    }
+
     return ChatMessage(
       sender: 'ai',
-      message: 'Ini adalah balasan simulasi dari NovaSight AI untuk: "$message"',
+      message: aiResponse,
       time: timeNow,
     );
   }

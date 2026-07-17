@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/constants/app_string_constant.dart';
 import 'package:novasight_app/app/data/models/chat_model.dart';
-import '../../../core/constants/app_string_constant.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../../../core/styles/text_theme.dart';
 import '../controllers/chatbot_controller.dart';
@@ -42,7 +42,7 @@ class ChatbotView extends GetView<ChatbotController> {
         ),
         Expanded(
           child: Obx(
-            () => ListView.separated(
+                () => ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               itemCount: controller.chatHistory.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
@@ -51,7 +51,7 @@ class ChatbotView extends GetView<ChatbotController> {
                 return Semantics(
                   button: true,
                   label:
-                      'Riwayat percakapan: ${item.title}. Ketuk untuk membuka percakapan.',
+                  'Riwayat percakapan: ${item.title}. Ketuk untuk membuka percakapan.',
                   child: ExcludeSemantics(
                     child: GestureDetector(
                       onTap: () => controller.openChat(index),
@@ -99,10 +99,9 @@ class ChatbotView extends GetView<ChatbotController> {
                                   const SizedBox(height: 4),
                                   Text(
                                     item.subtitle,
-                                    style: const MainTextTheme().bodyLarge
-                                        ?.copyWith(
-                                          color: ColorConstant.textGreyColor,
-                                        ),
+                                    style: const MainTextTheme().bodyLarge?.copyWith(
+                                      color: ColorConstant.textGreyColor,
+                                    ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -134,92 +133,76 @@ class ChatbotView extends GetView<ChatbotController> {
       children: [
         _buildHeader(context, isHistory: false),
         Expanded(
-          child: ListView(
-            controller: controller.scrollController,
-            padding: const EdgeInsets.all(20),
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                    'Hari ini',
-                    style: const MainTextTheme().bodyLarge?.copyWith(
-                      color: ColorConstant.textGreyColor,
+          child: Obx(
+                () => ListView.builder(
+              controller: controller.scrollController,
+              padding: const EdgeInsets.all(20),
+              itemCount: controller.messages.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Text(
+                        'Hari ini',
+                        style: const MainTextTheme().bodyLarge?.copyWith(
+                          color: ColorConstant.textGreyColor,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Obx(
-                () => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: controller.messages.map<Widget>((ChatMessage msg) {
-                    final isAi = msg.sender == 'ai';
-                    return Semantics(
-                      label:
-                          'Pesan dari ${isAi ? '${AppStrings.nameApp} AI' : 'Anda'}: ${msg.message} pada ${msg.time}',
-                      child: ExcludeSemantics(
-                        child: Align(
-                          alignment: isAi
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Column(
-                            crossAxisAlignment: isAi
-                                ? CrossAxisAlignment.start
-                                : CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                margin: EdgeInsets.only(
-                                  bottom: 8,
-                                  right: isAi ? 32 : 0,
-                                  left: isAi ? 0 : 32,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isAi
-                                      ? ColorConstant.white
-                                      : ColorConstant.primary,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(16),
-                                    topRight: const Radius.circular(16),
-                                    bottomRight: Radius.circular(isAi ? 16 : 4),
-                                    bottomLeft: Radius.circular(isAi ? 4 : 16),
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: ColorConstant.shadowColor,
-                                      blurRadius: 10,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  msg.message,
-                                  style: const MainTextTheme().bodyLarge
-                                      ?.copyWith(
-                                        color: isAi
-                                            ? ColorConstant
-                                                  .lightInformationColor
-                                            : ColorConstant.white,
-                                        height: 1.5,
-                                      ),
-                                ),
-                              ),
-                              Text(
-                                msg.time,
-                                style: const MainTextTheme().bodyMedium
-                                    ?.copyWith(
-                                      color: ColorConstant.textGreyColor,
-                                    ),
-                              ),
-                            ],
+                  );
+                }
+
+                final msg = controller.messages[index - 1];
+                final isAi = msg.sender == 'ai';
+                return Semantics(
+                  container: true,
+                  label:
+                  'Pesan dari ${isAi ? '${AppStrings.nameApp} AI' : 'Anda'}: ${msg.message}',
+                  child: ExcludeSemantics(
+                    child: Align(
+                      alignment:
+                      isAi ? Alignment.centerLeft : Alignment.centerRight,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        margin: EdgeInsets.only(
+                          bottom: 16,
+                          right: isAi ? 32 : 0,
+                          left: isAi ? 0 : 32,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isAi
+                              ? ColorConstant.white
+                              : ColorConstant.primary,
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(16),
+                            topRight: const Radius.circular(16),
+                            bottomRight: Radius.circular(isAi ? 16 : 4),
+                            bottomLeft: Radius.circular(isAi ? 4 : 16),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: ColorConstant.shadowColor,
+                              blurRadius: 10,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          msg.message,
+                          style: const MainTextTheme().bodyLarge?.copyWith(
+                            color: isAi
+                                ? ColorConstant.lightInformationColor
+                                : ColorConstant.white,
+                            height: 1.5,
                           ),
                         ),
                       ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
         _buildChatInput(),
@@ -241,7 +224,7 @@ class ChatbotView extends GetView<ChatbotController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  AppStrings.nameApp,
+                  '${AppStrings.nameApp} AI',
                   style: const MainTextTheme().titleLarge?.copyWith(
                     color: ColorConstant.white,
                     fontWeight: FontWeight.w700,
@@ -357,22 +340,18 @@ class ChatbotView extends GetView<ChatbotController> {
               label: 'Kirim pesan',
               child: GestureDetector(
                 onTap: controller.sendMessage,
-                child: Obx(
-                  () => Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: controller.hasInput.value
-                          ? ColorConstant.primary
-                          : const Color(0xFFB4C0DA),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      color: ColorConstant.white,
-                      size: 24,
-                    ),
+                child: Obx(() => Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: controller.hasInput.value ? ColorConstant.primary : const Color(0xFFB4C0DA),
+                    shape: BoxShape.circle,
                   ),
-                ),
+                  child: const Icon(
+                    Icons.arrow_forward,
+                    color: ColorConstant.white,
+                    size: 24,
+                  ),
+                )),
               ),
             ),
           ],
