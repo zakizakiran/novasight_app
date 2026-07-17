@@ -19,7 +19,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
       body: Stack(
         children: [
           Container(
-            height: MediaQuery.sizeOf(context).height / 4,
+            height: MediaQuery.sizeOf(context).height / 3.5,
             width: double.infinity,
             decoration: const BoxDecoration(color: ColorConstant.primary),
           ),
@@ -34,40 +34,54 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Selamat pagi 👋',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: ColorConstant.white),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Fariz',
-                            style: Theme.of(context).textTheme.headlineLarge
-                                ?.copyWith(color: ColorConstant.white),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Matematika • Kelas 10 • SLBN A-CITEUREUP',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: ColorConstant.white),
-                          ),
-                        ],
-                      ),
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundColor: ColorConstant.white,
-                        child: const Icon(
-                          Icons.person,
-                          color: ColorConstant.grey,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Selamat pagi 👋',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(
+                                    color: ColorConstant.white.withValues(
+                                      alpha: 0.9,
+                                    ),
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Fariz',
+                              style: Theme.of(context).textTheme.headlineLarge
+                                  ?.copyWith(
+                                    color: ColorConstant.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Matematika • Kelas 10 • SLBN A-CITEUREUP',
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: ColorConstant.white.withValues(
+                                      alpha: 0.9,
+                                    ),
+                                  ),
+                            ),
+                          ],
                         ),
-                        // backgroundImage: AssetImage('assets/avatar.png'), // Use image if available
+                      ),
+                      const SizedBox(width: 16),
+                      const CircleAvatar(
+                        radius: 32,
+                        backgroundColor: ColorConstant.white,
+                        child: Icon(
+                          Icons.person,
+                          size: 40,
+                          color: ColorConstant.primary,
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     children: [
                       Expanded(
@@ -139,11 +153,11 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
 
   Widget _buildInfoCard(BuildContext context, String number, String label) {
     return CommonCardWidget(
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
           color: ColorConstant.shadowColor,
           blurRadius: 10,
-          offset: const Offset(0, 4),
+          offset: Offset(0, 4),
         ),
       ],
       child: Column(
