@@ -112,14 +112,18 @@ class ExamReviewView extends GetView<ExamReviewController> {
         ? 'Jawabanmu Benar!'
         : 'Jawabanmu Kurang Tepat';
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: textColor.withOpacity(0.5)),
-      ),
-      child: Row(
+    return Semantics(
+      container: true,
+      label: 'Status: $text, Nilai ditambah ${question.score}',
+      excludeSemantics: true,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: textColor.withOpacity(0.5)),
+        ),
+        child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
@@ -149,6 +153,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
           ),
         ],
       ),
+      ),
     );
   }
 
@@ -169,15 +174,24 @@ class ExamReviewView extends GetView<ExamReviewController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Soal',
-            style: const MainTextTheme().titleMedium?.copyWith(
-              color: ColorConstant.primary,
-              fontWeight: FontWeight.bold,
+          Semantics(
+            label: 'Soal: ${question.question}',
+            excludeSemantics: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Soal',
+                  style: const MainTextTheme().titleMedium?.copyWith(
+                    color: ColorConstant.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(question.question, style: const MainTextTheme().bodyLarge),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          Text(question.question, style: const MainTextTheme().bodyLarge),
           const SizedBox(height: 20),
           Text(
             'Jawaban',
@@ -210,19 +224,31 @@ class ExamReviewView extends GetView<ExamReviewController> {
 
             final letter = String.fromCharCode(65 + index); // A, B, C, D
 
-            return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: borderColor,
-                  width: isUserAnswer || isCorrectAnswer ? 2 : 1,
+            String semanticsStatus = '';
+            if (isCorrectAnswer && isUserAnswer) {
+              semanticsStatus = 'Jawaban Anda Benar';
+            } else if (isCorrectAnswer) {
+              semanticsStatus = 'Ini adalah jawaban yang benar';
+            } else if (isUserAnswer) {
+              semanticsStatus = 'Jawaban Anda Salah';
+            }
+
+            return Semantics(
+              label: 'Pilihan $letter: ${question.options[index]}. $semanticsStatus',
+              excludeSemantics: true,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: borderColor,
+                    width: isUserAnswer || isCorrectAnswer ? 2 : 1,
+                  ),
                 ),
-              ),
-              child: Row(
-                children: [
+                child: Row(
+                  children: [
                   Container(
                     width: 24,
                     height: 24,
@@ -258,6 +284,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                   ),
                   if (trailingIcon != null) trailingIcon,
                 ],
+              ),
               ),
             );
           }),
@@ -300,22 +327,25 @@ class ExamReviewView extends GetView<ExamReviewController> {
             const SizedBox(height: 12),
             ...List.generate(question.userWorkingSteps!.length, (index) {
               final isErrorStep = index == question.errorStepIndex;
-              return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: isErrorStep ? const Color(0xFFFFEBEE) : Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: isErrorStep
-                        ? const Color(0xFFF44336)
-                        : ColorConstant.primary,
+              return Semantics(
+                label: 'Langkah ${index + 1}: ${question.userWorkingSteps![index]}' + (isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''),
+                excludeSemantics: true,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
                   ),
-                ),
-                child: Row(
+                  decoration: BoxDecoration(
+                    color: isErrorStep ? const Color(0xFFFFEBEE) : Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: isErrorStep
+                          ? const Color(0xFFF44336)
+                          : ColorConstant.primary,
+                    ),
+                  ),
+                  child: Row(
                   children: [
                     Container(
                       width: 24,
@@ -353,6 +383,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                     if (isErrorStep)
                       const Icon(Icons.close, color: Color(0xFFF44336)),
                   ],
+                ),
                 ),
               );
             }),
@@ -427,18 +458,21 @@ class ExamReviewView extends GetView<ExamReviewController> {
             ),
           ] else ...[
             ...List.generate(question.explanationSteps.length, (index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: ColorConstant.primary,
-                      ),
+              return Semantics(
+                label: 'Langkah ${index + 1}: ${question.explanationSteps[index]}',
+                excludeSemantics: true,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 24,
+                        height: 24,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorConstant.primary,
+                        ),
                       alignment: Alignment.center,
                       child: Text(
                         '${index + 1}',
@@ -457,6 +491,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                       ),
                     ),
                   ],
+                ),
                 ),
               );
             }),
