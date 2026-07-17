@@ -23,7 +23,10 @@ class ModuleTeacherView extends GetView<ModuleTeacherController> {
               spacing: Dimens.spacePadding,
               children: [
                 const ModuleTeacherAppbar(),
-                const ModuleSearchBarWidget(),
+                ModuleSearchBarWidget(
+                  onChange: controller.onChange,
+                  controller: controller.searchController,
+                ),
                 _buildRowStatus(),
                 Expanded(
                   child: Obx(() {

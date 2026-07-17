@@ -114,3 +114,11 @@ enum MainBarStudent{
   chatbot,
   profile;
 }
+
+
+enum MainBarTeacher{
+  home,
+  module,
+  exam,
+  profile;
+}

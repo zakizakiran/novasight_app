@@ -1,3 +1,18 @@
 class TextHelper {
-  // static const String percantage()
+  static String spellDigitsId(String value) {
+    const map = {
+      '0': 'nol',
+      '1': 'satu',
+      '2': 'dua',
+      '3': 'tiga',
+      '4': 'empat',
+      '5': 'lima',
+      '6': 'enam',
+      '7': 'tujuh',
+      '8': 'delapan',
+      '9': 'sembilan',
+    };
+
+    return value.split('').map((e) => map[e]!).join(' ');
+  }
 }

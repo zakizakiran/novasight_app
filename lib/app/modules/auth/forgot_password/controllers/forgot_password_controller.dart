@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/utils/validate_helper.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
+import '../../login/controllers/login_controller.dart';
+
 class ForgotPasswordController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -67,11 +69,12 @@ class ForgotPasswordController extends GetxController {
   void onOtpConfirm() {}
 
   void onResetPassword() {
-    Get.offNamed(Routes.LOGIN);
+    Get.back();
   }
 
   @override
   void onClose() {
+    print("LoginController disposed: ${hashCode}");
     passwordController.dispose();
     confirmPasswordController.dispose();
     emailController.dispose();

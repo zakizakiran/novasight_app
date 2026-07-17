@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:novasight_app/app/common/common_gradient_progress_bar_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
@@ -66,6 +70,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
 
 class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
   late bool _obscureText;
+  String? _errorText;
 
   @override
   void initState() {
@@ -87,97 +92,157 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
           ),
 
         ValueListenableBuilder<TextEditingValue>(
-            valueListenable: widget.controller,
-            builder: (context,value,_){
-              final hasText = value.text.isNotEmpty;
-              final color = hasText
-                  ? (widget.successColor ?? widget.enableColor)
-                  : widget.enableColor;
-              return Column(
-                spacing: Dimens.spacePadding,
-                children: [
-                  TextFormField(
+          valueListenable: widget.controller,
+          builder: (context, value, _) {
+            final hasText = value.text.isNotEmpty;
+            final color = hasText
+                ? (widget.successColor ?? widget.enableColor)
+                : widget.enableColor;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  textField: true,
+                  child: TextFormField(
                     maxLength: widget.maxLength,
                     maxLines: widget.minLines,
                     minLines: widget.minLines,
                     obscureText: _obscureText,
-                    validator: widget.validator,
                     controller: widget.controller,
                     readOnly: widget.isReadOnly,
                     onChanged: widget.onChanged,
                     textAlign: widget.textAlign,
-                    style: widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
+                    style:
+                    widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
                     autovalidateMode: widget.autovalidateMode,
+                    inputFormatters: widget.inputFormatters,
+                    validator: (value) {
+                      final error = widget.validator?.call(value);
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!mounted) return;
+
+                        if (_errorText != error) {
+                          setState(() {
+                            _errorText = error;
+                          });
+
+                          if (error != null) {
+                            SemanticsService.sendAnnouncement(
+                              View.of(context),
+                              error,
+                              Directionality.of(context),
+                            );
+                          }
+                        }
+                      });
+                      return error == null ? null : "";
+                    },
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(Dimens.radius),
                         borderSide: widget.borderSideEnable.copyWith(
-                          color: color
+                          color: color,
                         ),
                       ),
-
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(Dimens.radius),
                         borderSide: widget.borderSideFocused.copyWith(
-                          color: widget.focusedColor
+                          color: widget.focusedColor,
                         ),
                       ),
-
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(Dimens.radius),
                         borderSide: widget.borderSideEnable.copyWith(
-                            color: ColorConstant.redColor
+                          color: ColorConstant.redColor,
                         ),
                       ),
-
                       focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(Dimens.radius),
                         borderSide: widget.borderSideFocused.copyWith(
-                            color: ColorConstant.redColor
+                          color: ColorConstant.redColor,
                         ),
                       ),
-                      suffixIcon: widget.suffixIcon ?? (widget.isPassword == true
-                          ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                        icon: Icon(
-                          _obscureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: ColorConstant.informationColor,
+
+                      // Hide Flutter's built-in error text
+                      errorStyle: const TextStyle(
+                        fontSize: 0,
+                        height: 0,
+                      ),
+
+                      suffixIcon: widget.suffixIcon ??
+                          (widget.isPassword == true
+                              ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: ColorConstant.informationColor,
+                            ),
+                          )
+                              : null),
+                      prefixIcon: widget.prefixIcon == null
+                          ? null
+                          : Container(
+                        margin: const EdgeInsets.only(
+                          left: Dimens.spacePadding,
+                          right: Dimens.spaceMediumPadding,
                         ),
-                      )
-                          : null),
-                      prefixIcon: widget.prefixIcon == null ? null : Container(margin: const EdgeInsets.only(left: Dimens.spacePadding, right: Dimens.spaceMediumPadding),
-                        child: widget.prefixIcon,),
+                        child: widget.prefixIcon,
+                      ),
                       prefixIconConstraints: const BoxConstraints(
-                          minWidth: Dimens.iconRegularSize,
-                          minHeight: Dimens.iconRegularSize,
+                        minWidth: Dimens.iconRegularSize,
+                        minHeight: Dimens.iconRegularSize,
                       ),
                       suffixIconConstraints: const BoxConstraints(
-                          minWidth: Dimens.iconRegularSize,
-                          minHeight: Dimens.iconRegularSize,
+                        minWidth: Dimens.iconRegularSize,
+                        minHeight: Dimens.iconRegularSize,
                       ),
                       fillColor: widget.fillColor,
                       hintText: widget.hint,
                       filled: true,
-                      hintStyle: widget.hintStyle ?? Theme.of(context).textTheme.bodyMedium,
+                      hintStyle: widget.hintStyle ??
+                          Theme.of(context).textTheme.bodyMedium,
                       contentPadding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 12.0,
+                        vertical: 8,
+                        horizontal: 12,
                       ),
                     ),
-                    inputFormatters: widget.inputFormatters,
                   ),
-                  if(widget.enableLinearPassword)
-                    passwordLinear(value: value.text)
-                ],
-              );
-            }
-        ),
+                ),
+
+                if (_errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 12,
+                      top: 4,
+                    ),
+                    child: Semantics(
+                      liveRegion: true,
+                      child: Text(
+                        _errorText!,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ColorConstant.redColor,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                if (widget.enableLinearPassword)
+                  Padding(
+                    padding: const EdgeInsets.only(top: Dimens.spacePadding),
+                    child: passwordLinear(value: value.text),
+                  ),
+              ],
+            );
+          },
+        )
       ],
     );
   }
@@ -201,12 +266,15 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
             1.0
           ],
         ),
-        Text(
-            textAlign: TextAlign.start,
-            indicator,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: indicatorColor
-            ),
+        Semantics(
+          label: "Password",
+          child: Text(
+              textAlign: TextAlign.start,
+              indicator,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: indicatorColor
+              ),
+          ),
         )
       ],
     );

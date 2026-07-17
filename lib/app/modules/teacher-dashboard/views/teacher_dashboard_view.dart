@@ -8,6 +8,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/teacher_dashboard_controller.dart';
 
 class TeacherDashboardView extends GetView<TeacherDashboardController> {
+
   const TeacherDashboardView({super.key});
 
   @override
@@ -44,7 +45,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                           context,
                           'Modul Terbaru',
                           'Lihat semua',
-                          onActionTap: () => Get.toNamed(Routes.MODULE_TEACHER),
+                          onActionTap: () => controller.onSeeAllModule(),
                         ),
                         _buildModuleList(context),
                         const SizedBox(height: 24),
@@ -52,6 +53,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                           context,
                           'Soal Ujian Terbaru',
                           'Lihat semua',
+                          onActionTap: () => controller.onSeeAllExam()
                         ),
                         _buildExamList(context),
                         const SizedBox(height: 32),

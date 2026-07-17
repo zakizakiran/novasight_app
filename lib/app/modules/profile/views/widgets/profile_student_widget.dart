@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/text_helper.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../data/model/user_profile_model.dart';
@@ -17,6 +18,7 @@ class ProfileStudentWidget extends StatelessWidget {
           icon: Icons.person,
           title: "NIS/NISN : ",
           description: student.studentId,
+          spellDigits: true,
         ),
         const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
         _buildField(
@@ -41,44 +43,46 @@ class ProfileStudentWidget extends StatelessWidget {
     required String title,
     String? description,
     required BuildContext context,
-    Function()? onTap,
+    bool spellDigits = false,
   }) {
-    return Row(
-      spacing: Dimens.spacePadding,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: Dimens.iconMidSize, color: ColorConstant.darkGrey),
-        Expanded(
-          child: Row(
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ColorConstant.informationColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (description != null)
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ColorConstant.informationColor,
-                    fontWeight: FontWeight.w500,
+    return Semantics(
+      container: true,
+      label:
+      "$title ${spellDigits ? TextHelper.spellDigitsId(description ?? "") : description ?? ""}",
+      child: ExcludeSemantics(
+        child: Row(
+          spacing: Dimens.spacePadding,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              size: Dimens.iconMidSize,
+              color: ColorConstant.darkGrey,
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: ColorConstant.informationColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-            ],
-          ),
+                  if (description != null)
+                    Text(
+                      description,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: ColorConstant.informationColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
-        // GestureDetector(
-        //   onTap: onTap,
-        //   child: const Icon(
-        //     Icons.keyboard_arrow_right_rounded,
-        //     size: Dimens.iconMediumSize,
-        //     color: ColorConstant.grey,
-        //   ),
-        // )
-      ],
+      ),
     );
   }
 }

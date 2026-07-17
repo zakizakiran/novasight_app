@@ -1,3 +1,5 @@
+import 'package:novasight_app/app/core/constants/app_string_constant.dart';
+
 import '../models/chat_model.dart';
 
 class ChatbotRepository {
@@ -26,7 +28,7 @@ class ChatbotRepository {
     return [
       ChatMessage(
         sender: 'ai',
-        message: 'Halo! 👋 Aku NovaSight AI. Ada materi matematika yang bikin kamu bingung hari ini?',
+        message: 'Halo! 👋 Aku ${AppStrings.nameApp} AI. Ada materi matematika yang bikin kamu bingung hari ini?',
         time: '09.15',
       ),
     ];

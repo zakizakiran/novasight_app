@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/main_bar_args.dart';
+import 'package:novasight_app/app/core/utils/user_roles.dart';
 import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../data/model/module_teacher_model.dart';
 import '../../../../data/repositories/module_teacher_repository.dart';
@@ -73,8 +75,9 @@ class ModuleEvaluationController extends GetxController {
     SnackbarHelper.showSuccess(title: "Modul Berhasil Disimpan!", message: "Modul sudah siap diakses");
     _repository.onAddModule(moduleTeacherModel.value);
     Get.offNamedUntil(
-      Routes.MODULE_TEACHER,
-          (route) => route.settings.name == Routes.MODULE_TEACHER,
+      Routes.MAIN_LAYOUT,
+          arguments: const MainBarArgs(role: UserRoles.guru,index: 1),
+          (route) => route.settings.name == Routes.MAIN_LAYOUT,
     );
   }
 }

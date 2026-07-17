@@ -5,16 +5,18 @@ import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
 
 import '../../controllers/module_teacher_controller.dart';
-class ModuleSearchBarWidget extends GetView<ModuleTeacherController> {
-  const ModuleSearchBarWidget({super.key});
+class ModuleSearchBarWidget extends StatelessWidget {
+  final TextEditingController controller;
+  final Function(String) onChange;
+  const ModuleSearchBarWidget({super.key, required this.controller, required this.onChange});
 
   @override
   Widget build(BuildContext context) {
     return CommonTextFormFieldWidget(
-        controller: controller.searchController,
+        controller: controller,
         prefixIcon: const Text(IconTxt.lens),
         hint: "Cari modul...",
-        onChanged: controller.onChange,
+        onChanged: onChange,
         fillColor: ColorConstant.white,
         borderSideFocused: const BorderSide(
           width: 1.5
