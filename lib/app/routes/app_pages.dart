@@ -56,7 +56,6 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MAIN_LAYOUT;
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
@@ -131,9 +130,9 @@ class AppPages {
     ),
     GetPage(name: _Paths.CHATBOT, page: () => const ChatbotView()),
     GetPage(
-        name: _Paths.PROFILE,
-        page: () => const ProfileView(),
-        binding: ProfileBinding()
+      name: _Paths.PROFILE,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
     ),
     GetPage(
       name: _Paths.STUDENT_DASHBOARD,
