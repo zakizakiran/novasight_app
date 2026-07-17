@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
+import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:novasight_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
 
 import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
+import '../../../data/repositories/auth_repository.dart';
 import '../controllers/main_layout_controller.dart';
 
 class MainLayoutBinding extends Bindings {
@@ -16,6 +18,11 @@ class MainLayoutBinding extends Bindings {
     Get.lazyPut<StudentDashboardController>(() => StudentDashboardController());
     Get.lazyPut<ModuleController>(
       () => ModuleController(repository: Get.find<ModuleRepository>()),
+    );
+    Get.lazyPut<ProfileController>(
+          () => ProfileController(
+              repository: Get.find<AuthRepository>()
+          ),
     );
     Get.lazyPut<ExamController>(() => ExamController());
   }

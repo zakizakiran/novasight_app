@@ -9,23 +9,12 @@ class SplashView extends GetView<SplashController> {
   const SplashView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SplashView'),
-        centerTitle: true,
-      ),
+    controller;
+    return const Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            const Text(
-              'SplashView is working',
-              style: TextStyle(fontSize: 20),
-            ),
-            ElevatedButton(
-                onPressed: () {Get.toNamed(Routes.LOGIN);
-                },
-                child: const Text('Login'))
-          ],
+        child: Text(
+          'SplashView is working',
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );
