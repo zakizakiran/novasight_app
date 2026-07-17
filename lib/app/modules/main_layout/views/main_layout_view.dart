@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:novasight_app/app/modules/profile/views/profile_view.dart';
 import 'package:novasight_app/app/modules/student-dashboard/views/student_dashboard_view.dart';
 
 import '../../chatbot/views/chatbot_view.dart';
 import '../../exam/views/exam_view.dart';
 import '../../module/views/module_view.dart';
-import '../../profile/views/profile_view.dart';
 import '../controllers/main_layout_controller.dart';
 
 class MainLayoutView extends GetView<MainLayoutController> {

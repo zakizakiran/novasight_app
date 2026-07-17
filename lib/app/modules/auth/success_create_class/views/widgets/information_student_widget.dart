@@ -29,7 +29,7 @@ class InformationStudentWidget extends StatelessWidget {
             ),
           ),
           Text(
-            '1. Buka aplikasi NovaSight\n2. Pilih "Masuk ke Kelas"\n3. Masukkan kode $code',
+            '1. Buka aplikasi Lydera\n2. Pilih "Masuk ke Kelas"\n3. Masukkan kode $code',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: ColorConstant.textGreyColor
             ),

@@ -9,6 +9,7 @@ import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/icon_txt.dart';
 import '../../../../core/utils/validate_helper.dart';
 import '../../widgets/auth_appbar.dart';
+import '../../widgets/role_switch_widget.dart';
 import '../../widgets/valid_icon_field_widget.dart';
 import '../controllers/register_account_controller.dart';
 
@@ -22,7 +23,7 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(icon: IconTxt.eye, title: "Daftar Akun", description: "Bergabung sebagai Guru NovaSight",height: appBarHeight,),
+            AuthAppbar(icon: IconTxt.eye, title: "Daftar Akun", description: "Bergabung sebagai ke Lydera",height: appBarHeight,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(
@@ -35,6 +36,12 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                   spacing: Dimens.spacePadding,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Obx(
+                          () => RoleSwitchWidget(
+                          selectedRole: controller.selectedRole.value,
+                          onChanged: controller.selectedRole.call
+                      ),
+                    ),
                     Form(
                       key: controller.formKey,
                       child: Column(

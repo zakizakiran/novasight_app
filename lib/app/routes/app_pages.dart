@@ -28,8 +28,19 @@ import '../modules/module/bindings/module_binding.dart';
 import '../modules/module/views/module_view.dart';
 import '../modules/module_detail/bindings/module_detail_binding.dart';
 import '../modules/module_detail/views/module_detail_view.dart';
+import '../modules/module_teachers/create_module/bindings/create_module_binding.dart';
+import '../modules/module_teachers/create_module/controllers/create_module_controller.dart';
+import '../modules/module_teachers/create_module/views/create_module_loading_view.dart';
+import '../modules/module_teachers/create_module/views/create_module_view.dart';
+import '../modules/module_teachers/module_evaluation/bindings/module_evaluation_binding.dart';
+import '../modules/module_teachers/module_evaluation/views/module_evaluation_view.dart';
+import '../modules/module_teachers/module_result_annotation/bindings/module_result_annotation_binding.dart';
+import '../modules/module_teachers/module_result_annotation/views/module_result_annotation_view.dart';
+import '../modules/module_teachers/module_teacher/bindings/module_teacher_binding.dart';
+import '../modules/module_teachers/module_teacher/views/module_teacher_view.dart';
 import '../modules/note/bindings/note_binding.dart';
 import '../modules/note/views/note_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
@@ -42,8 +53,7 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
-
-  static const INITIAL = Routes.MAIN_LAYOUT;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(
@@ -116,7 +126,11 @@ class AppPages {
       ],
     ),
     GetPage(name: _Paths.CHATBOT, page: () => const ChatbotView()),
-    GetPage(name: _Paths.PROFILE, page: () => const ProfileView()),
+    GetPage(
+        name: _Paths.PROFILE,
+        page: () => const ProfileView(),
+        binding: ProfileBinding()
+    ),
     GetPage(
       name: _Paths.STUDENT_DASHBOARD,
       page: () => const StudentDashboardView(),
@@ -146,6 +160,32 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.MODULE_TEACHER,
+      page: () => const ModuleTeacherView(),
+      binding: ModuleTeacherBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_MODULE,
+      page: () => const CreateModuleView(),
+      binding: CreateModuleBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_MODULE_LOADING,
+      page: () => const CreateModuleLoadingView(),
+      binding:
+          BindingsBuilder(() => Get.lazyPut(() => CreateModuleController())),
+    ),
+    GetPage(
+      name: _Paths.MODULE_RESULT_ANNOTATION,
+      page: () => const ModuleResultAnnotationView(),
+      binding: ModuleResultAnnotationBinding(),
+    ),
+    GetPage(
+      name: _Paths.MODULE_EVALUATION,
+      page: () => const ModuleEvaluationView(),
+      binding: ModuleEvaluationBinding(),
     ),
   ];
 }
