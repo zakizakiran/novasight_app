@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
@@ -6,6 +7,8 @@ import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
+import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/dialog_helper.dart';
 
 import 'package:novasight_app/app/routes/app_pages.dart';
 import '../controllers/exam_active_controller.dart';
@@ -39,7 +42,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                   return Column(
                     children: [
                       CommonCardWidget(
-                        boxShadow: [BoxShadowConstant.module],
+                        boxShadow: const [BoxShadowConstant.module],
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -87,7 +90,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                                   ),
                                 ),
                               );
-                            }).toList(),
+                            }),
                           ],
                         ),
                       ),
@@ -245,8 +248,9 @@ class ExamActiveView extends GetView<ExamActiveController> {
       ),
       child: Obx(() {
         final isFirst = controller.currentIndex.value == 0;
-        final isLast =
-            controller.currentIndex.value == controller.questions.length - 1;
+        final isLast = controller.currentIndex.value == controller.questions.length - 1;
+        final bool isAllAnswered = isLast ? controller.isAllAnswered : true;
+        final String title = isLast ? "Selesai" : "Selanjutnya";
 
         return Row(
           children: [
@@ -294,32 +298,45 @@ class ExamActiveView extends GetView<ExamActiveController> {
             const SizedBox(width: Dimens.spaceMediumPadding),
             Expanded(
               child: CommonButtonWidget(
-                buttonName: "Selanjutnya",
-                buttonColor: isLast
-                    ? ColorConstant.grey
-                    : ColorConstant.primary,
-                onPressed: isLast ? () {} : controller.nextQuestion,
+                buttonName: title,
+                buttonColor: isAllAnswered
+                    ? ColorConstant.primary
+                    : ColorConstant.grey,
+                isValid: isAllAnswered,
+                onPressed: isLast ? (){
+                  DialogHelper.show(
+                      icon: _buildQuestionIconDialog(),
+                      title: 'Apakah Kamu Yakin Mengumpulkan Sekarang',
+                      description: "Jawaban yang sudah dikirim tidak bisa diubah",
+                      actions: _buildActionDialog(
+                          onCancel: (){
+                            Get.back();
+                          },
+                          onSend: controller.submitExam
+                      )
+                  );
+                } : controller.nextQuestion,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Selanjutnya",
+                        title,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
-                              color: isLast
-                                  ? ColorConstant.textGreyColor
-                                  : ColorConstant.white,
+                              color: isAllAnswered
+                                  ? ColorConstant.white
+                                  : ColorConstant.textGreyColor,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
                       const SizedBox(width: 8),
                       Icon(
                         Icons.arrow_forward,
-                        color: isLast
-                            ? ColorConstant.textGreyColor
-                            : ColorConstant.white,
+                        color: isAllAnswered
+                            ? ColorConstant.white
+                            : ColorConstant.textGreyColor,
                         size: 20,
                       ),
                     ],
@@ -357,6 +374,40 @@ class ExamActiveView extends GetView<ExamActiveController> {
           ],
         );
       }),
+    );
+  }
+
+  Widget _buildQuestionIconDialog(){
+    return SvgPicture.asset(
+    SvgConstant.iconQuestionMarkIcon,
+    width: Dimens.iconBigSize,
+    height: Dimens.iconBigSize,
+    );
+  }
+
+  Widget _buildActionDialog({
+    required Function() onCancel,
+    required Function() onSend
+}){
+    return Row(
+      children: [
+        Expanded(
+            child:
+            CommonButtonWidget(
+                buttonName: "Batal",
+                buttonColor: ColorConstant.redColor,
+                boxShadows: const [],
+                onPressed: onCancel
+        )),
+        const SizedBox(width: Dimens.innerPadding,),
+        Expanded(
+            child:
+            CommonButtonWidget(
+                buttonName: "Kirim",
+                boxShadows: const [],
+                onPressed: onSend
+            )),
+      ],
     );
   }
 }

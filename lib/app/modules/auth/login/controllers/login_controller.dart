@@ -5,6 +5,9 @@ import 'package:novasight_app/app/core/utils/validate_helper.dart';
 import 'package:novasight_app/app/data/repositories/auth_repository.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
+import '../../../../core/utils/snackbar_helper.dart';
+import '../../../../data/model/user_profile_model.dart';
+
 class LoginController extends GetxController {
   final AuthRepository _repository;
   final emailController = TextEditingController();
@@ -37,6 +40,11 @@ class LoginController extends GetxController {
     await _repository.storageService.writeUserRole(selectedRole.value);
     await _repository.storageService.writePassword(passwordController.text);
     isLoading.value = false;
+    final String name = _repository.storageService.getUserName() ?? (selectedRole.value == UserRoles.siswa ? student.name : teacher.name);
+    SnackbarHelper.showSuccess(
+        title: "Login Berhasil!",
+        message: "Selamat datang, $name 👋"
+    );
     Get.offAllNamed(
         Routes.SPLASH,
       arguments: selectedRole.value

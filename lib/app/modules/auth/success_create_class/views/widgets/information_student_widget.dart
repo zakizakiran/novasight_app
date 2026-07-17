@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+
+import '../../../../../core/constants/app_string_constant.dart';
 class InformationStudentWidget extends StatelessWidget {
   final String code;
   const InformationStudentWidget({super.key, required this.code});
@@ -29,7 +31,7 @@ class InformationStudentWidget extends StatelessWidget {
             ),
           ),
           Text(
-            '1. Buka aplikasi Lydera\n2. Pilih "Masuk ke Kelas"\n3. Masukkan kode $code',
+            '1. Buka aplikasi ${AppStrings.nameApp}\n2. Pilih "Masuk ke Kelas"\n3. Masukkan kode $code',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: ColorConstant.textGreyColor
             ),

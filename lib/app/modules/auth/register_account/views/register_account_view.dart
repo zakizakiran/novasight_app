@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/constants/app_string_constant.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_card_widget.dart';
 import '../../../../common/common_text_form_field_widget.dart';
@@ -23,7 +24,7 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(icon: IconTxt.eye, title: "Daftar Akun", description: "Bergabung sebagai ke Lydera",height: appBarHeight,),
+            AuthAppbar(icon: IconTxt.eye, title: "Daftar Akun", description: "Bergabung sebagai ke ${AppStrings.nameApp}",height: appBarHeight,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(

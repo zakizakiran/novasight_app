@@ -1,4 +1,15 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/dialog_helper.dart';
+import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
+import 'package:novasight_app/app/routes/app_pages.dart';
+
+import '../../../common/common_button_widget.dart';
+import '../../../core/Dimens.dart';
+import '../../../core/styles/colors/color_constant.dart';
+import '../../main_layout/controllers/main_layout_controller.dart';
 
 class ExamOptionModel {
   final String id;
@@ -30,6 +41,8 @@ class ExamActiveController extends GetxController {
   final currentIndex = 0.obs;
 
   final questions = <ExamQuestionModel>[].obs;
+
+  bool get isAllAnswered => questions.every((q) => q.selectedOptionId != null);
 
   @override
   void onInit() {
@@ -119,9 +132,49 @@ class ExamActiveController extends GetxController {
   }
 
   void submitExam() {
-    // Handle submission
-    Get.back(); // Back to detail
-    Get.back(); // Back to list
-    Get.snackbar('Berhasil', 'Ujian telah disubmit');
+    // Nanti ganti woi kalau asli
+    const String examId = "1";
+    Get.back();
+    DialogHelper.show(
+        icon: SvgPicture.asset(
+            SvgConstant.iconInformation,
+          height: Dimens.iconBigSize,
+          width: Dimens.iconBigSize,
+        ),
+        title: "Berhasil Dikirim!",
+        description: "Jawaban Anda telah berhasil disimpan. Silakan pilih untuk melihat hasil evaluasi atau kembali ke menu utama.",
+        actions: Row(
+          children: [
+            Expanded(
+                child:
+                CommonButtonWidget(
+                    buttonName: "Kembali",
+                    boxShadows: const [],
+                    onPressed: (){
+                      SnackbarHelper.showSuccess(title: "Pengerjaan Selesai!", message: "Silahkan review hasil pengerjaan");
+                      Get.offAllNamed(
+                          Routes.MAIN_LAYOUT,
+                        arguments: MainBarStudent.exam.index
+                      );
+                    }
+                )),
+            const SizedBox(width: Dimens.innerPadding,),
+            Expanded(
+                child:
+                CommonButtonWidget(
+                    buttonName: "Kirim",
+                    boxShadows: const [],
+                    onPressed: (){
+                      SnackbarHelper.showSuccess(title: "Pengerjaan Selesai!", message: "Silahkan review hasil pengerjaan");
+                      Get.offNamedUntil(
+                        Routes.EXAM_REVIEW,
+                            arguments: examId,
+                            (route) => route.settings.name == Routes.MAIN_LAYOUT,
+                      );
+                    }
+                )),
+          ],
+        )
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/data/models/chat_model.dart';
+import '../../../core/constants/app_string_constant.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../../../core/styles/text_theme.dart';
 import '../controllers/chatbot_controller.dart';
@@ -155,7 +156,7 @@ class ChatbotView extends GetView<ChatbotController> {
                     final isAi = msg.sender == 'ai';
                     return Semantics(
                       label:
-                          'Pesan dari ${isAi ? 'NovaSight AI' : 'Anda'}: ${msg.message} pada ${msg.time}',
+                          'Pesan dari ${isAi ? '${AppStrings.nameApp} AI' : 'Anda'}: ${msg.message} pada ${msg.time}',
                       child: ExcludeSemantics(
                         child: Align(
                           alignment: isAi
@@ -240,7 +241,7 @@ class ChatbotView extends GetView<ChatbotController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'NovaSight AI',
+                  AppStrings.nameApp,
                   style: const MainTextTheme().titleLarge?.copyWith(
                     color: ColorConstant.white,
                     fontWeight: FontWeight.w700,

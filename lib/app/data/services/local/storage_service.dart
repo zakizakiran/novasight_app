@@ -7,6 +7,7 @@ class StorageService {
   static const String _PASSWORD_KEY = "passwordKey";
   static const String _ACCESS_TOKEN_KEY = "accessTokenKey";
   static const String _USER_ROLE_KEY = "roleKey";
+  static const String _NAME_KEY = "nameKey";
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions()
   );
@@ -16,6 +17,13 @@ class StorageService {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  Future<void> writeUserName(String value) async {
+    await _prefs.setString(_NAME_KEY, value);
+  }
+
+  String? getUserName() {
+    return _prefs.getString(_NAME_KEY);
+  }
 
   Future<void> writeUserRole(UserRoles value) async {
     await _prefs.setString(_USER_ROLE_KEY, value.name);

@@ -15,7 +15,7 @@ class SplashView extends GetView<SplashController> {
       body: Center(
         child: Image.asset(
           ImgConstant.mobileApp,
-          fit: BoxFit.fill,
+          fit: BoxFit.contain,
           width: 200,
           height: 200,
         ),

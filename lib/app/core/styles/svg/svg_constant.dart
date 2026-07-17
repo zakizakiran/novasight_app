@@ -8,5 +8,6 @@ class SvgConstant {
   static const String iconTrashConfirmation = "assets/svg/delete_confirmation_icon.svg";
   static const String iconCloud = "assets/svg/cloud_icon.svg";
   static const String iconProfileDefault = "assets/svg/person.svg";
+  static const String iconQuestionMarkIcon = "assets/svg/question_mark_icon.svg";
 }
 
