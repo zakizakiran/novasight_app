@@ -22,6 +22,8 @@ import '../modules/exam_active/bindings/exam_active_binding.dart';
 import '../modules/exam_active/views/exam_active_view.dart';
 import '../modules/exam_detail/bindings/exam_detail_binding.dart';
 import '../modules/exam_detail/views/exam_detail_view.dart';
+import '../modules/exam_review/bindings/exam_review_binding.dart';
+import '../modules/exam_review/views/exam_review_view.dart';
 import '../modules/main_layout/bindings/main_layout_binding.dart';
 import '../modules/main_layout/views/main_layout_view.dart';
 import '../modules/module/bindings/module_binding.dart';
@@ -53,6 +55,8 @@ part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
+
+  static const INITIAL = Routes.MAIN_LAYOUT;
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
@@ -162,6 +166,11 @@ class AppPages {
       binding: ForgotPasswordBinding(),
     ),
     GetPage(
+      name: _Paths.EXAM_REVIEW,
+      page: () => const ExamReviewView(),
+      binding: ExamReviewBinding(),
+    ),
+    GetPage(
       name: _Paths.MODULE_TEACHER,
       page: () => const ModuleTeacherView(),
       binding: ModuleTeacherBinding(),
@@ -174,8 +183,9 @@ class AppPages {
     GetPage(
       name: _Paths.CREATE_MODULE_LOADING,
       page: () => const CreateModuleLoadingView(),
-      binding:
-          BindingsBuilder(() => Get.lazyPut(() => CreateModuleController())),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => CreateModuleController()),
+      ),
     ),
     GetPage(
       name: _Paths.MODULE_RESULT_ANNOTATION,

@@ -88,6 +88,8 @@ class ChatbotView extends GetView<ChatbotController> {
                                 children: [
                                   Text(
                                     item.title,
+                                    style: const MainTextTheme().titleLarge
+                                        ?.copyWith(
                                     style: const MainTextTheme().titleLarge?.copyWith(
                                           color: ColorConstant.informationColor,
                                           fontWeight: FontWeight.w700,
@@ -350,18 +352,22 @@ class ChatbotView extends GetView<ChatbotController> {
               label: 'Kirim pesan',
               child: GestureDetector(
                 onTap: controller.sendMessage,
-                child: Obx(() => Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: controller.hasInput.value ? ColorConstant.primary : const Color(0xFFB4C0DA),
-                    shape: BoxShape.circle,
+                child: Obx(
+                  () => Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: controller.hasInput.value
+                          ? ColorConstant.primary
+                          : const Color(0xFFB4C0DA),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: ColorConstant.white,
+                      size: 24,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: ColorConstant.white,
-                    size: 24,
-                  ),
-                )),
+                ),
               ),
             ),
           ],
