@@ -13,6 +13,7 @@ class NoteView extends GetView<NoteController> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         if (controller.isInputActive.value) {
@@ -94,10 +95,15 @@ class NoteView extends GetView<NoteController> {
           ),
           const SizedBox(height: Dimens.spaceSmallPadding),
           Semantics(
-            child: Text(
+            label: controller.getMathSemanticText(
               controller.question?.questionText ?? "",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: ColorConstant.textDarkGreyColor,
+            ),
+            child: ExcludeSemantics(
+              child: Text(
+                controller.question?.questionText ?? "",
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: ColorConstant.textDarkGreyColor,
+                ),
               ),
             ),
           ),
@@ -119,23 +125,26 @@ class NoteView extends GetView<NoteController> {
                     borderRadius: BorderRadius.circular(Dimens.radius),
                     border: Border.all(color: ColorConstant.borderBlueGrey),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.record_voice_over,
-                        color: ColorConstant.textDarkGreyColor,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        "Baca Ulang",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: ColorConstant.textPrimaryColor,
-                          fontWeight: FontWeight.bold,
+                  child: ExcludeSemantics(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.record_voice_over,
+                          color: ColorConstant.textDarkGreyColor,
+                          size: 16,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Text(
+                          "Baca Ulang",
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: ColorConstant.textPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -149,21 +158,20 @@ class NoteView extends GetView<NoteController> {
   Widget _buildStepItem(BuildContext context, int index, String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: Dimens.spacePadding),
-      child: Semantics(
-        label: "Langkah ${index + 1}, $text",
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: Dimens.innerBigPadding,
-            horizontal: Dimens.innerMediumPadding,
-          ),
-          decoration: BoxDecoration(
-            color: ColorConstant.white,
-            borderRadius: BorderRadius.circular(Dimens.radius),
-            border: Border.all(color: ColorConstant.borderBlueGrey),
-          ),
-          child: Row(
-            children: [
-              Container(
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: Dimens.innerBigPadding,
+          horizontal: Dimens.innerMediumPadding,
+        ),
+        decoration: BoxDecoration(
+          color: ColorConstant.white,
+          borderRadius: BorderRadius.circular(Dimens.radius),
+          border: Border.all(color: ColorConstant.borderBlueGrey),
+        ),
+        child: Row(
+          children: [
+            ExcludeSemantics(
+              child: Container(
                 width: 28,
                 height: 28,
                 decoration: const BoxDecoration(
@@ -179,36 +187,42 @@ class NoteView extends GetView<NoteController> {
                   ),
                 ),
               ),
-              const SizedBox(width: Dimens.spaceBigPadding),
-              Expanded(
-                child: Text(
-                  text,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: ColorConstant.textDarkGreyColor,
-                  ),
-                ),
-              ),
-              Semantics(
-                button: true,
-                label: "Hapus langkah ${index + 1}",
-                child: GestureDetector(
-                  onTap: () => controller.removeStep(index),
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: ColorConstant.lightRedColor,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      color: ColorConstant.redColor,
-                      size: 20,
+            ),
+            const SizedBox(width: Dimens.spaceBigPadding),
+            Expanded(
+              child: Semantics(
+                label:
+                    "Langkah ${index + 1}, ${controller.getMathSemanticText(text)}",
+                child: ExcludeSemantics(
+                  child: Text(
+                    text,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: ColorConstant.textDarkGreyColor,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Semantics(
+              button: true,
+              label: "Hapus langkah ${index + 1}",
+              child: GestureDetector(
+                onTap: () => controller.removeStep(index),
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: ColorConstant.lightRedColor,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Icon(
+                    Icons.close,
+                    color: ColorConstant.redColor,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -219,7 +233,7 @@ class NoteView extends GetView<NoteController> {
       button: true,
       label: controller.activeInputText.value.isEmpty
           ? "Ketuk untuk input langkah baru"
-          : "Input saat ini: ${controller.activeInputText.value}. Ketuk untuk mengedit.",
+          : "Input saat ini: ${controller.getMathSemanticText(controller.activeInputText.value)}. Ketuk untuk mengedit.",
       child: GestureDetector(
         onTap: controller.activateInput,
         child: Container(
@@ -238,17 +252,21 @@ class NoteView extends GetView<NoteController> {
           ),
           child: Row(
             children: [
-              Icon(Icons.add, color: ColorConstant.primary, size: 20),
+              const ExcludeSemantics(
+                child: Icon(Icons.add, color: ColorConstant.primary, size: 20),
+              ),
               const SizedBox(width: Dimens.spaceMediumPadding),
               Expanded(
-                child: Text(
-                  controller.activeInputText.value.isEmpty
-                      ? "Ketuk untuk input langkah baru..."
-                      : controller.activeInputText.value,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: controller.activeInputText.value.isEmpty
-                        ? ColorConstant.textGreyColor
-                        : ColorConstant.textDarkGreyColor,
+                child: ExcludeSemantics(
+                  child: Text(
+                    controller.activeInputText.value.isEmpty
+                        ? "Ketuk untuk input langkah baru..."
+                        : controller.activeInputText.value,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: controller.activeInputText.value.isEmpty
+                          ? ColorConstant.textGreyColor
+                          : ColorConstant.textDarkGreyColor,
+                    ),
                   ),
                 ),
               ),
@@ -261,64 +279,50 @@ class NoteView extends GetView<NoteController> {
 
   Widget _buildMathKeyboard(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: ColorConstant.white,
         boxShadow: [
           BoxShadow(
             color: ColorConstant.shadowColor,
             blurRadius: 10,
-            offset: const Offset(0, -4),
+            offset: Offset(0, -4),
           ),
         ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Tabs
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ["Math", "Greek", "ABC", "Advanced"].map((tab) {
-              return Semantics(
-                button: true,
-                label: "Tab $tab",
-                selected: controller.activeKeyboardTab.value == tab,
-                child: InkWell(
-                  onTap: () => controller.activeKeyboardTab.value = tab,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      tab,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: controller.activeKeyboardTab.value == tab
-                            ? ColorConstant.primary
-                            : ColorConstant.textGreyColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          const Divider(height: 1, color: ColorConstant.borderBlueGrey),
           // Grid
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
             color: ColorConstant.background,
-            child: Column(
-              children: [
-                _buildKeyboardRow(context, [
-                  "log",
-                  "pangkat",
-                  "akar",
-                  "log basis",
-                ]),
-                _buildKeyboardRow(context, ["7", "8", "9", "⌫"]),
-                _buildKeyboardRow(context, ["4", "5", "6", "×"]),
-                _buildKeyboardRow(context, ["1", "2", "3", "-"]),
-                _buildKeyboardRow(context, [".", "0", "=", "÷"]),
-                _buildKeyboardRow(context, ["+", "-", "(", ")"]),
-              ],
+            child: Obx(
+              () => Column(
+                children: [
+                  _buildKeyboardRow(context, [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "0",
+                  ]),
+                  const SizedBox(height: 8),
+                  _buildKeyboardRow(
+                    context,
+                    controller.keyboardCategories[controller
+                            .currentCategoryIndex
+                            .value]["keys"]
+                        as List<String>,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildKeyboardRow(context, [".", ",", "Swap", "⌫"]),
+                ],
+              ),
             ),
           ),
           // Save Button
@@ -340,46 +344,142 @@ class NoteView extends GetView<NoteController> {
 
   Widget _buildKeyboardRow(BuildContext context, List<String> keys) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: keys.map((key) {
+        String semanticLabel = key;
+        switch (key) {
+          case '+':
+            semanticLabel = 'tambah';
+            break;
+          case '-':
+            semanticLabel = 'kurang';
+            break;
+          case '×':
+            semanticLabel = 'kali';
+            break;
+          case '÷':
+            semanticLabel = 'bagi';
+            break;
+          case '=':
+            semanticLabel = 'sama dengan';
+            break;
+          case '(':
+            semanticLabel = 'kurung buka';
+            break;
+          case ')':
+            semanticLabel = 'kurung tutup';
+            break;
+          case 'log':
+            semanticLabel = 'logaritma';
+            break;
+          case '√':
+            semanticLabel = 'akar';
+            break;
+          case '^':
+            semanticLabel = 'pangkat';
+            break;
+          case '.':
+            semanticLabel = 'titik';
+            break;
+          case ',':
+            semanticLabel = 'koma';
+            break;
+          case '%':
+            semanticLabel = 'persen';
+            break;
+          case '!':
+            semanticLabel = 'faktorial';
+            break;
+          case '<':
+            semanticLabel = 'lebih kecil';
+            break;
+          case '>':
+            semanticLabel = 'lebih besar';
+            break;
+          case '?':
+            semanticLabel = 'tanda tanya';
+            break;
+          case '⌫':
+            semanticLabel = 'hapus';
+            break;
+          case 'Swap':
+            semanticLabel = 'Swap Kategori';
+            break;
+          case '≤':
+            semanticLabel = 'kurang dari sama dengan';
+            break;
+          case '≥':
+            semanticLabel = 'lebih dari sama dengan';
+            break;
+          case '≠':
+            semanticLabel = 'tidak sama dengan';
+            break;
+          case 'x':
+            semanticLabel = 'huruf ex';
+            break;
+          case 'y':
+            semanticLabel = 'huruf ye';
+            break;
+          case 'z':
+            semanticLabel = 'huruf zed';
+            break;
+          case 'a':
+            semanticLabel = 'huruf a';
+            break;
+          case 'b':
+            semanticLabel = 'huruf be';
+            break;
+        }
+
         return Expanded(
+          flex: 1,
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
             child: Semantics(
-              button: true,
-              label: key == "⌫" ? "Hapus karakter terakhir" : "Ketik $key",
-              child: InkWell(
-                onTap: () {
-                  if (key == "⌫") {
-                    controller.removeLastCharacter();
-                  } else {
-                    String text = key;
-                    if (key == "×") text = "×";
-                    if (key == "÷") text = "÷";
-                    controller.addTextToInput(text);
-                  }
-                },
-                child: Container(
-                  height: 40,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: ColorConstant.white,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: ColorConstant.borderBlueGrey),
+              label: semanticLabel,
+              button: key == "Swap" || key == "⌫",
+              child: ExcludeSemantics(
+                child: GestureDetector(
+                  onTap: () {
+                    if (key == "⌫") {
+                      controller.removeLastCharacter();
+                    } else if (key == "Swap") {
+                      controller.swapKeyboardCategory();
+                    } else {
+                      controller.addTextToInput(key);
+                    }
+                  },
+                  child: Container(
+                    height: 48,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: key == "⌫"
+                          ? ColorConstant.lightRedColor
+                          : ColorConstant.white,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: ColorConstant.borderBlueGrey),
+                    ),
+                    child: key == "⌫"
+                        ? const Icon(
+                            Icons.backspace_outlined,
+                            size: 20,
+                            color: ColorConstant.redColor,
+                          )
+                        : key == "Swap"
+                        ? const Icon(
+                            Icons.swap_horiz,
+                            size: 20,
+                            color: ColorConstant.primary,
+                          )
+                        : Text(
+                            key,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: ColorConstant.textDarkGreyColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
                   ),
-                  child: key == "⌫"
-                      ? const Icon(
-                          Icons.backspace_outlined,
-                          size: 20,
-                          color: ColorConstant.textDarkGreyColor,
-                        )
-                      : Text(
-                          key,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                color: ColorConstant.textDarkGreyColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
                 ),
               ),
             ),
