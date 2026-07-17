@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/main_bar_args.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
@@ -15,14 +16,16 @@ class SplashController extends GetxController {
   Future<void> checkRole() async {
     await Future.delayed(const Duration(milliseconds: 1300));
     final role = authRepository.storageService.getRole();
-    debugPrint("INI ROLE : $role");
     final route = switch (role) {
       null => Routes.LOGIN,
       UserRoles.siswa => Routes.MAIN_LAYOUT,
       // Guru
       UserRoles.guru => Routes.MAIN_LAYOUT,
     };
-    Get.offAllNamed(route);
+    Get.offAllNamed(
+        route,
+      arguments: role != null ? MainBarArgs(role: role) : dynamic
+    );
   }
 
   @override

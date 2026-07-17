@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/main_bar_args.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/dialog_helper.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
+import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 import '../../../common/common_button_widget.dart';
@@ -154,7 +156,10 @@ class ExamActiveController extends GetxController {
                       SnackbarHelper.showSuccess(title: "Pengerjaan Selesai!", message: "Silahkan review hasil pengerjaan");
                       Get.offAllNamed(
                           Routes.MAIN_LAYOUT,
-                        arguments: MainBarStudent.exam.index
+                        arguments: MainBarArgs(
+                            role: UserRoles.siswa,
+                            index: MainBarStudent.exam.index
+                        )
                       );
                     }
                 )),

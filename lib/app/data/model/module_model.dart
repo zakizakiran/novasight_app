@@ -68,11 +68,11 @@ Eksponen adalah suatu bentuk perkalian berulang dari suatu bilangan yang sama.
 
 Dalam bentuk umum, eksponen ditulis sebagai:
 
-aⁿ
+a pangkat n
 
 dengan:
-• a = bilangan pokok (basis)
-• n = pangkat
+• a adalah bilangan pokok atau basis.
+• n adalah nilai pangkat.
 
 Artinya, a dikalikan dengan dirinya sendiri sebanyak n kali.
 ''',
@@ -88,8 +88,8 @@ Eksponen digunakan dalam berbagai bidang, seperti:
 • Ilmu fisika dan komputer.
 
 Contoh:
-10⁶ = 1.000.000
-2⁵ = 32
+10 pangkat 6 sama dengan 1.000.000.
+2 pangkat 5 sama dengan 32.
 ''',
     ),
   ],
@@ -106,9 +106,11 @@ SubjectModel subjectModel2 = const SubjectModel(
       subject: '''
 Beberapa sifat dasar eksponen:
 
-• aᵐ × aⁿ = aᵐ⁺ⁿ
-• aᵐ ÷ aⁿ = aᵐ⁻ⁿ
-• (aᵐ)ⁿ = aᵐⁿ
+• a pangkat m dikali a pangkat n sama dengan a pangkat m ditambah n.
+
+• a pangkat m dibagi a pangkat n sama dengan a pangkat m dikurangi n.
+
+• Buka kurung a pangkat m tutup kurung, kemudian dipangkatkan n, sama dengan a pangkat m dikali n.
 ''',
     ),
     SubjectPageModel(
@@ -116,11 +118,17 @@ Beberapa sifat dasar eksponen:
       subject: '''
 Contoh penggunaan:
 
-2³ × 2² = 2⁵ = 32
+2 pangkat 3 dikali 2 pangkat 2 sama dengan 2 pangkat 5.
 
-5⁷ ÷ 5³ = 5⁴ = 625
+Hasil akhirnya adalah 32.
 
-(3²)³ = 3⁶ = 729
+5 pangkat 7 dibagi 5 pangkat 3 sama dengan 5 pangkat 4.
+
+Hasil akhirnya adalah 625.
+
+Buka kurung 3 pangkat 2 tutup kurung dipangkatkan 3 sama dengan 3 pangkat 6.
+
+Hasil akhirnya adalah 729.
 ''',
     ),
   ],
@@ -139,11 +147,11 @@ Logaritma merupakan operasi kebalikan dari eksponen.
 
 Jika:
 
-aⁿ = b
+a pangkat n sama dengan b.
 
 maka dapat ditulis:
 
-logₐ(b) = n
+Log basis a dari b sama dengan n.
 ''',
     ),
     SubjectPageModel(
@@ -151,11 +159,11 @@ logₐ(b) = n
       subject: '''
 Contoh:
 
-2³ = 8
+2 pangkat 3 sama dengan 8.
 
 maka:
 
-log₂(8) = 3
+Log basis 2 dari 8 sama dengan 3.
 
 Artinya, logaritma mencari nilai pangkat dari suatu bilangan.
 ''',
@@ -183,11 +191,13 @@ maka dapat diubah menjadi bentuk logaritma, begitu juga sebaliknya.
       subject: '''
 Contoh:
 
-3⁴ = 81
+3 pangkat 4 sama dengan 81.
 
-⇔
+Bentuk tersebut setara dengan.
 
-log₃(81) = 4
+Log basis 3 dari 81 sama dengan 4.
+
+Artinya, angka 4 adalah pangkat yang harus diberikan kepada angka 3 sehingga menghasilkan 81.
 
 Keduanya menyatakan informasi yang sama dalam bentuk berbeda.
 ''',
@@ -206,11 +216,11 @@ SubjectModel subjectModel5 = const SubjectModel(
       subject: '''
 Beberapa sifat logaritma:
 
-• logₐ(xy) = logₐx + logₐy
+• Log basis a dari x dikali y sama dengan log basis a dari x ditambah log basis a dari y.
 
-• logₐ(x/y) = logₐx − logₐy
+• Log basis a dari x dibagi y sama dengan log basis a dari x dikurangi log basis a dari y.
 
-• logₐ(xⁿ) = n logₐx
+• Log basis a dari x pangkat n sama dengan n dikali log basis a dari x.
 ''',
     ),
     SubjectPageModel(
@@ -218,13 +228,11 @@ Beberapa sifat logaritma:
       subject: '''
 Contoh:
 
-log₂(8 × 4)
+Sama dengan log basis 2 dari 8 ditambah log basis 2 dari 4.
 
-= log₂8 + log₂4
+Sama dengan 3 ditambah 2.
 
-= 3 + 2
-
-= 5
+Hasil akhirnya adalah 5.
 ''',
     ),
   ],
@@ -262,7 +270,7 @@ Anggota himpunan ditulis di dalam kurung kurawal.
 
 Contoh:
 
-A = {1,2,3,4}
+Himpunan A berisi angka 1, 2, 3, dan 4.
 ''',
     ),
     SubjectPageModel(
@@ -270,11 +278,9 @@ A = {1,2,3,4}
       subject: '''
 Contoh himpunan:
 
-• Himpunan huruf vokal
-{a, i, u, e, o}
+• Himpunan huruf vokal terdiri dari huruf A, I, U, E, dan O.
 
-• Himpunan bilangan genap kurang dari 10
-{2,4,6,8}
+• Himpunan bilangan genap kurang dari 10 terdiri dari angka 2, 4, 6, dan 8.
 ''',
     ),
   ],
@@ -302,11 +308,11 @@ Beberapa jenis himpunan:
       subject: '''
 Contoh:
 
-∅ = himpunan kosong
+Himpunan kosong adalah himpunan yang tidak memiliki anggota.
 
-S = himpunan semua siswa kelas X
+Himpunan semesta dapat berupa seluruh siswa kelas sepuluh.
 
-A ⊂ B berarti A merupakan bagian dari B.
+Jika A merupakan himpunan bagian dari B, maka semua anggota A juga terdapat di dalam himpunan B.
 ''',
     ),
   ],
@@ -325,7 +331,7 @@ Irisan adalah anggota yang terdapat pada dua himpunan sekaligus.
 
 Ditulis:
 
-A ∩ B
+A irisan B.
 ''',
     ),
     SubjectPageModel(
@@ -333,11 +339,11 @@ A ∩ B
       subject: '''
 Contoh:
 
-A = {1,2,3,4}
+Himpunan A berisi angka 1, 2, 3, dan 4.
 
-B = {3,4,5}
+Himpunan B berisi angka 3, 4, dan 5.
 
-A ∩ B = {3,4}
+A irisan B menghasilkan himpunan yang berisi angka 3 dan 4.
 ''',
     ),
   ],
@@ -356,7 +362,8 @@ Gabungan merupakan semua anggota dari dua himpunan tanpa pengulangan.
 
 Ditulis:
 
-A ∪ B
+A union B.
+Artinya, semua anggota yang terdapat di himpunan A maupun himpunan B digabung menjadi satu himpunan baru.
 ''',
     ),
     SubjectPageModel(
@@ -364,11 +371,13 @@ A ∪ B
       subject: '''
 Contoh:
 
-A = {1,2,3}
+Himpunan A berisi angka 1, 2, dan 3.
 
-B = {3,4,5}
+Himpunan B berisi angka 3, 4, dan 5.
 
-A ∪ B = {1,2,3,4,5}
+A union B menghasilkan himpunan yang berisi angka 1, 2, 3, 4, dan 5.
+
+Perhatikan bahwa angka 3 hanya ditulis satu kali karena anggota yang sama tidak diulang pada gabungan himpunan.
 ''',
     ),
   ],
@@ -387,7 +396,7 @@ Selisih himpunan adalah anggota suatu himpunan yang tidak dimiliki himpunan lain
 
 Ditulis:
 
-A − B
+A dikurangi B.
 ''',
     ),
     SubjectPageModel(
@@ -395,13 +404,15 @@ A − B
       subject: '''
 Contoh:
 
-A = {1,2,3,4}
+Himpunan A berisi angka 1, 2, 3, dan 4.
 
-B = {3,4,5}
+Himpunan B berisi angka 3, 4, dan 5.
 
-A − B = {1,2}
+A dikurangi B menghasilkan himpunan yang berisi angka 1 dan 2.
 
-B − A = {5}
+Sedangkan B dikurangi A menghasilkan himpunan yang berisi angka 5.
+
+Perhatikan bahwa hasil selisih bergantung pada urutan himpunan yang dikurangi.
 ''',
     ),
   ],

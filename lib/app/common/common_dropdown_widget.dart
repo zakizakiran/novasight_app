@@ -89,25 +89,31 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
                   constraints: const BoxConstraints(
                     maxHeight: 300
                   ),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context, i){
-                        final data = widget.listValue[i];
-                        return InkWell(
-                          onTap: (){
-                            widget.onSelect(data);
-                            setState(() {
-                              _isExpanded = false;
-                            });
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Divider(color: ColorConstant.grey,height: 0.5,),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, i){
+                            final data = widget.listValue[i];
+                            return InkWell(
+                              onTap: (){
+                                widget.onSelect(data);
+                                setState(() {
+                                  _isExpanded = false;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: Dimens.spaceMediumPadding),
+                                child: Text(widget.itemLabel?.call(data) ?? data.toString()),
+                              ),
+                            );
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: Dimens.spaceMediumPadding),
-                            child: Text(widget.itemLabel?.call(data) ?? data.toString()),
-                          ),
-                        );
-                      },
-                      itemCount: widget.listValue.length
+                          itemCount: widget.listValue.length
+                      ),
+                    ],
                   ),
                 )
             ],

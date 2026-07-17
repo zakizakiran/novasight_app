@@ -1,67 +1,128 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:novasight_app/app/modules/profile/views/profile_view.dart';
-import 'package:novasight_app/app/modules/student-dashboard/views/student_dashboard_view.dart';
-
-import '../../chatbot/views/chatbot_view.dart';
-import '../../exam/views/exam_view.dart';
-import '../../module/views/module_view.dart';
+import '../../../core/Dimens.dart';
+import '../../../core/styles/colors/color_constant.dart';
 import '../controllers/main_layout_controller.dart';
+import '../model/bottom_nav_item.dart';
 
 class MainLayoutView extends GetView<MainLayoutController> {
   const MainLayoutView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(
-        () => IndexedStack(
+    return Obx(() {
+      final pages = controller.pages;
+      final items = controller.bottomItems;
+
+      return Scaffold(
+        body: IndexedStack(
           index: controller.currentIndex.value,
-          children: const [
-            StudentDashboardView(),
-            ModuleView(),
-            ExamView(),
-            ChatbotView(),
-            ProfileView(),
-          ],
+          children: pages,
         ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1)),
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-            child: Obx(
-              () => GNav(
-                rippleColor: Colors.grey[300]!,
-                hoverColor: Colors.grey[100]!,
-                gap: 8,
-                activeColor: Colors.blue,
-                iconSize: 24,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 12,
-                ),
-                duration: const Duration(milliseconds: 400),
-                tabBackgroundColor: Colors.blue.withOpacity(0.1),
-                color: Colors.grey[600],
-                tabs: const [
-                  GButton(icon: Icons.grid_view, text: 'Dashboard'),
-                  GButton(icon: Icons.view_agenda_outlined, text: 'Modul'),
-                  GButton(icon: Icons.menu_book_outlined, text: 'Soal Ujian'),
-                  GButton(icon: Icons.chat_bubble_outline, text: 'Chatbot'),
-                  GButton(icon: Icons.person_outline, text: 'Profil'),
-                ],
-                selectedIndex: controller.currentIndex.value,
-                onTabChange: controller.changePage,
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.only(
+            top: Dimens.spacePadding,
+            left: Dimens.spacePadding,
+            right: Dimens.spacePadding,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                color: Colors.black.withOpacity(.1),
               ),
+            ],
+          ),
+          child: SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final itemWidth = constraints.maxWidth / items.length;
+
+                return Stack(
+                  children: [
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      left: controller.currentIndex.value * itemWidth +
+                          (itemWidth - 36) / 2,
+                      top: 0,
+                      child: Container(
+                        width: 36,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: ColorConstant.primary,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        children: items
+                            .mapWithIndex(
+                              (item, i) => Expanded(
+                            child: _bottomBar(
+                              selectedIndex: controller.currentIndex.value,
+                              index: i,
+                              item: item,
+                            ),
+                          ),
+                        ).toList(),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _bottomBar({
+    required int selectedIndex,
+    required int index,
+    required BottomNavItem item,
+  }) {
+    final selected = selectedIndex == index;
+    String label = selected ? "Posisi di" : "";
+    return Semantics(
+      button: true,
+      label: "$label ${item.semanticLabel}",
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: () => controller.changePage(index),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                item.icon,
+                color: selected
+                    ? ColorConstant.primary
+                    : Colors.grey,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                item.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight:
+                  selected ? FontWeight.w800 : FontWeight.w500,
+                  fontSize: 12,
+                  color: selected
+                      ? ColorConstant.primary
+                      : Colors.grey,
+                ),
+              ),
+            ],
           ),
         ),
       ),
