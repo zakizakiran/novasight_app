@@ -18,6 +18,10 @@ class ProfileController extends GetxController {
     Get.offAllNamed(Routes.SPLASH);
   }
 
+  Future<void> onLeaveClass() async {
+
+  }
+
   @override
   void onInit() {
     super.onInit();

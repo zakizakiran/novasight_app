@@ -6,6 +6,7 @@ import '../core/styles/colors/color_constant.dart';
 class CommonTeacherAppbar extends StatelessWidget {
   final String title;
   final Color backgroundColor;
+  final Color textColor;
   final bool? showBack;
   final BoxBorder? border;
   const CommonTeacherAppbar({
@@ -13,7 +14,8 @@ class CommonTeacherAppbar extends StatelessWidget {
     required this.title,
     this.backgroundColor = ColorConstant.background,
     this.showBack,
-    this.border
+    this.border,
+    this.textColor = ColorConstant.informationColor
   });
 
   @override
@@ -22,7 +24,7 @@ class CommonTeacherAppbar extends StatelessWidget {
       final canGoBack = (Get.key.currentState?.canPop() ?? false);
       return Container(
         constraints: BoxConstraints(
-          minHeight: height * 0.1,
+          minHeight: height * 0.13,
         ),
         width: double.infinity,
         padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -58,7 +60,9 @@ class CommonTeacherAppbar extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: textColor
+                  ),
                 ),
                 const SizedBox(height: Dimens.spaceSmallPadding),
               ],
