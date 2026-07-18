@@ -1,4 +1,6 @@
-class GeneratedQuestion {
+import 'package:equatable/equatable.dart';
+
+class GeneratedQuestion extends Equatable {
   String question;
   List<String> options;
   int correctOptionIndex;
@@ -28,4 +30,8 @@ class GeneratedQuestion {
       isExpanded: isExpanded,
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [question,options,correctOptionIndex,justificationSteps,conclusion];
 }

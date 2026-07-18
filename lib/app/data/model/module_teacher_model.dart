@@ -115,7 +115,7 @@ const newestAnnotation = [
 final List<ModuleTeacherModel> listDummyModuleTeacher = [
   const ModuleTeacherModel(
     id: 1,
-    name: "Pengenalan Himpunan",
+    name: "Eksponen dan Logaritma",
     type: ModuleTeacherType.pdf,
     status: ModuleTeacherStatus.publish,
     gradeType: ClassGradeType.classTen,
@@ -144,7 +144,7 @@ final List<ModuleTeacherModel> listDummyModuleTeacher = [
   ),
   const ModuleTeacherModel(
     id: 2,
-    name: "Persamaan Linear",
+    name: "BAB 2 : Persamaan Linear",
     type: ModuleTeacherType.pdf,
     status: ModuleTeacherStatus.draft,
     gradeType: ClassGradeType.classEleven,

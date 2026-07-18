@@ -23,6 +23,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       // showSemanticsDebugger:true,
+      debugShowCheckedModeBanner: false,
       title: "Application",
       initialRoute: AppPages.INITIAL,
       theme: MainTheme.lightTheme,

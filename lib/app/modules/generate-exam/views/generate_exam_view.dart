@@ -49,11 +49,14 @@ class GenerateExamView extends GetView<GenerateExamController> {
             controller.generatedQuestions.isNotEmpty) {
           return buildReviewBottomBar(context, controller);
         }
-        return buildBottomButton(
-          context,
-          controller.currentStep.value == 0 ? 'Selanjutnya' : 'Buat Soal',
-          controller.nextStep,
-        );
+        if(!controller.isGenerating.value){
+          return buildBottomButton(
+            context,
+            controller.currentStep.value == 0 ? 'Selanjutnya' : 'Buat Soal',
+            controller.nextStep,
+          );
+        }
+        return const SizedBox.shrink();
       }),
     );
   }

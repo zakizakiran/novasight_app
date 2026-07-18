@@ -1,24 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/generate_exam_args.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/modules/exam-teachers/controllers/exam_teachers_controller.dart';
+import 'package:novasight_app/app/modules/exam-teachers/models/exam_teacher_model.dart';
+
 import '../../../core/args/main_bar_args.dart';
+import '../../../core/utils/snackbar_helper.dart';
 import '../../../core/utils/user_roles.dart';
-import '../../../data/model/module_model.dart';
 import '../../../routes/app_pages.dart';
-import '../../exam-teachers/models/exam_teacher_model.dart';
-import '../models/generated_question.dart';
+import '../../generate-exam/models/generated_question.dart';
 
-class GenerateExamController extends GetxController {
-  // Stepper State
-  final currentStep = 0.obs;
-
+class ExamTeacherDetailController extends GetxController {
   // Step 1: Pilih Modul
   final selectedModuleId = Rx<int?>(null);
   final selectedModuleName = ''.obs;
-  
-  final availableModules = <ModuleModel>[].obs;
 
   // Step 2: Konfigurasi
   final titleController = TextEditingController();
@@ -26,22 +21,29 @@ class GenerateExamController extends GetxController {
   final answerOptions = 'A-E'.obs;
   final difficulty = 'Sedang'.obs;
 
-  // Step 3: Loading/AI
-  final isGenerating = false.obs;
-  final generatedCount = 0.obs;
-  
   // List Soal yang di-generate
   final generatedQuestions = <GeneratedQuestion>[].obs;
-  
+  late final List<GeneratedQuestion> initialQuestion;
+
   // Backup saat diedit
   final Map<int, GeneratedQuestion> editingCache = {};
-
   final examTeacherController = Get.find<ExamTeachersController>();
+
+  final isTitleReadOnly = true.obs;
+  final title = ''.obs;
+  final Rxn<ExamTeacherModel> selectedExam = Rxn<ExamTeacherModel>();
+  bool get hasChanges => !listEquals(initialQuestion, generatedQuestions) || title.value != selectedExam.value!.title;
+
 
   @override
   void onInit() {
     super.onInit();
-    availableModules.assignAll(listModule);
+    selectedExam.value = Get.arguments as ExamTeacherModel;
+    titleController.addListener(() {
+      title.value = titleController.text;
+    });
+    titleController.text = selectedExam.value!.title;
+    startGeneration();
   }
 
   @override
@@ -59,57 +61,22 @@ class GenerateExamController extends GetxController {
   void setAnswerOptions(String value) => answerOptions.value = value;
   void setDifficulty(String value) => difficulty.value = value;
 
-  void nextStep() {
-    if (currentStep.value == 0) {
-      if (selectedModuleId.value == null) {
-        Get.snackbar('Perhatian', 'Pilih modul sumber terlebih dahulu',
-            snackPosition: SnackPosition.BOTTOM);
-        return;
-      }
-      currentStep.value++;
-    } else if (currentStep.value == 1) {
-      if (titleController.text.trim().isEmpty) {
-        Get.snackbar('Perhatian', 'Masukkan judul ujian',
-            snackPosition: SnackPosition.BOTTOM);
-        return;
-      }
-      currentStep.value++;
-      startGeneration();
-    }
-  }
-
-  void previousStep() {
-    if (currentStep.value > 0) {
-      currentStep.value--;
-    } else {
-      Get.back();
-    }
-  }
-
   Future<void> startGeneration() async {
-    isGenerating.value = true;
-    generatedCount.value = 0;
     generatedQuestions.clear();
     editingCache.clear();
 
-    for (int i = 1; i <= numberOfQuestions.value; i++) {
-      await Future.delayed(const Duration(milliseconds: 800)); // Simulate AI wait
-      generatedCount.value = i;
-    }
-
-    // Populate mock generated questions
     for (int i = 0; i < numberOfQuestions.value; i++) {
       generatedQuestions.add(
         GeneratedQuestion(
           question: 'Manakah yang merupakan definisi himpunan yang paling tepat?',
-          options: [
+          options: const [
             'Kumpulan objek yang tidak terdefinisi',
             'Kumpulan objek yang dapat didefinisikan dengan jelas',
             'Kumpulan angka yang berurutan',
             'Kumpulan huruf dalam alfabet',
           ],
           correctOptionIndex: 1, // 'B'
-          justificationSteps: [
+          justificationSteps: const [
             'Himpunan didefinisikan sebagai kumpulan objek yang dapat diidentifikasi dengan jelas.',
             'Setiap anggota himpunan memiliki kriteria keanggotaan yang pasti — bisa ditentukan apakah suatu objek termasuk atau tidak.',
             'Pilihan B menyebutkan "dapat didefinisikan dengan jelas" yang persis sesuai definisi matematis himpunan.',
@@ -119,10 +86,14 @@ class GenerateExamController extends GetxController {
         ),
       );
     }
-
-    isGenerating.value = false;
+    initialQuestion = generatedQuestions
+        .map((q) => q.clone())
+        .toList();
   }
 
+  void onToggleTitle() {
+    isTitleReadOnly.value = !isTitleReadOnly.value;
+  }
   void toggleExpand(int index) {
     var q = generatedQuestions[index];
     q.isExpanded = !q.isExpanded;
@@ -153,43 +124,16 @@ class GenerateExamController extends GetxController {
     generatedQuestions.refresh();
   }
 
-  void finish(FinishType type) {
-    String title, message;
-    switch (type) {
-      case FinishType.draft:
-        title = "Soal Ujian Berhasil Disimpan";
-        message = "Anda dapat mempublikasikannya kapan saja.";
-        break;
-
-      case FinishType.publish:
-        title = "Soal Ujian Berhasil Dipublikasikan";
-        message = "Siswa sekarang dapat mengakses soal ujian.";
-        break;
-    }
+  void onConfirmChange() {
+    String title = "Soal Ujian Berhasil diubah";
+    String message = "Soal ujian saat ini bersifat draft";
+    selectedExam.value = selectedExam.value?.copyWith(title: titleController.text);
+    examTeacherController.onChangeExamStatus(selectedExam.value!,"Draft");
+    SnackbarHelper.showSuccess(title: title, message: message);
     Get.offNamedUntil(
       Routes.MAIN_LAYOUT,
       arguments: const MainBarArgs(role: UserRoles.guru,index: 2),
           (route) => route.settings.name == Routes.MAIN_LAYOUT,
     );
-    examTeacherController.onAddExam(
-      ExamTeacherModel(
-        id: '3',
-        title: titleController.text,
-        questionCount: 10,
-        type: 'Pilihan Ganda',
-        difficulty: 'Sedang',
-        moduleName: 'BAB 2 : Himpunan',
-        status: type.name,
-      ),
-    );
-    SnackbarHelper.showSuccess(title: title, message: message);
   }
-}
-
-enum FinishType{
-  draft("Draft"),
-  publish("Publish");
-
-  final String name;
-  const FinishType(this.name);
 }

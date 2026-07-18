@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
 import '../../../../core/utils/ui_state.dart';
@@ -89,6 +90,7 @@ class ModuleTeacherController extends GetxController {
   }
 
   void onPublishModule(ModuleTeacherModel module){
+    SnackbarHelper.showSuccess(title: "Modul Berhasil dipublish!", message: "Siswa dapat mengakses modul ini.");
     _repository.onPublishModule(module);
   }
 

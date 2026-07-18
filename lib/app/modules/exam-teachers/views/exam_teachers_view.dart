@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/generate_exam_args.dart';
+import '../../../common/common_button_widget.dart';
 import '../../../core/dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../../../common/common_card_widget.dart';
+import '../../../core/styles/svg/svg_constant.dart';
+import '../../../core/utils/dialog_helper.dart';
 import '../controllers/exam_teachers_controller.dart';
 import '../models/exam_teacher_model.dart';
 import '../../../routes/app_pages.dart';
@@ -119,7 +124,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
 
   Widget _buildExamCard(BuildContext context, ExamTeacherModel exam) {
     bool isPublish = exam.status == 'Publish';
-    
+
     return CommonCardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +197,10 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // TODO: Navigate to detail
+                    Get.toNamed(
+                        Routes.EXAM_TEACHERS_DETAIL,
+                      arguments: exam
+                    );
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: ColorConstant.textDarkGreyColor,
@@ -209,7 +217,9 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.onChangeExamStatus(exam,"Publish");
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstant.primary,
                       foregroundColor: ColorConstant.white,
@@ -224,7 +234,25 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
               ],
               const SizedBox(width: 8),
               TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  DialogHelper.show(
+                    title: "Hapus Soal Ujian",
+                    description: "Anda yakin ingin menghapus soal ujian ini?",
+                    colorDescription: ColorConstant.textDarkGreyColor,
+                    icon: SvgPicture.asset(
+                      SvgConstant.iconTrashConfirmation,
+                      width: Dimens.iconBigSize,
+                      height: Dimens.iconBigSize,
+                    ),
+                    actions: CommonButtonWidget(
+                      buttonName: "Konfirmasi",
+                      buttonColor: ColorConstant.redColor,
+                      onPressed: () {
+                        controller.onDeleteExam(exam);
+                      },
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.delete_outline, size: 16),
                 label: const Text('Hapus'),
                 style: TextButton.styleFrom(

@@ -27,7 +27,7 @@ Widget buildReviewBottomBar(
             child: OutlinedButton(
               onPressed: () {
                 // Simpan Draft
-                controller.finish();
+                controller.finish(FinishType.draft);
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: ColorConstant.primary,
@@ -48,7 +48,7 @@ Widget buildReviewBottomBar(
             child: ElevatedButton(
               onPressed: () {
                 // Simpan & Publish
-                controller.finish();
+                controller.finish(FinishType.publish);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorConstant.primary,

@@ -1,170 +1,62 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
-import '../../../../core/dimens.dart';
-import '../../../../core/styles/colors/color_constant.dart';
-import '../../../../core/utils/snackbar_helper.dart';
-import '../../controllers/generate_exam_controller.dart';
-import '../../models/generated_question.dart';
+import 'package:novasight_app/app/common/common_button_widget.dart';
+import 'package:novasight_app/app/modules/exam-teachers-detail/views/widgets/exam_header_widget.dart';
+import 'package:novasight_app/app/modules/exam-teachers-detail/views/widgets/icon_status.dart';
+import 'package:novasight_app/app/modules/exam-teachers/models/exam_teacher_model.dart';
 
-class Step3View extends GetView<GenerateExamController> {
-  const Step3View({super.key});
+import '../../../core/Dimens.dart';
+import '../../../core/styles/colors/color_constant.dart';
+import '../../../core/utils/snackbar_helper.dart';
+import '../../generate-exam/models/generated_question.dart';
+import '../controllers/exam_teacher_detail_controller.dart';
 
+class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
+  const ExamTeacherDetailView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      // If AI is generating or there are no questions yet
-      if (controller.isGenerating.value ||
-          controller.generatedQuestions.isEmpty) {
-        return _buildLoadingUI(context);
-      }
-      return _buildReviewUI(context);
-    });
-  }
-
-  Widget _buildLoadingUI(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(Dimens.innerPadding),
-      child: Column(
-        children: [
-          const SizedBox(height: 40),
-          // AI Sparkle Circle
-          const OrbitingHeaderWidget(),
-          const SizedBox(height: 32),
-
-          Obx(() {
-            bool isDone = !controller.isGenerating.value;
-            int total = controller.numberOfQuestions.value;
-            int current = controller.generatedCount.value;
-
-            return Column(
-              children: [
-                Text(
-                  isDone ? 'Soal Berhasil Dibuat!' : 'AI Sedang Membuat Soal',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  isDone
-                      ? '$total soal telah selesai dibuat.'
-                      : 'Membuat $total soal pilihan ganda dari ${controller.selectedModuleName.value}...',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ColorConstant.textGreyColor,
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                if (!isDone) ...[
-                  TweenAnimationBuilder<double>(
-                    tween: Tween<double>(begin: 0, end: current / total),
-                    duration: const Duration(milliseconds: 800),
-                    curve: Curves.easeInOut,
-                    builder: (context, value, _) {
-                      return LinearProgressIndicator(
-                        value: value,
-                        backgroundColor: ColorConstant.grey.withValues(
-                          alpha: 0.2,
-                        ),
-                        color: ColorConstant.primary,
-                        minHeight: 8,
-                        borderRadius: BorderRadius.circular(4),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '$current / $total soal dibuat',
-                    style: const TextStyle(
-                      color: ColorConstant.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ],
-            );
-          }),
-
-          const SizedBox(height: 24),
-          Expanded(
-            child: Obx(() {
-              int total = controller.numberOfQuestions.value;
-              int current = controller.generatedCount.value;
-              bool isDone = !controller.isGenerating.value && current == total;
-
-              int groupIndex = ((current == 0 ? 0 : current - 1) ~/ 3);
-              int startIndex = groupIndex * 3 + 1;
-
-              int itemCount = 3;
-              if (startIndex + 2 > total) {
-                itemCount = total - startIndex + 1;
-              }
-
-              return ListView.builder(
-                itemCount: itemCount,
-                itemBuilder: (context, index) {
-                  int itemNumber = startIndex + index;
-                  bool isCompleted = isDone || itemNumber <= current;
-                  bool isActive = !isDone && itemNumber == current + 1;
-
-                  return AnimatedSkeletonRow(
-                    itemNumber: itemNumber,
-                    isActive: isActive,
-                    isCompleted: isCompleted,
-                  );
-                },
-              );
-            }),
-          ),
-        ],
+    return Scaffold(
+      backgroundColor: ColorConstant.background,
+      appBar: AppBar(
+        title: const Text('Detail Soal Ujian'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: (){
+            Get.back();
+          },
+        ),
       ),
+      body: _buildReviewUI(context),
+      bottomNavigationBar: Obx(() {
+        return Padding(
+          padding: const EdgeInsets.all(Dimens.innerPadding),
+          child: CommonButtonWidget(
+              buttonName: "Simpan Perubahan",
+              isValid: controller.hasChanges,
+              onPressed: (){
+                controller.onConfirmChange();
+              }
+          ),
+        );
+      }),
     );
   }
-
   Widget _buildReviewUI(BuildContext context) {
     return Column(
       children: [
-        // Header Info
-        Padding(
-          padding: const EdgeInsets.all(Dimens.innerPadding),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: ColorConstant.white,
-              borderRadius: BorderRadius.circular(Dimens.radius),
-              border: Border.all(
-                color: ColorConstant.grey.withValues(alpha: 0.3),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstant.shadowColor.withValues(alpha: 0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  controller.titleController.text.isNotEmpty
-                      ? controller.titleController.text
-                      : 'UH 1 — Himpunan dan Operasinya',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${controller.numberOfQuestions.value} soal · Pilihan Ganda (${controller.answerOptions.value}) · ${controller.difficulty.value}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: ColorConstant.textGreyColor,
-                  ),
-                ),
-              ],
+        Obx(() => ExamHeaderWidget(
+              isReadOnly: controller.isTitleReadOnly.value,
+              controller: controller.titleController,
+              numberOfQuestions: controller.numberOfQuestions.value,
+              answerOptions: controller.answerOptions.value,
+              difficulty: controller.difficulty.value,
+              trailing: IconStatus(
+              type: controller.isTitleReadOnly.value
+                  ? IconStatusType.edit
+                  : IconStatusType.submit,
+              toggle: controller.onToggleTitle,
             ),
           ),
         ),
@@ -249,39 +141,9 @@ class Step3View extends GetView<GenerateExamController> {
                     ),
                   ),
                   if (!isEditing && isExpanded)
-                    GestureDetector(
-                      onTap: () => controller.toggleEdit(index),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: ColorConstant.yellowColor.withValues(
-                            alpha: 0.2,
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: ColorConstant.yellowColor),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.edit,
-                              size: 14,
-                              color: ColorConstant.yellowColor,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Edit',
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: ColorConstant.yellowColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    IconStatus(
+                        toggle: () => controller.toggleEdit(index),
+                        type: IconStatusType.edit,
                     ),
                   const SizedBox(width: 8),
                   Icon(
@@ -458,243 +320,6 @@ class Step3View extends GetView<GenerateExamController> {
       onCancel: () => controller.toggleEdit(index),
       onSave: (updatedQuestion) =>
           controller.saveChanges(index, updatedQuestion),
-    );
-  }
-}
-
-class PulseCircle extends StatefulWidget {
-  final bool isGenerating;
-  const PulseCircle({required this.isGenerating, super.key});
-
-  @override
-  PulseCircleState createState() => PulseCircleState();
-}
-
-class PulseCircleState extends State<PulseCircle>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    _animation = Tween<double>(
-      begin: 0.9,
-      end: 1.1,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-    if (widget.isGenerating) {
-      _controller.repeat(reverse: true);
-    }
-  }
-
-  @override
-  void didUpdateWidget(PulseCircle oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isGenerating && !oldWidget.isGenerating) {
-      _controller.repeat(reverse: true);
-    } else if (!widget.isGenerating && oldWidget.isGenerating) {
-      _controller.stop();
-      _controller.animateTo(1.0);
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _animation.value,
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: ColorConstant.primary,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstant.primary.withValues(
-                    alpha: 0.4 * _animation.value,
-                  ),
-                  blurRadius: 20 * _animation.value,
-                  spreadRadius: 10 * _animation.value,
-                ),
-              ],
-            ),
-            child: const Center(
-              child: Icon(Icons.auto_awesome, color: Colors.white, size: 48),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class AnimatedSkeletonRow extends StatefulWidget {
-  final bool isActive;
-  final bool isCompleted;
-  final int itemNumber;
-
-  const AnimatedSkeletonRow({
-    required this.itemNumber,
-    required this.isActive,
-    required this.isCompleted,
-    super.key,
-  });
-
-  @override
-  AnimatedSkeletonRowState createState() => AnimatedSkeletonRowState();
-}
-
-class AnimatedSkeletonRowState extends State<AnimatedSkeletonRow>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
-    _fadeAnimation = Tween<double>(
-      begin: 0.3,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-    if (widget.isActive) {
-      _controller.repeat(reverse: true);
-    }
-  }
-
-  @override
-  void didUpdateWidget(AnimatedSkeletonRow oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isActive && !oldWidget.isActive) {
-      _controller.repeat(reverse: true);
-    } else if (!widget.isActive && oldWidget.isActive) {
-      _controller.stop();
-      _controller.animateTo(1.0);
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _fadeAnimation,
-      builder: (context, child) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12.0),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: ColorConstant.white,
-            borderRadius: BorderRadius.circular(Dimens.radius),
-            boxShadow: [
-              BoxShadow(
-                color: ColorConstant.shadowColor.withValues(alpha: 0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: widget.isCompleted
-                      ? ColorConstant.green.withValues(alpha: 0.1)
-                      : ColorConstant.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  '${widget.itemNumber}',
-                  style: TextStyle(
-                    color: widget.isCompleted
-                        ? ColorConstant.green
-                        : ColorConstant.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Opacity(
-                  opacity: widget.isActive
-                      ? _fadeAnimation.value
-                      : (widget.isCompleted ? 1.0 : 0.3),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: ColorConstant.grey.withValues(alpha: 0.5),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        height: 10,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        decoration: BoxDecoration(
-                          color: ColorConstant.grey.withValues(alpha: 0.5),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              if (widget.isCompleted)
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: ColorConstant.green.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.check,
-                    color: ColorConstant.green,
-                    size: 16,
-                  ),
-                )
-              else if (widget.isActive)
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: ColorConstant.primary.withValues(alpha: 0.5),
-                  ),
-                )
-              else
-                const SizedBox(width: 24), // Placeholder for alignment
-            ],
-          ),
-        );
-      },
     );
   }
 }
