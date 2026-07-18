@@ -30,7 +30,6 @@ class Step1View extends GetView<GenerateExamController> {
           const SizedBox(height: 16),
           Expanded(
             child: Obx(() {
-              // Mendaftarkan selectedModuleId sebagai dependency dari Obx ini
               final currentSelectedId = controller.selectedModuleId.value;
 
               return ListView.separated(

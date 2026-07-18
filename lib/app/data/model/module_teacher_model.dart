@@ -115,39 +115,10 @@ const newestAnnotation = [
 final List<ModuleTeacherModel> listDummyModuleTeacher = [
   const ModuleTeacherModel(
     id: 1,
-    name: "Eksponen dan Logaritma",
+    name: "BAB 1 : Eksponen dan Logaritma",
     type: ModuleTeacherType.pdf,
     status: ModuleTeacherStatus.publish,
     gradeType: ClassGradeType.classTen,
-    listChunks: [
-      TextChunk(
-        id: 1,
-        text:
-        "Himpunan adalah kumpulan objek atau anggota yang didefinisikan dengan jelas sehingga dapat ditentukan apakah suatu objek termasuk ke dalam himpunan tersebut atau tidak.",
-        annotation:
-        "Bagian ini menjelaskan pengertian dasar himpunan sebagai konsep utama dalam materi.",
-      ),
-      ImageChunk(
-        id: 2,
-        imagePath: ImgConstant.diagramHimpunan,
-        annotation:
-        "Diagram memperlihatkan hubungan antarhimpunan menggunakan diagram Venn. Diagram ini membantu memahami konsep irisan (∩), gabungan (∪), dan himpunan semesta (U).",
-      ),
-      TextChunk(
-        id: 3,
-        text:
-        "Misalnya, A = {1, 2, 3, 4} dan B = {3, 4, 5, 6}. Irisan kedua himpunan tersebut adalah {3, 4}, sedangkan gabungannya adalah {1, 2, 3, 4, 5, 6}.",
-        annotation:
-        "Contoh ini menunjukkan cara menentukan irisan dan gabungan dua himpunan berdasarkan anggota yang dimiliki.",
-      ),
-    ],
-  ),
-  const ModuleTeacherModel(
-    id: 2,
-    name: "BAB 2 : Persamaan Linear",
-    type: ModuleTeacherType.pdf,
-    status: ModuleTeacherStatus.draft,
-    gradeType: ClassGradeType.classEleven,
     listChunks: [
       TextChunk(
         id: 1,
@@ -172,6 +143,35 @@ final List<ModuleTeacherModel> listDummyModuleTeacher = [
       ),
     ],
   ),
+  const ModuleTeacherModel(
+    id: 2,
+    name: "BAB 2 : Himpunan",
+    type: ModuleTeacherType.pdf,
+    status: ModuleTeacherStatus.draft,
+    gradeType: ClassGradeType.classEleven,
+    listChunks: [
+      TextChunk(
+        id: 1,
+        text:
+        "Himpunan adalah kumpulan objek atau anggota yang didefinisikan dengan jelas sehingga dapat ditentukan apakah suatu objek termasuk ke dalam himpunan tersebut atau tidak.",
+        annotation:
+        "Bagian ini menjelaskan pengertian dasar himpunan sebagai konsep utama dalam materi.",
+      ),
+      ImageChunk(
+        id: 2,
+        imagePath: ImgConstant.diagramHimpunan,
+        annotation:
+        "Diagram memperlihatkan hubungan antarhimpunan menggunakan diagram Venn. Diagram ini membantu memahami konsep irisan (∩), gabungan (∪), dan himpunan semesta (U).",
+      ),
+      TextChunk(
+        id: 3,
+        text:
+        "Misalnya, A = {1, 2, 3, 4} dan B = {3, 4, 5, 6}. Irisan kedua himpunan tersebut adalah {3, 4}, sedangkan gabungannya adalah {1, 2, 3, 4, 5, 6}.",
+        annotation:
+        "Contoh ini menunjukkan cara menentukan irisan dan gabungan dua himpunan berdasarkan anggota yang dimiliki.",
+      ),
+    ],
+  ),
 ];
 
 const ModuleTeacherModel newModuleTeacher = ModuleTeacherModel(
@@ -179,7 +179,7 @@ const ModuleTeacherModel newModuleTeacher = ModuleTeacherModel(
   name: "Sistem Persamaan Linear Dua Variabel (SPLDV)",
   type: ModuleTeacherType.pdf,
   status: ModuleTeacherStatus.draft,
-  gradeType: ClassGradeType.classTen, // Or classEleven depending on your curriculum layout
+  gradeType: ClassGradeType.classTen,
   listChunks: [
     TextChunk(
       id: 1,

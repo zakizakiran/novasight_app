@@ -167,7 +167,7 @@ class ExamActiveController extends GetxController {
             Expanded(
                 child:
                 CommonButtonWidget(
-                    buttonName: "Kirim",
+                    buttonName: "Review",
                     boxShadows: const [],
                     onPressed: (){
                       SnackbarHelper.showSuccess(title: "Pengerjaan Selesai!", message: "Silahkan review hasil pengerjaan");

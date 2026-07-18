@@ -364,13 +364,13 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
           const SizedBox(height: 12),
           _buildModuleItem(
             context,
-            'BAB 1 : Himpunan',
+            'BAB 1 : Eksponen dan Logaritma',
             'Kelas 10 · 7 Jun 2026',
           ),
           const SizedBox(height: 12),
           _buildModuleItem(
             context,
-            'BAB 2 : Persamaan Linear',
+            'BAB 2 : Himpunan',
             'Kelas 11 · 14 Jun 2026',
           ),
         ],
