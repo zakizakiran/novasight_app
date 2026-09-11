@@ -9,6 +9,8 @@ import 'package:novasight_app/app/modules/student-dashboard/controllers/student_
 import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
 import 'package:novasight_app/app/modules/chatbot/controllers/chatbot_controller.dart';
 import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
+import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
+import 'package:novasight_app/app/data/services/local/storage_service.dart';
 import 'package:novasight_app/app/modules/teacher-dashboard/controllers/teacher_dashboard_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../controllers/main_layout_controller.dart';
@@ -21,7 +23,12 @@ class MainLayoutBinding extends Bindings {
     // if we navigate to them, but since we are using IndexedStack we might need them here.
     // However, it's safer to lazyPut them here to ensure they exist when the tab is switched.
     Get.lazyPut<StudentDashboardController>(() => StudentDashboardController());
-    Get.lazyPut<TeacherDashboardController>(() => TeacherDashboardController());
+    Get.lazyPut<TeacherDashboardController>(
+      () => TeacherDashboardController(
+        classroomRepository: Get.find<ClassroomRepository>(),
+        storageService: Get.find<StorageService>(),
+      ),
+    );
     Get.lazyPut<ModuleController>(
       () => ModuleController(repository: Get.find<ModuleRepository>()),
     );

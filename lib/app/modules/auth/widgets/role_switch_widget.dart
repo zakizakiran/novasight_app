@@ -76,22 +76,27 @@ class RoleSwitchWidget extends StatelessWidget {
     final isSelected = role == selectedRole;
 
     return Expanded(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(Dimens.radius),
-        onTap: () => onChanged(role),
-        child: Center(
-          child: AnimatedDefaultTextStyle(
-            duration: _animationDuration,
-            curve: Curves.easeInOut,
-            style: textTheme.titleMedium!.copyWith(
-              fontWeight: isSelected
-                  ? FontWeight.w700
-                  : FontWeight.w500,
-              color: isSelected
-                  ? ColorConstant.white
-                  : ColorConstant.textGreyColor,
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: 'Pilih peran ${role.roleName}${isSelected ? ', terpilih' : ''}',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(Dimens.radius),
+          onTap: () => onChanged(role),
+          child: Center(
+            child: AnimatedDefaultTextStyle(
+              duration: _animationDuration,
+              curve: Curves.easeInOut,
+              style: textTheme.titleMedium!.copyWith(
+                fontWeight: isSelected
+                    ? FontWeight.w700
+                    : FontWeight.w500,
+                color: isSelected
+                    ? ColorConstant.white
+                    : ColorConstant.textGreyColor,
+              ),
+              child: Text(role.roleName),
             ),
-            child: Text(role.roleName),
           ),
         ),
       ),

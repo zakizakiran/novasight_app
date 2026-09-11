@@ -122,18 +122,22 @@ class LoginView extends GetView<LoginController> {
                         ),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.toNamed(
-                                  Routes.FORGOT_PASSWORD,
-                                  arguments: ForgotPasswordStep.email
-                              );
-                            },
-                            child: Text(
-                              "Lupa kata sandi?",
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: ColorConstant.primary,
-                                fontWeight: FontWeight.w700,
+                          child: Semantics(
+                            button: true,
+                            label: "Lupa kata sandi?",
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed(
+                                    Routes.FORGOT_PASSWORD,
+                                    arguments: ForgotPasswordStep.email
+                                );
+                              },
+                              child: Text(
+                                "Lupa kata sandi?",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: ColorConstant.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),

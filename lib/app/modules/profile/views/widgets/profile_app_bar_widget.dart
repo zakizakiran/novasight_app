@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/model/user_profile_model.dart';
 import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
 
 import '../../../../core/styles/svg/svg_constant.dart';
@@ -54,18 +53,32 @@ class ProfileAppBarWidget extends GetView<ProfileController> {
             ),
           ),
           Obx(() {
-            final data = controller.role.value == UserRoles.siswa ? student : teacher;
+            final userEmail = controller.email.value.isNotEmpty
+                ? controller.email.value
+                : (controller.role.value == UserRoles.siswa
+                    ? 'siswa@novasight.id'
+                    : 'guru@novasight.id');
+            final userName = controller.name.value.isNotEmpty
+                ? controller.name.value
+                : (controller.role.value == UserRoles.siswa
+                    ? 'Siswa'
+                    : 'Guru');
             return Column(
               spacing: Dimens.spaceSmallPadding,
               children: [
-                Text(data.name,
+                Text(
+                  userName,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: ColorConstant.white
-                ),),
-                Text(data.email,
+                        color: ColorConstant.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  userEmail,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColorConstant.white
-                  ),),
+                        color: ColorConstant.white.withValues(alpha: 0.9),
+                      ),
+                ),
               ],
             );
           })

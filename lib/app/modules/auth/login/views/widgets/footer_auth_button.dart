@@ -19,13 +19,20 @@ class FooterAuthButton extends StatelessWidget {
             fontWeight: FontWeight.w400
           ),
         ),
-        GestureDetector(
-          onTap: onClick,
-          child: Text(title,style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: ColorConstant.primary
-          ),),
-        )
+        Semantics(
+          button: true,
+          label: '$description $title',
+          child: GestureDetector(
+            onTap: onClick,
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: ColorConstant.primary,
+                  ),
+            ),
+          ),
+        ),
       ],
     );
   }

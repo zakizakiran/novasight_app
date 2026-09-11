@@ -87,18 +87,28 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'Bayu',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: ColorConstant.white,
-                    fontWeight: FontWeight.bold,
+                Obx(
+                  () => Text(
+                    controller.teacherName.value.isNotEmpty
+                        ? controller.teacherName.value
+                        : 'Guru',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: ColorConstant.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'Matematika - SLBN A-CITEUREUP',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: ColorConstant.white.withValues(alpha: 0.9),
+                Obx(
+                  () => Text(
+                    controller.classSubtitle.value.isNotEmpty
+                        ? controller.classSubtitle.value
+                        : (controller.className.value.isNotEmpty
+                            ? controller.className.value
+                            : 'Dashboard Pengajar'),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: ColorConstant.white.withValues(alpha: 0.9),
+                    ),
                   ),
                 ),
               ],
@@ -243,15 +253,22 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                                         ),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(
-                                    'NSG-4821',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineLarge
-                                        ?.copyWith(
-                                          color: ColorConstant.primary,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                  Obx(
+                                    () => Text(
+                                      controller.classCode.value.isNotEmpty
+                                          ? controller.classCode.value
+                                          : (controller.isLoadingClassroom.value
+                                              ? 'Memuat...'
+                                              : 'Belum Ada Kelas'),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge
+                                          ?.copyWith(
+                                            color: ColorConstant.primary,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.5,
+                                          ),
+                                    ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
@@ -276,37 +293,40 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                             borderRadius: BorderRadius.circular(
                               Dimens.radiusMedium,
                             ),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(
-                                Dimens.radiusMedium,
-                              ),
-                              onTap: () {
-                                Clipboard.setData(
-                                  const ClipboardData(text: 'NSG-4821'),
-                                );
-                                Get.snackbar(
-                                  'Berhasil',
-                                  'Kode kelas berhasil disalin',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: ColorConstant.green,
-                                  colorText: ColorConstant.white,
-                                  margin: const EdgeInsets.all(
-                                    Dimens.innerPadding,
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
+                            child: Semantics(
+                              button: true,
+                              label: "Salin Kode Kelas",
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(
+                                  Dimens.radiusMedium,
                                 ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Salin Kode',
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
+                                onTap: () => controller.onCopyClassCode(),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.copy,
+                                        size: 18,
                                         color: ColorConstant.primary,
-                                        fontWeight: FontWeight.bold,
                                       ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Salin Kode Kelas',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge
+                                            ?.copyWith(
+                                              color: ColorConstant.primary,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

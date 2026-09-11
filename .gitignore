@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+flutter-implementation-requirements.md
+openapi_latest.json
+openapi_pretty.json

@@ -1,44 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
+import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 class SuccessCreateClassController extends GetxController {
-  final Rx<String> code = "N S G - 4 8 2 1".obs;
+  final Rx<String> code = "".obs;
   final count = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null && Get.arguments is String) {
+      code.value = Get.arguments as String;
+    } else if (code.value.isEmpty) {
+      code.value = "N S G - 4 8 2 1";
+    }
+  }
 
   Future<void> onCopyCode() async {
     await Clipboard.setData(
       ClipboardData(text: code.value),
     );
 
-    Get.closeAllSnackbars();
-    Get.snackbar(
-      "Berhasil",
-      duration: const Duration(milliseconds: 1300),
-      "Kode kelas berhasil disalin",
-      snackPosition: SnackPosition.BOTTOM,
-      isDismissible: true,
-      margin: const EdgeInsets.only(
-          bottom: Dimens.spacePadding,
-          left: Dimens.spacePadding,
-          right: Dimens.spacePadding
-      )
+    SnackbarHelper.showSuccess(
+      title: "Berhasil",
+      message: "Kode kelas berhasil disalin",
     );
   }
 
-  void onManageClass(){
+  void onManageClass() {
     Get.offAllNamed(
-        Routes.SPLASH,
-        arguments: UserRoles.guru
+      Routes.SPLASH,
+      arguments: UserRoles.guru,
     );
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
   }
 
   @override

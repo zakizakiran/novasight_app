@@ -45,10 +45,14 @@ class CommonButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: buttonWidth,
-      height: buttonHeight,
-      child: Container(
+    return Semantics(
+      button: true,
+      enabled: isValid && !isLoading,
+      label: isLoading ? '$buttonName sedang memproses' : buttonName,
+      child: SizedBox(
+        width: buttonWidth,
+        height: buttonHeight,
+        child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(rounded!),
           boxShadow: boxShadows,
@@ -96,6 +100,7 @@ class CommonButtonWidget extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
