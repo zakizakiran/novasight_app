@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/text_helper.dart';
+import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../data/model/user_profile_model.dart';
@@ -10,6 +12,62 @@ class ProfileStudentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.isRegistered<ProfileController>()
+        ? Get.find<ProfileController>()
+        : null;
+
+    if (controller == null) {
+      return _buildStaticContent(context);
+    }
+
+    return Obx(() {
+      final studentProfile = controller.profile.value?.student;
+      final cachedClass = controller.className.value;
+
+      final nisText = (studentProfile?.nisn != null && studentProfile!.nisn!.isNotEmpty)
+          ? studentProfile.nisn!
+          : ((studentProfile?.nis != null && studentProfile!.nis!.isNotEmpty)
+              ? studentProfile.nis!
+              : student.studentId);
+
+      final schoolOrClass = (cachedClass.isNotEmpty)
+          ? cachedClass
+          : student.nameSchools;
+
+      final gradeText = studentProfile?.grade != null
+          ? 'Kelas ${studentProfile!.grade}'
+          : student.grade.name;
+
+      return Column(
+        spacing: Dimens.spacePadding,
+        children: [
+          _buildField(
+            context: context,
+            icon: Icons.person,
+            title: "NIS/NISN : ",
+            description: nisText,
+            spellDigits: true,
+          ),
+          const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
+          _buildField(
+            context: context,
+            icon: Icons.school,
+            title: "Asal Sekolah / Kelas : ",
+            description: schoolOrClass,
+          ),
+          const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
+          _buildField(
+            context: context,
+            icon: Icons.class_,
+            title: "Tingkat Kelas : ",
+            description: gradeText,
+          ),
+        ],
+      );
+    });
+  }
+
+  Widget _buildStaticContent(BuildContext context) {
     return Column(
       spacing: Dimens.spacePadding,
       children: [

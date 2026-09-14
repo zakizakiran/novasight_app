@@ -1,5 +1,10 @@
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
+import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
+import 'package:novasight_app/app/data/repositories/student_repository.dart';
+import 'package:novasight_app/app/data/services/local/storage_service.dart';
 
 class ExamDummyModel {
   final String id;
@@ -20,7 +25,31 @@ class ExamDummyModel {
 }
 
 class ExamController extends GetxController {
+  final StudentRepository? studentRepository;
+  final ClassroomRepository? classroomRepository;
+  final StorageService? storageService;
+
+  ExamController({
+    StudentRepository? studentRepository,
+    ClassroomRepository? classroomRepository,
+    StorageService? storageService,
+  })  : studentRepository = studentRepository ??
+            (Get.isRegistered<StudentRepository>()
+                ? Get.find<StudentRepository>()
+                : null),
+        classroomRepository = classroomRepository ??
+            (Get.isRegistered<ClassroomRepository>()
+                ? Get.find<ClassroomRepository>()
+                : null),
+        storageService = storageService ??
+            (Get.isRegistered<StorageService>()
+                ? Get.find<StorageService>()
+                : null);
+
   final selectedStatus = ModuleStatus.all.obs;
+  final RxBool isLoading = false.obs;
+  final RxString errorMessage = ''.obs;
+  final RxList<dynamic> apiExams = <dynamic>[].obs;
 
   final exams = <ExamDummyModel>[
     ExamDummyModel(
@@ -67,7 +96,48 @@ class ExamController extends GetxController {
     };
   }
 
+  Future<void> onLoad() async {
+    if (studentRepository == null) return;
+
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+
+      int? classroomId;
+      if (classroomRepository != null) {
+        final list = await classroomRepository!.getClassrooms();
+        if (list.isNotEmpty) {
+          final cachedCode = storageService?.getClassCode();
+          final selected =
+              list.firstWhereOrNull((c) => c.code == cachedCode) ?? list.first;
+          classroomId = selected.id;
+        }
+      }
+
+      if (classroomId != null) {
+        final result = await studentRepository!.getDashboardTasks(
+          classroomId: classroomId,
+          status: StudentTaskStatus.soalUjian,
+        );
+        apiExams.value = result.exams;
+      }
+    } on ApiException catch (e) {
+      errorMessage.value = e.message;
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   void onChangeStatus(ModuleStatus status) {
     selectedStatus.value = status;
+    onLoad();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    onLoad();
   }
 }

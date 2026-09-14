@@ -2,10 +2,12 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/network/dio_client.dart';
 import 'package:novasight_app/app/data/providers/auth_provider.dart';
 import 'package:novasight_app/app/data/providers/classroom_provider.dart';
+import 'package:novasight_app/app/data/providers/student_provider.dart';
 import 'package:novasight_app/app/data/repositories/auth_repository.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
+import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 import 'package:novasight_app/app/data/services/remote/module_service.dart';
 import 'package:novasight_app/app/data/services/remote/module_teacher_service.dart';
@@ -24,6 +26,9 @@ Future<void> initDepedencies() async {
 
   final classroomProvider = ClassroomProvider(dioClient: dioClient);
   Get.put(classroomProvider, permanent: true);
+
+  final studentProvider = StudentProvider(dioClient: dioClient);
+  Get.put(studentProvider, permanent: true);
 
   Get.put(ModuleService(), permanent: true);
   Get.put(ModuleTeacherService(), permanent: true);
@@ -53,6 +58,14 @@ Future<void> initDepedencies() async {
   Get.put<ClassroomRepository>(
     ClassroomRepository(
       classroomProvider: Get.find<ClassroomProvider>(),
+    ),
+    permanent: true,
+  );
+
+  Get.put<StudentRepository>(
+    StudentRepository(
+      studentProvider: Get.find<StudentProvider>(),
+      storageService: Get.find<StorageService>(),
     ),
     permanent: true,
   );

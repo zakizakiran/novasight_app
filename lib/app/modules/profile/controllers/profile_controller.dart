@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/data/models/user_model.dart';
 import 'package:novasight_app/app/data/repositories/auth_repository.dart';
+import 'package:novasight_app/app/data/services/local/storage_service.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 class ProfileController extends GetxController {
@@ -11,6 +12,9 @@ class ProfileController extends GetxController {
   final RxString name = ''.obs;
   final RxBool isLoading = false.obs;
   final Rxn<ProfileResponseModel> profile = Rxn<ProfileResponseModel>();
+  final RxString className = ''.obs;
+
+  StorageService get storageService => _repository.storageService;
 
   ProfileController({required AuthRepository repository})
       : _repository = repository;
@@ -24,6 +28,10 @@ class ProfileController extends GetxController {
     final cachedName = _repository.storageService.getUserName();
     if (cachedName != null && cachedName.isNotEmpty) {
       name.value = cachedName;
+    }
+    final cachedClass = _repository.storageService.getClassName();
+    if (cachedClass != null && cachedClass.isNotEmpty) {
+      className.value = cachedClass;
     }
   }
 

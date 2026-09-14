@@ -16,6 +16,14 @@ class ApiEndpoints {
   static const String cities = '/api/cities';
   static const String schools = '/api/schools';
 
+  // Student endpoints
+  static const String studentDashboard = '/api/students/dashboard';
+  static const String studentDashboardTasks = '/api/students/dashboard/tasks';
+  static const String studentModules = '/api/students/modules';
+  static String studentModuleDetail(int moduleId) => '/api/students/modules/$moduleId';
+  static String studentChapterStart(int chapterId) => '/api/students/chapters/$chapterId/start';
+  static String studentChapterMarkComplete(int chapterId) => '/api/students/chapters/$chapterId/mark-complete';
+
   // Health
   static const String health = '/health';
 }

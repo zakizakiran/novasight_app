@@ -78,6 +78,11 @@ class AppPages {
       binding: StudentDashboardBinding(),
     ),
     GetPage(
+      name: _Paths.STUDENT_DASHBOARD,
+      page: () => const StudentDashboardView(),
+      binding: StudentDashboardBinding(),
+    ),
+    GetPage(
       name: _Paths.LOGIN,
       page: () => const LoginView(),
       binding: LoginBinding(),

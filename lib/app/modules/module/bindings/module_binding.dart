@@ -7,9 +7,7 @@ class ModuleBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ModuleController>(
-      () => ModuleController(
-        repository: Get.find<ModuleRepository>()
-      ),
+      () => ModuleController(),
     );
   }
 }

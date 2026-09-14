@@ -7,9 +7,7 @@ class SubjectBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SubjectController>(
-      () => SubjectController(
-        repository: Get.find<ModuleRepository>()
-      ),
+      () => SubjectController(),
     );
   }
 }

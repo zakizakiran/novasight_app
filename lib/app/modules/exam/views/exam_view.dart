@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
+import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
 import 'package:novasight_app/app/modules/exam/views/widgets/exam_card_widget.dart';
@@ -31,7 +32,25 @@ class ExamView extends GetView<ExamController> {
                   ),
                   Expanded(
                     child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
                       final exams = controller.filteredExams;
+                      if (exams.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'Belum ada soal ujian pada kategori ini.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: ColorConstant.textGreyColor,
+                                ),
+                          ),
+                        );
+                      }
+
                       return ListView.separated(
                         itemCount: exams.length,
                         padding: EdgeInsets.zero,
