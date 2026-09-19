@@ -1,6 +1,7 @@
 import 'package:novasight_app/app/data/models/block_regenerate_model.dart';
 import 'package:novasight_app/app/data/models/chapter_create_response_model.dart';
 import 'package:novasight_app/app/data/models/chapter_job_stream_model.dart';
+import 'package:novasight_app/app/data/models/cp_model.dart';
 import 'package:novasight_app/app/data/models/fase_model.dart';
 import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
@@ -121,6 +122,12 @@ class TeacherRepository {
   /// Get list of fases for teacher
   Future<List<FaseModel>> getFases() async {
     final response = await teacherProvider.getFases();
+    return response.data;
+  }
+
+  /// Get list of cp for teacher
+  Future<List<CpModel>> getCpByFaseId(int faseId) async {
+    final response = await teacherProvider.getCpByFaseId(faseId);
     return response.data;
   }
 

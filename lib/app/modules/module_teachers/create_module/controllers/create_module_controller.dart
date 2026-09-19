@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/data/models/cp_model.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:novasight_app/app/core/args/main_bar_args.dart';
@@ -140,6 +141,12 @@ class CreateModuleController extends GetxController {
   final Rxn<FaseModel> selectedFase = Rxn<FaseModel>();
   final RxBool isLoadingFase = false.obs;
 
+  // Fase states according to API documentation (/api/cp)
+  final RxList<CpModel> listCp = <CpModel>[].obs;
+  final Rxn<CpModel> selectedCp = Rxn<CpModel>();
+  final RxBool isLoadingCp = false.obs;
+
+
   // Deprecated/fallback grade states
   final List<ClassGradeType> listClass = ClassGradeType.values;
   final Rxn<ClassGradeType> selectedGrade = Rxn<ClassGradeType>();
@@ -170,6 +177,11 @@ class CreateModuleController extends GetxController {
   void onSelectFase(FaseModel fase) {
     selectedFase.value = fase;
     onChange(fase.displayName);
+  }
+
+  void onSelectCp(CpModel cp) {
+    selectedCp.value = cp;
+    onChange(cp.domain);
   }
 
   void onSelectGrade(ClassGradeType type) {
@@ -234,6 +246,8 @@ class CreateModuleController extends GetxController {
         );
       }
 
+      await fetchCp(selectedFase.value?.id ?? 1);
+
       // Pre-fill chapter title suggestion
       chapterTitleController.text = "BAB 1 : $title";
       chapterNumberController.text = "1";
@@ -264,7 +278,8 @@ class CreateModuleController extends GetxController {
     required List<int> originalBytes,
     required int startPage,
     required int endPage,
-  }) {
+  })
+  {
     final PdfDocument inputDoc = PdfDocument(inputBytes: originalBytes);
     final PdfDocument outputDoc = PdfDocument();
 
@@ -299,6 +314,14 @@ class CreateModuleController extends GetxController {
       SnackbarHelper.showError(
         title: "File Tidak Ada",
         message: "File PDF modul belum dipilih.",
+      );
+      return;
+    }
+
+    if (selectedCp.value?.id == null) {
+      SnackbarHelper.showError(
+        title: "Capaian Pembelajaran Tidak Ada",
+        message: "Capaian pembelajaran belum dipilih.",
       );
       return;
     }
@@ -350,7 +373,7 @@ class CreateModuleController extends GetxController {
       // Resolves cp_id matching the module's fase (Fase E -> cp_id 1)
       final int faseId =
           savedModule.value?.faseId ?? selectedFase.value?.id ?? 1;
-      final int cpId = faseId;
+      final int cpId = selectedCp.value?.id ?? 1;
 
       ChapterCreateResponseModel? response;
       if (teacherRepository != null) {
@@ -786,6 +809,22 @@ class CreateModuleController extends GetxController {
       listFase.assignAll(FaseModel.defaultFases);
     } finally {
       isLoadingFase.value = false;
+    }
+  }
+
+  Future<void> fetchCp(int faseId) async {
+    isLoadingCp.value = true;
+    try {
+      if (teacherRepository != null) {
+        final cp = await teacherRepository!.getCpByFaseId(faseId);
+        print('Cp : $cp');
+        listCp.assignAll(cp);
+        return;
+      }
+    } catch (e) {
+      debugPrint('Failed to load fases: $e');
+    } finally {
+      isLoadingCp.value = false;
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:novasight_app/app/core/constants/api_endpoints.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/network/dio_client.dart';
+import 'package:novasight_app/app/data/models/cp_model.dart';
 import 'package:novasight_app/app/data/models/api_response.dart';
 import 'package:novasight_app/app/data/models/block_regenerate_model.dart';
 import 'package:novasight_app/app/data/models/chapter_create_response_model.dart';
@@ -229,6 +230,27 @@ class TeacherProvider {
       throw ApiException(
         message:
             'Terjadi kesalahan saat mengambil daftar fase: ${e.toString()}',
+      );
+    }
+  }
+
+  /// GET /api/cp/faseId
+  Future<ApiResponse<List<CpModel>>> getCpByFaseId(int faseId) async {
+    try {
+      final response = await dioClient.get(ApiEndpoints.cp(faseId));
+      return ApiResponse<List<CpModel>>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => (data as List)
+            .map((e) => CpModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message:
+        'Terjadi kesalahan saat mengambil daftar cp: ${e.toString()}',
       );
     }
   }

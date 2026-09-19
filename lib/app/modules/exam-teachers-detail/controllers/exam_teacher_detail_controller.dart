@@ -52,7 +52,7 @@ class ExamTeacherDetailController extends GetxController {
 
   // Compatibility fields
   final numberOfQuestions = 0.obs;
-  final answerOptions = 'A-E'.obs;
+  final answerOptions = 'A-D'.obs;
   final difficulty = 'Campuran'.obs;
 
   // List Soal

@@ -699,21 +699,21 @@ class QuestionEditFormState extends State<QuestionEditForm> {
           );
         }),
 
-        OutlinedButton.icon(
-          onPressed: _addOption,
-          icon: const Icon(Icons.add, size: 16),
-          label: const Text('Tambah Pilihan'),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: ColorConstant.primary,
-            side: BorderSide(
-              color: ColorConstant.primary.withValues(alpha: 0.5),
-            ),
-            minimumSize: const Size.fromHeight(40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
+        // OutlinedButton.icon(
+        //   onPressed: _addOption,
+        //   icon: const Icon(Icons.add, size: 16),
+        //   label: const Text('Tambah Pilihan'),
+        //   style: OutlinedButton.styleFrom(
+        //     foregroundColor: ColorConstant.primary,
+        //     side: BorderSide(
+        //       color: ColorConstant.primary.withValues(alpha: 0.5),
+        //     ),
+        //     minimumSize: const Size.fromHeight(40),
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(8),
+        //     ),
+        //   ),
+        // ),
 
         const SizedBox(height: 12),
         Container(

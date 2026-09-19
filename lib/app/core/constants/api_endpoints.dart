@@ -12,6 +12,9 @@ class ApiEndpoints {
   static const String joinClassroom = '/api/classrooms/join';
   static const String classroomTypes = '/api/classroom-types';
 
+  // Cp endpoints
+  static String cp(int faseId) => '/api/cp/$faseId';
+
   // School & City endpoints
   static const String cities = '/api/cities';
   static const String schools = '/api/schools';

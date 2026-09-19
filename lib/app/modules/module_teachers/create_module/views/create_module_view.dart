@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/common/common_teacher_appbar.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
+import 'package:novasight_app/app/data/models/cp_model.dart';
 import 'package:novasight_app/app/data/models/fase_model.dart';
 import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/pick_module_widget.dart';
 
@@ -415,6 +416,21 @@ class CreateModuleView extends GetView<CreateModuleController> {
                 ],
               ),
               const SizedBox(height: 8),
+
+              // Cp dropdown
+              Obx(
+                    () => CommonDropdownWidget<CpModel>(
+                  title: "Capaian Pembelajaran",
+                  listValue: controller.listCp,
+                  selectedValue: controller.selectedCp.value,
+                  initialLabel: controller.isLoadingCp.value
+                      ? "Memuat capaian pembelajaran..."
+                      : "Pilih Capaian Pembelajaran",
+                  itemLabel: (c) => c.domain,
+                  onSelect: controller.onSelectCp,
+                  isEnabled: !controller.isLoadingCp.value,
+                ),
+              ),
 
               // Hint info
               Container(
