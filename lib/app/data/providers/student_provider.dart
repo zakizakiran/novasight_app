@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:novasight_app/app/core/constants/api_endpoints.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/network/dio_client.dart';
 import 'package:novasight_app/app/data/models/api_response.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 
 class StudentProvider {
   final DioClient dioClient;
@@ -163,6 +165,205 @@ class StudentProvider {
       if (e is ApiException) rethrow;
       throw ApiException(
         message: 'Terjadi kesalahan saat menandai bab selesai: ${e.toString()}',
+      );
+    }
+  }
+
+  /// GET /api/students/quizzes
+  Future<ApiResponse<List<QuizRequestStudentResponse>>> getQuizzes({
+    required int classroomId,
+    QuizRequestStudentQueryStatus? status,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'classroom_id': classroomId,
+      };
+      if (status != null) {
+        queryParams['status'] = status.value;
+      }
+
+      final response = await dioClient.get(
+        ApiEndpoints.studentQuizzes,
+        queryParameters: queryParams,
+      );
+      return ApiResponse<List<QuizRequestStudentResponse>>.fromJson(
+        response.data as Map<String, dynamic>,
+        (data) => (data as List)
+            .map((e) =>
+                QuizRequestStudentResponse.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat mengambil kuis siswa: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/students/quizzes/{quiz_id}/start — SSE Stream
+  Stream<StudentQuizEvent> startQuizStream({
+    required int quizId,
+  }) async* {
+    try {
+      final response = await dioClient.dio.post<ResponseBody>(
+        ApiEndpoints.studentQuizStart(quizId),
+        options: Options(
+          responseType: ResponseType.stream,
+          headers: {
+            'Accept': 'text/event-stream',
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache',
+          },
+        ),
+      );
+
+      final stream = response.data!.stream
+          .cast<List<int>>()
+          .transform(utf8.decoder)
+          .transform(const LineSplitter());
+
+      await for (final line in stream) {
+        final trimmed = line.trim();
+        if (trimmed.isEmpty || trimmed.startsWith(':')) continue;
+
+        String jsonStr = trimmed;
+        if (trimmed.startsWith('data:')) {
+          jsonStr = trimmed.substring(5).trim();
+        }
+        if (jsonStr.isEmpty) continue;
+
+        try {
+          final decoded = jsonDecode(jsonStr);
+          if (decoded is Map<String, dynamic>) {
+            final type = decoded['type'] as String? ?? '';
+            if (type == 'INIT') {
+              final questionsList = (decoded['questions'] as List? ?? [])
+                  .map((e) => QuizRequestQuestionResponse.fromJson(
+                      e as Map<String, dynamic>))
+                  .toList();
+              final targetEndTime = decoded['target_end_time'] != null
+                  ? DateTime.tryParse(decoded['target_end_time'] as String)
+                  : null;
+              yield StudentQuizInitEvent(
+                questions: questionsList,
+                targetEndTime: targetEndTime,
+              );
+            } else if (type == 'TICK') {
+              yield StudentQuizTickEvent(
+                time: decoded['time'] as String? ?? '00:00',
+              );
+            } else if (type == 'TIMEOUT') {
+              yield StudentQuizTimeoutEvent(
+                message: decoded['message'] as String? ??
+                    'Waktu pengerjaan telah habis',
+              );
+            } else if (decoded.containsKey('error')) {
+              yield StudentQuizErrorEvent(
+                error: decoded['error'] as String? ??
+                    'Terjadi kesalahan pada kuis',
+              );
+            }
+          }
+        } catch (_) {
+          // Skip SSE lines that are not valid JSON
+        }
+      }
+    } on DioException catch (e) {
+      String? errorBody;
+      if (e.response?.data is ResponseBody) {
+        try {
+          final responseBody = e.response!.data as ResponseBody;
+          final bytes = await responseBody.stream.toList();
+          final fullBytes = bytes.expand((x) => x).toList();
+          errorBody = utf8.decode(fullBytes);
+        } catch (_) {}
+      }
+      if (errorBody != null && errorBody.isNotEmpty) {
+        throw ApiException(
+          message: ApiException.extractErrorMessageFromString(
+              errorBody, e.response?.statusCode),
+          statusCode: e.response?.statusCode,
+          data: errorBody,
+        );
+      }
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Gagal memulai kuis: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/students/soal/{soal_id}/submit
+  Future<ApiResponse<SoalSubmitResponse>> submitSoalAnswer({
+    required int soalId,
+    required SoalSubmitRequest request,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiEndpoints.studentSoalSubmit(soalId),
+        data: request.toJson(),
+      );
+      return ApiResponse<SoalSubmitResponse>.fromJson(
+        response.data as Map<String, dynamic>,
+        (data) => SoalSubmitResponse.fromJson(data as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat mengirim jawaban: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/students/quizzes/{quiz_id}/finish
+  Future<ApiResponse<Map<String, dynamic>>> finishQuiz({
+    required int quizId,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiEndpoints.studentQuizFinish(quizId),
+      );
+      return ApiResponse<Map<String, dynamic>>.fromJson(
+        response.data as Map<String, dynamic>,
+        (data) => (data as Map<String, dynamic>?) ?? {},
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat menyelesaikan kuis: ${e.toString()}',
+      );
+    }
+  }
+
+  /// GET /api/students/quizzes/{quiz_request_id}/my-results
+  Future<ApiResponse<List<QuizResultItem>>> getMyQuizResults({
+    required int quizRequestId,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        ApiEndpoints.studentQuizMyResults(quizRequestId),
+      );
+      return ApiResponse<List<QuizResultItem>>.fromJson(
+        response.data as Map<String, dynamic>,
+        (data) => (data as List)
+            .map((e) => QuizResultItem.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat mengambil hasil kuis: ${e.toString()}',
       );
     }
   }

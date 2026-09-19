@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+
 class CommonDropdownWidget<T> extends StatefulWidget {
   final List<T> listValue;
   final T? selectedValue;
@@ -22,7 +23,8 @@ class CommonDropdownWidget<T> extends StatefulWidget {
   });
 
   @override
-  State<CommonDropdownWidget<T>> createState() => _CommonDropdownWidgetState<T>();
+  State<CommonDropdownWidget<T>> createState() =>
+      _CommonDropdownWidgetState<T>();
 }
 
 class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
@@ -37,7 +39,7 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
 
     final String displayText = widget.selectedValue != null
         ? (widget.itemLabel?.call(widget.selectedValue as T) ??
-            widget.selectedValue.toString())
+              widget.selectedValue.toString())
         : widget.initialLabel;
 
     return Column(
@@ -48,9 +50,9 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
           Text(
             widget.title!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: enabled ? null : ColorConstant.textGreyColor,
-                ),
+              fontWeight: FontWeight.w700,
+              color: enabled ? null : ColorConstant.textGreyColor,
+            ),
           ),
         Container(
           padding: const EdgeInsets.symmetric(
@@ -59,14 +61,18 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
           ),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: enabled ? ColorConstant.background : ColorConstant.grey.withOpacity(0.1),
-            borderRadius: const BorderRadius.all(Radius.circular(Dimens.radius)),
+            color: enabled
+                ? ColorConstant.background
+                : ColorConstant.grey.withValues(alpha: 0.1),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(Dimens.radius),
+            ),
             border: BoxBorder.all(
               color: !enabled
-                  ? ColorConstant.grey.withOpacity(0.5)
+                  ? ColorConstant.grey.withValues(alpha: 0.5)
                   : (widget.selectedValue != null && !_isExpanded
-                      ? ColorConstant.primary
-                      : ColorConstant.grey),
+                        ? ColorConstant.primary
+                        : ColorConstant.grey),
               width: 1.5,
             ),
           ),
@@ -90,12 +96,13 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
                         child: Text(
                           displayText,
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: enabled
                                     ? (widget.selectedValue != null
-                                        ? ColorConstant.black
-                                        : ColorConstant.textGreyColor)
+                                          ? ColorConstant.black
+                                          : ColorConstant.textGreyColor)
                                     : ColorConstant.textGreyColor,
                               ),
                         ),
@@ -103,7 +110,9 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
                       const SizedBox(width: Dimens.spacePadding),
                       Icon(
                         icon,
-                        color: enabled ? ColorConstant.black : ColorConstant.textGreyColor,
+                        color: enabled
+                            ? ColorConstant.black
+                            : ColorConstant.textGreyColor,
                         size: Dimens.iconMediumSize,
                       ),
                     ],
@@ -124,9 +133,8 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
                           ),
                           child: Text(
                             "Tidak ada pilihan tersedia",
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: ColorConstant.textGreyColor,
-                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: ColorConstant.textGreyColor),
                           ),
                         )
                       else
@@ -136,7 +144,8 @@ class _CommonDropdownWidgetState<T> extends State<CommonDropdownWidget<T>> {
                           itemCount: widget.listValue.length,
                           itemBuilder: (context, i) {
                             final data = widget.listValue[i];
-                            final String label = widget.itemLabel?.call(data) ?? data.toString();
+                            final String label =
+                                widget.itemLabel?.call(data) ?? data.toString();
                             return Semantics(
                               button: true,
                               label: "Pilih $label",

@@ -11,6 +11,7 @@ class DialogHelper {
     String? description,
     Color? colorDescription,
     Widget? icon,
+    Widget? content,
     Widget? actions,
   }) {
     return Get.dialog<T>(
@@ -19,6 +20,7 @@ class DialogHelper {
         description: description,
         icon: icon,
         colorDescription: colorDescription,
+        content: content,
         actions: actions,
       ),
     );

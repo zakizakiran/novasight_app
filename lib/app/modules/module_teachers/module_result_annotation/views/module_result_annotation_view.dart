@@ -16,7 +16,9 @@ class ModuleResultAnnotationView extends GetView<ModuleResultAnnotationControlle
   const ModuleResultAnnotationView({super.key});
   @override
   Widget build(BuildContext context) {
-    final canPop = (Get.arguments as ModuleResultArgs).canPop;
+    final canPop = Get.arguments is ModuleResultArgs
+        ? (Get.arguments as ModuleResultArgs).canPop
+        : true;
     return PopScope(
       canPop: canPop,
       onPopInvokedWithResult: (didPop, result) {
@@ -53,9 +55,10 @@ class ModuleResultAnnotationView extends GetView<ModuleResultAnnotationControlle
         body: SafeArea(
           child: Column(
             children: [
-              const CommonTeacherAppbar(
-                  title: "Hasil Annotasi",
-                  border: BorderStyleConstant.borderTeacherAppbar,
+              CommonTeacherAppbar(
+                title: "Hasil Annotasi",
+                showBack: canPop,
+                border: BorderStyleConstant.borderTeacherAppbar,
               ),
               Expanded(
                 child: Padding(

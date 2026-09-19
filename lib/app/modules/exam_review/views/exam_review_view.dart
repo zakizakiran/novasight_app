@@ -16,18 +16,108 @@ class ExamReviewView extends GetView<ExamReviewController> {
       backgroundColor: ColorConstant.background,
       body: SafeArea(
         child: Obx(() {
-          final question = controller.questions[controller.currentIndex.value];
+          if (controller.isLoading.value) {
+            return Column(
+              children: [
+                CommonAppBar(
+                  title: 'Evaluaizer — Review Hasil Ujian',
+                  description: controller.quizTitle.value,
+                ),
+                const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: ColorConstant.primary,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          if (controller.questions.isEmpty) {
+            return Column(
+              children: [
+                CommonAppBar(
+                  title: 'Evaluaizer — Review Hasil Ujian',
+                  description: controller.quizTitle.value,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(Dimens.spaceBigPadding),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.assignment_outlined,
+                            size: 64,
+                            color: ColorConstant.textGreyColor,
+                          ),
+                          const SizedBox(height: Dimens.spaceMediumPadding),
+                          Text(
+                            controller.errorMessage.value.isNotEmpty
+                                ? controller.errorMessage.value
+                                : 'Belum ada hasil evaluasi ujian yang tersedia.',
+                            textAlign: TextAlign.center,
+                            style: const MainTextTheme().bodyLarge?.copyWith(
+                              color: ColorConstant.textGreyColor,
+                            ),
+                          ),
+                          const SizedBox(height: Dimens.spaceBigPadding),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              OutlinedButton(
+                                onPressed: () => Get.back(),
+                                style: OutlinedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text('Kembali'),
+                              ),
+                              const SizedBox(width: Dimens.spaceMediumPadding),
+                              ElevatedButton(
+                                onPressed: () => controller.fetchResults(),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ColorConstant.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Coba Lagi',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          final safeIndex = controller.currentIndex.value.clamp(
+            0,
+            controller.questions.length - 1,
+          );
+          final question = controller.questions[safeIndex];
           return Column(
             children: [
-              const CommonAppBar(
-                title: 'Review Hasil Ujian',
-                description: 'UTS Kelas X',
+              CommonAppBar(
+                title: 'Evaluaizer — Review Hasil Ujian',
+                description: controller.quizTitle.value,
               ),
               const SizedBox(height: Dimens.spaceBigPadding),
               _buildProgressIndicator(context),
               const SizedBox(height: Dimens.spaceBigPadding),
               Expanded(
                 child: SingleChildScrollView(
+                  key: ValueKey(safeIndex),
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,16 +155,14 @@ class ExamReviewView extends GetView<ExamReviewController> {
                 "Soal nomor ${index + 1} dari ${controller.questions.length}",
             button: true,
             child: GestureDetector(
-              onTap: () {
-                controller.currentIndex.value = index;
-              },
+              onTap: () => controller.goToQuestion(index),
               child: Container(
                 width: 60,
                 height: 60,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: isActive
-                      ? ColorConstant.primary.withOpacity(0.1)
+                      ? ColorConstant.primary.withValues(alpha: 0.1)
                       : ColorConstant.white,
                   shape: BoxShape.circle,
                   border: Border.all(
@@ -121,38 +209,38 @@ class ExamReviewView extends GetView<ExamReviewController> {
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: textColor.withOpacity(0.5)),
+          border: Border.all(color: textColor.withValues(alpha: 0.5)),
         ),
         child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Icon(icon, color: textColor, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    text,
-                    style: const MainTextTheme().bodyLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.bold,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(icon, color: textColor, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: const MainTextTheme().bodyLarge?.copyWith(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'Nilai: +${question.score}',
-            style: const MainTextTheme().bodyLarge?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.bold,
+            const SizedBox(width: 8),
+            Text(
+              'Nilai: +${question.score}',
+              style: const MainTextTheme().bodyLarge?.copyWith(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
@@ -165,7 +253,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -234,11 +322,15 @@ class ExamReviewView extends GetView<ExamReviewController> {
             }
 
             return Semantics(
-              label: 'Pilihan $letter: ${question.options[index]}. $semanticsStatus',
+              label:
+                  'Pilihan $letter: ${question.options[index]}. $semanticsStatus',
               excludeSemantics: true,
               child: Container(
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: bgColor,
                   borderRadius: BorderRadius.circular(8),
@@ -249,42 +341,44 @@ class ExamReviewView extends GetView<ExamReviewController> {
                 ),
                 child: Row(
                   children: [
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isUserAnswer || isCorrectAnswer
-                          ? textColor
-                          : Colors.grey.shade200,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      letter,
-                      style: TextStyle(
+                    Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
                         color: isUserAnswer || isCorrectAnswer
-                            ? Colors.white
-                            : Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                            ? textColor
+                            : Colors.grey.shade200,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        letter,
+                        style: TextStyle(
+                          color: isUserAnswer || isCorrectAnswer
+                              ? Colors.white
+                              : Colors.black54,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      question.options[index],
-                      style: const MainTextTheme().bodyLarge?.copyWith(
-                        color: textColor,
-                        fontWeight: isUserAnswer || isCorrectAnswer
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        question.options[index].trim().toUpperCase() == letter
+                            ? 'Pilihan $letter'
+                            : question.options[index],
+                        style: const MainTextTheme().bodyLarge?.copyWith(
+                          color: textColor,
+                          fontWeight: isUserAnswer || isCorrectAnswer
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
                       ),
                     ),
-                  ),
-                  if (trailingIcon != null) trailingIcon,
-                ],
-              ),
+                    ?trailingIcon,
+                  ],
+                ),
               ),
             );
           }),
@@ -301,7 +395,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -328,7 +422,8 @@ class ExamReviewView extends GetView<ExamReviewController> {
             ...List.generate(question.userWorkingSteps!.length, (index) {
               final isErrorStep = index == question.errorStepIndex;
               return Semantics(
-                label: 'Langkah ${index + 1}: ${question.userWorkingSteps![index]}' + (isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''),
+                label:
+                    'Langkah ${index + 1}: ${question.userWorkingSteps![index]}${isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''}',
                 excludeSemantics: true,
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -346,44 +441,44 @@ class ExamReviewView extends GetView<ExamReviewController> {
                     ),
                   ),
                   child: Row(
-                  children: [
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isErrorStep
-                            ? const Color(0xFFF44336)
-                            : ColorConstant.primary,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        question.userWorkingSteps![index],
-                        style: const MainTextTheme().bodyLarge?.copyWith(
+                    children: [
+                      Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
                           color: isErrorStep
                               ? const Color(0xFFF44336)
-                              : Colors.black87,
-                          fontWeight: isErrorStep
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                              : ColorConstant.primary,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${index + 1}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    if (isErrorStep)
-                      const Icon(Icons.close, color: Color(0xFFF44336)),
-                  ],
-                ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          question.userWorkingSteps![index],
+                          style: const MainTextTheme().bodyLarge?.copyWith(
+                            color: isErrorStep
+                                ? const Color(0xFFF44336)
+                                : Colors.black87,
+                            fontWeight: isErrorStep
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      if (isErrorStep)
+                        const Icon(Icons.close, color: Color(0xFFF44336)),
+                    ],
+                  ),
                 ),
               );
             }),
@@ -459,7 +554,8 @@ class ExamReviewView extends GetView<ExamReviewController> {
           ] else ...[
             ...List.generate(question.explanationSteps.length, (index) {
               return Semantics(
-                label: 'Langkah ${index + 1}: ${question.explanationSteps[index]}',
+                label:
+                    'Langkah ${index + 1}: ${question.explanationSteps[index]}',
                 excludeSemantics: true,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 16),
@@ -473,42 +569,53 @@ class ExamReviewView extends GetView<ExamReviewController> {
                           shape: BoxShape.circle,
                           color: ColorConstant.primary,
                         ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${index + 1}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${index + 1}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        question.explanationSteps[index],
-                        style: const MainTextTheme().bodyLarge,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          question.explanationSteps[index],
+                          style: const MainTextTheme().bodyLarge,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 ),
               );
             }),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F5E9),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFF4CAF50)),
-              ),
-              child: Text(
-                'Jawaban benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${question.options[question.correctAnswerIndex]}.',
-                style: const MainTextTheme().bodyLarge?.copyWith(
-                  color: const Color(0xFF2E7D32),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            Builder(
+              builder: (context) {
+                final correctIdx = question.correctAnswerIndex.clamp(
+                  0,
+                  question.options.isEmpty ? 0 : question.options.length - 1,
+                );
+                final correctOptionText = question.options.isNotEmpty
+                    ? question.options[correctIdx]
+                    : '-';
+                return Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFF4CAF50)),
+                  ),
+                  child: Text(
+                    'Jawaban benar adalah ${String.fromCharCode(65 + correctIdx)} — $correctOptionText.',
+                    style: const MainTextTheme().bodyLarge?.copyWith(
+                      color: const Color(0xFF2E7D32),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ],

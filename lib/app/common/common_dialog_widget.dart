@@ -9,6 +9,7 @@ class CommonDialogWidget extends StatelessWidget {
   final String? description;
   final Color? colorDescription;
   final Widget? icon;
+  final Widget? content;
   final Widget? actions;
 
   const CommonDialogWidget({
@@ -17,6 +18,7 @@ class CommonDialogWidget extends StatelessWidget {
     this.description,
     this.colorDescription = ColorConstant.linearPrimary,
     this.icon,
+    this.content,
     this.actions,
   });
 
@@ -64,6 +66,11 @@ class CommonDialogWidget extends StatelessWidget {
                   color: colorDescription,
                 ),
               ),
+            ],
+
+            if (content != null) ...[
+              const SizedBox(height: Dimens.spacePadding),
+              content!,
             ],
 
             const SizedBox(height: Dimens.spaceBigPadding),

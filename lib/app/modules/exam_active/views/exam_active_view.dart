@@ -18,28 +18,96 @@ class ExamActiveView extends GetView<ExamActiveController> {
 
   @override
   Widget build(BuildContext context) {
-    const examTitle = "Soal Ujian";
-    const examDescription = "UTS Kelas X";
-
     return Scaffold(
       backgroundColor: ColorConstant.background,
       body: SafeArea(
         child: Column(
           children: [
-            const CommonAppBar(title: examTitle, description: examDescription),
-            const SizedBox(height: Dimens.spaceBigPadding),
+            Obx(
+              () => CommonAppBar(
+                title: controller.examTitle.value,
+                description: controller.examDescription.value,
+              ),
+            ),
+            const SizedBox(height: Dimens.spaceMediumPadding),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimens.innerPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Daftar Soal",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: ColorConstant.textDarkGreyColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Obx(
+                    () => Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: ColorConstant.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: ColorConstant.primary),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.timer_outlined,
+                            size: 16,
+                            color: ColorConstant.primary,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            controller.timerText.value,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: ColorConstant.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Dimens.spaceMediumPadding),
             _buildNumberIndicators(context),
             const SizedBox(height: Dimens.spaceBigPadding),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Dimens.innerPadding,
-                ),
-                child: Obx(() {
-                  if (controller.questions.isEmpty) return const SizedBox();
-                  final currentQuestion =
-                      controller.questions[controller.currentIndex.value];
-                  return Column(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 12),
+                        Text('Memulai ujian dan memuat soal...'),
+                      ],
+                    ),
+                  );
+                }
+
+                if (controller.questions.isEmpty) {
+                  return const Center(child: Text('Tidak ada soal ujian.'));
+                }
+
+                final safeIndex = controller.currentIndex.value.clamp(
+                  0,
+                  controller.questions.length - 1,
+                );
+                final currentQuestion = controller.questions[safeIndex];
+
+                return SingleChildScrollView(
+                  key: ValueKey(safeIndex),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Dimens.innerPadding,
+                  ),
+                  child: Column(
                     children: [
                       CommonCardWidget(
                         boxShadow: const [BoxShadowConstant.module],
@@ -47,7 +115,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Soal ${controller.currentIndex.value + 1}",
+                              "Soal ${safeIndex + 1}",
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(
                                     color: ColorConstant.primary,
@@ -95,9 +163,9 @@ class ExamActiveView extends GetView<ExamActiveController> {
                         ),
                       ),
                     ],
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             ),
             _buildBottomNavigation(context),
           ],
@@ -135,7 +203,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: isActive
-                        ? ColorConstant.primary.withOpacity(0.1)
+                        ? ColorConstant.primary.withValues(alpha: 0.1)
                         : (isAnswered
                               ? ColorConstant.lightGreen
                               : ColorConstant.white),
@@ -248,7 +316,8 @@ class ExamActiveView extends GetView<ExamActiveController> {
       ),
       child: Obx(() {
         final isFirst = controller.currentIndex.value == 0;
-        final isLast = controller.currentIndex.value == controller.questions.length - 1;
+        final isLast =
+            controller.currentIndex.value == controller.questions.length - 1;
         final bool isAllAnswered = isLast ? controller.isAllAnswered : true;
         final String title = isLast ? "Selesai" : "Selanjutnya";
 
@@ -303,19 +372,22 @@ class ExamActiveView extends GetView<ExamActiveController> {
                     ? ColorConstant.primary
                     : ColorConstant.grey,
                 isValid: isAllAnswered,
-                onPressed: isLast ? (){
-                  DialogHelper.show(
-                      icon: _buildQuestionIconDialog(),
-                      title: 'Apakah Kamu Yakin Mengumpulkan Sekarang',
-                      description: "Jawaban yang sudah dikirim tidak bisa diubah",
-                      actions: _buildActionDialog(
-                          onCancel: (){
-                            Get.back();
-                          },
-                          onSend: controller.submitExam
-                      )
-                  );
-                } : controller.nextQuestion,
+                onPressed: isLast
+                    ? () {
+                        DialogHelper.show(
+                          icon: _buildQuestionIconDialog(),
+                          title: 'Apakah Kamu Yakin Mengumpulkan Sekarang',
+                          description:
+                              "Jawaban yang sudah dikirim tidak bisa diubah",
+                          actions: _buildActionDialog(
+                            onCancel: () {
+                              Get.back();
+                            },
+                            onSend: controller.submitExam,
+                          ),
+                        );
+                      }
+                    : controller.nextQuestion,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Row(
@@ -346,15 +418,19 @@ class ExamActiveView extends GetView<ExamActiveController> {
             ),
             const SizedBox(width: Dimens.spaceMediumPadding),
             Semantics(
-              label: "Buka Catatan Pengerjaan",
+              label: "Buka Scriber (Catatan Pengerjaan)",
               button: true,
               child: GestureDetector(
                 onTap: () {
-                  Get.toNamed(Routes.NOTE, arguments: {
-                    'question': controller.questions[controller.currentIndex.value],
-                    'index': controller.currentIndex.value + 1,
-                    'total': controller.questions.length,
-                  });
+                  Get.toNamed(
+                    Routes.NOTE,
+                    arguments: {
+                      'question':
+                          controller.questions[controller.currentIndex.value],
+                      'index': controller.currentIndex.value + 1,
+                      'total': controller.questions.length,
+                    },
+                  );
                 },
                 child: Container(
                   height: 50,
@@ -377,36 +453,36 @@ class ExamActiveView extends GetView<ExamActiveController> {
     );
   }
 
-  Widget _buildQuestionIconDialog(){
+  Widget _buildQuestionIconDialog() {
     return SvgPicture.asset(
-    SvgConstant.iconQuestionMarkIcon,
-    width: Dimens.iconBigSize,
-    height: Dimens.iconBigSize,
+      SvgConstant.iconQuestionMarkIcon,
+      width: Dimens.iconBigSize,
+      height: Dimens.iconBigSize,
     );
   }
 
   Widget _buildActionDialog({
     required Function() onCancel,
-    required Function() onSend
-}){
+    required Function() onSend,
+  }) {
     return Row(
       children: [
         Expanded(
-            child:
-            CommonButtonWidget(
-                buttonName: "Batal",
-                buttonColor: ColorConstant.redColor,
-                boxShadows: const [],
-                onPressed: onCancel
-        )),
-        const SizedBox(width: Dimens.innerPadding,),
+          child: CommonButtonWidget(
+            buttonName: "Batal",
+            buttonColor: ColorConstant.redColor,
+            boxShadows: const [],
+            onPressed: onCancel,
+          ),
+        ),
+        const SizedBox(width: Dimens.innerPadding),
         Expanded(
-            child:
-            CommonButtonWidget(
-                buttonName: "Kirim",
-                boxShadows: const [],
-                onPressed: onSend
-            )),
+          child: CommonButtonWidget(
+            buttonName: "Kirim",
+            boxShadows: const [],
+            onPressed: onSend,
+          ),
+        ),
       ],
     );
   }

@@ -39,9 +39,14 @@ class MainLayoutBinding extends Bindings {
     );
     Get.lazyPut<ExamController>(() => ExamController());
     
-    Get.lazyPut<ChatbotRepository>(() => ChatbotRepository());
-    Get.lazyPut<ChatbotController>(() => ChatbotController(repository: Get.find()));
-    Get.lazyPut<ModuleTeacherController>(() => ModuleTeacherController(repository: Get.find()));
+    Get.lazyPut<ChatbotController>(
+      () => ChatbotController(
+        repository: Get.find<ChatbotRepository>(),
+        classroomRepository: Get.find<ClassroomRepository>(),
+        storageService: Get.find<StorageService>(),
+      ),
+    );
+    Get.lazyPut<ModuleTeacherController>(() => ModuleTeacherController());
     Get.lazyPut<ExamTeachersController>(() => ExamTeachersController());
   }
 }

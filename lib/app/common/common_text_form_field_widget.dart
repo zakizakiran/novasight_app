@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:novasight_app/app/common/common_gradient_progress_bar_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
@@ -20,6 +17,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
   final TextAlign textAlign;
   final TextStyle? textStyle;
   final List<TextInputFormatter> inputFormatters;
+  final TextInputType? keyboardType;
   final Function(String)? onChanged;
   final TextStyle? hintStyle;
   final bool? isPassword;
@@ -50,6 +48,7 @@ class CommonTextFormFieldWidget extends StatefulWidget {
     this.isPassword,
     this.enableLinearPassword = false,
     this.inputFormatters = const [],
+    this.keyboardType,
     this.suffixIcon,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.fillColor,
@@ -61,11 +60,12 @@ class CommonTextFormFieldWidget extends StatefulWidget {
     this.borderSide = BorderSide.none,
     this.borderSideEnable = BorderSide.none,
     this.borderSideFocused = BorderSide.none,
-    this.hintStyle
+    this.hintStyle,
   });
 
   @override
-  State<CommonTextFormFieldWidget> createState() => _CommonTextFormFieldWidgetState();
+  State<CommonTextFormFieldWidget> createState() =>
+      _CommonTextFormFieldWidgetState();
 }
 
 class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
@@ -84,11 +84,12 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
       spacing: Dimens.spacePadding,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if(widget.title != null)
-          Text("${widget.title}",
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700
-              )
+        if (widget.title != null)
+          Text(
+            "${widget.title}",
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
 
         ValueListenableBuilder<TextEditingValue>(
@@ -114,9 +115,11 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                     onChanged: widget.onChanged,
                     textAlign: widget.textAlign,
                     style:
-                    widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
+                        widget.textStyle ??
+                        Theme.of(context).textTheme.bodyMedium,
                     autovalidateMode: widget.autovalidateMode,
                     inputFormatters: widget.inputFormatters,
+                    keyboardType: widget.keyboardType,
                     validator: (value) {
                       final error = widget.validator?.call(value);
 
@@ -166,36 +169,34 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                       ),
 
                       // Hide Flutter's built-in error text
-                      errorStyle: const TextStyle(
-                        fontSize: 0,
-                        height: 0,
-                      ),
+                      errorStyle: const TextStyle(fontSize: 0, height: 0),
 
-                      suffixIcon: widget.suffixIcon ??
+                      suffixIcon:
+                          widget.suffixIcon ??
                           (widget.isPassword == true
                               ? IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: ColorConstant.informationColor,
-                            ),
-                          )
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    _obscureText
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: ColorConstant.informationColor,
+                                  ),
+                                )
                               : null),
                       prefixIcon: widget.prefixIcon == null
                           ? null
                           : Container(
-                        margin: const EdgeInsets.only(
-                          left: Dimens.spacePadding,
-                          right: Dimens.spaceMediumPadding,
-                        ),
-                        child: widget.prefixIcon,
-                      ),
+                              margin: const EdgeInsets.only(
+                                left: Dimens.spacePadding,
+                                right: Dimens.spaceMediumPadding,
+                              ),
+                              child: widget.prefixIcon,
+                            ),
                       prefixIconConstraints: const BoxConstraints(
                         minWidth: Dimens.iconRegularSize,
                         minHeight: Dimens.iconRegularSize,
@@ -207,8 +208,11 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                       fillColor: widget.fillColor,
                       hintText: widget.hint,
                       filled: true,
-                      hintStyle: widget.hintStyle ??
-                          Theme.of(context).textTheme.bodyMedium,
+                      hintStyle:
+                          widget.hintStyle ??
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: ColorConstant.textGreyColor,
+                              ),
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 8,
                         horizontal: 12,
@@ -219,10 +223,7 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
 
                 if (_errorText != null)
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 12,
-                      top: 4,
-                    ),
+                    padding: const EdgeInsets.only(left: 12, top: 4),
                     child: Semantics(
                       liveRegion: true,
                       child: Text(
@@ -242,14 +243,12 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
               ],
             );
           },
-        )
+        ),
       ],
     );
   }
 
-  Widget passwordLinear({
-    required String value
-}){
+  Widget passwordLinear({required String value}) {
     double percentage = ValidateHelper.passwordToPercentage(value);
     String indicator = ValidateHelper.passwordIndicator(percentage);
     Color indicatorColor = ValidateHelper.passwordColorIndicator(percentage);
@@ -259,25 +258,20 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
       children: [
         CommonGradientProgressBarWidget(
           percentage: percentage,
-          colors: [
-            indicatorColor
-          ],
-          stops: const [
-            1.0
-          ],
+          colors: [indicatorColor],
+          stops: const [1.0],
         ),
         Semantics(
           label: "Password",
           child: Text(
-              textAlign: TextAlign.start,
-              indicator,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: indicatorColor
-              ),
+            textAlign: TextAlign.start,
+            indicator,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: indicatorColor),
           ),
-        )
+        ),
       ],
     );
   }
 }
-

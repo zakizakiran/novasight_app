@@ -4,7 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
@@ -44,12 +44,24 @@ void main() {
     ),
   ];
 
-  final mockTasks = StudentTaskModel(
-    modules: [],
-    exams: [
-      {'id': 101, 'title': 'UTS Ujian Semester 1'}
-    ],
-  );
+  final mockQuizzes = [
+    QuizRequestStudentResponse(
+      id: 101,
+      moduleId: 12,
+      title: 'UTS Ujian Semester 1',
+      statusPublished: 'publish',
+      maxDurationMinutes: 60,
+      maxRetry: 1,
+      startTime: testNow,
+      endTime: testNow.add(const Duration(days: 7)),
+      questionCounts: 5,
+      module: ModuleQuizResponse(id: 12, title: 'Matematika Dasar', description: 'Deskripsi'),
+      progress: QuizRequestStudentProgressResponse(
+        isDone: false,
+        score: null,
+      ),
+    ),
+  ];
 
   setUp(() {
     Get.reset();
@@ -61,15 +73,15 @@ void main() {
     when(() => mockClassroomRepo.getClassrooms())
         .thenAnswer((_) async => mockClassrooms);
     when(
-      () => mockStudentRepo.getDashboardTasks(
+      () => mockStudentRepo.getQuizzes(
         classroomId: any(named: 'classroomId'),
         status: any(named: 'status'),
       ),
-    ).thenAnswer((_) async => mockTasks);
+    ).thenAnswer((_) async => mockQuizzes);
   });
 
   group('ExamController Tests', () {
-    test('Initial onLoad fetches tasks from StudentRepository', () async {
+    test('Initial onLoad fetches quizzes from StudentRepository', () async {
       final controller = ExamController(
         studentRepository: mockStudentRepo,
         classroomRepository: mockClassroomRepo,
@@ -80,13 +92,14 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 50));
 
       expect(controller.isLoading.value, isFalse);
+      expect(controller.quizzes.length, equals(1));
       expect(controller.apiExams.length, equals(1));
       expect(controller.errorMessage.value, isEmpty);
 
       verify(
-        () => mockStudentRepo.getDashboardTasks(
+        () => mockStudentRepo.getQuizzes(
           classroomId: 10,
-          status: StudentTaskStatus.soalUjian,
+          status: QuizRequestStudentQueryStatus.semua,
         ),
       ).called(1);
     });
@@ -106,16 +119,16 @@ void main() {
 
       expect(controller.selectedStatus.value, equals(ModuleStatus.done));
       verify(
-        () => mockStudentRepo.getDashboardTasks(
+        () => mockStudentRepo.getQuizzes(
           classroomId: 10,
-          status: StudentTaskStatus.soalUjian,
+          status: QuizRequestStudentQueryStatus.selesai,
         ),
-      ).called(2);
+      ).called(1);
     });
 
     test('Handles ApiException gracefully and sets errorMessage', () async {
       when(
-        () => mockStudentRepo.getDashboardTasks(
+        () => mockStudentRepo.getQuizzes(
           classroomId: any(named: 'classroomId'),
           status: any(named: 'status'),
         ),

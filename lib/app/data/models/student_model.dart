@@ -1,3 +1,5 @@
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
+
 // DTO models for Student API endpoints.
 // Maps strictly to OpenAPI schema contract:
 // - StudentTaskStatus
@@ -102,6 +104,22 @@ class ModuleProgressModel {
     );
   }
 
+  ModuleProgressModel copyWith({
+    int? id,
+    int? studentId,
+    int? moduleId,
+    int? progressPercentage,
+    bool? isDone,
+  }) {
+    return ModuleProgressModel(
+      id: id ?? this.id,
+      studentId: studentId ?? this.studentId,
+      moduleId: moduleId ?? this.moduleId,
+      progressPercentage: progressPercentage ?? this.progressPercentage,
+      isDone: isDone ?? this.isDone,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -131,6 +149,16 @@ class StudentChapterProgressModel {
     );
   }
 
+  StudentChapterProgressModel copyWith({
+    bool? isDone,
+    DateTime? completedAt,
+  }) {
+    return StudentChapterProgressModel(
+      isDone: isDone ?? this.isDone,
+      completedAt: completedAt ?? this.completedAt,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'is_done': isDone,
@@ -150,6 +178,7 @@ class BlockResponseModel {
   final String? sourceMarkup;
   final String? caption;
   final String? imageFile;
+  final String? imageUrl;
 
   BlockResponseModel({
     this.id,
@@ -162,6 +191,7 @@ class BlockResponseModel {
     this.sourceMarkup,
     this.caption,
     this.imageFile,
+    this.imageUrl,
   });
 
   factory BlockResponseModel.fromJson(Map<String, dynamic> json) {
@@ -176,6 +206,7 @@ class BlockResponseModel {
       sourceMarkup: json['source_markup'] as String?,
       caption: json['caption'] as String?,
       imageFile: json['image_file'] as String?,
+      imageUrl: json['image_url'] as String?,
     );
   }
 
@@ -191,6 +222,7 @@ class BlockResponseModel {
       'source_markup': sourceMarkup,
       'caption': caption,
       'image_file': imageFile,
+      if (imageUrl != null) 'image_url': imageUrl,
     };
   }
 }
@@ -262,6 +294,22 @@ class StudentModuleModel {
     );
   }
 
+  StudentModuleModel copyWith({
+    int? id,
+    String? title,
+    int? faseId,
+    DateTime? createdAt,
+    ModuleProgressModel? progress,
+  }) {
+    return StudentModuleModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      faseId: faseId ?? this.faseId,
+      createdAt: createdAt ?? this.createdAt,
+      progress: progress ?? this.progress,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -275,7 +323,7 @@ class StudentModuleModel {
 
 class StudentTaskModel {
   final List<StudentModuleModel> modules;
-  final List<dynamic> exams;
+  final List<QuizRequestStudentResponse> exams;
 
   StudentTaskModel({
     required this.modules,
@@ -287,14 +335,17 @@ class StudentTaskModel {
       modules: (json['modules'] as List? ?? [])
           .map((e) => StudentModuleModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      exams: json['exams'] as List? ?? [],
+      exams: (json['exams'] as List? ?? []).map((e) {
+        if (e is QuizRequestStudentResponse) return e;
+        return QuizRequestStudentResponse.fromJson(e as Map<String, dynamic>);
+      }).toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'modules': modules.map((e) => e.toJson()).toList(),
-      'exams': exams,
+      'exams': exams.map((e) => e.toJson()).toList(),
     };
   }
 }
@@ -322,6 +373,20 @@ class StudentChapterSummaryModel {
               json['chapter_progress'] as Map<String, dynamic>,
             )
           : null,
+    );
+  }
+
+  StudentChapterSummaryModel copyWith({
+    int? id,
+    String? title,
+    int? number,
+    StudentChapterProgressModel? chapterProgress,
+  }) {
+    return StudentChapterSummaryModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      number: number ?? this.number,
+      chapterProgress: chapterProgress ?? this.chapterProgress,
     );
   }
 
@@ -369,6 +434,24 @@ class StudentModuleDetailModel {
           .map((e) =>
               StudentChapterSummaryModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+    );
+  }
+
+  StudentModuleDetailModel copyWith({
+    int? id,
+    String? title,
+    int? faseId,
+    DateTime? createdAt,
+    ModuleProgressModel? progress,
+    List<StudentChapterSummaryModel>? chapters,
+  }) {
+    return StudentModuleDetailModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      faseId: faseId ?? this.faseId,
+      createdAt: createdAt ?? this.createdAt,
+      progress: progress ?? this.progress,
+      chapters: chapters ?? this.chapters,
     );
   }
 

@@ -9,6 +9,7 @@ import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/student_dashboard_controller.dart';
@@ -352,8 +353,18 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
         );
       }
 
-      final modules = controller.taskModules;
-      if (modules.isEmpty) {
+      final filter = controller.selectedFilter.value;
+      final showModules =
+          filter == StudentTaskStatus.semua || filter == StudentTaskStatus.materi;
+      final showExams = filter == StudentTaskStatus.semua ||
+          filter == StudentTaskStatus.soalUjian;
+
+      final modules = showModules ? controller.taskModules : <StudentModuleModel>[];
+      final exams =
+          showExams ? controller.taskExams : <QuizRequestStudentResponse>[];
+
+      final totalItems = modules.length + exams.length;
+      if (totalItems == 0) {
         return Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0),
@@ -366,7 +377,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Belum ada materi atau tugas pada kategori ini.',
+                  'Belum ada materi atau soal ujian pada kategori ini.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: ColorConstant.textGreyColor,
@@ -381,16 +392,155 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
       return ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: modules.length,
+        itemCount: totalItems,
         padding: EdgeInsets.zero,
         separatorBuilder: (context, index) =>
             const SizedBox(height: Dimens.spacePadding),
         itemBuilder: (context, index) {
-          final module = modules[index];
-          return _buildModuleCard(context, module);
+          if (index < modules.length) {
+            final module = modules[index];
+            return _buildModuleCard(context, module);
+          } else {
+            final exam = exams[index - modules.length];
+            return _buildExamCard(context, exam);
+          }
         },
       );
     });
+  }
+
+  Widget _buildExamCard(BuildContext context, QuizRequestStudentResponse quiz) {
+    final isDone = quiz.progress?.isDone == true;
+    final score = quiz.progress?.score;
+    final scoreText = score != null ? score.toInt().toString() : '-';
+
+    return Semantics(
+      button: true,
+      label:
+          'Kartu Soal Ujian: ${quiz.title}, Modul: ${quiz.module.title}, Status: ${isDone ? "Selesai dikerjakan, Nilai: $scoreText" : "Belum dikerjakan"}',
+      child: GestureDetector(
+        onTap: () async {
+          if (isDone) {
+            await Get.toNamed(
+              Routes.EXAM_REVIEW,
+              arguments: quiz,
+            );
+          } else {
+            await Get.toNamed(
+              Routes.EXAM_DETAIL,
+              arguments: quiz,
+            );
+          }
+          await controller.onRefresh();
+        },
+        child: CommonCardWidget(
+          border: BorderStyleConstant.outlineBorderCard,
+          boxShadow: const [BoxShadowConstant.module],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Soal Ujian',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: ColorConstant.textPrimaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  if (isDone)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorConstant.lightGreen,
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: ColorConstant.green),
+                      ),
+                      child: Text(
+                        'Nilai: $scoreText',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: ColorConstant.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    )
+                  else
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            ColorConstant.linearSecondary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Belum Dikerjakan',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: ColorConstant.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                quiz.title,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: ColorConstant.textDarkGreyColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              if (quiz.module.title.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                Text(
+                  quiz.module.title,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: ColorConstant.textGreyColor,
+                      ),
+                ),
+              ],
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${quiz.maxDurationMinutes} Menit • ${quiz.questionCounts} Soal',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ColorConstant.textGreyColor,
+                        ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        isDone ? 'Evaluaizer (Hasil Ujian)' : 'Kerjakan',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: ColorConstant.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                        color: ColorConstant.primary,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildModuleCard(BuildContext context, StudentModuleModel module) {
@@ -402,11 +552,12 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
       label:
           'Kartu Materi: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? "Selesai" : "Belum Selesai"}',
       child: GestureDetector(
-        onTap: () {
-          Get.toNamed(
+        onTap: () async {
+          await Get.toNamed(
             Routes.MODULE_DETAIL,
             arguments: module.id,
           );
+          await controller.onRefresh();
         },
         child: CommonCardWidget(
           border: BorderStyleConstant.outlineBorderCard,

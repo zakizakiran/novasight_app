@@ -20,9 +20,7 @@ class SuccessCreateClassController extends GetxController {
   }
 
   Future<void> onCopyCode() async {
-    await Clipboard.setData(
-      ClipboardData(text: code.value),
-    );
+    await Clipboard.setData(ClipboardData(text: code.value));
 
     SnackbarHelper.showSuccess(
       title: "Berhasil",
@@ -31,20 +29,7 @@ class SuccessCreateClassController extends GetxController {
   }
 
   void onManageClass() {
-    Get.offAllNamed(
-      Routes.SPLASH,
-      arguments: UserRoles.guru,
-    );
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+    Get.offAllNamed(Routes.SPLASH, arguments: UserRoles.guru);
   }
 
   void increment() => count.value++;

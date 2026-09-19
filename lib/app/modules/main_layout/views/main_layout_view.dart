@@ -31,7 +31,7 @@ class MainLayoutView extends GetView<MainLayoutController> {
             boxShadow: [
               BoxShadow(
                 blurRadius: 20,
-                color: Colors.black.withOpacity(.1),
+                color: Colors.black.withValues(alpha: .1),
               ),
             ],
           ),
@@ -45,7 +45,8 @@ class MainLayoutView extends GetView<MainLayoutController> {
                     AnimatedPositioned(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
-                      left: controller.currentIndex.value * itemWidth +
+                      left:
+                          controller.currentIndex.value * itemWidth +
                           (itemWidth - 36) / 2,
                       top: 0,
                       child: Container(
@@ -63,13 +64,14 @@ class MainLayoutView extends GetView<MainLayoutController> {
                         children: items
                             .mapWithIndex(
                               (item, i) => Expanded(
-                            child: _bottomBar(
-                              selectedIndex: controller.currentIndex.value,
-                              index: i,
-                              item: item,
-                            ),
-                          ),
-                        ).toList(),
+                                child: _bottomBar(
+                                  selectedIndex: controller.currentIndex.value,
+                                  index: i,
+                                  item: item,
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   ],
@@ -103,9 +105,7 @@ class MainLayoutView extends GetView<MainLayoutController> {
             children: [
               Icon(
                 item.icon,
-                color: selected
-                    ? ColorConstant.primary
-                    : Colors.grey,
+                color: selected ? ColorConstant.primary : Colors.grey,
               ),
               const SizedBox(height: 4),
               Text(
@@ -114,12 +114,9 @@ class MainLayoutView extends GetView<MainLayoutController> {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontWeight:
-                  selected ? FontWeight.w800 : FontWeight.w500,
+                  fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
                   fontSize: 12,
-                  color: selected
-                      ? ColorConstant.primary
-                      : Colors.grey,
+                  color: selected ? ColorConstant.primary : Colors.grey,
                 ),
               ),
             ],

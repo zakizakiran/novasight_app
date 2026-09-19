@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 
 class ApiException implements Exception {
@@ -61,24 +62,39 @@ class ApiException implements Exception {
     }
   }
 
+  static String extractErrorMessageFromString(String? rawBody, int? statusCode) {
+    return _extractErrorMessage(rawBody, statusCode);
+  }
+
   static String _extractErrorMessage(dynamic responseData, int? statusCode) {
+    if (responseData is String && responseData.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(responseData);
+        if (decoded is Map<String, dynamic>) {
+          responseData = decoded;
+        }
+      } catch (_) {}
+    }
+
     if (responseData is Map<String, dynamic>) {
-      // 1. Check "detail" field
-      final detail = responseData['detail'];
-      if (detail is String && detail.isNotEmpty) {
-        return _translateCommonErrors(detail, statusCode);
-      } else if (detail is List && detail.isNotEmpty) {
-        // FastAPI validation errors: detail: [{"msg": "...", "loc": [...]}]
-        final first = detail.first;
+      // 1. Check "errors" field: {"errors": [{"msg": "...", "loc": [...]}]}
+      final errors = responseData['errors'];
+      if (errors is List && errors.isNotEmpty) {
+        final first = errors.first;
         if (first is Map<String, dynamic> && first['msg'] != null) {
           return first['msg'].toString();
         }
       }
 
-      // 2. Check "errors" field: {"errors": [{"msg": "...", "loc": [...]}]}
-      final errors = responseData['errors'];
-      if (errors is List && errors.isNotEmpty) {
-        final first = errors.first;
+      // 2. Check "detail" field
+      final detail = responseData['detail'];
+      if (detail is String && detail.isNotEmpty) {
+        if (detail.toLowerCase() != 'validation failed') {
+          return _translateCommonErrors(detail, statusCode);
+        }
+      } else if (detail is List && detail.isNotEmpty) {
+        // FastAPI validation errors: detail: [{"msg": "...", "loc": [...]}]
+        final first = detail.first;
         if (first is Map<String, dynamic> && first['msg'] != null) {
           return first['msg'].toString();
         }
@@ -127,6 +143,9 @@ class ApiException implements Exception {
     }
     if (lower.contains('token expired') || lower.contains('unauthorized')) {
       return 'Sesi Anda telah berakhir. Silakan masuk kembali.';
+    }
+    if (lower.contains('internal server error')) {
+      return 'Terjadi gangguan pada server saat memproses evaluasi ujian. Silakan coba beberapa saat lagi.';
     }
     return rawDetail;
   }

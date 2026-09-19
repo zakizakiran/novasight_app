@@ -47,3 +47,5 @@ app.*.map.json
 flutter-implementation-requirements.md
 openapi_latest.json
 openapi_pretty.json
+
+scratch/

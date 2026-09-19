@@ -3,6 +3,9 @@ import 'package:novasight_app/app/core/args/subject_args.dart';
 import 'package:novasight_app/app/data/model/subject_model.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
+import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
+import 'package:novasight_app/app/modules/module_detail/controllers/module_detail_controller.dart';
+import 'package:novasight_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
 
 class SubjectController extends GetxController {
   final ModuleRepository? moduleRepository;
@@ -44,10 +47,15 @@ class SubjectController extends GetxController {
 
   void onDone() {
     Get.back();
-    Get.back();
+    Get.back(result: true);
   }
 
   Future<void> onConfirmSubject() async {
+    // 0. Update ModuleDetailController optimistically
+    if (Get.isRegistered<ModuleDetailController>()) {
+      Get.find<ModuleDetailController>().markChapterDoneLocally(subject.id);
+    }
+
     // 1. Mark complete on backend via Student API
     if (studentRepository != null) {
       try {
@@ -59,5 +67,13 @@ class SubjectController extends GetxController {
 
     // 2. Mark complete on local mock repository if present
     moduleRepository?.onDoneSubject(subject.id);
+
+    // 3. Trigger background sync for ModuleController & StudentDashboardController
+    if (Get.isRegistered<ModuleController>()) {
+      Get.find<ModuleController>().onLoad();
+    }
+    if (Get.isRegistered<StudentDashboardController>()) {
+      Get.find<StudentDashboardController>().onRefresh();
+    }
   }
 }

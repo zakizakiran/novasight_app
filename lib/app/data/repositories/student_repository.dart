@@ -1,4 +1,5 @@
 import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/providers/student_provider.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 
@@ -86,6 +87,55 @@ class StudentRepository {
     required int chapterId,
   }) async {
     final response = await studentProvider.markChapterComplete(chapterId: chapterId);
+    return response.data;
+  }
+
+  /// Fetch all quizzes/exams for student
+  Future<List<QuizRequestStudentResponse>> getQuizzes({
+    required int classroomId,
+    QuizRequestStudentQueryStatus? status,
+  }) async {
+    final response = await studentProvider.getQuizzes(
+      classroomId: classroomId,
+      status: status,
+    );
+    return response.data;
+  }
+
+  /// Start quiz and listen to SSE events (questions list, timer ticks, timeout)
+  Stream<StudentQuizEvent> startQuizStream({
+    required int quizId,
+  }) {
+    return studentProvider.startQuizStream(quizId: quizId);
+  }
+
+  /// Submit answer for a specific question
+  Future<SoalSubmitResponse> submitSoalAnswer({
+    required int soalId,
+    required SoalSubmitRequest request,
+  }) async {
+    final response = await studentProvider.submitSoalAnswer(
+      soalId: soalId,
+      request: request,
+    );
+    return response.data;
+  }
+
+  /// Finish quiz
+  Future<Map<String, dynamic>> finishQuiz({
+    required int quizId,
+  }) async {
+    final response = await studentProvider.finishQuiz(quizId: quizId);
+    return response.data;
+  }
+
+  /// Get student quiz results with justifications
+  Future<List<QuizResultItem>> getMyQuizResults({
+    required int quizRequestId,
+  }) async {
+    final response = await studentProvider.getMyQuizResults(
+      quizRequestId: quizRequestId,
+    );
     return response.data;
   }
 }

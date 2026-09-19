@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/data/models/classroom_model.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
@@ -30,7 +31,8 @@ class StudentDashboardController extends GetxController {
   final RxBool isLoadingTasks = false.obs;
   final RxString tasksErrorMessage = ''.obs;
   final RxList<StudentModuleModel> taskModules = <StudentModuleModel>[].obs;
-  final RxList<dynamic> taskExams = <dynamic>[].obs;
+  final RxList<QuizRequestStudentResponse> taskExams =
+      <QuizRequestStudentResponse>[].obs;
   final Rx<StudentTaskStatus> selectedFilter = StudentTaskStatus.semua.obs;
 
   // Active student & classroom display information
@@ -131,13 +133,49 @@ class StudentDashboardController extends GetxController {
       isLoadingTasks.value = true;
       tasksErrorMessage.value = '';
 
-      final result = await studentRepository.getDashboardTasks(
-        classroomId: classroomId,
-        status: status ?? selectedFilter.value,
-      );
+      final targetStatus = status ?? selectedFilter.value;
 
-      taskModules.value = result.modules;
-      taskExams.value = result.exams;
+      // 1. Fetch dashboard tasks (maintains compatibility and initial state)
+      try {
+        final result = await studentRepository.getDashboardTasks(
+          classroomId: classroomId,
+          status: targetStatus,
+        );
+        taskModules.value = result.modules;
+        taskExams.value = result.exams;
+      } catch (_) {}
+
+      // 2. Fetch all modules & quizzes to ensure completed modules and all exams are always displayed
+      try {
+        final modulesFuture = (targetStatus == StudentTaskStatus.semua ||
+                targetStatus == StudentTaskStatus.materi)
+            ? studentRepository.getModules(
+                classroomId: classroomId,
+                status: StudentModuleStatus.semua,
+              )
+            : Future.value(<StudentModuleModel>[]);
+
+        final quizzesFuture = (targetStatus == StudentTaskStatus.semua ||
+                targetStatus == StudentTaskStatus.soalUjian)
+            ? studentRepository.getQuizzes(
+                classroomId: classroomId,
+                status: QuizRequestStudentQueryStatus.semua,
+              )
+            : Future.value(<QuizRequestStudentResponse>[]);
+
+        final results = await Future.wait([modulesFuture, quizzesFuture]);
+        final allModules = results[0] as List<StudentModuleModel>;
+        final allQuizzes = results[1] as List<QuizRequestStudentResponse>;
+
+        if (allModules.isNotEmpty || targetStatus == StudentTaskStatus.materi) {
+          taskModules.value = allModules;
+        }
+        if (allQuizzes.isNotEmpty || targetStatus == StudentTaskStatus.soalUjian) {
+          taskExams.value = allQuizzes;
+        }
+      } catch (_) {
+        // Fallback to dashboard tasks if modules/quizzes endpoint is not mocked or fails
+      }
     } on ApiException catch (e) {
       tasksErrorMessage.value = e.message;
     } catch (e) {
@@ -154,6 +192,32 @@ class StudentDashboardController extends GetxController {
 
     if (activeClassroomId.value != null) {
       await fetchTasks(activeClassroomId.value!, status: status);
+    }
+  }
+
+  /// Optimistically update module progress in taskModules
+  void updateModuleProgressLocally({
+    required int moduleId,
+    required int progressPercentage,
+    required bool isDone,
+  }) {
+    final index = taskModules.indexWhere((m) => m.id == moduleId);
+    if (index != -1) {
+      final old = taskModules[index];
+      final newProgress = old.progress != null
+          ? old.progress!.copyWith(
+              progressPercentage: progressPercentage,
+              isDone: isDone,
+            )
+          : ModuleProgressModel(
+              id: 0,
+              studentId: 0,
+              moduleId: moduleId,
+              progressPercentage: progressPercentage,
+              isDone: isDone,
+            );
+      taskModules[index] = old.copyWith(progress: newProgress);
+      taskModules.refresh();
     }
   }
 

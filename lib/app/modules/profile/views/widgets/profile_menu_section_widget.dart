@@ -3,11 +3,9 @@ import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 
 import '../../../../core/Dimens.dart';
+
 class ProfileMenuSection extends StatelessWidget {
-  const ProfileMenuSection({
-    super.key,
-    required this.items,
-  });
+  const ProfileMenuSection({super.key, required this.items});
 
   final List<Widget> items;
 
@@ -17,9 +15,7 @@ class ProfileMenuSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: ColorConstant.white,
         borderRadius: BorderRadius.circular(Dimens.radius),
-        boxShadow: [
-          BoxShadowConstant.module
-        ],
+        boxShadow: const [BoxShadowConstant.module],
       ),
       child: ListView.separated(
         shrinkWrap: true,
@@ -37,5 +33,3 @@ class ProfileMenuSection extends StatelessWidget {
     );
   }
 }
-
-

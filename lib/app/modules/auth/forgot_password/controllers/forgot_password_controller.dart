@@ -7,7 +7,8 @@ import '../../login/controllers/login_controller.dart';
 
 class ForgotPasswordController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
   // OTP
@@ -19,10 +20,10 @@ class ForgotPasswordController extends GetxController {
   final Rx<bool> isLoading = false.obs;
   final Rx<bool> isValid = false.obs;
 
-
   @override
   void onReady() {
-    step.value = (Get.arguments as ForgotPasswordStep?) ?? ForgotPasswordStep.email;
+    step.value =
+        (Get.arguments as ForgotPasswordStep?) ?? ForgotPasswordStep.email;
     super.onReady();
   }
 
@@ -49,17 +50,21 @@ class ForgotPasswordController extends GetxController {
   }
 
   void onChange(String _) {
-    final bool isResetPassword = ValidateHelper.isPasswordConfirmationBool(passwordController.text, confirmPasswordController.text);
+    final bool isResetPassword = ValidateHelper.isPasswordConfirmationBool(
+      passwordController.text,
+      confirmPasswordController.text,
+    );
     final bool isCondition = switch (step.value) {
       ForgotPasswordStep.email =>
-      emailController.text.isNotEmpty && ValidateHelper.isEmailValidateBool(emailController.text),
+        emailController.text.isNotEmpty &&
+            ValidateHelper.isEmailValidateBool(emailController.text),
 
-      ForgotPasswordStep.otp =>
-      otpController.text.length == 6,
+      ForgotPasswordStep.otp => otpController.text.length == 6,
 
       ForgotPasswordStep.resetPassword =>
-      passwordController.text.isNotEmpty &&
-          confirmPasswordController.text.isNotEmpty && isResetPassword,
+        passwordController.text.isNotEmpty &&
+            confirmPasswordController.text.isNotEmpty &&
+            isResetPassword,
     };
     isValid.value = isCondition;
   }
@@ -74,7 +79,7 @@ class ForgotPasswordController extends GetxController {
 
   @override
   void onClose() {
-    print("LoginController disposed: ${hashCode}");
+    print("LoginController disposed: $hashCode");
     passwordController.dispose();
     confirmPasswordController.dispose();
     emailController.dispose();
@@ -91,11 +96,7 @@ enum ForgotPasswordStep {
   otp(2, "Konfirmasi OTP", "Isi OTP yang telah dikirim"),
   resetPassword(3, "Reset Kata Sandi", "Buat kata sandi baru");
 
-  const ForgotPasswordStep(
-      this.step,
-      this.title,
-      this.description,
-      );
+  const ForgotPasswordStep(this.step, this.title, this.description);
   final int step;
   final String title;
   final String description;

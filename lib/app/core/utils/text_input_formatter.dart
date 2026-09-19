@@ -1,41 +1,27 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ClassCodeFormatter extends TextInputFormatter {
+  final int maxLength;
+
+  ClassCodeFormatter({this.maxLength = 7});
+
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
-    String input  = newValue.text.replaceAll(RegExp(r'[\s-]'), '');
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Hilangkan semua karakter non-alphanumeric (spasi, tanda strip/dash, dll.) dan ubah ke uppercase
+    String clean =
+        newValue.text.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toUpperCase();
 
-    final letters = StringBuffer();
-    final numbers = StringBuffer();
-
-    for (final ch in input.characters) {
-      if (letters.length < 3 && RegExp(r'[A-Za-z]').hasMatch(ch)) {
-        letters.write(ch.toUpperCase());
-      } else if (letters.length >= 3 && RegExp(r'\d').hasMatch(ch) && numbers.length < 4) {
-        numbers.write(ch);
-      }
+    if (clean.length > maxLength) {
+      clean = clean.substring(0, maxLength);
     }
-
-    String formatted = "";
-
-    for (int i = 0; i < letters.length; i++) {
-      formatted += letters.toString()[i];
-    }
-
-    if (numbers.isNotEmpty) {
-      formatted += "-$numbers";
-    }
-
-
 
     return TextEditingValue(
-      text: formatted,
+      text: clean,
       selection: TextSelection.collapsed(
-        offset: formatted.length,
+        offset: clean.length,
       ),
     );
   }

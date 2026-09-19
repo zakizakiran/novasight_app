@@ -24,11 +24,12 @@ class ProfileStudentWidget extends StatelessWidget {
       final studentProfile = controller.profile.value?.student;
       final cachedClass = controller.className.value;
 
-      final nisText = (studentProfile?.nisn != null && studentProfile!.nisn!.isNotEmpty)
+      final nisText =
+          (studentProfile?.nisn != null && studentProfile!.nisn!.isNotEmpty)
           ? studentProfile.nisn!
           : ((studentProfile?.nis != null && studentProfile!.nis!.isNotEmpty)
-              ? studentProfile.nis!
-              : student.studentId);
+                ? studentProfile.nis!
+                : student.studentId);
 
       final schoolOrClass = (cachedClass.isNotEmpty)
           ? cachedClass
@@ -106,19 +107,16 @@ class ProfileStudentWidget extends StatelessWidget {
     return Semantics(
       container: true,
       label:
-      "$title ${spellDigits ? TextHelper.spellDigitsId(description ?? "") : description ?? ""}",
+          "$title ${spellDigits ? TextHelper.spellDigitsId(description ?? "") : description ?? ""}",
       child: ExcludeSemantics(
         child: Row(
           spacing: Dimens.spacePadding,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              icon,
-              size: Dimens.iconMidSize,
-              color: ColorConstant.darkGrey,
-            ),
+            Icon(icon, size: Dimens.iconMidSize, color: ColorConstant.darkGrey),
             Expanded(
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,

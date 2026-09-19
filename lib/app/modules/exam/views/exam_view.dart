@@ -57,12 +57,20 @@ class ExamView extends GetView<ExamController> {
                         itemBuilder: (context, i) {
                           return ExamCardWidget(
                             exam: exams[i],
-                            onDetail: () {
-                              if (exams[i].status == ModuleStatus.done) {
-                                Get.toNamed(Routes.EXAM_REVIEW, arguments: exams[i].id);
+                            onDetail: () async {
+                              final examItem = exams[i];
+                              if (examItem.status == ModuleStatus.done) {
+                                await Get.toNamed(
+                                  Routes.EXAM_REVIEW,
+                                  arguments: examItem.rawQuiz ?? int.tryParse(examItem.id) ?? examItem.id,
+                                );
                               } else {
-                                Get.toNamed(Routes.EXAM_DETAIL, arguments: exams[i].id);
+                                await Get.toNamed(
+                                  Routes.EXAM_DETAIL,
+                                  arguments: examItem.rawQuiz ?? examItem,
+                                );
                               }
+                              controller.onLoad();
                             },
                           );
                         },

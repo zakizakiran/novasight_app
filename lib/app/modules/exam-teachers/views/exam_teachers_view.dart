@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/generate_exam_args.dart';
+import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
 import '../../../common/common_button_widget.dart';
 import '../../../core/dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
@@ -9,7 +9,6 @@ import '../../../common/common_card_widget.dart';
 import '../../../core/styles/svg/svg_constant.dart';
 import '../../../core/utils/dialog_helper.dart';
 import '../controllers/exam_teachers_controller.dart';
-import '../models/exam_teacher_model.dart';
 import '../../../routes/app_pages.dart';
 
 class ExamTeachersView extends GetView<ExamTeachersController> {
@@ -25,9 +24,9 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
         title: Text(
           'Soal Ujian',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.textDarkGreyColor,
-              ),
+            fontWeight: FontWeight.bold,
+            color: ColorConstant.textDarkGreyColor,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -39,14 +38,17 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                   Get.toNamed(Routes.GENERATE_EXAM);
                 },
                 icon: const Icon(Icons.add, size: 16),
-                label: const Text('Buat Soal'),
+                label: const Text('Buat Soal (Quizzer)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorConstant.primary,
                   foregroundColor: ColorConstant.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                 ),
               ),
             ),
@@ -61,7 +63,9 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
           // Filter Chips
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: Dimens.innerPadding),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Dimens.innerPadding,
+            ),
             child: Obx(
               () => Row(
                 children: controller.filterOptions.map((filter) {
@@ -72,19 +76,30 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                       onTap: () => controller.setFilter(filter),
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
-                          color: isSelected ? ColorConstant.primary : Colors.transparent,
+                          color: isSelected
+                              ? ColorConstant.primary
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: isSelected ? ColorConstant.primary : ColorConstant.grey,
+                            color: isSelected
+                                ? ColorConstant.primary
+                                : ColorConstant.grey,
                           ),
                         ),
                         child: Text(
                           filter,
                           style: TextStyle(
-                            color: isSelected ? ColorConstant.white : ColorConstant.textGreyColor,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            color: isSelected
+                                ? ColorConstant.white
+                                : ColorConstant.textGreyColor,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                       ),
@@ -98,22 +113,85 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
           // Exam List
           Expanded(
             child: Obx(() {
-              final exams = controller.filteredExams;
-              if (exams.isEmpty) {
+              if (controller.isLoading.value && controller.quizzes.isEmpty) {
                 return const Center(
-                  child: Text(
-                    'Tidak ada data ujian',
-                    style: TextStyle(color: ColorConstant.textGreyColor),
+                  child: CircularProgressIndicator(
+                    color: ColorConstant.primary,
                   ),
                 );
               }
-              return ListView.separated(
-                padding: const EdgeInsets.all(Dimens.innerPadding),
-                itemCount: exams.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  return _buildExamCard(context, exams[index]);
-                },
+
+              if (controller.errorMessage.value.isNotEmpty &&
+                  controller.quizzes.isEmpty) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(Dimens.innerPadding),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 48,
+                          color: ColorConstant.redColor,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          controller.errorMessage.value,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: ColorConstant.textDarkGreyColor,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => controller.fetchQuizzes(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorConstant.primary,
+                            foregroundColor: ColorConstant.white,
+                          ),
+                          child: const Text('Coba Lagi'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              final quizzes = controller.quizzes;
+              if (quizzes.isEmpty) {
+                return RefreshIndicator(
+                  color: ColorConstant.primary,
+                  onRefresh: () => controller.fetchQuizzes(showLoading: false),
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: const Center(
+                          child: Text(
+                            'Tidak ada data ujian',
+                            style: TextStyle(color: ColorConstant.textGreyColor),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return RefreshIndicator(
+                color: ColorConstant.primary,
+                onRefresh: () => controller.fetchQuizzes(showLoading: false),
+                child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(Dimens.innerPadding),
+                  itemCount: quizzes.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 16),
+                  itemBuilder: (context, index) {
+                    return _buildQuizCard(context, quizzes[index]);
+                  },
+                ),
               );
             }),
           ),
@@ -122,8 +200,14 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
     );
   }
 
-  Widget _buildExamCard(BuildContext context, ExamTeacherModel exam) {
-    bool isPublish = exam.status == 'Publish';
+  Widget _buildQuizCard(BuildContext context, QuizRequestTeacherModel quiz) {
+    final isPublish = quiz.isPublished;
+    final isPublishingThis = controller.publishingQuizId.value == quiz.id;
+    final isDeletingThis = controller.deletingQuizId.value == quiz.id;
+
+    final moduleTitle = quiz.module.title.isNotEmpty
+        ? quiz.module.title
+        : 'Modul #${quiz.moduleId}';
 
     return CommonCardWidget(
       child: Column(
@@ -135,24 +219,31 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
             children: [
               Expanded(
                 child: Text(
-                  exam.title,
+                  quiz.title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstant.textDarkGreyColor,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstant.textDarkGreyColor,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
-                  color: isPublish ? ColorConstant.green.withValues(alpha: 0.1) : ColorConstant.grey.withValues(alpha: 0.5),
+                  color: isPublish
+                      ? ColorConstant.green.withValues(alpha: 0.1)
+                      : ColorConstant.grey.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  exam.status,
+                  isPublish ? 'Publish' : 'Draft',
                   style: TextStyle(
-                    color: isPublish ? ColorConstant.green : ColorConstant.textDarkGreyColor,
+                    color: isPublish
+                        ? ColorConstant.green
+                        : ColorConstant.textDarkGreyColor,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -163,10 +254,10 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
           const SizedBox(height: 4),
           // Subtitle
           Text(
-            '${exam.questionCount} soal · ${exam.type} · ${exam.difficulty}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorConstant.textGreyColor,
-                ),
+            '${quiz.questionCounts} soal · Durasi ${quiz.maxDurationMinutes} menit',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: ColorConstant.textGreyColor),
           ),
           const SizedBox(height: 4),
           // Attachment
@@ -180,10 +271,10 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
-                  exam.moduleName,
+                  moduleTitle,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ColorConstant.textGreyColor,
-                      ),
+                    color: ColorConstant.textGreyColor,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -197,10 +288,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    Get.toNamed(
-                        Routes.EXAM_TEACHERS_DETAIL,
-                      arguments: exam
-                    );
+                    Get.toNamed(Routes.EXAM_TEACHERS_DETAIL, arguments: quiz);
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: ColorConstant.textDarkGreyColor,
@@ -217,9 +305,11 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      controller.onChangeExamStatus(exam,"Publish");
-                    },
+                    onPressed: isPublishingThis
+                        ? null
+                        : () {
+                            controller.onChangeQuizStatus(quiz, "publish");
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstant.primary,
                       foregroundColor: ColorConstant.white,
@@ -228,36 +318,60 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
-                    child: const Text('Publish Soal'),
+                    child: isPublishingThis
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: ColorConstant.white,
+                            ),
+                          )
+                        : const Text('Publish Soal'),
                   ),
                 ),
               ],
               const SizedBox(width: 8),
               TextButton.icon(
-                onPressed: () {
-                  DialogHelper.show(
-                    title: "Hapus Soal Ujian",
-                    description: "Anda yakin ingin menghapus soal ujian ini?",
-                    colorDescription: ColorConstant.textDarkGreyColor,
-                    icon: SvgPicture.asset(
-                      SvgConstant.iconTrashConfirmation,
-                      width: Dimens.iconBigSize,
-                      height: Dimens.iconBigSize,
-                    ),
-                    actions: CommonButtonWidget(
-                      buttonName: "Konfirmasi",
-                      buttonColor: ColorConstant.redColor,
-                      onPressed: () {
-                        controller.onDeleteExam(exam);
+                onPressed: isDeletingThis
+                    ? null
+                    : () {
+                        DialogHelper.show(
+                          title: "Hapus Soal Ujian",
+                          description:
+                              'Anda yakin ingin menghapus "${quiz.title}"?',
+                          colorDescription: ColorConstant.textDarkGreyColor,
+                          icon: SvgPicture.asset(
+                            SvgConstant.iconTrashConfirmation,
+                            width: Dimens.iconBigSize,
+                            height: Dimens.iconBigSize,
+                          ),
+                          actions: CommonButtonWidget(
+                            buttonName: "Konfirmasi",
+                            buttonColor: ColorConstant.redColor,
+                            onPressed: () {
+                              controller.onDeleteQuiz(quiz);
+                            },
+                          ),
+                        );
                       },
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.delete_outline, size: 16),
+                icon: isDeletingThis
+                    ? const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.red,
+                        ),
+                      )
+                    : const Icon(Icons.delete_outline, size: 16),
                 label: const Text('Hapus'),
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
                 ),
               ),
             ],

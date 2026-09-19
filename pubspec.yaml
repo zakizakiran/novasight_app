@@ -47,6 +47,8 @@ dependencies:
   shared_preferences: ^2.5.5
   google_nav_bar: ^5.0.7
   dio: ^5.7.0
+  syncfusion_flutter_pdf: ^34.2.7
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +61,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

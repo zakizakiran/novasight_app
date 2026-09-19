@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../controllers/generate_exam_controller.dart';
@@ -30,6 +31,44 @@ class Step1View extends GetView<GenerateExamController> {
           const SizedBox(height: 16),
           Expanded(
             child: Obx(() {
+              if (controller.isLoadingModules.value &&
+                  controller.availableModules.isEmpty) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: ColorConstant.primary,
+                  ),
+                );
+              }
+
+              if (controller.availableModules.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.library_books_outlined,
+                        size: 48,
+                        color: ColorConstant.textGreyColor,
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Belum ada modul yang tersedia.',
+                        style: TextStyle(color: ColorConstant.textGreyColor),
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () => controller.loadModules(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorConstant.primary,
+                          foregroundColor: ColorConstant.white,
+                        ),
+                        child: const Text('Muat Ulang'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
               final currentSelectedId = controller.selectedModuleId.value;
 
               return ListView.separated(
@@ -40,9 +79,11 @@ class Step1View extends GetView<GenerateExamController> {
                   final module = controller.availableModules[index];
                   bool isSelected = currentSelectedId == module.id;
 
+                  final dateStr =
+                      DateFormat('dd MMM yyyy').format(module.createdAt);
+
                   return GestureDetector(
-                    onTap: () =>
-                        controller.selectModule(module.id, module.title),
+                    onTap: () => controller.selectModule(module),
                     child: Container(
                       decoration: BoxDecoration(
                         color: isSelected
@@ -102,7 +143,7 @@ class Step1View extends GetView<GenerateExamController> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Kelas 10 • 16 Jun 2026', // Mock date
+                                  'Dibuat: $dateStr',
                                   style: Theme.of(context).textTheme.bodySmall
                                       ?.copyWith(
                                         color: ColorConstant.textGreyColor,

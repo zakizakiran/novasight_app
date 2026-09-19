@@ -11,11 +11,7 @@ class ExamCardWidget extends StatelessWidget {
   final ExamDummyModel exam;
   final VoidCallback onDetail;
 
-  const ExamCardWidget({
-    super.key,
-    required this.exam,
-    required this.onDetail,
-  });
+  const ExamCardWidget({super.key, required this.exam, required this.onDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +19,7 @@ class ExamCardWidget extends StatelessWidget {
       onTap: onDetail,
       child: CommonCardWidget(
         border: BorderStyleConstant.outlineBorderCard,
-        boxShadow: [
-          BoxShadowConstant.module,
-        ],
+        boxShadow: const [BoxShadowConstant.module],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: Dimens.spaceSmallPadding,
@@ -37,8 +31,8 @@ class ExamCardWidget extends StatelessWidget {
                   child: Text(
                     'Soal Ujian',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: ColorConstant.textPrimaryColor,
-                        ),
+                      color: ColorConstant.textPrimaryColor,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -56,9 +50,9 @@ class ExamCardWidget extends StatelessWidget {
                   child: Text(
                     'Nilai: ${exam.nilai}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: ColorConstant.green,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: ColorConstant.green,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -67,14 +61,14 @@ class ExamCardWidget extends StatelessWidget {
             Text(
               exam.title,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: ColorConstant.textDarkGreyColor,
-                  ),
+                color: ColorConstant.textDarkGreyColor,
+              ),
             ),
             Text(
               exam.subtitle,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: ColorConstant.textDarkGreyColor,
-                  ),
+                color: ColorConstant.textDarkGreyColor,
+              ),
             ),
             const SizedBox(height: Dimens.spaceMediumPadding),
             Row(
@@ -84,8 +78,8 @@ class ExamCardWidget extends StatelessWidget {
                   child: Text(
                     exam.statusText,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: ColorConstant.textGreyColor,
-                        ),
+                      color: ColorConstant.textGreyColor,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -95,11 +89,13 @@ class ExamCardWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      exam.status == ModuleStatus.done ? 'Lihat Hasil Ujian' : 'Kerjakan',
+                      exam.status == ModuleStatus.done
+                          ? 'Evaluaizer (Hasil Ujian)'
+                          : 'Kerjakan',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: ColorConstant.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: ColorConstant.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(width: 4),
                     const Icon(

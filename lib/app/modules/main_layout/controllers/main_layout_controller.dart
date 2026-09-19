@@ -6,9 +6,12 @@ import 'package:novasight_app/app/core/utils/user_roles.dart';
 import '../../chatbot/views/chatbot_view.dart' show ChatbotView;
 import '../../exam-teachers/views/exam_teachers_view.dart';
 import '../../exam/views/exam_view.dart';
+import '../../module/controllers/module_controller.dart';
 import '../../module/views/module_view.dart';
+import '../../module_teachers/module_teacher/controllers/module_teacher_controller.dart';
 import '../../module_teachers/module_teacher/views/module_teacher_view.dart';
 import '../../profile/views/profile_view.dart';
+import '../../student-dashboard/controllers/student_dashboard_controller.dart';
 import '../../student-dashboard/views/student_dashboard_view.dart';
 import '../../teacher-dashboard/views/teacher_dashboard_view.dart';
 import '../model/bottom_nav_item.dart';
@@ -28,6 +31,17 @@ class MainLayoutController extends GetxController {
 
   void changePage(int index) {
     currentIndex.value = index;
+    if (currentRole == UserRoles.guru && index == 1) {
+      if (Get.isRegistered<ModuleTeacherController>()) {
+        Get.find<ModuleTeacherController>().onLoad(showLoading: false);
+      }
+    } else if (currentRole == UserRoles.siswa) {
+      if (index == 0 && Get.isRegistered<StudentDashboardController>()) {
+        Get.find<StudentDashboardController>().onRefresh();
+      } else if (index == 1 && Get.isRegistered<ModuleController>()) {
+        Get.find<ModuleController>().onLoad();
+      }
+    }
   }
 
   List<Widget> get pages => switch (currentRole) {
@@ -73,8 +87,8 @@ class MainLayoutController extends GetxController {
     ),
     BottomNavItem(
       icon: Icons.chat_bubble_outline,
-      title: "Chatbot",
-      semanticLabel: "Chatbot",
+      title: "Clarifier",
+      semanticLabel: "Clarifier (Tanya Materi Modul)",
     ),
     BottomNavItem(
       icon: Icons.person_outline,

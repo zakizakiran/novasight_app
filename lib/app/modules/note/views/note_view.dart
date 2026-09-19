@@ -27,7 +27,7 @@ class NoteView extends GetView<NoteController> {
         body: Column(
           children: [
             CommonAppBar(
-              title: "Catatan Pengerjaan",
+              title: "Scriber — Catatan Pengerjaan",
               description: "Soal ${controller.index} dari ${controller.total}",
             ),
             Expanded(

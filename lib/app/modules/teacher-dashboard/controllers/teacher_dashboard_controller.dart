@@ -1,22 +1,30 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/data/models/classroom_model.dart';
+import 'package:novasight_app/app/data/models/teacher_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
+import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/main.dart';
 
 import '../../main_layout/controllers/main_layout_controller.dart';
 
 class TeacherDashboardController extends GetxController {
   final ClassroomRepository classroomRepository;
+  final TeacherRepository? teacherRepository;
   final StorageService storageService;
 
   TeacherDashboardController({
     ClassroomRepository? classroomRepository,
+    TeacherRepository? teacherRepository,
     StorageService? storageService,
   })  : classroomRepository =
             classroomRepository ?? Get.find<ClassroomRepository>(),
+        teacherRepository = teacherRepository ??
+            (Get.isRegistered<TeacherRepository>()
+                ? Get.find<TeacherRepository>()
+                : null),
         storageService = storageService ?? Get.find<StorageService>();
 
   MainLayoutController? mainController;
@@ -28,6 +36,14 @@ class TeacherDashboardController extends GetxController {
   final RxBool isLoadingClassroom = false.obs;
   final RxList<ClassroomResponseModel> classrooms =
       <ClassroomResponseModel>[].obs;
+  final Rxn<ClassroomResponseModel> selectedClassroom =
+      Rxn<ClassroomResponseModel>();
+
+  // Dashboard Reactive States (Adheres to Section 5 of flutter-implementation-requirements.md)
+  final RxBool isLoadingDashboard = false.obs;
+  final RxString dashboardErrorMessage = ''.obs;
+  final Rxn<TeacherDashboardModel> dashboardData =
+      Rxn<TeacherDashboardModel>();
 
   @override
   void onInit() {
@@ -66,6 +82,7 @@ class TeacherDashboardController extends GetxController {
         final selected = result.firstWhereOrNull((c) => c.code == cachedCode) ??
             result.last;
 
+        selectedClassroom.value = selected;
         classCode.value = selected.code;
         className.value = selected.name;
         classSubtitle.value =
@@ -73,12 +90,51 @@ class TeacherDashboardController extends GetxController {
 
         await storageService.writeClassCode(selected.code);
         await storageService.writeClassName(selected.name);
+
+        await fetchDashboard(classroomId: selected.id);
+      } else {
+        dashboardErrorMessage.value = 'Belum ada kelas yang dibuat.';
       }
     } catch (_) {
       // Keep cached values if fetch fails
     } finally {
       isLoadingClassroom.value = false;
     }
+  }
+
+  Future<void> fetchDashboard({required int classroomId}) async {
+    if (teacherRepository == null) return;
+    try {
+      isLoadingDashboard.value = true;
+      dashboardErrorMessage.value = '';
+      final result = await teacherRepository!.getDashboard(
+        classroomId: classroomId,
+      );
+      dashboardData.value = result;
+
+      if (result.classroomInfo != null) {
+        if (result.classroomInfo!.code != null &&
+            result.classroomInfo!.code!.isNotEmpty) {
+          classCode.value = result.classroomInfo!.code!;
+        }
+        classSubtitle.value =
+            '${result.classroomInfo!.classroomType} - Kelas ${result.classroomInfo!.gradeClass}';
+      }
+      if (result.teacherEmail.isNotEmpty) {
+        teacherName.value = result.teacherEmail;
+      }
+    } on ApiException catch (e) {
+      dashboardErrorMessage.value = e.message;
+    } catch (e) {
+      dashboardErrorMessage.value =
+          'Terjadi kesalahan saat memuat dashboard: ${e.toString()}';
+    } finally {
+      isLoadingDashboard.value = false;
+    }
+  }
+
+  Future<void> refreshDashboard() async {
+    await fetchClassrooms();
   }
 
   Future<void> onCopyClassCode() async {

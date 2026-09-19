@@ -1,6 +1,7 @@
 /// DTO models for Classroom API endpoints.
 /// Maps to the API contract schemas: ClassroomCreate, ClassroomResponse,
 /// ClassroomTypeResponse, CityResponse, SchoolResponse.
+library;
 
 class ClassroomTypeModel {
   final int id;

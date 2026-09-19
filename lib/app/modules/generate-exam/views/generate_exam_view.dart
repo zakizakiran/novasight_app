@@ -16,7 +16,7 @@ class GenerateExamView extends GetView<GenerateExamController> {
     return Scaffold(
       backgroundColor: ColorConstant.background,
       appBar: AppBar(
-        title: const Text('Buat Soal Ujian'),
+        title: const Text('Quizzer — Buat Soal Ujian'),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

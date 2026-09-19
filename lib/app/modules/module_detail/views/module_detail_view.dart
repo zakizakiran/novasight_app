@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/common/common_card_widget.dart';
+import 'package:novasight_app/app/common/common_gradient_progress_bar_widget.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
@@ -190,6 +191,9 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
   Widget _buildContent(BuildContext context) {
     if (controller.hasApiDetail) {
       final detail = controller.studentModule.value!;
+      final progress = detail.progress;
+      final percentage = progress?.progressPercentage ?? 0;
+
       return Column(
         children: [
           CommonAppBar(
@@ -201,6 +205,46 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (progress != null) ...[
+                  CommonCardWidget(
+                    border: BorderStyleConstant.outlineBorderCard,
+                    boxShadow: const [BoxShadowConstant.module],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Progres Pembelajaran',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: ColorConstant.textPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            Text(
+                              '$percentage% Selesai',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: ColorConstant.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        CommonGradientProgressBarWidget(
+                          percentage: (percentage.clamp(0, 100)) / 100,
+                          colors: const [
+                            ColorConstant.linearSecondary,
+                            ColorConstant.linearPrimary,
+                          ],
+                          stops: const [0.2, 1.0],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: Dimens.spacePadding),
+                ],
                 Text(
                   "Daftar Isi",
                   style: Theme.of(context).textTheme.displaySmall?.copyWith(
@@ -228,6 +272,8 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
       );
     }
 
+    final localPercentage = module.toPercentageDone();
+
     return Column(
       children: [
         CommonAppBar(
@@ -239,6 +285,44 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              CommonCardWidget(
+                border: BorderStyleConstant.outlineBorderCard,
+                boxShadow: const [BoxShadowConstant.module],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Progres Pembelajaran',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: ColorConstant.textPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        Text(
+                          '$localPercentage% Selesai',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: ColorConstant.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    CommonGradientProgressBarWidget(
+                      percentage: (localPercentage.clamp(0, 100)) / 100,
+                      colors: const [
+                        ColorConstant.linearSecondary,
+                        ColorConstant.linearPrimary,
+                      ],
+                      stops: const [0.2, 1.0],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: Dimens.spacePadding),
               Text(
                 "Daftar Isi",
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(

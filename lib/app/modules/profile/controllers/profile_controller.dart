@@ -16,8 +16,7 @@ class ProfileController extends GetxController {
 
   StorageService get storageService => _repository.storageService;
 
-  ProfileController({required AuthRepository repository})
-      : _repository = repository;
+  ProfileController({required this._repository});
 
   void init() {
     role.value = _repository.storageService.getRole();
@@ -64,15 +63,5 @@ class ProfileController extends GetxController {
     super.onInit();
     init();
     loadProfile();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

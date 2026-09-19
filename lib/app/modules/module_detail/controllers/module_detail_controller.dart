@@ -10,6 +10,8 @@ import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
+import 'package:novasight_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 class ModuleDetailController extends GetxController {
@@ -109,6 +111,66 @@ class ModuleDetailController extends GetxController {
     }
   }
 
+  /// Optimistically mark chapter done and update module progress
+  void markChapterDoneLocally(int chapterId) {
+    if (studentModule.value != null) {
+      final current = studentModule.value!;
+      final updatedChapters = current.chapters.map((ch) {
+        if (ch.id == chapterId) {
+          return ch.copyWith(
+            chapterProgress: StudentChapterProgressModel(
+              isDone: true,
+              completedAt: DateTime.now(),
+            ),
+          );
+        }
+        return ch;
+      }).toList();
+
+      final totalCount = updatedChapters.length;
+      final doneCount = updatedChapters
+          .where((ch) => ch.chapterProgress?.isDone == true)
+          .length;
+      final newPercentage =
+          totalCount > 0 ? ((doneCount / totalCount) * 100).round() : 0;
+      final isAllDone = totalCount > 0 && doneCount == totalCount;
+
+      final updatedProgress = current.progress != null
+          ? current.progress!.copyWith(
+              progressPercentage: newPercentage,
+              isDone: isAllDone,
+            )
+          : ModuleProgressModel(
+              id: 0,
+              studentId: 0,
+              moduleId: current.id,
+              progressPercentage: newPercentage,
+              isDone: isAllDone,
+            );
+
+      studentModule.value = current.copyWith(
+        chapters: updatedChapters,
+        progress: updatedProgress,
+      );
+
+      // Also proactively update ModuleController and StudentDashboardController in memory
+      if (Get.isRegistered<ModuleController>()) {
+        Get.find<ModuleController>().updateModuleProgressLocally(
+          moduleId: current.id,
+          progressPercentage: newPercentage,
+          isDone: isAllDone,
+        );
+      }
+      if (Get.isRegistered<StudentDashboardController>()) {
+        Get.find<StudentDashboardController>().updateModuleProgressLocally(
+          moduleId: current.id,
+          progressPercentage: newPercentage,
+          isDone: isAllDone,
+        );
+      }
+    }
+  }
+
   /// Start a chapter from the API and convert its blocks into readable subject pages
   Future<void> onChapterStudent(
     StudentChapterSummaryModel chapter,
@@ -150,10 +212,11 @@ class ModuleDetailController extends GetxController {
           pages: pages,
         );
 
-        Get.toNamed(
+        await Get.toNamed(
           Routes.SUBJECT,
           arguments: SubjectArgs(subject: subject, index: index),
         );
+        await onLoad();
         return;
       }
 
@@ -169,10 +232,11 @@ class ModuleDetailController extends GetxController {
           ),
         ],
       );
-      Get.toNamed(
+      await Get.toNamed(
         Routes.SUBJECT,
         arguments: SubjectArgs(subject: fallbackSubject, index: index),
       );
+      await onLoad();
     } catch (_) {
       // Fallback below if API call encounters issue
       final fallbackSubject = SubjectModel(
@@ -186,19 +250,21 @@ class ModuleDetailController extends GetxController {
           ),
         ],
       );
-      Get.toNamed(
+      await Get.toNamed(
         Routes.SUBJECT,
         arguments: SubjectArgs(subject: fallbackSubject, index: index),
       );
+      await onLoad();
     } finally {
       startingChapterId.value = null;
     }
   }
 
-  void onSubject(SubjectModel subject, int index) {
-    Get.toNamed(
+  Future<void> onSubject(SubjectModel subject, int index) async {
+    await Get.toNamed(
       Routes.SUBJECT,
       arguments: SubjectArgs(subject: subject, index: index),
     );
+    await onLoad();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
-import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
@@ -13,6 +13,7 @@ class ExamDummyModel {
   final String statusText;
   final String nilai;
   final ModuleStatus status;
+  final QuizRequestStudentResponse? rawQuiz;
 
   ExamDummyModel({
     required this.id,
@@ -21,6 +22,7 @@ class ExamDummyModel {
     required this.statusText,
     required this.nilai,
     required this.status,
+    this.rawQuiz,
   });
 }
 
@@ -49,7 +51,9 @@ class ExamController extends GetxController {
   final selectedStatus = ModuleStatus.all.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
-  final RxList<dynamic> apiExams = <dynamic>[].obs;
+  final RxList<QuizRequestStudentResponse> quizzes =
+      <QuizRequestStudentResponse>[].obs;
+  RxList<QuizRequestStudentResponse> get apiExams => quizzes;
 
   final exams = <ExamDummyModel>[
     ExamDummyModel(
@@ -87,6 +91,31 @@ class ExamController extends GetxController {
   ];
 
   List<ExamDummyModel> get filteredExams {
+    if (quizzes.isNotEmpty) {
+      final list = quizzes.map((q) {
+        final isDone = q.progress?.isDone == true;
+        return ExamDummyModel(
+          id: q.id.toString(),
+          title: q.title,
+          subtitle: q.module.title,
+          statusText: isDone ? 'Selesai dikerjakan' : 'Belum dikerjakan',
+          nilai: q.progress?.score != null
+              ? q.progress!.score!.toInt().toString()
+              : '-',
+          status: isDone ? ModuleStatus.done : ModuleStatus.notDone,
+          rawQuiz: q,
+        );
+      }).toList();
+
+      return switch (selectedStatus.value) {
+        ModuleStatus.all => list,
+        ModuleStatus.notDone =>
+          list.where((e) => e.status == ModuleStatus.notDone).toList(),
+        ModuleStatus.done =>
+          list.where((e) => e.status == ModuleStatus.done).toList(),
+      };
+    }
+
     return switch (selectedStatus.value) {
       ModuleStatus.all => exams.toList(),
       ModuleStatus.notDone =>
@@ -115,11 +144,17 @@ class ExamController extends GetxController {
       }
 
       if (classroomId != null) {
-        final result = await studentRepository!.getDashboardTasks(
+        final queryStatus = switch (selectedStatus.value) {
+          ModuleStatus.all => QuizRequestStudentQueryStatus.semua,
+          ModuleStatus.notDone => QuizRequestStudentQueryStatus.belumDikerjakan,
+          ModuleStatus.done => QuizRequestStudentQueryStatus.selesai,
+        };
+
+        final result = await studentRepository!.getQuizzes(
           classroomId: classroomId,
-          status: StudentTaskStatus.soalUjian,
+          status: queryStatus,
         );
-        apiExams.value = result.exams;
+        quizzes.value = result;
       }
     } on ApiException catch (e) {
       errorMessage.value = e.message;

@@ -135,18 +135,45 @@ class ModuleController extends GetxController {
     onLoad();
   }
 
-  void onDetailStudent(StudentModuleModel module) {
-    Get.toNamed(
-      Routes.MODULE_DETAIL,
-      arguments: module.id,
-    );
+  void updateModuleProgressLocally({
+    required int moduleId,
+    required int progressPercentage,
+    required bool isDone,
+  }) {
+    final index = studentModules.indexWhere((m) => m.id == moduleId);
+    if (index != -1) {
+      final old = studentModules[index];
+      final newProgress = old.progress != null
+          ? old.progress!.copyWith(
+              progressPercentage: progressPercentage,
+              isDone: isDone,
+            )
+          : ModuleProgressModel(
+              id: 0,
+              studentId: 0,
+              moduleId: moduleId,
+              progressPercentage: progressPercentage,
+              isDone: isDone,
+            );
+      studentModules[index] = old.copyWith(progress: newProgress);
+      studentModules.refresh();
+    }
   }
 
-  void onDetail(ModuleModel module) {
-    Get.toNamed(
+  Future<void> onDetailStudent(StudentModuleModel module) async {
+    await Get.toNamed(
       Routes.MODULE_DETAIL,
       arguments: module.id,
     );
+    await onLoad();
+  }
+
+  Future<void> onDetail(ModuleModel module) async {
+    await Get.toNamed(
+      Routes.MODULE_DETAIL,
+      arguments: module.id,
+    );
+    await onLoad();
   }
 
   @override

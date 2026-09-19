@@ -4,6 +4,6 @@ class EnvConfig {
     defaultValue: 'http://72.61.215.214:8003',
   );
 
-  static const int connectTimeout = 15000; // 15 seconds
-  static const int receiveTimeout = 15000; // 15 seconds
+  static const int connectTimeout = 60000; // 15 seconds
+  static const int receiveTimeout = 60000; // 15 seconds
 }

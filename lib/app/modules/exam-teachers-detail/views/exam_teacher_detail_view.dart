@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
+import 'package:novasight_app/app/core/utils/dialog_helper.dart';
 import 'package:novasight_app/app/modules/exam-teachers-detail/views/widgets/exam_header_widget.dart';
 import 'package:novasight_app/app/modules/exam-teachers-detail/views/widgets/icon_status.dart';
-import 'package:novasight_app/app/modules/exam-teachers/models/exam_teacher_model.dart';
 
 import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
@@ -23,7 +23,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: (){
+          onPressed: () {
             Get.back();
           },
         ),
@@ -33,38 +33,73 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         return Padding(
           padding: const EdgeInsets.all(Dimens.innerPadding),
           child: CommonButtonWidget(
-              buttonName: "Simpan Perubahan",
-              isValid: controller.hasChanges,
-              onPressed: (){
-                controller.onConfirmChange();
-              }
+            buttonName: "Simpan Perubahan",
+            isValid: controller.hasChanges,
+            onPressed: () {
+              controller.onConfirmChange();
+            },
           ),
         );
       }),
     );
   }
+
   Widget _buildReviewUI(BuildContext context) {
-    return Column(
-      children: [
-        Obx(() => ExamHeaderWidget(
-              isReadOnly: controller.isTitleReadOnly.value,
-              controller: controller.titleController,
-              numberOfQuestions: controller.numberOfQuestions.value,
-              answerOptions: controller.answerOptions.value,
-              difficulty: controller.difficulty.value,
-              trailing: IconStatus(
+    return Obx(() {
+      if (controller.isLoading.value && controller.generatedQuestions.isEmpty) {
+        return const Center(
+          child: CircularProgressIndicator(color: ColorConstant.primary),
+        );
+      }
+
+      if (controller.errorMessage.value.isNotEmpty &&
+          controller.generatedQuestions.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                size: 48,
+                color: ColorConstant.redColor,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                controller.errorMessage.value,
+                style: const TextStyle(color: ColorConstant.textDarkGreyColor),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  if (controller.quizId.value != null) {
+                    controller.fetchDetail(controller.quizId.value!);
+                  }
+                },
+                child: const Text('Coba Lagi'),
+              ),
+            ],
+          ),
+        );
+      }
+
+      return Column(
+        children: [
+          ExamHeaderWidget(
+            isReadOnly: controller.isTitleReadOnly.value,
+            controller: controller.titleController,
+            numberOfQuestions: controller.generatedQuestions.length,
+            durationMinutes: controller.maxDurationMinutes.value,
+            trailing: IconStatus(
               type: controller.isTitleReadOnly.value
                   ? IconStatusType.edit
                   : IconStatusType.submit,
               toggle: controller.onToggleTitle,
             ),
           ),
-        ),
 
-        // List of Questions
-        Expanded(
-          child: Obx(() {
-            return ListView.builder(
+          // List of Questions
+          Expanded(
+            child: ListView.builder(
               padding: const EdgeInsets.only(
                 left: Dimens.innerPadding,
                 right: Dimens.innerPadding,
@@ -74,11 +109,11 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
               itemBuilder: (context, index) {
                 return _buildQuestionCard(context, index);
               },
-            );
-          }),
-        ),
-      ],
-    );
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildQuestionCard(BuildContext context, int index) {
@@ -133,17 +168,46 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      'Soal ${index + 1} dari ${controller.numberOfQuestions.value}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: ColorConstant.textDarkGreyColor,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Soal ${index + 1} dari ${controller.generatedQuestions.length}',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: ColorConstant.textDarkGreyColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: question.isHots
+                                ? ColorConstant.primary.withValues(alpha: 0.1)
+                                : ColorConstant.grey.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            question.isHots ? 'HOTS' : 'LOTS',
+                            style: TextStyle(
+                              color: question.isHots
+                                  ? ColorConstant.primary
+                                  : ColorConstant.textDarkGreyColor,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   if (!isEditing && isExpanded)
                     IconStatus(
-                        toggle: () => controller.toggleEdit(index),
-                        type: IconStatusType.edit,
+                      toggle: () => controller.toggleEdit(index),
+                      type: IconStatusType.edit,
                     ),
                   const SizedBox(width: 8),
                   Icon(
@@ -169,6 +233,39 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
     );
   }
 
+  void _showRegenerateStimulusDialog(BuildContext context, int index) {
+    final feedbackController = TextEditingController();
+    DialogHelper.show(
+      title: "Regenerasi Stimulus AI",
+      description:
+          "Berikan masukan spesifik kepada AI untuk merevisi teks stimulus soal ini:",
+      colorDescription: ColorConstant.textDarkGreyColor,
+      content: Padding(
+        padding: const EdgeInsets.only(top: 12.0),
+        child: TextField(
+          controller: feedbackController,
+          maxLines: 3,
+          decoration: const InputDecoration(
+            hintText:
+                "Contoh: Sesuaikan dengan konteks fenomena sains terkini...",
+            border: OutlineInputBorder(),
+          ),
+        ),
+      ),
+      actions: CommonButtonWidget(
+        buttonName: "Kirim & Regenerasi",
+        buttonColor: ColorConstant.primary,
+        onPressed: () {
+          Get.back();
+          controller.regenerateStimulus(
+            index,
+            feedbackController.text.trim(),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildViewMode(BuildContext context, int index) {
     var question = controller.generatedQuestions[index];
 
@@ -177,6 +274,60 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
       children: [
         const Divider(),
         const SizedBox(height: 12),
+
+        // Stimulus section if exists
+        if (question.stimulusText != null &&
+            question.stimulusText!.isNotEmpty) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Stimulus Bacaan',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: ColorConstant.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              TextButton.icon(
+                onPressed: () => _showRegenerateStimulusDialog(context, index),
+                icon: const Icon(
+                  Icons.auto_awesome,
+                  size: 14,
+                  color: ColorConstant.primary,
+                ),
+                label: const Text(
+                  'Regenerasi Stimulus',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: ColorConstant.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF4F7FC),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: ColorConstant.primary.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Text(
+              question.stimulusText!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: ColorConstant.textDarkGreyColor,
+                    height: 1.4,
+                  ),
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+
         Text(
           'Pertanyaan',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -418,7 +569,10 @@ class QuestionEditFormState extends State<QuestionEditForm> {
       isEditing: false,
     );
     widget.onSave(updated);
-    SnackbarHelper.showSuccess(title: "Perubahan Berhasil Disimpan!", message: "Soal telah diperbarui berdasarkan perbaikan.");
+    SnackbarHelper.showSuccess(
+      title: "Perubahan Berhasil Disimpan!",
+      message: "Soal telah diperbarui berdasarkan perbaikan.",
+    );
   }
 
   @override
