@@ -1,3 +1,5 @@
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
+
 class ExamReviewQuestion {
   final int id;
   final String question;
@@ -7,7 +9,7 @@ class ExamReviewQuestion {
   final bool isCorrect;
   final int score;
   final List<String> explanationSteps;
-  final List<String>? userWorkingSteps;
+  final List<StudentStep> userStep;
   final int? errorStepIndex;
   final String? errorExplanation;
   final String? correction;
@@ -21,7 +23,7 @@ class ExamReviewQuestion {
     required this.isCorrect,
     required this.score,
     required this.explanationSteps,
-    this.userWorkingSteps,
+    required this.userStep,
     this.errorStepIndex,
     this.errorExplanation,
     this.correction,

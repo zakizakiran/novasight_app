@@ -7,8 +7,10 @@ import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
 
+import '../../../../data/models/exam_model.dart';
+
 class ExamCardWidget extends StatelessWidget {
-  final ExamDummyModel exam;
+  final ExamModel exam;
   final VoidCallback onDetail;
 
   const ExamCardWidget({super.key, required this.exam, required this.onDetail});
@@ -48,7 +50,7 @@ class ExamCardWidget extends StatelessWidget {
                     border: Border.all(color: ColorConstant.green),
                   ),
                   child: Text(
-                    'Nilai: ${exam.nilai}',
+                    'Nilai: ${exam.score}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: ColorConstant.green,
                       fontWeight: FontWeight.bold,

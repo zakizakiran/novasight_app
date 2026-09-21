@@ -23,6 +23,7 @@ void main() {
           questionText: 'Berapakah 2 + 2?',
           selectedOption: 'B',
           correctOption: 'B',
+          studentSteps: [],
           isCorrect: true,
           justification: SoalJustification(
             diagnosis: 'Jawaban tepat',
@@ -34,6 +35,7 @@ void main() {
           questionText: 'Berapakah 5 * 5?',
           selectedOption: 'A',
           correctOption: 'C',
+          studentSteps: [],
           isCorrect: false,
           justification: SoalJustification(
             divergenceStep: 1,
@@ -99,6 +101,7 @@ void main() {
           questionText: 'Soal 1',
           selectedOption: 'A',
           correctOption: 'A',
+          studentSteps: [],
           isCorrect: true,
         ),
         QuizResultItem(
@@ -106,6 +109,7 @@ void main() {
           questionText: 'Soal 2',
           selectedOption: 'B',
           correctOption: 'B',
+          studentSteps: [],
           isCorrect: true,
         ),
       ];

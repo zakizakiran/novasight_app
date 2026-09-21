@@ -5,7 +5,7 @@ import 'package:novasight_app/app/core/dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../../../core/styles/text_theme.dart';
 import '../controllers/exam_review_controller.dart';
-import 'package:novasight_app/app/data/models/exam_review_model.dart';
+import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
 
 class ExamReviewView extends GetView<ExamReviewController> {
   const ExamReviewView({super.key});
@@ -196,9 +196,10 @@ class ExamReviewView extends GetView<ExamReviewController> {
         ? const Color(0xFF4CAF50)
         : const Color(0xFFF44336);
     final icon = question.isCorrect ? Icons.check : Icons.close;
+    final userNotAnswered = question.userAnswerIndex == -1;
     final text = question.isCorrect
         ? 'Jawabanmu Benar!'
-        : 'Jawabanmu Kurang Tepat';
+        : userNotAnswered ? 'Soal tidak terjawab' : 'Jawabanmu Kurang Tepat';
 
     return Semantics(
       container: true,
@@ -412,18 +413,18 @@ class ExamReviewView extends GetView<ExamReviewController> {
             ),
           ),
           const SizedBox(height: 16),
-          if (question.userWorkingSteps != null &&
-              question.userWorkingSteps!.isNotEmpty) ...[
+          if (question.userStep.isNotEmpty) ...[
             Text(
               'Langkah pengerjaan kamu:',
               style: const MainTextTheme().bodyLarge,
             ),
             const SizedBox(height: 12),
-            ...List.generate(question.userWorkingSteps!.length, (index) {
-              final isErrorStep = index == question.errorStepIndex;
+            ...List.generate(question.userStep.length, (index) {
+              final step = question.userStep[index];
+              final isErrorStep = step.steps == question.errorStepIndex;
               return Semantics(
                 label:
-                    'Langkah ${index + 1}: ${question.userWorkingSteps![index]}${isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''}',
+                    'Langkah ${step.steps}: ${step.text}${isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''}',
                 excludeSemantics: true,
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -453,7 +454,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          '${index + 1}',
+                          '${step.steps}',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -464,7 +465,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          question.userWorkingSteps![index],
+                          step.text,
                           style: const MainTextTheme().bodyLarge?.copyWith(
                             color: isErrorStep
                                 ? const Color(0xFFF44336)
@@ -504,33 +505,6 @@ class ExamReviewView extends GetView<ExamReviewController> {
                     const SizedBox(height: 4),
                     Text(
                       question.errorExplanation!,
-                      style: const MainTextTheme().bodyMedium,
-                    ),
-                  ],
-                ),
-              ),
-            if (question.correction != null)
-              Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8F5E9),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF4CAF50)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Seharusnya:',
-                      style: TextStyle(
-                        color: Color(0xFF2E7D32),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      question.correction!,
                       style: const MainTextTheme().bodyMedium,
                     ),
                   ],
@@ -591,6 +565,33 @@ class ExamReviewView extends GetView<ExamReviewController> {
                 ),
               );
             }),
+            if (question.correction != null)
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE8F5E9),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFF4CAF50)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Seharusnya:',
+                      style: TextStyle(
+                        color: Color(0xFF2E7D32),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      question.correction!,
+                      style: const MainTextTheme().bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
             Builder(
               builder: (context) {
                 final correctIdx = question.correctAnswerIndex.clamp(

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/data/models/exam_review_model.dart';
+import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
 import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 
@@ -68,10 +68,11 @@ class ExamReviewController extends GetxController {
 
           return ExamReviewQuestion(
             id: item.soalId,
+            userStep: item.studentSteps,
             question: item.questionText,
             options: options,
             correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
-            userAnswerIndex: userIdx != -1 ? userIdx : 0,
+            userAnswerIndex: userIdx != -1 ? userIdx : -1,
             isCorrect: item.isCorrect ?? false,
             score: (item.isCorrect == true) ? 20 : 0,
             explanationSteps: item.justification?.diagnosis.isNotEmpty == true

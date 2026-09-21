@@ -267,6 +267,27 @@ class QuestionExplanationSteps {
   }
 }
 
+class StudentStep extends QuestionExplanationSteps {
+  StudentStep({required super.id, required super.steps, required super.text});
+
+  factory StudentStep.fromJson(Map<String, dynamic> json) {
+    return StudentStep(
+      id: json['id'] as int? ?? 0,
+      steps: json['urutan'] as int? ?? 0,
+      text: json['teks'] as String? ?? '',
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'urutan': steps,
+      'teks': text,
+    };
+  }
+}
+
 class QuestionStimulusResponse {
   final int id;
   final String sourceMarkup;
@@ -507,10 +528,12 @@ class QuizResultItem {
   final String correctOption;
   final bool? isCorrect;
   final SoalJustification? justification;
+  final List<StudentStep> studentSteps;
 
   QuizResultItem({
     required this.soalId,
     required this.questionText,
+    required this.studentSteps,
     this.selectedOption,
     required this.correctOption,
     this.isCorrect,
@@ -522,6 +545,14 @@ class QuizResultItem {
       soalId: json['soal_id'] != null
           ? (int.tryParse(json['soal_id'].toString()) ?? 0)
           : 0,
+      studentSteps: (json['langkah'] as List<dynamic>?)?.map((item) {
+        if (item is Map<String, dynamic>) {
+          return StudentStep.fromJson(item);
+        } else if (item is String) {
+          return StudentStep(id: 0, steps: 0, text: item);
+        }
+        return StudentStep(id: 0, steps: 0, text: '');
+      }).toList() ?? [],
       questionText: json['question_text'] as String? ?? '',
       selectedOption: json['selected_option'] as String?,
       correctOption: json['correct_option'] as String? ?? '',
@@ -542,6 +573,7 @@ class QuizResultItem {
       if (selectedOption != null) 'selected_option': selectedOption,
       'correct_option': correctOption,
       if (isCorrect != null) 'is_correct': isCorrect,
+      'langkah': studentSteps.map((step) => step.toJson()).toList(),
       if (justification != null) 'justification': justification?.toJson(),
     };
   }

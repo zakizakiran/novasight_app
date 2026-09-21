@@ -6,25 +6,8 @@ import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 
-class ExamDummyModel {
-  final String id;
-  final String title;
-  final String subtitle;
-  final String statusText;
-  final String nilai;
-  final ModuleStatus status;
-  final QuizRequestStudentResponse? rawQuiz;
+import '../../../data/models/exam_model.dart';
 
-  ExamDummyModel({
-    required this.id,
-    required this.title,
-    required this.subtitle,
-    required this.statusText,
-    required this.nilai,
-    required this.status,
-    this.rawQuiz,
-  });
-}
 
 class ExamController extends GetxController {
   final StudentRepository? studentRepository;
@@ -55,51 +38,16 @@ class ExamController extends GetxController {
       <QuizRequestStudentResponse>[].obs;
   RxList<QuizRequestStudentResponse> get apiExams => quizzes;
 
-  final exams = <ExamDummyModel>[
-    ExamDummyModel(
-      id: '1',
-      title: 'UTS Kelas X',
-      subtitle: 'Bab Eksponen dan Logaritma',
-      statusText: 'Belum dikerjakan',
-      nilai: '-',
-      status: ModuleStatus.notDone,
-    ),
-    ExamDummyModel(
-      id: '2',
-      title: 'UH 1 — Himpunan dan Operasinya',
-      subtitle: 'Bab Himpunan dan Operasinya',
-      statusText: 'Belum dikerjakan',
-      nilai: '-',
-      status: ModuleStatus.notDone,
-    ),
-    ExamDummyModel(
-      id: '3',
-      title: 'UAS Semester 1',
-      subtitle: 'Semua Bab',
-      statusText: 'Selesai dikerjakan',
-      nilai: '90',
-      status: ModuleStatus.done,
-    ),
-    ExamDummyModel(
-      id: '4',
-      title: 'Kuis Singkat — Aljabar',
-      subtitle: 'Bab Aljabar',
-      statusText: 'Selesai dikerjakan',
-      nilai: '85',
-      status: ModuleStatus.done,
-    ),
-  ];
-
-  List<ExamDummyModel> get filteredExams {
+  List<ExamModel> get filteredExams {
     if (quizzes.isNotEmpty) {
       final list = quizzes.map((q) {
         final isDone = q.progress?.isDone == true;
-        return ExamDummyModel(
+        return ExamModel(
           id: q.id.toString(),
           title: q.title,
           subtitle: q.module.title,
           statusText: isDone ? 'Selesai dikerjakan' : 'Belum dikerjakan',
-          nilai: q.progress?.score != null
+          score: q.progress?.score != null
               ? q.progress!.score!.toInt().toString()
               : '-',
           status: isDone ? ModuleStatus.done : ModuleStatus.notDone,
@@ -114,15 +62,9 @@ class ExamController extends GetxController {
         ModuleStatus.done =>
           list.where((e) => e.status == ModuleStatus.done).toList(),
       };
+    } else {
+      return [];
     }
-
-    return switch (selectedStatus.value) {
-      ModuleStatus.all => exams.toList(),
-      ModuleStatus.notDone =>
-        exams.where((e) => e.status == ModuleStatus.notDone).toList(),
-      ModuleStatus.done =>
-        exams.where((e) => e.status == ModuleStatus.done).toList(),
-    };
   }
 
   Future<void> onLoad() async {

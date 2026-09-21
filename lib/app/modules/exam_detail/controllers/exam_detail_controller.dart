@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
+
+import '../../../data/models/exam_model.dart';
 
 class ExamDetailController extends GetxController {
   final Rxn<QuizRequestStudentResponse> quiz = Rxn<QuizRequestStudentResponse>();
@@ -23,7 +24,7 @@ class ExamDetailController extends GetxController {
       questionCount.value = args.questionCounts > 0 ? args.questionCounts : 5;
       durationMinutes.value =
           args.maxDurationMinutes > 0 ? args.maxDurationMinutes : 45;
-    } else if (args is ExamDummyModel) {
+    } else if (args is ExamModel) {
       if (args.rawQuiz != null) {
         final q = args.rawQuiz!;
         quiz.value = q;

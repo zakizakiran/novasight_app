@@ -159,6 +159,7 @@ void main() {
           questionText: 'Apa fungsi mitokondria?',
           selectedOption: 'A',
           correctOption: 'A',
+          studentSteps: [],
           isCorrect: true,
           justification: SoalJustification(
             diagnosis: 'Pemahaman konsep respirasi seluler sudah sangat baik.',
