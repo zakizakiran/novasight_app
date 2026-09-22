@@ -1,14 +1,23 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/data/models/student_quiz_model.dart';
+import 'package:novasight_app/app/data/repositories/note_repository.dart';
 import 'package:novasight_app/app/modules/exam_active/controllers/exam_active_controller.dart';
 
 class NoteController extends GetxController {
   ExamQuestionModel? question;
+
+  final NoteRepository noteRepository;
+
+  NoteController({
+    NoteRepository? noteRepository,
+  }) : noteRepository = noteRepository ?? Get.find<NoteRepository>();
+
   int index = 1;
   int total = 1;
 
-  final steps = <String>[].obs;
+  final steps = <StudentStep>[].obs;
   final activeInputText = "".obs;
   final isInputActive = false.obs;
   final activeKeyboardTab = "Math".obs;
@@ -40,6 +49,7 @@ class NoteController extends GetxController {
       question = args['question'];
       index = args['index'] ?? 1;
       total = args['total'] ?? 1;
+      steps.value = question?.steps ?? [];
     }
   }
 
@@ -120,9 +130,14 @@ class NoteController extends GetxController {
     activeInputText.value = "";
   }
 
-  void saveStep() {
+  Future<void> saveStep() async {
     if (activeInputText.value.trim().isNotEmpty) {
-      steps.add(activeInputText.value.trim());
+      final text = activeInputText.value.trim();
+      final step = await noteRepository.submitStepAnswer(
+        soalId: int.tryParse(question?.id.toString() ?? '') ?? 0,
+        request: SoalStepRequest(step: text),
+      );
+      steps.add(step);
       activeInputText.value = "";
       isInputActive.value = false;
       
@@ -131,8 +146,12 @@ class NoteController extends GetxController {
     }
   }
 
-  void removeStep(int index) {
+  Future<void> removeStep(int index) async {
     if (index >= 0 && index < steps.length) {
+      final step = question?.steps[index];
+      await noteRepository.deleteStepAnswer(
+        stepId: int.tryParse(step?.id.toString() ?? '') ?? 0,
+      );
       steps.removeAt(index);
     }
   }
@@ -163,7 +182,7 @@ class NoteController extends GetxController {
     if (steps.isNotEmpty) {
       textToRead += "Langkah pengerjaan yang sudah dibuat: ";
       for (int i = 0; i < steps.length; i++) {
-        textToRead += "Langkah ${i + 1}, ${getMathSemanticText(steps[i])}. ";
+        textToRead += "Langkah ${i + 1}, ${getMathSemanticText(steps[i].text)}. ";
       }
     } else {
       textToRead += "Belum ada langkah pengerjaan yang dibuat.";

@@ -259,6 +259,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
           child: Container(
             constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
             decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
               gradient: isSelected
                   ? const LinearGradient(
                       begin: Alignment.topLeft,

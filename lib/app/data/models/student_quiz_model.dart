@@ -273,10 +273,11 @@ class StudentStep extends QuestionExplanationSteps {
   factory StudentStep.fromJson(Map<String, dynamic> json) {
     return StudentStep(
       id: json['id'] as int? ?? 0,
-      steps: json['urutan'] as int? ?? 0,
-      text: json['teks'] as String? ?? '',
+      steps: json['steps'] as int? ?? json['urutan'] as int? ?? 0,
+      text: json['text'] as String? ?? json['teks'] as String? ?? '',
     );
   }
+
 
   @override
   Map<String, dynamic> toJson() {
@@ -285,6 +286,11 @@ class StudentStep extends QuestionExplanationSteps {
       'urutan': steps,
       'teks': text,
     };
+  }
+
+  @override
+  String toString() {
+    return 'StudentStep(id: $id, steps: $steps, text: "$text")';
   }
 }
 
@@ -328,6 +334,39 @@ class QuestionStimulusResponse {
   }
 }
 
+class QuizStudentAnswer{
+  final int id;
+  final String selectedOption;
+  final List<StudentStep> steps;
+
+  QuizStudentAnswer({required this.id, required this.selectedOption, required this.steps});
+
+  factory QuizStudentAnswer.fromJson(Map<String, dynamic> json) {
+    return QuizStudentAnswer(
+      id: json['id'] as int? ?? 0,
+      selectedOption: json['selected_option'] as String? ??
+          json['selectedOption'] as String? ??
+          '',
+      steps: (json['steps'] as List<dynamic>? ?? json['langkah'] as List<dynamic>?)
+          ?.map((e) {
+        if (e is Map<String, dynamic>) {
+          return StudentStep.fromJson(e);
+        }
+        return StudentStep(id: 0, steps: 0, text: e.toString());
+      }).toList() ??
+          [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'selected_option': selectedOption,
+      'steps': steps.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
 class QuizRequestQuestionResponse {
   final int id;
   final int chapterId;
@@ -341,6 +380,7 @@ class QuizRequestQuestionResponse {
   final String reviewStatus;
   final String reviewPriority;
   final String? validationNotes;
+  final QuizStudentAnswer? answer;
   final List<QuestionOptionResponse> options;
   final List<QuestionExplanationSteps> explanationSteps;
 
@@ -352,6 +392,7 @@ class QuizRequestQuestionResponse {
     required this.questionText,
     this.correctOption,
     this.kesimpulan,
+    this.answer,
     this.sourceReadingOrderStart,
     this.sourceReadingOrderEnd,
     this.reviewStatus = 'pending',
@@ -386,6 +427,8 @@ class QuizRequestQuestionResponse {
           .map((e) =>
               QuestionExplanationSteps.fromJson(e as Map<String, dynamic>))
           .toList(),
+      answer: json['answer'] != null && json['answer'] is Map<String, dynamic>
+          ? QuizStudentAnswer.fromJson(json['answer'] as Map<String, dynamic>,) : null,
     );
   }
 
@@ -398,6 +441,7 @@ class QuizRequestQuestionResponse {
       'question_text': questionText,
       if (correctOption != null) 'correct_option': correctOption,
       if (kesimpulan != null) 'kesimpulan': kesimpulan,
+      if (answer != null) 'answer': answer?.toJson(),
       if (sourceReadingOrderStart != null)
         'source_reading_order_start': sourceReadingOrderStart,
       if (sourceReadingOrderEnd != null)
@@ -447,19 +491,30 @@ class StudentQuizErrorEvent extends StudentQuizEvent {
 
 // ---------------- Soal Submit DTO ---------------- //
 
+class SoalStepRequest {
+  final String step;
+
+  const SoalStepRequest({
+    required this.step,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'step': step,
+    };
+  }
+}
+
 class SoalSubmitRequest {
   final String selectedOption;
-  final List<String>? langkah;
 
   const SoalSubmitRequest({
     required this.selectedOption,
-    this.langkah,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'selected_option': selectedOption,
-      'langkah': langkah ?? [],
     };
   }
 }

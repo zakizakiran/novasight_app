@@ -30,7 +30,9 @@ class ApiEndpoints {
   static String studentQuizStart(int quizId) => '/api/students/quizzes/$quizId/start';
   static String studentQuizFinish(int quizId) => '/api/students/quizzes/$quizId/finish';
   static String studentQuizMyResults(int quizRequestId) => '/api/students/quizzes/$quizRequestId/my-results';
-  static String studentSoalSubmit(int soalId) => '/api/students/soal/$soalId/submit';
+  static String studentSoalSubmit(int soalId) => '/api/students/soal/$soalId/select-option';
+  static String studentSoalStep(int soalId) => '/api/students/soal/$soalId/steps';
+  static String studentDeleteStep(int stepId) => '/api/students/steps/$stepId';
 
   // Teacher endpoints
   static const String teacherDashboard = '/api/teachers/dashboard';

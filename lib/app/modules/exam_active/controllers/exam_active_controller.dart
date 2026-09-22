@@ -28,12 +28,14 @@ class ExamQuestionModel {
   final String id;
   final String questionText;
   final List<ExamOptionModel> options;
+  final List<StudentStep> steps;
   String? selectedOptionId;
 
   ExamQuestionModel({
     required this.id,
     required this.questionText,
     required this.options,
+    required this.steps,
     this.selectedOptionId,
   });
 }
@@ -129,11 +131,6 @@ class ExamActiveController extends GetxController {
   }
 
   Future<void> startQuiz() async {
-    if (studentRepository == null) {
-      _loadDummyData();
-      return;
-    }
-
     try {
       isLoading.value = true;
       errorMessage.value = '';
@@ -157,6 +154,7 @@ class ExamActiveController extends GetxController {
               questions.value = event.questions.map((q) {
                 return ExamQuestionModel(
                   id: q.id.toString(),
+                  selectedOptionId: q.answer?.selectedOption,
                   questionText: q.questionText,
                   options: q.options.map((opt) {
                     return ExamOptionModel(
@@ -165,6 +163,7 @@ class ExamActiveController extends GetxController {
                       text: opt.opsiText,
                     );
                   }).toList(),
+                  steps: q.answer?.steps ?? []
                 );
               }).toList();
             }
@@ -189,98 +188,15 @@ class ExamActiveController extends GetxController {
         onError: (err) {
           isLoading.value = false;
           errorMessage.value = err.toString();
-          if (questions.isEmpty) {
-            _loadDummyData();
-          }
         },
       );
     } on ApiException catch (e) {
       isLoading.value = false;
       errorMessage.value = e.message;
-      if (questions.isEmpty) {
-        _loadDummyData();
-      }
     } catch (e) {
       isLoading.value = false;
       errorMessage.value = e.toString();
-      if (questions.isEmpty) {
-        _loadDummyData();
-      }
     }
-  }
-
-  void _loadDummyData() {
-    questions.value = [
-      ExamQuestionModel(
-        id: 'q_0',
-        questionText: 'Nilai dari 2 pangkat 3 dikali 2 pangkat 4 adalah...',
-        options: [
-          ExamOptionModel(
-            id: 'A',
-            letter: 'A',
-            text: '2 pangkat 7 sama dengan 128',
-          ),
-          ExamOptionModel(
-            id: 'B',
-            letter: 'B',
-            text: '2 pangkat 12 sama dengan 4096',
-          ),
-          ExamOptionModel(
-            id: 'C',
-            letter: 'C',
-            text: '4 pangkat 7 sama dengan 16384',
-          ),
-          ExamOptionModel(
-            id: 'D',
-            letter: 'D',
-            text: '2 pangkat 6 sama dengan 64',
-          ),
-        ],
-      ),
-      ExamQuestionModel(
-        id: 'q_1',
-        questionText: 'Berapakah hasil dari operasi perhitungan 15 + 25 × 2 ?',
-        options: [
-          ExamOptionModel(id: 'A', letter: 'A', text: '65'),
-          ExamOptionModel(id: 'B', letter: 'B', text: '80'),
-          ExamOptionModel(id: 'C', letter: 'C', text: '50'),
-          ExamOptionModel(id: 'D', letter: 'D', text: '40'),
-        ],
-      ),
-      ExamQuestionModel(
-        id: 'q_2',
-        questionText:
-            'Sebuah segitiga siku-siku memiliki panjang alas 6 cm dan tinggi 8 cm. Berapakah panjang sisi miringnya?',
-        options: [
-          ExamOptionModel(id: 'A', letter: 'A', text: '10 cm'),
-          ExamOptionModel(id: 'B', letter: 'B', text: '12 cm'),
-          ExamOptionModel(id: 'C', letter: 'C', text: '14 cm'),
-          ExamOptionModel(id: 'D', letter: 'D', text: '16 cm'),
-        ],
-      ),
-      ExamQuestionModel(
-        id: 'q_3',
-        questionText:
-            'Berapakah nilai dari x jika diketahui persamaan linear 3x - 5 = 16 ?',
-        options: [
-          ExamOptionModel(id: 'A', letter: 'A', text: '7'),
-          ExamOptionModel(id: 'B', letter: 'B', text: '6'),
-          ExamOptionModel(id: 'C', letter: 'C', text: '8'),
-          ExamOptionModel(id: 'D', letter: 'D', text: '5'),
-        ],
-      ),
-      ExamQuestionModel(
-        id: 'q_4',
-        questionText:
-            'Diketahui suatu barisan aritmatika dengan suku pertama 2 dan beda 3. Berapakah nilai suku ke-10?',
-        options: [
-          ExamOptionModel(id: 'A', letter: 'A', text: '29'),
-          ExamOptionModel(id: 'B', letter: 'B', text: '32'),
-          ExamOptionModel(id: 'C', letter: 'C', text: '27'),
-          ExamOptionModel(id: 'D', letter: 'D', text: '25'),
-        ],
-      ),
-    ];
   }
 
   Future<void> selectOption(String questionId, String optionId) async {

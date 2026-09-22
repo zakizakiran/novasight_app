@@ -119,7 +119,6 @@ void main() {
     test('submitSoalAnswer successfully posts answer and returns response', () async {
       const request = SoalSubmitRequest(
         selectedOption: 'A',
-        langkah: ['Langkah 1'],
       );
       final response = SoalSubmitResponse(
         soalId: 1,

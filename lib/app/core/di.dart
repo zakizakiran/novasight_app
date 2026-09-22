@@ -10,6 +10,7 @@ import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
+import 'package:novasight_app/app/data/repositories/note_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
@@ -91,6 +92,13 @@ Future<void> initDepedencies() async {
     TeacherRepository(
       teacherProvider: Get.find<TeacherProvider>(),
       storageService: Get.find<StorageService>(),
+    ),
+    permanent: true,
+  );
+
+  Get.put<NoteRepository>(
+    NoteRepository(
+      studentProvider: Get.find<StudentProvider>(),
     ),
     permanent: true,
   );

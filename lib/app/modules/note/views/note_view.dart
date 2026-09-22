@@ -57,7 +57,7 @@ class NoteView extends GetView<NoteController> {
                         () => Column(
                           children: [
                             for (int i = 0; i < controller.steps.length; i++)
-                              _buildStepItem(context, i, controller.steps[i]),
+                              _buildStepItem(context, i, controller.steps[i].text),
                             _buildInputBox(context),
                           ],
                         ),

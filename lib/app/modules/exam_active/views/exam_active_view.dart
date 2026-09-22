@@ -189,8 +189,9 @@ class ExamActiveView extends GetView<ExamActiveController> {
               const SizedBox(width: Dimens.spaceMediumPadding),
           itemBuilder: (context, index) {
             final isActive = currentIndex == index;
-            final isAnswered =
-                controller.questions[index].selectedOptionId != null;
+            final question = controller.questions[index];
+            final isAnswered = question.selectedOptionId?.isNotEmpty ?? false;
+            print("Soal nomor ${index + 1}\nIs Answered $isAnswered ${question.selectedOptionId}");
             return Semantics(
               label:
                   "Soal nomor ${index + 1} dari ${controller.questions.length}",
@@ -348,6 +349,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                             : ColorConstant.textDarkGreyColor,
                         size: 20,
                       ),
+                      const SizedBox(width: 8),
                       const SizedBox(width: 8),
                       Text(
                         "Sebelumnya",

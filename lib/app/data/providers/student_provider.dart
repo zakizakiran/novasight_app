@@ -298,7 +298,7 @@ class StudentProvider {
     }
   }
 
-  /// POST /api/students/soal/{soal_id}/submit
+  /// POST /api/students/soal/{soal_id}/select-option
   Future<ApiResponse<SoalSubmitResponse>> submitSoalAnswer({
     required int soalId,
     required SoalSubmitRequest request,
@@ -318,6 +318,52 @@ class StudentProvider {
       if (e is ApiException) rethrow;
       throw ApiException(
         message: 'Terjadi kesalahan saat mengirim jawaban: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/students/soal/{soal_id}/steps
+  Future<ApiResponse<StudentStep>> submitStepAnswer({
+    required int soalId,
+    required SoalStepRequest request,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiEndpoints.studentSoalStep(soalId),
+        data: request.toJson(),
+      );
+      return ApiResponse<StudentStep>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => StudentStep.fromJson(data as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat mengirim langkah: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/students/steps/{step_id}
+  Future<ApiResponse<bool>> deleteStepAnswer({
+    required int stepId,
+  }) async {
+    try {
+      final response = await dioClient.delete(
+        ApiEndpoints.studentDeleteStep(stepId),
+      );
+      return ApiResponse<bool>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => data as bool,
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat menghapus langkah: ${e.toString()}',
       );
     }
   }
