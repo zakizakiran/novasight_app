@@ -278,7 +278,6 @@ class StudentStep extends QuestionExplanationSteps {
     );
   }
 
-
   @override
   Map<String, dynamic> toJson() {
     return {

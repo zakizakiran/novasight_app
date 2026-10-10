@@ -10,7 +10,7 @@ import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/model/module_model.dart';
+import 'package:novasight_app/app/data/models/module_model.dart';
 import 'package:novasight_app/app/data/model/subject_model.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 import 'package:novasight_app/app/modules/module_detail/views/widgets/subject_card_widget.dart';

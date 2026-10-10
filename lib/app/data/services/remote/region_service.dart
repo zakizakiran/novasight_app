@@ -1,5 +1,5 @@
 
-import 'package:novasight_app/app/data/model/city_model.dart';
+import 'package:novasight_app/app/data/models/city_model.dart';
 
 class RegionService {
   Future<List<CityModel>> getCities() async {

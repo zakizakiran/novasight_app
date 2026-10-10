@@ -234,7 +234,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
             ),
             const SizedBox(width: 8),
             Text(
-              'Nilai: +${question.score}',
+              'Nilai: +${question.score.toStringAsFixed(1)}',
               style: const MainTextTheme().bodyLarge?.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.bold,
@@ -424,7 +424,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
               final isErrorStep = step.steps == question.errorStepIndex;
               return Semantics(
                 label:
-                    'Langkah ${step.steps}: ${step.text}${isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''}',
+                    'Langkah ${index + 1}: ${step.text}${isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''}',
                 excludeSemantics: true,
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 12),

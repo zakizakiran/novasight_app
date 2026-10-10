@@ -7,7 +7,7 @@ class ExamReviewQuestion {
   final int correctAnswerIndex;
   final int userAnswerIndex;
   final bool isCorrect;
-  final int score;
+  final double score;
   final List<String> explanationSteps;
   final List<StudentStep> userStep;
   final int? errorStepIndex;

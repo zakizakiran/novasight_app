@@ -113,6 +113,7 @@ class GenerateExamController extends GetxController {
 
       final result = await teacherRepository!.getModules(
         classroomId: classroomId,
+        status: TeacherModuleStatus.publish,
       );
       availableModules.assignAll(result);
 
@@ -343,7 +344,7 @@ class GenerateExamController extends GetxController {
           }
         },
         onError: (err) {
-          isGenerating.value = false;
+          _onGenerationFailed();
           debugPrint('[GenerateExamController] Stream onError: $err');
           SnackbarHelper.showError(
             title: 'Koneksi Terputus',
@@ -396,6 +397,11 @@ class GenerateExamController extends GetxController {
     } finally {
       isGenerating.value = false;
     }
+  }
+
+  void _onGenerationFailed() async {
+    isGenerating.value = false;
+    currentStep.value = 1;
   }
 
   void toggleExpand(int index) {

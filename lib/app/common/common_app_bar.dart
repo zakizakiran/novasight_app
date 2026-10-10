@@ -20,7 +20,7 @@ class CommonAppBar extends StatelessWidget {
     final canGoBack = showBackButton ?? (Get.key.currentState?.canPop() ?? false);
     return Container(
       constraints: BoxConstraints(
-        minHeight: height * 0.13
+        minHeight: height * 0.16
       ),
       width: double.infinity,
       padding: const EdgeInsets.all(Dimens.innerPadding),

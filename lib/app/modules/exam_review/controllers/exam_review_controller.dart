@@ -65,7 +65,8 @@ class ExamReviewController extends GetxController {
           final userIdx = item.selectedOption != null
               ? options.indexOf(item.selectedOption!.trim().toUpperCase())
               : -1;
-
+          int totalQuestions = results.length;
+          double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
           return ExamReviewQuestion(
             id: item.soalId,
             userStep: item.studentSteps,
@@ -74,7 +75,7 @@ class ExamReviewController extends GetxController {
             correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
             userAnswerIndex: userIdx != -1 ? userIdx : -1,
             isCorrect: item.isCorrect ?? false,
-            score: (item.isCorrect == true) ? 20 : 0,
+            score: (item.isCorrect == true) ? scorePerQuestion : 0,
             explanationSteps: item.justification?.diagnosis.isNotEmpty == true
                 ? [item.justification!.diagnosis]
                 : [],

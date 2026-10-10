@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/model/module_model.dart';
+import 'package:novasight_app/app/data/models/module_model.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
