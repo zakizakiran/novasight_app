@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/args/main_bar_args.dart';
@@ -7,7 +6,6 @@ import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../data/model/module_teacher_model.dart';
-import '../../../../data/repositories/module_teacher_repository.dart';
 import '../../../../routes/app_pages.dart';
 import '../../create_module/controllers/create_module_controller.dart';
 import 'package:novasight_app/app/modules/main_layout/controllers/main_layout_controller.dart';
@@ -18,7 +16,6 @@ class ModuleEvaluationController extends GetxController {
   final TextEditingController textEditController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final textFormKey = GlobalKey<FormState>();
-  final ModuleTeacherRepository _repository;
   final TeacherRepository? teacherRepository;
   final RxList<ModuleChunk> selectedChunks = <ModuleChunk>[].obs;
   late final Rx<ModuleTeacherModel> moduleTeacherModel;
@@ -62,9 +59,9 @@ class ModuleEvaluationController extends GetxController {
   }
 
   ModuleEvaluationController({
-    required ModuleTeacherRepository repository,
     this.teacherRepository,
-  }) : _repository = repository;
+  });
+
   bool _isCancelled = false;
 
   void onSelectChunk(ModuleChunk value) {
@@ -176,13 +173,6 @@ class ModuleEvaluationController extends GetxController {
         }).toList();
 
         moduleTeacherModel.value = current.copyWith(listChunks: updatedList);
-      } else {
-        await Future.delayed(const Duration(milliseconds: 2700));
-        if (_isCancelled) return;
-        moduleTeacherModel.value = _repository.onAddAdvice(
-          moduleTeacherModel.value,
-          selectedChunks.map((c) => c.id).toList(),
-        );
       }
 
       if (Get.isBottomSheetOpen ?? false) {
@@ -214,8 +204,6 @@ class ModuleEvaluationController extends GetxController {
       annotationPath = args.annotationPath;
     } else if (Get.arguments is ModuleTeacherModel) {
       moduleTeacherModel = (Get.arguments as ModuleTeacherModel).obs;
-    } else {
-      moduleTeacherModel = newModuleTeacher.obs;
     }
     super.onInit();
   }
@@ -255,8 +243,6 @@ class ModuleEvaluationController extends GetxController {
         final createCtrl = Get.find<CreateModuleController>();
         createCtrl.markChapterAsReviewed(chapterId);
       }
-
-      _repository.onAddModule(moduleTeacherModel.value);
 
       SnackbarHelper.showSuccess(
         title: "Bab Berhasil Disimpan!",

@@ -8,14 +8,14 @@ import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'icon_auth_app.dart';
 
 class AuthAppbar extends StatelessWidget{
-  final String icon;
+  final String? icon;
   final String? iconSvg;
   final double? height;
   final String title;
   final String description;
   final bool showBack;
   final Widget? top;
-  const AuthAppbar({super.key,this.icon = IconTxt.chat, this.iconSvg, required this.title, required this.description, this.height, this.top, this.showBack = true});
+  const AuthAppbar({super.key,this.iconSvg, this.icon, required this.title, required this.description, this.height, this.top, this.showBack = true});
 
 
   @override
@@ -51,13 +51,14 @@ class AuthAppbar extends StatelessWidget{
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ?top,
-                IconAuthApp(
-                    icon: icon,
-                    iconSvg : iconSvg,
-                    padding: Dimens.innerPadding,
-                    size: Dimens.iconMediumSize,
-                ),
+                ? top,
+                if(icon != null)
+                  IconAuthApp(
+                      icon: icon!,
+                      iconSvg : iconSvg,
+                      padding: Dimens.innerPadding,
+                      size: Dimens.iconMediumSize,
+                  ),
                 const SizedBox(height: Dimens.spacePadding),
                 Text(
                     title,

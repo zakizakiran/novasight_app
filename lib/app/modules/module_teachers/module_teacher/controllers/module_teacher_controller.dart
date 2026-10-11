@@ -10,10 +10,8 @@ import 'package:novasight_app/app/core/utils/dialog_helper.dart';
 import 'package:novasight_app/app/core/utils/show_modal_bottom_sheet_helper.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 import '../views/widgets/chapter_detail_bottom_sheet.dart';
@@ -23,13 +21,11 @@ class ModuleTeacherController extends GetxController {
   final TeacherRepository? teacherRepository;
   final ClassroomRepository? classroomRepository;
   final StorageService? storageService;
-  final ModuleTeacherRepository? _repository;
 
   ModuleTeacherController({
     TeacherRepository? teacherRepository,
     ClassroomRepository? classroomRepository,
     StorageService? storageService,
-    ModuleTeacherRepository? repository,
   })  : teacherRepository = teacherRepository ??
             (Get.isRegistered<TeacherRepository>()
                 ? Get.find<TeacherRepository>()
@@ -41,10 +37,6 @@ class ModuleTeacherController extends GetxController {
         storageService = storageService ??
             (Get.isRegistered<StorageService>()
                 ? Get.find<StorageService>()
-                : null),
-        _repository = repository ??
-            (Get.isRegistered<ModuleTeacherRepository>()
-                ? Get.find<ModuleTeacherRepository>()
                 : null);
 
   final TextEditingController searchController = TextEditingController();
@@ -75,11 +67,6 @@ class ModuleTeacherController extends GetxController {
   final state = Rx<UiState<void>>(
     const UiStateInitial<void>(),
   );
-
-  // Fallback support for legacy local modules
-  final RxList<ModuleTeacherModel> filteredModules = <ModuleTeacherModel>[].obs;
-  RxList<ModuleTeacherModel> get modules =>
-      _repository?.modules ?? <ModuleTeacherModel>[].obs;
 
   late Worker _searchWorker;
 
@@ -186,22 +173,7 @@ class ModuleTeacherController extends GetxController {
         }
       }
 
-      // Fallback for local/mock mode
-      if (_repository != null) {
-        final result = await _repository.getModules();
-        result.match(
-          (failure) {
-            errorMessage.value = failure.message;
-            state.value = UiStateFailure(failure.message);
-          },
-          (_) {
-            _filterLocalModules();
-            state.value = const UiStateSuccess(null);
-          },
-        );
-      } else {
-        state.value = const UiStateSuccess(null);
-      }
+      state.value = const UiStateSuccess(null);
     } on ApiException catch (e) {
       errorMessage.value = e.message;
       state.value = UiStateFailure(e.message);
@@ -272,14 +244,6 @@ class ModuleTeacherController extends GetxController {
             message: "Siswa sekarang dapat mengakses modul ini.",
           );
         }
-      } else if (_repository != null) {
-        _repository.onPublishModule(
-          _repository.modules.firstWhere((m) => m.id == module.id),
-        );
-        SnackbarHelper.showSuccess(
-          title: "Modul Berhasil dipublish!",
-          message: "Siswa dapat mengakses modul ini.",
-        );
       }
     } on ApiException catch (e) {
       SnackbarHelper.showError(
@@ -333,14 +297,6 @@ class ModuleTeacherController extends GetxController {
             message: "Modul \"${module.title}\" telah berhasil dihapus.",
           );
         }
-      } else if (_repository != null) {
-        _repository.modules.removeWhere((m) => m.id == module.id);
-        teacherModules.removeWhere((m) => m.id == module.id);
-        teacherModules.refresh();
-        SnackbarHelper.showSuccess(
-          title: "Modul Berhasil Dihapus",
-          message: "Modul \"${module.title}\" telah dihapus.",
-        );
       }
     } on ApiException catch (e) {
       SnackbarHelper.showError(
@@ -455,16 +411,6 @@ class ModuleTeacherController extends GetxController {
     ShowModalBottomSheetHelper.showCustomBottomSheet(
       ChapterDetailBottomSheet(chapterId: chapterId),
     );
-  }
-
-  void _filterLocalModules() {
-    final query = searchQuery.value.toLowerCase().trim();
-    final result = modules.where((module) {
-      final matchSearch =
-          query.isEmpty || module.name.toLowerCase().contains(query);
-      return matchSearch;
-    }).toList();
-    filteredModules.assignAll(result);
   }
 
   @override

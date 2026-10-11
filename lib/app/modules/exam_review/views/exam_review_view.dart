@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/core/dimens.dart';
+import 'package:novasight_app/app/core/utils/math_latex_parser.dart';
+import 'package:novasight_app/app/core/utils/math_semantic_serializer.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../../../core/styles/text_theme.dart';
 import '../controllers/exam_review_controller.dart';
 import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
 
 class ExamReviewView extends GetView<ExamReviewController> {
+
   const ExamReviewView({super.key});
 
   @override
@@ -101,10 +105,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
             );
           }
 
-          final safeIndex = controller.currentIndex.value.clamp(
-            0,
-            controller.questions.length - 1,
-          );
+          final safeIndex = controller.currentIndex.value.clamp(0, controller.questions.length - 1,);
           final question = controller.questions[safeIndex];
           return Column(
             children: [
@@ -126,7 +127,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                       const SizedBox(height: 20),
                       _buildQuestionCard(question),
                       const SizedBox(height: 20),
-                      _buildJustificationCard(question),
+                      _buildJustificationCard(question,controller.parser, controller.serializer),
                     ],
                   ),
                 ),
@@ -388,7 +389,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
     );
   }
 
-  Widget _buildJustificationCard(ExamReviewQuestion question) {
+  Widget _buildJustificationCard(ExamReviewQuestion question, MathLatexParser parser, MathSemanticSerializer serializer) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -422,9 +423,11 @@ class ExamReviewView extends GetView<ExamReviewController> {
             ...List.generate(question.userStep.length, (index) {
               final step = question.userStep[index];
               final isErrorStep = step.steps == question.errorStepIndex;
+              final nodes = parser.parse(step.text);
+              final semantic = serializer.serializeNodes(nodes);
               return Semantics(
                 label:
-                    'Langkah ${index + 1}: ${step.text}${isErrorStep ? '. Terdapat kesalahan pada langkah ini.' : ''}',
+                    'Langkah ${index + 1}: $semantic ${isErrorStep ? '.Terdapat kesalahan pada langkah ini.' : ''}',
                 excludeSemantics: true,
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -454,7 +457,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          '${step.steps}',
+                          '${index + 1}',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -464,17 +467,22 @@ class ExamReviewView extends GetView<ExamReviewController> {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: Text(
+                        child: Math.tex(
                           step.text,
-                          style: const MainTextTheme().bodyLarge?.copyWith(
-                            color: isErrorStep
-                                ? const Color(0xFFF44336)
-                                : Colors.black87,
-                            fontWeight: isErrorStep
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
+                          mathStyle: MathStyle.text,
+                          textStyle: const MainTextTheme().bodyLarge?.copyWith(
+                              color: isErrorStep
+                                  ? const Color(0xFFF44336)
+                                  : Colors.black87,
+                              fontWeight: isErrorStep
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
                         ),
+                        // child: Text(
+                        //   step.text,
+
+                        // ),
                       ),
                       if (isErrorStep)
                         const Icon(Icons.close, color: Color(0xFFF44336)),

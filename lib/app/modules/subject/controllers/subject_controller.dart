@@ -65,8 +65,6 @@ class SubjectController extends GetxController {
       }
     }
 
-    // 2. Mark complete on local mock repository if present
-    moduleRepository?.onDoneSubject(subject.id);
 
     // 3. Trigger background sync for ModuleController & StudentDashboardController
     if (Get.isRegistered<ModuleController>()) {

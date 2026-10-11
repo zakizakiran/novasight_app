@@ -3,13 +3,11 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/args/module_result_args.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 import '../../create_module/controllers/create_module_controller.dart';
 
 class ModuleResultAnnotationController extends GetxController {
-  final ModuleTeacherRepository _repository;
   final TeacherRepository? teacherRepository;
   late final ModuleTeacherModel moduleTeacherModel;
   int? chapterId;
@@ -17,9 +15,8 @@ class ModuleResultAnnotationController extends GetxController {
   final RxBool isLoading = false.obs;
 
   ModuleResultAnnotationController({
-    required ModuleTeacherRepository repository,
     this.teacherRepository,
-  }) : _repository = repository;
+  });
 
   @override
   void onInit() {
@@ -29,8 +26,6 @@ class ModuleResultAnnotationController extends GetxController {
       moduleTeacherModel = args.module;
       chapterId = args.chapterId;
       annotationPath = args.annotationPath;
-    } else {
-      moduleTeacherModel = newModuleTeacher;
     }
     debugPrint("Module Teacher di Result : ${moduleTeacherModel.name}");
   }
@@ -68,8 +63,6 @@ class ModuleResultAnnotationController extends GetxController {
         final createCtrl = Get.find<CreateModuleController>();
         createCtrl.markChapterAsReviewed(chapterId);
       }
-
-      _repository.onAddModule(moduleTeacherModel);
 
       SnackbarHelper.showSuccess(
         title: "Bab Berhasil Disimpan!",

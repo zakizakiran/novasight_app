@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 
@@ -19,9 +18,6 @@ class ModuleTeacherBinding extends Bindings {
             : null,
         storageService: Get.isRegistered<StorageService>()
             ? Get.find<StorageService>()
-            : null,
-        repository: Get.isRegistered<ModuleTeacherRepository>()
-            ? Get.find<ModuleTeacherRepository>()
             : null,
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import 'package:novasight_app/app/modules/subject/views/widgets/row_subject_butt
 
 import '../../../common/common_button_widget.dart';
 import '../../../core/styles/svg/svg_constant.dart';
+import '../../../core/styles/text_theme.dart';
 import '../../../core/utils/dialog_helper.dart';
 import '../controllers/subject_controller.dart';
 
@@ -49,19 +51,25 @@ class SubjectView extends GetView<SubjectController> {
       CommonCardWidget(
         boxShadow: const [BoxShadowConstant.subjectPage],
         border: BorderStyleConstant.outlineBorderCard,
-        child: Obx(() => Column(
-                spacing: Dimens.spacePadding,
-                children: [
-                  _title(
-                      context: context,
-                      title: controller.subject.pages[controller.currentPageNumber.value - 1].title,
-                  ),
-                  _subject(
-                      context: context,
-                      subject: controller.subject.pages[controller.currentPageNumber.value -1].subject
-                    )
-                  ],
-                ),
+        child: Obx(() {
+          final page = controller.subject.pages[controller.currentPageNumber.value - 1];
+          return Column(
+            spacing: Dimens.spacePadding,
+            children: [
+              _title(
+                context: context,
+                title: page.title,
+              ),
+              if(page.blockType == 'text' || page.blockType == 'heading')
+                _subject(context: context, subject: page.subject,),
+
+              if(page.blockType == 'image' || page.blockType == 'table')
+                _imageUrl(context: context, semantic: page.subject, imageUrl: page.imageUrl!),
+
+              if(page.blockType == 'formula')
+                _formula(context: context, semantic: page.subject, latex: page.sourceMarkup!)
+            ],
+          );},
               ),
             ),
             Obx(()
@@ -112,7 +120,7 @@ class SubjectView extends GetView<SubjectController> {
   }
   Widget _subject({
     required BuildContext context,
-    required String subject
+    required String subject,
   }){
     return Text(
       subject,
@@ -122,4 +130,67 @@ class SubjectView extends GetView<SubjectController> {
       ),
     );
   }
+
+  Widget _imageUrl({
+    required BuildContext context,
+    required String semantic,
+    required String imageUrl,
+  }) {
+    return Semantics(
+      label: semantic,
+      excludeSemantics: true,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Dimens.radius),
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.fitWidth,
+          alignment: Alignment.topCenter,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Container(
+              height: 100,
+              alignment: Alignment.center,
+              child: const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              height: 100,
+              color: Colors.grey[300],
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.broken_image_outlined,
+                color: Colors.grey[600],
+                size: 24,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _formula({
+    required BuildContext context,
+    required String semantic,
+    required String latex,
+  }){
+    return Semantics(
+      label: semantic,
+      excludeSemantics: true,
+      child: Math.tex(
+        latex,
+        mathStyle: MathStyle.text,
+        textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(
+            color: ColorConstant.textDarkGreyColor,
+            fontWeight: FontWeight.w500
+        )
+      ),
+    );
+  }
+
 }

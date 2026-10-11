@@ -8,7 +8,6 @@ import '../../../../common/common_text_form_field_widget.dart';
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/box_shadow_style.dart';
 import '../../../../core/styles/colors/color_constant.dart';
-import '../../../../core/styles/icon_txt.dart';
 import '../../../../core/utils/validate_helper.dart';
 import '../../login/views/widgets/footer_auth_button.dart';
 import '../../widgets/auth_appbar.dart';
@@ -27,7 +26,6 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
         child: Column(
           children: [
             AuthAppbar(
-              icon: IconTxt.eye,
               title: "Daftar Akun",
               description: "Bergabung sebagai ke ${AppStrings.nameApp}",
               height: appBarHeight,

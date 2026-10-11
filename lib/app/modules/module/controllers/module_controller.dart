@@ -5,29 +5,20 @@ import 'package:novasight_app/app/core/utils/ui_state.dart';
 import 'package:novasight_app/app/data/models/module_model.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/module_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 
 class ModuleController extends GetxController {
-  final ModuleRepository? moduleRepository;
   final StudentRepository? studentRepository;
   final ClassroomRepository? classroomRepository;
   final StorageService? storageService;
 
   ModuleController({
-    ModuleRepository? moduleRepository,
-    ModuleRepository? repository,
     StudentRepository? studentRepository,
     ClassroomRepository? classroomRepository,
     StorageService? storageService,
-  })  : moduleRepository = moduleRepository ??
-            repository ??
-            (Get.isRegistered<ModuleRepository>()
-                ? Get.find<ModuleRepository>()
-                : null),
-        studentRepository = studentRepository ??
+  })  : studentRepository = studentRepository ??
             (Get.isRegistered<StudentRepository>()
                 ? Get.find<StudentRepository>()
                 : null),
@@ -51,19 +42,6 @@ class ModuleController extends GetxController {
   // Real student modules from API
   final RxList<StudentModuleModel> studentModules = <StudentModuleModel>[].obs;
 
-  // Local mock fallback modules
-  RxList<ModuleModel> get localModules =>
-      moduleRepository?.modules ?? <ModuleModel>[].obs;
-
-  List<ModuleModel> get filteredLocalModules {
-    return switch (selectedStatus.value) {
-      ModuleStatus.all => localModules.toList(),
-      ModuleStatus.notDone =>
-        localModules.where((m) => m.toPercentageDone() != 100).toList(),
-      ModuleStatus.done =>
-        localModules.where((m) => m.toPercentageDone() == 100).toList(),
-    };
-  }
 
   bool get hasApiModules => studentModules.isNotEmpty;
 
@@ -108,17 +86,7 @@ class ModuleController extends GetxController {
           return;
         }
       }
-
-      // 2. Fallback to local repository if API is not available
-      if (moduleRepository != null) {
-        final result = await moduleRepository!.getModules();
-        result.match(
-          (failure) => state.value = UiStateFailure(failure.message),
-          (_) => state.value = const UiStateSuccess(null),
-        );
-      } else {
-        state.value = const UiStateSuccess(null);
-      }
+      state.value = const UiStateSuccess(null);
     } on ApiException catch (e) {
       errorMessage.value = e.message;
       state.value = UiStateFailure(e.message);

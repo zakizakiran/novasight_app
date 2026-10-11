@@ -9,9 +9,7 @@ import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/models/module_model.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
-import 'package:novasight_app/app/modules/module/views/widgets/module_card_widget.dart';
 import 'package:novasight_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
 import '../controllers/module_controller.dart';
 
@@ -98,23 +96,7 @@ class ModuleView extends GetView<ModuleController> {
         onDetail: controller.onDetailStudent,
       );
     }
-
-    final localModules = controller.filteredLocalModules;
-    if (localModules.isEmpty) {
-      return Center(
-        child: Text(
-          'Belum ada modul pada kategori ini.',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: ColorConstant.textGreyColor,
-              ),
-        ),
-      );
-    }
-
-    return _buildLocalModuleColumn(
-      modules: localModules,
-      onDetail: controller.onDetail,
-    );
+    return const SizedBox.shrink();
   }
 
   Widget _buildRowTab({required ModuleStatus selectedStatus}) {
@@ -241,25 +223,6 @@ class ModuleView extends GetView<ModuleController> {
       },
       separatorBuilder: (context, index) =>
           const SizedBox(height: Dimens.spacePadding),
-    );
-  }
-
-  Widget _buildLocalModuleColumn({
-    required List<ModuleModel> modules,
-    required void Function(ModuleModel) onDetail,
-  }) {
-    return ListView.separated(
-      itemCount: modules.length,
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, i) {
-        return ModuleCardWidget(
-          module: modules[i],
-          onDetail: onDetail,
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(height: Dimens.spacePadding);
-      },
     );
   }
 }

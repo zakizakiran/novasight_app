@@ -10,27 +10,4 @@ class ModuleRepository {
 
   RxList<ModuleModel> get modules => _service.modules;
 
-  Future<Either<Failure, List<ModuleModel>>> getModules() async {
-    try{
-      return Right(await _service.getModules());
-    }on Failure catch (e) {
-      return Left(e);
-    } catch (e) {
-      return Left(AppFailure(e.toString()));
-    }
-  }
-
-  Future<Either<Failure, ModuleModel>> getModuleById(int id) async {
-    try{
-      return Right(await _service.getModuleById(id));
-    }on Failure catch (e) {
-      return Left(e);
-    } catch (e) {
-      return Left(AppFailure(e.toString()));
-    }
-  }
-
-  void onDoneSubject(int subjectId){
-    return _service.onUpdateSubject(subjectId);
-  }
 }

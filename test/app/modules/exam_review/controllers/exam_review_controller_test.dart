@@ -29,12 +29,20 @@ void main() {
             diagnosis: 'Jawaban tepat',
             personalizedJustification: 'Langkah sudah benar',
           ),
+          options: [
+            QuestionOptionResponse(id: 1, label: 'A', opsiText: 'Opsi A'),
+            QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
+          ],
         ),
         QuizResultItem(
           soalId: 102,
           questionText: 'Berapakah 5 * 5?',
           selectedOption: 'A',
           correctOption: 'C',
+          options: [
+            QuestionOptionResponse(id: 1, label: 'A', opsiText: 'Opsi A'),
+            QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
+          ],
           studentSteps: [],
           isCorrect: false,
           justification: SoalJustification(
@@ -102,6 +110,10 @@ void main() {
           selectedOption: 'A',
           correctOption: 'A',
           studentSteps: [],
+          options: [
+            QuestionOptionResponse(id: 1, label: 'A', opsiText: 'Opsi A'),
+            QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
+          ],
           isCorrect: true,
         ),
         QuizResultItem(
@@ -110,6 +122,10 @@ void main() {
           selectedOption: 'B',
           correctOption: 'B',
           studentSteps: [],
+          options: [
+            QuestionOptionResponse(id: 1, label: 'A', opsiText: 'Opsi A'),
+            QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
+          ],
           isCorrect: true,
         ),
       ];

@@ -10,10 +10,7 @@ import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/models/module_model.dart';
-import 'package:novasight_app/app/data/model/subject_model.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
-import 'package:novasight_app/app/modules/module_detail/views/widgets/subject_card_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/module_detail_controller.dart';
 
@@ -264,82 +261,10 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
       );
     }
 
-    final module = controller.localModule;
-    if (module == null) {
-      return const SizedBox(
+    return const SizedBox(
         height: 200,
         child: Center(child: Text('Modul tidak ditemukan.')),
       );
-    }
-
-    final localPercentage = module.toPercentageDone();
-
-    return Column(
-      children: [
-        CommonAppBar(
-          title: "${module.subjects.length} Materi",
-          description: module.title,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(Dimens.innerPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CommonCardWidget(
-                border: BorderStyleConstant.outlineBorderCard,
-                boxShadow: const [BoxShadowConstant.module],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Progres Pembelajaran',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: ColorConstant.textPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        Text(
-                          '$localPercentage% Selesai',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: ColorConstant.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    CommonGradientProgressBarWidget(
-                      percentage: (localPercentage.clamp(0, 100)) / 100,
-                      colors: const [
-                        ColorConstant.linearSecondary,
-                        ColorConstant.linearPrimary,
-                      ],
-                      stops: const [0.2, 1.0],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: Dimens.spacePadding),
-              Text(
-                "Daftar Isi",
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: ColorConstant.informationColor,
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const SizedBox(height: Dimens.spacePadding),
-              _buildLocalModuleColumn(
-                module: module,
-                onDetail: controller.onSubject,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildStudentChapterList({
@@ -497,30 +422,6 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
               ColorConstant.white,
               BlendMode.srcIn,
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLocalModuleColumn({
-    required ModuleModel module,
-    required void Function(SubjectModel, int) onDetail,
-  }) {
-    return Column(
-      children: List.generate(
-        module.subjects.length,
-        (i) => Padding(
-          padding: EdgeInsets.only(
-            bottom:
-                i == module.subjects.length - 1 ? 0 : Dimens.spacePadding,
-          ),
-          child: SubjectCardWidget(
-            onDetail: () {
-              onDetail(module.subjects[i], i);
-            },
-            number: i + 1,
-            subjectModel: module.subjects[i],
           ),
         ),
       ),

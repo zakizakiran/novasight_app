@@ -159,6 +159,10 @@ void main() {
           selectedOption: 'A',
           correctOption: 'A',
           studentSteps: [],
+          options: [
+            QuestionOptionResponse(id: 1, label: 'A', opsiText: 'Opsi A'),
+            QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
+          ],
           isCorrect: true,
           justification: SoalJustification(
             diagnosis: 'Pemahaman konsep respirasi seluler sudah sangat baik.',

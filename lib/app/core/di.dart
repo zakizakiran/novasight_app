@@ -9,7 +9,6 @@ import 'package:novasight_app/app/data/repositories/auth_repository.dart';
 import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/module_repository.dart';
-import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
 import 'package:novasight_app/app/data/repositories/note_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
@@ -51,12 +50,6 @@ Future<void> initDepedencies() async {
     permanent: true,
   );
 
-  Get.put<ModuleTeacherRepository>(
-    ModuleTeacherRepository(
-      Get.find<ModuleTeacherService>(),
-    ),
-    permanent: true,
-  );
 
   Get.put<AuthRepository>(
     AuthRepository(

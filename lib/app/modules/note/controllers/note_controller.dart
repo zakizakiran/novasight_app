@@ -102,21 +102,6 @@ class NoteController extends GetxController {
     super.onClose();
   }
 
-  void readAloud() {
-    String textToRead = "Soal, ${question?.questionText ?? ''}. ";
-    if (steps.isNotEmpty) {
-      textToRead += "Langkah pengerjaan yang sudah dibuat: ";
-      for (int i = 0; i < steps.length; i++) {
-        textToRead += "Langkah ${i + 1}, ${MathSemanticSerializer().serializeNodes(steps[i].nodes)}. ";
-      }
-    } else {
-      textToRead += "Belum ada langkah pengerjaan yang dibuat.";
-    }
-
-    // ignore: deprecated_member_use
-    SemanticsService.announce(textToRead, TextDirection.ltr);
-  }
-
   void scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
       if (scrollController.hasClients) {

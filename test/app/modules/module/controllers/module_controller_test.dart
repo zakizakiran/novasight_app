@@ -18,7 +18,6 @@ class MockClassroomRepository extends Mock implements ClassroomRepository {}
 
 class MockStorageService extends Mock implements StorageService {}
 
-class MockModuleRepository extends Mock implements ModuleRepository {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +25,6 @@ void main() {
   late MockStudentRepository mockStudentRepo;
   late MockClassroomRepository mockClassroomRepo;
   late MockStorageService mockStorage;
-  late MockModuleRepository mockModuleRepo;
 
   final testNow = DateTime.parse('2026-09-14T00:00:00.000Z');
 
@@ -70,12 +68,9 @@ void main() {
     mockStudentRepo = MockStudentRepository();
     mockClassroomRepo = MockClassroomRepository();
     mockStorage = MockStorageService();
-    mockModuleRepo = MockModuleRepository();
 
     when(() => mockStorage.getClassCode()).thenReturn('CLS-1234');
-    when(() => mockClassroomRepo.getClassrooms())
-        .thenAnswer((_) async => mockClassrooms);
-    when(() => mockModuleRepo.modules).thenReturn(<ModuleModel>[].obs);
+    when(() => mockClassroomRepo.getClassrooms()).thenAnswer((_) async => mockClassrooms);
   });
 
   tearDown(() {
@@ -95,7 +90,6 @@ void main() {
         studentRepository: mockStudentRepo,
         classroomRepository: mockClassroomRepo,
         storageService: mockStorage,
-        moduleRepository: mockModuleRepo,
       );
 
       // onInit triggers onLoad
@@ -121,7 +115,6 @@ void main() {
         studentRepository: mockStudentRepo,
         classroomRepository: mockClassroomRepo,
         storageService: mockStorage,
-        moduleRepository: mockModuleRepo,
       );
 
       controller.onInit();
@@ -151,7 +144,6 @@ void main() {
         studentRepository: mockStudentRepo,
         classroomRepository: mockClassroomRepo,
         storageService: mockStorage,
-        moduleRepository: mockModuleRepo,
       );
 
       controller.onInit();

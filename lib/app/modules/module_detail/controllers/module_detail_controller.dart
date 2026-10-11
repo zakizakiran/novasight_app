@@ -2,12 +2,10 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/args/subject_args.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/models/module_model.dart';
 import 'package:novasight_app/app/data/model/subject_model.dart';
 import 'package:novasight_app/app/data/model/subject_page_module.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/module_repository.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
@@ -16,24 +14,16 @@ import 'package:novasight_app/app/routes/app_pages.dart';
 
 class ModuleDetailController extends GetxController {
   final int id;
-  final ModuleRepository? moduleRepository;
   final StudentRepository? studentRepository;
   final ClassroomRepository? classroomRepository;
   final StorageService? storageService;
 
   ModuleDetailController({
     int? moduleId,
-    ModuleRepository? moduleRepository,
-    ModuleRepository? repository,
     StudentRepository? studentRepository,
     ClassroomRepository? classroomRepository,
     StorageService? storageService,
   })  : id = moduleId ?? (Get.arguments is int ? Get.arguments as int : 0),
-        moduleRepository = moduleRepository ??
-            repository ??
-            (Get.isRegistered<ModuleRepository>()
-                ? Get.find<ModuleRepository>()
-                : null),
         studentRepository = studentRepository ??
             (Get.isRegistered<StudentRepository>()
                 ? Get.find<StudentRepository>()
@@ -55,8 +45,6 @@ class ModuleDetailController extends GetxController {
       Rxn<StudentModuleDetailModel>();
   final RxnInt startingChapterId = RxnInt();
 
-  ModuleModel? get localModule =>
-      moduleRepository?.modules.firstWhereOrNull((m) => m.id == id);
 
   bool get hasApiDetail => studentModule.value != null;
 
@@ -93,17 +81,7 @@ class ModuleDetailController extends GetxController {
           return;
         }
       }
-
-      // 2. Fallback to local mock repository
-      if (moduleRepository != null) {
-        final result = await moduleRepository!.getModuleById(id);
-        result.match(
-          (failure) => state.value = UiStateFailure(failure.message),
-          (data) => state.value = const UiStateSuccess(null),
-        );
-      } else {
-        state.value = const UiStateSuccess(null);
-      }
+      state.value = const UiStateSuccess(null);
     } on ApiException catch (e) {
       state.value = UiStateFailure(e.message);
     } catch (e) {
@@ -188,11 +166,14 @@ class ModuleDetailController extends GetxController {
         // Convert BlockResponseModel items into SubjectPageModel
         final pages = <SubjectPageModel>[];
         if (detail.blocks != null && detail.blocks!.isNotEmpty) {
-          for (final b in detail.blocks!) {
+          for (final (index, b) in detail.blocks!.indexed) {
             pages.add(
               SubjectPageModel(
-                title: '${chapter.title} • Bagian ${b.readingOrder}',
+                title: '${chapter.title} • Bagian ${index + 1}',
                 subject: b.readableText,
+                imageUrl: b.imageUrl,
+                blockType: b.blockType,
+                sourceMarkup: b.sourceMarkup
               ),
             );
           }
@@ -201,6 +182,7 @@ class ModuleDetailController extends GetxController {
             SubjectPageModel(
               title: chapter.title,
               subject: 'Belum ada konten materi untuk bab ini.',
+              blockType: 'text'
             ),
           );
         }
@@ -229,6 +211,7 @@ class ModuleDetailController extends GetxController {
           SubjectPageModel(
             title: chapter.title,
             subject: 'Materi bab: ${chapter.title}',
+            blockType: 'text',
           ),
         ],
       );
@@ -247,6 +230,7 @@ class ModuleDetailController extends GetxController {
           SubjectPageModel(
             title: chapter.title,
             subject: 'Materi bab: ${chapter.title}',
+            blockType: 'text',
           ),
         ],
       );

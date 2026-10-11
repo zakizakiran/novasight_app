@@ -5,12 +5,11 @@ import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:novasight_app/app/data/model/class_model.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/module_teacher_repository.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/chunk_card_widget.dart';
 
-class MockModuleTeacherRepository extends Mock
-    implements ModuleTeacherRepository {}
+class MockModuleTeacherRepository extends Mock {}
+
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +54,7 @@ void main() {
   testWidgets('ChunkCardWidget renders TextChunk properly',
       (WidgetTester tester) async {
     Get.routing.args = testModule;
-    controller = Get.put(ModuleEvaluationController(repository: mockRepo));
+    controller = Get.put(ModuleEvaluationController());
 
     const textChunk = TextChunk(
       id: 1,
@@ -76,7 +75,7 @@ void main() {
       'ChunkCardWidget handles ImageChunk with backend filename without crashing',
       (WidgetTester tester) async {
     Get.routing.args = testModule;
-    controller = Get.put(ModuleEvaluationController(repository: mockRepo));
+    controller = Get.put(ModuleEvaluationController());
 
     const imageChunk = ImageChunk(
       id: 2,
@@ -98,7 +97,7 @@ void main() {
       'ChunkCardWidget renders ImageChunk with extracted PDF imageBytes properly',
       (WidgetTester tester) async {
     Get.routing.args = testModule;
-    controller = Get.put(ModuleEvaluationController(repository: mockRepo));
+    controller = Get.put(ModuleEvaluationController());
 
     // Transparent 1x1 PNG bytes
     final dummyBytes = Uint8List.fromList([
@@ -132,7 +131,7 @@ void main() {
       'ChunkCardWidget renders ImageChunk with network imageUrl properly',
       (WidgetTester tester) async {
     Get.routing.args = testModule;
-    controller = Get.put(ModuleEvaluationController(repository: mockRepo));
+    controller = Get.put(ModuleEvaluationController());
 
     const networkImageChunk = ImageChunk(
       id: 4,
@@ -153,7 +152,7 @@ void main() {
       'ChunkCardWidget displays block number, type badge, and Block Dipilih when selected',
       (WidgetTester tester) async {
     Get.routing.args = testModule;
-    controller = Get.put(ModuleEvaluationController(repository: mockRepo));
+    controller = Get.put(ModuleEvaluationController());
 
     const textChunk = TextChunk(
       id: 5,

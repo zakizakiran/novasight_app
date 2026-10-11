@@ -1,11 +1,16 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
+import 'package:novasight_app/app/core/utils/math_semantic_serializer.dart';
 import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
 import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 
+import '../../../core/utils/math_latex_parser.dart';
+
 class ExamReviewController extends GetxController {
   final StudentRepository? studentRepository;
+  final MathLatexParser parser = MathLatexParser();
+  final MathSemanticSerializer serializer = MathSemanticSerializer();
 
   ExamReviewController({
     StudentRepository? studentRepository,
@@ -59,11 +64,11 @@ class ExamReviewController extends GetxController {
 
       if (results.isNotEmpty) {
         questions.value = results.map((item) {
-          const options = ['A', 'B', 'C', 'D'];
-          final correctIdx =
-              options.indexOf(item.correctOption.trim().toUpperCase());
+          final List<String> options = item.options.map((option) => option.opsiText,).toList();
+          const defaultOptions = ['A','B','C','D'];
+          final correctIdx = options.indexOf(item.correctOption.trim().toUpperCase());
           final userIdx = item.selectedOption != null
-              ? options.indexOf(item.selectedOption!.trim().toUpperCase())
+              ? defaultOptions.indexOf(item.selectedOption!.trim().toUpperCase())
               : -1;
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;

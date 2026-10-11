@@ -580,6 +580,7 @@ class QuizResultItem {
   final String questionText;
   final String? selectedOption;
   final String correctOption;
+  final List<QuestionOptionResponse> options;
   final bool? isCorrect;
   final SoalJustification? justification;
   final List<StudentStep> studentSteps;
@@ -588,6 +589,7 @@ class QuizResultItem {
     required this.soalId,
     required this.questionText,
     required this.studentSteps,
+    required this.options,
     this.selectedOption,
     required this.correctOption,
     this.isCorrect,
@@ -608,6 +610,9 @@ class QuizResultItem {
         return StudentStep(id: 0, steps: 0, text: '');
       }).toList() ?? [],
       questionText: json['question_text'] as String? ?? '',
+      options: (json['options'] as List<dynamic>?)
+          ?.map((item) => QuestionOptionResponse.fromJson(item as Map<String, dynamic>))
+          .toList() ?? [],
       selectedOption: json['selected_option'] as String?,
       correctOption: json['correct_option'] as String? ?? '',
       isCorrect: json['is_correct'] as bool?,

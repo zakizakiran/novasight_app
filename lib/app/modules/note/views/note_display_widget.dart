@@ -43,8 +43,7 @@ class NoteDisplayWidget extends StatelessWidget {
             children: [
               _buildQuestionCard(
                 context,
-                controller.question,
-                controller.readAloud,
+                controller.question
               ),
               const SizedBox(height: Dimens.spaceBigPadding),
               Semantics(
@@ -84,7 +83,7 @@ class NoteDisplayWidget extends StatelessWidget {
     });
   }
 
-  Widget _buildQuestionCard(BuildContext context,ExamQuestionModel? question, void Function() readAloud) {
+  Widget _buildQuestionCard(BuildContext context,ExamQuestionModel? question) {
     return CommonCardWidget(
       child: Padding(
         padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -114,48 +113,6 @@ class NoteDisplayWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Dimens.spaceMediumPadding),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Semantics(
-                button: true,
-                label: "Baca Ulang Soal",
-                child: GestureDetector(
-                  onTap: readAloud,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: ColorConstant.white,
-                      borderRadius: BorderRadius.circular(Dimens.radius),
-                      border: Border.all(color: ColorConstant.borderBlueGrey),
-                    ),
-                    child: ExcludeSemantics(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.record_voice_over,
-                            color: ColorConstant.textDarkGreyColor,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            "Baca Ulang",
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                              color: ColorConstant.textPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
