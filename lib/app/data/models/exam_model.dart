@@ -8,7 +8,7 @@ class ExamModel {
   final String subtitle;
   final String statusText;
   final String score;
-  final ModuleStatus status;
+  final PublicStatus status;
   final QuizRequestStudentResponse? rawQuiz;
 
   ExamModel({

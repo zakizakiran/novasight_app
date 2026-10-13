@@ -59,7 +59,7 @@ class ExamView extends GetView<ExamController> {
                             exam: exams[i],
                             onDetail: () async {
                               final examItem = exams[i];
-                              if (examItem.status == ModuleStatus.done) {
+                              if (examItem.status == PublicStatus.done) {
                                 await Get.toNamed(
                                   Routes.EXAM_REVIEW,
                                   arguments: examItem.rawQuiz ?? int.tryParse(examItem.id) ?? examItem.id,
@@ -89,7 +89,7 @@ class ExamView extends GetView<ExamController> {
     );
   }
 
-  Widget _buildRowTab({required ModuleStatus selectedStatus}) {
+  Widget _buildRowTab({required PublicStatus selectedStatus}) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -97,17 +97,17 @@ class ExamView extends GetView<ExamController> {
         spacing: Dimens.spaceMediumPadding,
         children: [
           ModuleFilterTabWidget(
-            status: ModuleStatus.all,
+            status: PublicStatus.all,
             selectedStatus: selectedStatus,
             onChanged: controller.onChangeStatus,
           ),
           ModuleFilterTabWidget(
-            status: ModuleStatus.notDone,
+            status: PublicStatus.notDone,
             selectedStatus: selectedStatus,
             onChanged: controller.onChangeStatus,
           ),
           ModuleFilterTabWidget(
-            status: ModuleStatus.done,
+            status: PublicStatus.done,
             selectedStatus: selectedStatus,
             onChanged: controller.onChangeStatus,
           ),

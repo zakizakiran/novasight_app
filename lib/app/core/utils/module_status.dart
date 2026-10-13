@@ -1,9 +1,9 @@
-enum ModuleStatus {
+enum PublicStatus {
 
   all("Semua"),
   notDone("Belum Selesai"),
   done("Selesai");
 
   final String name;
-  const ModuleStatus(this.name);
+  const PublicStatus(this.name);
 }

@@ -91,7 +91,7 @@ class ExamCardWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      exam.status == ModuleStatus.done
+                      exam.status == PublicStatus.done
                           ? 'Evaluaizer (Hasil Ujian)'
                           : 'Kerjakan',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(

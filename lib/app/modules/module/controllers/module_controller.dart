@@ -31,7 +31,7 @@ class ModuleController extends GetxController {
                 ? Get.find<StorageService>()
                 : null);
 
-  final selectedStatus = ModuleStatus.all.obs;
+  final selectedStatus = PublicStatus.all.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
 
@@ -45,13 +45,13 @@ class ModuleController extends GetxController {
 
   bool get hasApiModules => studentModules.isNotEmpty;
 
-  StudentModuleStatus _mapToStudentModuleStatus(ModuleStatus status) {
+  StudentModuleStatus _mapToStudentModuleStatus(PublicStatus status) {
     switch (status) {
-      case ModuleStatus.all:
+      case PublicStatus.all:
         return StudentModuleStatus.semua;
-      case ModuleStatus.notDone:
+      case PublicStatus.notDone:
         return StudentModuleStatus.belumSelesai;
-      case ModuleStatus.done:
+      case PublicStatus.done:
         return StudentModuleStatus.selesai;
     }
   }
@@ -98,7 +98,7 @@ class ModuleController extends GetxController {
     }
   }
 
-  void onChangeStatus(ModuleStatus status) {
+  void onChangeStatus(PublicStatus status) {
     selectedStatus.value = status;
     onLoad();
   }

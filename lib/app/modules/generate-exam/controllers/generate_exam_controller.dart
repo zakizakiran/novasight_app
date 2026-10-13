@@ -341,6 +341,7 @@ class GenerateExamController extends GetxController {
               title: 'Pembuatan Soal Gagal',
               message: failMsg,
             );
+            previousStep();
           }
         },
         onError: (err) {
@@ -350,6 +351,7 @@ class GenerateExamController extends GetxController {
             title: 'Koneksi Terputus',
             message: 'Gagal mendengarkan proses pembuatan soal: $err',
           );
+          previousStep();
         },
         onDone: () async {
           debugPrint('[GenerateExamController] Stream onDone. isGenerating: ${isGenerating.value}, createdId: ${createdQuizRequestId.value}');
@@ -365,6 +367,7 @@ class GenerateExamController extends GetxController {
         title: 'Gagal Membuat Soal',
         message: e.message,
       );
+      previousStep();
     } catch (e, stack) {
       isGenerating.value = false;
       debugPrint('[GenerateExamController] Unexpected catch: $e\n$stack');

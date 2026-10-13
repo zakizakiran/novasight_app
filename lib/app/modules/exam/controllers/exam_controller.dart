@@ -31,7 +31,7 @@ class ExamController extends GetxController {
                 ? Get.find<StorageService>()
                 : null);
 
-  final selectedStatus = ModuleStatus.all.obs;
+  final selectedStatus = PublicStatus.all.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final RxList<QuizRequestStudentResponse> quizzes =
@@ -50,17 +50,17 @@ class ExamController extends GetxController {
           score: q.progress?.score != null
               ? q.progress!.score!.toInt().toString()
               : '-',
-          status: isDone ? ModuleStatus.done : ModuleStatus.notDone,
+          status: isDone ? PublicStatus.done : PublicStatus.notDone,
           rawQuiz: q,
         );
       }).toList();
 
       return switch (selectedStatus.value) {
-        ModuleStatus.all => list,
-        ModuleStatus.notDone =>
-          list.where((e) => e.status == ModuleStatus.notDone).toList(),
-        ModuleStatus.done =>
-          list.where((e) => e.status == ModuleStatus.done).toList(),
+        PublicStatus.all => list,
+        PublicStatus.notDone =>
+          list.where((e) => e.status == PublicStatus.notDone).toList(),
+        PublicStatus.done =>
+          list.where((e) => e.status == PublicStatus.done).toList(),
       };
     } else {
       return [];
@@ -87,9 +87,9 @@ class ExamController extends GetxController {
 
       if (classroomId != null) {
         final queryStatus = switch (selectedStatus.value) {
-          ModuleStatus.all => QuizRequestStudentQueryStatus.semua,
-          ModuleStatus.notDone => QuizRequestStudentQueryStatus.belumDikerjakan,
-          ModuleStatus.done => QuizRequestStudentQueryStatus.selesai,
+          PublicStatus.all => QuizRequestStudentQueryStatus.semua,
+          PublicStatus.notDone => QuizRequestStudentQueryStatus.belumDikerjakan,
+          PublicStatus.done => QuizRequestStudentQueryStatus.selesai,
         };
 
         final result = await studentRepository!.getQuizzes(
@@ -107,7 +107,7 @@ class ExamController extends GetxController {
     }
   }
 
-  void onChangeStatus(ModuleStatus status) {
+  void onChangeStatus(PublicStatus status) {
     selectedStatus.value = status;
     onLoad();
   }

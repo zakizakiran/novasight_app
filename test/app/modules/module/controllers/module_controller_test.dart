@@ -120,10 +120,10 @@ void main() {
       controller.onInit();
       await Future.delayed(const Duration(milliseconds: 50));
 
-      controller.onChangeStatus(ModuleStatus.done);
+      controller.onChangeStatus(PublicStatus.done);
       await Future.delayed(const Duration(milliseconds: 50));
 
-      expect(controller.selectedStatus.value, equals(ModuleStatus.done));
+      expect(controller.selectedStatus.value, equals(PublicStatus.done));
       verify(
         () => mockStudentRepo.getModules(
           classroomId: 10,

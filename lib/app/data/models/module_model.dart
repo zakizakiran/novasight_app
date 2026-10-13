@@ -8,15 +8,15 @@ class ModuleModel extends Equatable {
   final String title;
   final String description;
   final List<SubjectModel> subjects;
-  final ModuleStatus status;
-  const ModuleModel({required this.id, required this.title, required this.description, required this.subjects, this.status = ModuleStatus.notDone});
+  final PublicStatus status;
+  const ModuleModel({required this.id, required this.title, required this.description, required this.subjects, this.status = PublicStatus.notDone});
 
   ModuleModel copyWith({
     int? id,
     String? title,
     String? description,
     List<SubjectModel>? subjects,
-    ModuleStatus? status
+    PublicStatus? status
   }){
     return ModuleModel(
         id: id ?? this.id,

@@ -99,26 +99,26 @@ class ModuleView extends GetView<ModuleController> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildRowTab({required ModuleStatus selectedStatus}) {
+  Widget _buildRowTab({required PublicStatus selectedStatus}) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ModuleFilterTabWidget(
-            status: ModuleStatus.all,
+            status: PublicStatus.all,
             selectedStatus: selectedStatus,
             onChanged: controller.onChangeStatus,
           ),
           const SizedBox(width: Dimens.spaceMediumPadding),
           ModuleFilterTabWidget(
-            status: ModuleStatus.notDone,
+            status: PublicStatus.notDone,
             selectedStatus: selectedStatus,
             onChanged: controller.onChangeStatus,
           ),
           const SizedBox(width: Dimens.spaceMediumPadding),
           ModuleFilterTabWidget(
-            status: ModuleStatus.done,
+            status: PublicStatus.done,
             selectedStatus: selectedStatus,
             onChanged: controller.onChangeStatus,
           ),

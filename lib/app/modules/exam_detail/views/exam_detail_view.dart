@@ -6,8 +6,7 @@ import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
-
+import '../../../core/utils/date_helper.dart';
 import '../controllers/exam_detail_controller.dart';
 
 class ExamDetailView extends GetView<ExamDetailController> {
@@ -74,6 +73,28 @@ class ExamDetailView extends GetView<ExamDetailController> {
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: ColorConstant.textDarkGreyColor,
                             height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: Dimens.spaceMediumPadding),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                              color: ColorConstant.textDarkGreyColor,
+                              height: 1.5,
+                            ),
+                            children: [
+                              const TextSpan(text: "Ujian dimulai pada : "),
+                              TextSpan(
+                                text: "${DateHelper.dateTimeFormat(controller.quiz.value!.startTime)} ",
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const TextSpan(text: "\nUjian selesai pada : "),
+                              TextSpan(
+                                text: "${DateHelper.dateTimeFormat(controller.quiz.value!.endTime)} ",
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: Dimens.spaceMediumPadding),

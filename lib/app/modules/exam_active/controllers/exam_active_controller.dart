@@ -186,8 +186,26 @@ class ExamActiveController extends GetxController {
           }
         },
         onError: (err) {
+          if (err is ApiException) {
+            final int? statusCode = err.statusCode;
+            final String message = err.message;
+            Get.back();
+            if (statusCode == 400) {
+              SnackbarHelper.showError(
+                title: 'Permintaan Tidak Valid',
+                message: message,
+              );
+            } else if (statusCode == 403) {
+              SnackbarHelper.showError(
+                title: 'Akses Ditolak',
+                message: message,
+              );
+            }
+            errorMessage.value = message;
+          } else {
+            errorMessage.value = err.toString();
+          }
           isLoading.value = false;
-          errorMessage.value = err.toString();
         },
       );
     } on ApiException catch (e) {

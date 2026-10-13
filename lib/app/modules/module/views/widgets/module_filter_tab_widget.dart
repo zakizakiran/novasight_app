@@ -6,9 +6,9 @@ import 'package:novasight_app/app/core/utils/module_status.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 
 class ModuleFilterTabWidget extends StatelessWidget {
-  final ModuleStatus status;
-  final ModuleStatus selectedStatus;
-  final ValueChanged<ModuleStatus> onChanged;
+  final PublicStatus status;
+  final PublicStatus selectedStatus;
+  final ValueChanged<PublicStatus> onChanged;
   const ModuleFilterTabWidget({super.key, required this.status, required this.selectedStatus, required this.onChanged});
 
   @override
