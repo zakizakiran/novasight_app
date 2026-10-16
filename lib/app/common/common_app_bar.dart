@@ -4,7 +4,6 @@ import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
 
-
 class CommonAppBar extends StatelessWidget {
   final String icon;
   final String? iconSvg;
@@ -12,21 +11,26 @@ class CommonAppBar extends StatelessWidget {
   final String? title;
   final String description;
   final bool? showBackButton;
-  const CommonAppBar({super.key,this.icon = IconTxt.chat, this.iconSvg, this.title, required this.description,this.height, this.showBackButton});
+  const CommonAppBar({
+    super.key,
+    this.icon = IconTxt.chat,
+    this.iconSvg,
+    this.title,
+    required this.description,
+    this.height,
+    this.showBackButton,
+  });
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final canGoBack = showBackButton ?? (Get.key.currentState?.canPop() ?? false);
+    final canGoBack =
+        showBackButton ?? (Get.key.currentState?.canPop() ?? false);
     return Container(
-      constraints: BoxConstraints(
-        minHeight: height * 0.16
-      ),
+      constraints: BoxConstraints(minHeight: height * 0.16),
       width: double.infinity,
       padding: const EdgeInsets.all(Dimens.innerPadding),
-      decoration: const BoxDecoration(
-        color: ColorConstant.primary,
-      ),
+      decoration: const BoxDecoration(color: ColorConstant.primary),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: Dimens.spacePadding,
@@ -44,26 +48,34 @@ class CommonAppBar extends StatelessWidget {
                 ),
               ),
             ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: Dimens.spacePadding),
-              if(title != null)
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title != null)
+                  Text(
+                    title!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: ColorConstant.white),
+                  ),
+
                 Text(
-                  title!,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: ColorConstant.white
+                  description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    color: ColorConstant.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              Text(description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: ColorConstant.white,
-                      fontWeight: FontWeight.bold
-                  )),
-            ],
+              ],
+            ),
           ),
         ],
       ),

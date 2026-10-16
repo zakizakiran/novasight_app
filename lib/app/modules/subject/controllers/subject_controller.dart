@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/semantics.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/args/subject_args.dart';
 import 'package:novasight_app/app/data/model/subject_model.dart';
@@ -14,6 +16,8 @@ class SubjectController extends GetxController {
   late final SubjectModel subject;
   late final int index;
   final Rx<int> currentPageNumber = 1.obs;
+
+  final TextEditingController searchController = TextEditingController();
 
   SubjectController({
     ModuleRepository? moduleRepository,
@@ -37,12 +41,30 @@ class SubjectController extends GetxController {
     index = args.index;
   }
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   void onNext() {
     currentPageNumber.value += 1;
   }
 
+  void onPage(int page) {
+    if (page < 1){
+      return ;
+    }
+    currentPageNumber.value = page;
+    SemanticsService.announce("Pergi ke halaman $page", TextDirection.ltr);
+  }
+
   void onPrevious() {
     currentPageNumber.value -= 1;
+  }
+
+  void onSentenceTapped(sentence){
+    SemanticsService.announce(sentence, TextDirection.ltr);
   }
 
   void onDone() {
@@ -51,7 +73,6 @@ class SubjectController extends GetxController {
   }
 
   Future<void> onConfirmSubject() async {
-    // 0. Update ModuleDetailController optimistically
     if (Get.isRegistered<ModuleDetailController>()) {
       Get.find<ModuleDetailController>().markChapterDoneLocally(subject.id);
     }
