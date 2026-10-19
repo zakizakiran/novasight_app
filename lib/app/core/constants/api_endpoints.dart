@@ -53,6 +53,7 @@ class ApiEndpoints {
   static const String teacherQuizzes = '/api/teachers/quizzes';
   static String teacherQuizDetail(int quizId) => '/api/teachers/quizzes/$quizId';
   static String teacherQuizDelete(int quizId) => '/api/teachers/quizzes/$quizId';
+  static String teacherQuizStudentProgress(int quizId) => '/api/teachers/quizzes/$quizId/students';
   static String teacherQuizStatus(int quizId) => '/api/teachers/quizzes/statuses/$quizId';
   static String teacherSoalStimulusRegenerate(int soalId) => '/api/teachers/soal/stimulus/regenerate/$soalId';
   static String teacherSoalEdit(int soalId) => '/api/teachers/soal/$soalId';

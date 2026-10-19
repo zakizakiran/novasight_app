@@ -255,9 +255,9 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
           // Subtitle
           Text(
             '${quiz.questionCounts} soal · Durasi ${quiz.maxDurationMinutes} menit',
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: ColorConstant.textGreyColor),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: ColorConstant.textGreyColor,
+            ),
           ),
           const SizedBox(height: 4),
           // Attachment
@@ -282,44 +282,108 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
             ],
           ),
           const SizedBox(height: 16),
-          // Action Row
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.EXAM_TEACHERS_DETAIL, arguments: quiz);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: ColorConstant.textDarkGreyColor,
-                    side: const BorderSide(color: ColorConstant.grey),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                  ),
-                  child: const Text('Lihat Soal'),
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildExamButton(context, 'Lihat Soal', () => controller.onDetailExam(quiz),),
+                    const SizedBox(height: 8),
+                    _buildExamButton(context, 'Lihat Progres Murid', () => controller.onStudentExamProgress(quiz)),
+                  ],
                 ),
               ),
-              if (!isPublish) ...[
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: isPublishingThis
-                        ? null
-                        : () {
-                            controller.onChangeQuizStatus(quiz, "publish");
+              const SizedBox(width: 8),
+              // Right: delete and publish actions
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: TextButton.icon(
+                          onPressed: isDeletingThis
+                              ? null
+                              : () {
+                            DialogHelper.show(
+                              title: 'Hapus Soal Ujian',
+                              description:
+                              'Anda yakin ingin menghapus "${quiz.title}"?',
+                              colorDescription:
+                              ColorConstant.textDarkGreyColor,
+                              icon: SvgPicture.asset(
+                                SvgConstant.iconTrashConfirmation,
+                                width: Dimens.iconBigSize,
+                                height: Dimens.iconBigSize,
+                              ),
+                              actions: CommonButtonWidget(
+                                buttonName: 'Konfirmasi',
+                                buttonColor: ColorConstant.redColor,
+                                onPressed: () {
+                                  controller.onDeleteQuiz(quiz);
+                                },
+                              ),
+                            );
                           },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstant.primary,
-                      foregroundColor: ColorConstant.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                          icon: isDeletingThis
+                              ? const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.red,
+                            ),
+                          )
+                              : const Icon(
+                            Icons.delete_outline,
+                            size: 16,
+                          ),
+                          label: const Text('Hapus'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.red,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 8,
+                            ),
+                            minimumSize: const Size(0, 40),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                        ),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
-                    child: isPublishingThis
-                        ? const SizedBox(
+
+                    if (!isPublish) ...[
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: isPublishingThis
+                              ? null
+                              : () {
+                            controller.onChangeQuizStatus(
+                              quiz,
+                              'publish',
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorConstant.primary,
+                            foregroundColor: ColorConstant.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 12,
+                            ),
+                          ),
+                          child: isPublishingThis
+                              ? const SizedBox(
                             width: 16,
                             height: 16,
                             child: CircularProgressIndicator(
@@ -327,51 +391,14 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                               color: ColorConstant.white,
                             ),
                           )
-                        : const Text('Publish Soal'),
-                  ),
-                ),
-              ],
-              const SizedBox(width: 8),
-              TextButton.icon(
-                onPressed: isDeletingThis
-                    ? null
-                    : () {
-                        DialogHelper.show(
-                          title: "Hapus Soal Ujian",
-                          description:
-                              'Anda yakin ingin menghapus "${quiz.title}"?',
-                          colorDescription: ColorConstant.textDarkGreyColor,
-                          icon: SvgPicture.asset(
-                            SvgConstant.iconTrashConfirmation,
-                            width: Dimens.iconBigSize,
-                            height: Dimens.iconBigSize,
+                              : const Text(
+                            'Publish Soal',
+                            textAlign: TextAlign.center,
                           ),
-                          actions: CommonButtonWidget(
-                            buttonName: "Konfirmasi",
-                            buttonColor: ColorConstant.redColor,
-                            onPressed: () {
-                              controller.onDeleteQuiz(quiz);
-                            },
-                          ),
-                        );
-                      },
-                icon: isDeletingThis
-                    ? const SizedBox(
-                        width: 14,
-                        height: 14,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.red,
                         ),
-                      )
-                    : const Icon(Icons.delete_outline, size: 16),
-                label: const Text('Hapus'),
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 12,
-                  ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
             ],
@@ -380,4 +407,21 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
       ),
     );
   }
+
+  Widget _buildExamButton(BuildContext context, String title, VoidCallback onPressed) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: ColorConstant.textDarkGreyColor,
+        side: const BorderSide(color: ColorConstant.grey),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+      ),
+      child: Text(title),
+    );
+  }
+
 }
+

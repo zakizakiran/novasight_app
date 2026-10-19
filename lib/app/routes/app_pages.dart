@@ -16,6 +16,10 @@ import '../modules/auth/success_join_class/bindings/success_join_class_binding.d
 import '../modules/auth/success_join_class/views/success_join_class_view.dart';
 import '../modules/chatbot/bindings/chatbot_binding.dart';
 import '../modules/chatbot/views/chatbot_view.dart';
+import '../modules/exam-teacher-student-progress-detail/bindings/exam_teacher_student_progress_detail_binding.dart';
+import '../modules/exam-teacher-student-progress-detail/views/exam_teacher_student_progress_detail_view.dart';
+import '../modules/exam-teacher-student-progress/bindings/exam_teacher_student_progress_binding.dart';
+import '../modules/exam-teacher-student-progress/views/exam_teacher_student_progress_view.dart';
 import '../modules/exam-teachers-detail/bindings/exam_teacher_detail_binding.dart';
 import '../modules/exam-teachers-detail/views/exam_teacher_detail_view.dart';
 import '../modules/exam-teachers/bindings/exam_teachers_binding.dart';
@@ -228,6 +232,16 @@ class AppPages {
       name: _Paths.EXAM_TEACHERS_DETAIL,
       page: () => const ExamTeacherDetailView(),
       binding: ExamTeacherDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXAM_TEACHER_STUDENT_PROGRESS,
+      page: () => const ExamTeacherStudentProgressView(),
+      binding: ExamTeacherStudentProgressBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXAM_TEACHER_STUDENT_PROGRESS_DETAIL,
+      page: () => const ExamTeacherStudentProgressDetailView(),
+      binding: ExamTeacherStudentProgressDetailBinding(),
     ),
   ];
 }

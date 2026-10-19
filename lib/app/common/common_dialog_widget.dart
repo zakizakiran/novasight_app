@@ -4,6 +4,7 @@ import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 
 import '../core/Dimens.dart';
 import '../core/styles/colors/color_constant.dart';
+
 class CommonDialogWidget extends StatelessWidget {
   final String title;
   final String? description;
@@ -27,60 +28,86 @@ class CommonDialogWidget extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Container(
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          color: ColorConstant.white,
-          borderRadius: BorderRadius.circular(Dimens.radiusMedium),
-          border: BorderStyleConstant.outlineBorderCard,
-          boxShadow: const [
-            BoxShadowConstant.module,
-          ],
+      insetPadding: const EdgeInsets.symmetric(
+        horizontal: 24,
+        vertical: 24,
+      ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.85,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              icon!,
-              const SizedBox(height: Dimens.spacePadding),
-            ],
-
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.linearPrimary,
-              ),
+        child: Container(
+          padding: const EdgeInsets.all(30),
+          decoration: BoxDecoration(
+            color: ColorConstant.white,
+            borderRadius: BorderRadius.circular(
+              Dimens.radiusMedium,
             ),
+            border: BorderStyleConstant.outlineBorderCard,
+            boxShadow: const [
+              BoxShadowConstant.module,
+            ],
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (icon != null) ...[
+                  icon!,
+                  const SizedBox(
+                    height: Dimens.spacePadding,
+                  ),
+                ],
 
-            if (description != null) ...[
-              const SizedBox(height: Dimens.spacePadding),
-              Text(
-                description!,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: colorDescription,
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall
+                      ?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstant.linearPrimary,
+                  ),
                 ),
-              ),
-            ],
 
-            if (content != null) ...[
-              const SizedBox(height: Dimens.spacePadding),
-              content!,
-            ],
+                if (description != null) ...[
+                  const SizedBox(
+                    height: Dimens.spacePadding,
+                  ),
+                  Text(
+                    description!,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: colorDescription,
+                    ),
+                  ),
+                ],
 
-            const SizedBox(height: Dimens.spaceBigPadding),
+                if (content != null) ...[
+                  const SizedBox(
+                    height: Dimens.spacePadding,
+                  ),
+                  content!,
+                ],
 
-            if (actions != null)
-              Align(
-                alignment: Alignment.center,
-                child: actions!,
-              ),
-          ],
+                const SizedBox(
+                  height: Dimens.spaceBigPadding,
+                ),
+
+                if (actions != null)
+                  Align(
+                    alignment: Alignment.center,
+                    child: actions!,
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );

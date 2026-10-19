@@ -37,11 +37,13 @@ class ChatbotView extends GetView<ChatbotController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Riwayat Percakapan',
-                style: const MainTextTheme().titleLarge?.copyWith(
-                  color: ColorConstant.textDarkGreyColor,
-                  fontWeight: FontWeight.w700,
+              Expanded(
+                child: Text(
+                  'Riwayat Percakapan',
+                  style: const MainTextTheme().titleLarge?.copyWith(
+                    color: ColorConstant.textDarkGreyColor,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               IconButton(

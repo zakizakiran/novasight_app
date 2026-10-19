@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/text_helper.dart';
 import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:novasight_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../data/model/user_profile_model.dart';
@@ -63,6 +64,15 @@ class ProfileStudentWidget extends StatelessWidget {
             title: "Tingkat Kelas : ",
             description: gradeText,
           ),
+          const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
+          _buildField(
+            context: context,
+            icon: Icons.settings,
+            title: "Pengaturan",
+            onPressed: () {
+              SettingsDialogWidget.show(context);
+            }
+          ),
         ],
       );
     });
@@ -91,7 +101,6 @@ class ProfileStudentWidget extends StatelessWidget {
           context: context,
           icon: Icons.class_,
           title: "Tingkat Kelas : ",
-          description: student.grade.name,
         ),
       ],
     );
@@ -103,40 +112,50 @@ class ProfileStudentWidget extends StatelessWidget {
     String? description,
     required BuildContext context,
     bool spellDigits = false,
+    VoidCallback? onPressed
   }) {
+    final semanticDescription = spellDigits
+        ? TextHelper.spellDigitsId(description ?? '')
+        : description ?? '';
     return Semantics(
       container: true,
-      label:
-          "$title ${spellDigits ? TextHelper.spellDigitsId(description ?? "") : description ?? ""}",
-      child: ExcludeSemantics(
-        child: Row(
-          spacing: Dimens.spacePadding,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: Dimens.iconMidSize, color: ColorConstant.darkGrey),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColorConstant.informationColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (description != null)
+      label: [
+        title,
+        if (semanticDescription.isNotEmpty) semanticDescription,
+      ].join('. '),
+      button: onPressed != null,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: ExcludeSemantics(
+          child: Row(
+            spacing: Dimens.spacePadding,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: Dimens.iconMidSize, color: ColorConstant.darkGrey),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      description,
+                      title,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: ColorConstant.informationColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                ],
+                    if (description != null)
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: ColorConstant.informationColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

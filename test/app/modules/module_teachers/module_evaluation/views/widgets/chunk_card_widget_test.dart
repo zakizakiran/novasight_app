@@ -30,7 +30,7 @@ void main() {
     Get.reset();
     mockRepo = MockModuleTeacherRepository();
     Get.parameters = {};
-    // Set arguments before putting controller
+    // Set arguments before putting controllers
     Get.replace<dynamic>(testModule);
     // Actually Get.arguments is passed via route, in test we set directly:
   });

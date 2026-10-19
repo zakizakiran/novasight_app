@@ -14,41 +14,54 @@ import 'package:novasight_app/app/routes/app_pages.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/student_dashboard_controller.dart';
 
+
 class StudentDashboardView extends GetView<StudentDashboardController> {
   const StudentDashboardView({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final minBlueHeight = screenHeight / 3.5;
+
     return Scaffold(
       backgroundColor: ColorConstant.background,
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.sizeOf(context).height / 3.5,
-            width: double.infinity,
-            decoration: const BoxDecoration(color: ColorConstant.primary),
-          ),
-          SafeArea(
-            child: RefreshIndicator(
-              onRefresh: controller.onRefresh,
-              color: ColorConstant.primary,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: controller.onRefresh,
+          color: ColorConstant.primary,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    _buildHeader(context),
-                    const SizedBox(height: 20),
-                    _buildMetricCards(context),
-                    const SizedBox(height: 30),
-                    _buildTasksSection(context),
+                    Container(
+                      width: double.infinity,
+                      constraints: BoxConstraints(
+                        minHeight: minBlueHeight,
+                      ),
+                      color: ColorConstant.primary,
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 80),
+                      child: _buildHeader(context),
+                    ),
+                    Positioned(
+                      left: 20,
+                      right: 20,
+                      bottom: -50,
+                      child: _buildMetricCards(context),
+                    ),
                   ],
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
+                  child: _buildTasksSection(context),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -66,7 +79,6 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
         container: true,
         label: 'Informasi Profil Siswa: $name, $subtitle',
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
@@ -76,23 +88,25 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                   Text(
                     'Selamat belajar 👋',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: ColorConstant.white.withValues(alpha: 0.9),
-                        ),
+                      color: ColorConstant.white.withValues(alpha: 0.9),
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     name,
+                    softWrap: true,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: ColorConstant.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: ColorConstant.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
+                    softWrap: true,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: ColorConstant.white.withValues(alpha: 0.9),
-                        ),
+                      color: ColorConstant.white.withValues(alpha: 0.9),
+                    ),
                   ),
                 ],
               ),
@@ -148,11 +162,11 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
   }
 
   Widget _buildInfoCard(
-    BuildContext context,
-    String number,
-    String label, {
-    required String semanticsLabel,
-  }) {
+      BuildContext context,
+      String number,
+      String label, {
+        required String semanticsLabel,
+      }) {
     return Semantics(
       container: true,
       label: semanticsLabel,
@@ -169,17 +183,16 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
             Text(
               number,
               style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    color: ColorConstant.textDarkGreyColor,
-                  ),
+                color: ColorConstant.textDarkGreyColor,
+              ),
             ),
             const SizedBox(height: 8),
             FittedBox(
-              fit: BoxFit.scaleDown,
               child: Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: ColorConstant.textGreyColor,
-                    ),
+                  color: ColorConstant.textGreyColor,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -196,9 +209,9 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
         Text(
           'Materi dan Soal Ujian',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.textDarkGreyColor,
-              ),
+            fontWeight: FontWeight.bold,
+            color: ColorConstant.textDarkGreyColor,
+          ),
         ),
         const SizedBox(height: 15),
         _buildFilters(context),
@@ -211,6 +224,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
   Widget _buildFilters(BuildContext context) {
     return Obx(() {
       final current = controller.selectedFilter.value;
+
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -219,21 +233,21 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               context,
               'Semua',
               current == StudentTaskStatus.semua,
-              () => controller.onFilterChanged(StudentTaskStatus.semua),
+                  () => controller.onFilterChanged(StudentTaskStatus.semua),
             ),
             const SizedBox(width: 10),
             _buildFilterChip(
               context,
               'Materi',
               current == StudentTaskStatus.materi,
-              () => controller.onFilterChanged(StudentTaskStatus.materi),
+                  () => controller.onFilterChanged(StudentTaskStatus.materi),
             ),
             const SizedBox(width: 10),
             _buildFilterChip(
               context,
               'Soal Ujian',
               current == StudentTaskStatus.soalUjian,
-              () => controller.onFilterChanged(StudentTaskStatus.soalUjian),
+                  () => controller.onFilterChanged(StudentTaskStatus.soalUjian),
             ),
           ],
         ),
@@ -242,11 +256,11 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
   }
 
   Widget _buildFilterChip(
-    BuildContext context,
-    String label,
-    bool isSelected,
-    VoidCallback onTap,
-  ) {
+      BuildContext context,
+      String label,
+      bool isSelected,
+      VoidCallback onTap,
+      ) {
     return Semantics(
       button: true,
       selected: isSelected,
@@ -257,19 +271,22 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
           onTap: onTap,
           borderRadius: BorderRadius.circular(Dimens.radius),
           child: Container(
-            constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+            constraints: const BoxConstraints(
+              minHeight: 48,
+              minWidth: 48,
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               gradient: isSelected
                   ? const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        ColorConstant.linearSecondary,
-                        ColorConstant.linearPrimary,
-                      ],
-                      stops: [0.2, 1.0],
-                    )
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  ColorConstant.linearSecondary,
+                  ColorConstant.linearPrimary,
+                ],
+                stops: [0.2, 1.0],
+              )
                   : null,
               borderRadius: BorderRadius.circular(Dimens.radius),
               border: Border.all(
@@ -301,10 +318,10 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: isSelected
-                            ? ColorConstant.white
-                            : ColorConstant.textDarkGreyColor,
-                      ),
+                    color: isSelected
+                        ? ColorConstant.white
+                        : ColorConstant.textDarkGreyColor,
+                  ),
                 ),
               ],
             ),
@@ -316,12 +333,12 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
 
   Widget _buildTaskList(BuildContext context) {
     return Obx(() {
-      if (controller.isLoadingTasks.value) {
-        return _buildShimmerLoading();
-      }
+      Widget content;
 
-      if (controller.tasksErrorMessage.value.isNotEmpty) {
-        return Center(
+      if (controller.isLoadingTasks.value) {
+        content = _buildShimmerLoading();
+      } else if (controller.tasksErrorMessage.value.isNotEmpty) {
+        content = Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0),
             child: Column(
@@ -336,8 +353,8 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                   controller.tasksErrorMessage.value,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: ColorConstant.textDarkGreyColor,
-                      ),
+                    color: ColorConstant.textDarkGreyColor,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Semantics(
@@ -352,65 +369,87 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
             ),
           ),
         );
-      }
+      } else {
+        final filter = controller.selectedFilter.value;
 
-      final filter = controller.selectedFilter.value;
-      final showModules =
-          filter == StudentTaskStatus.semua || filter == StudentTaskStatus.materi;
-      final showExams = filter == StudentTaskStatus.semua ||
-          filter == StudentTaskStatus.soalUjian;
+        final showModules = filter == StudentTaskStatus.semua ||
+            filter == StudentTaskStatus.materi;
+        final showExams = filter == StudentTaskStatus.semua ||
+            filter == StudentTaskStatus.soalUjian;
 
-      final modules = showModules ? controller.taskModules : <StudentModuleModel>[];
-      final exams =
-          showExams ? controller.taskExams : <QuizRequestStudentResponse>[];
+        final modules = showModules
+            ? controller.taskModules
+            : <StudentModuleModel>[];
 
-      final totalItems = modules.length + exams.length;
-      if (totalItems == 0) {
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32.0),
-            child: Column(
-              children: [
-                Icon(
-                  Icons.menu_book_outlined,
-                  size: 48,
-                  color: ColorConstant.textGreyColor.withValues(alpha: 0.5),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Belum ada materi atau soal ujian pada kategori ini.',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: ColorConstant.textGreyColor,
-                      ),
-                ),
-              ],
+        final exams = showExams
+            ? controller.taskExams
+            : <QuizRequestStudentResponse>[];
+
+        final totalItems = modules.length + exams.length;
+
+        if (totalItems == 0) {
+          content = Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32.0),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.menu_book_outlined,
+                    size: 48,
+                    color: ColorConstant.textGreyColor.withValues(alpha: 0.5),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Belum ada materi atau soal ujian pada kategori ini.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: ColorConstant.textGreyColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          content = ListView.separated(
+            itemCount: totalItems,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            separatorBuilder: (context, index) =>
+            const SizedBox(height: Dimens.spacePadding),
+            itemBuilder: (context, index) {
+              if (index < modules.length) {
+                return _buildModuleCard(context, modules[index]);
+              }
+
+              final exam = exams[index - modules.length];
+              return _buildExamCard(context, exam);
+            },
+          );
+        }
       }
 
-      return ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: totalItems,
-        padding: EdgeInsets.zero,
-        separatorBuilder: (context, index) =>
-            const SizedBox(height: Dimens.spacePadding),
-        itemBuilder: (context, index) {
-          if (index < modules.length) {
-            final module = modules[index];
-            return _buildModuleCard(context, module);
-          } else {
-            final exam = exams[index - modules.length];
-            return _buildExamCard(context, exam);
-          }
-        },
+      if (content is ListView) {
+        return content;
+      }
+
+      return SizedBox(
+        width: double.infinity,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.sizeOf(context).height * 0.25,
+          ),
+          child: content,
+        ),
       );
     });
   }
 
-  Widget _buildExamCard(BuildContext context, QuizRequestStudentResponse quiz) {
+  Widget _buildExamCard(
+      BuildContext context,
+      QuizRequestStudentResponse quiz,
+      ) {
     final isDone = quiz.progress?.isDone == true;
     final score = quiz.progress?.score;
     final scoreText = score != null ? score.toInt().toString() : '-';
@@ -418,7 +457,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
     return Semantics(
       button: true,
       label:
-          'Kartu Soal Ujian: ${quiz.title}, Modul: ${quiz.module.title}, Status: ${isDone ? "Selesai dikerjakan, Nilai: $scoreText" : "Belum dikerjakan"}',
+      'Kartu Soal Ujian: ${quiz.title}, Modul: ${quiz.module.title}, Status: ${isDone ? "Selesai dikerjakan, Nilai: $scoreText" : "Belum dikerjakan"}',
       child: GestureDetector(
         onTap: () async {
           if (isDone) {
@@ -432,6 +471,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               arguments: quiz,
             );
           }
+
           await controller.onRefresh();
         },
         child: CommonCardWidget(
@@ -443,13 +483,16 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Soal Ujian',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: ColorConstant.textPrimaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                  Flexible(
+                    child: Text(
+                      'Soal Ujian',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: ColorConstant.textPrimaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   if (isDone)
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -464,28 +507,32 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                       child: Text(
                         'Nilai: $scoreText',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: ColorConstant.green,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          color: ColorConstant.green,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     )
                   else
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color:
-                            ColorConstant.linearSecondary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        'Belum Dikerjakan',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: ColorConstant.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: ColorConstant.linearSecondary.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'Belum Dikerjakan',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: ColorConstant.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                 ],
@@ -493,47 +540,61 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               const SizedBox(height: 8),
               Text(
                 quiz.title,
+                softWrap: true,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: ColorConstant.textDarkGreyColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: ColorConstant.textDarkGreyColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               if (quiz.module.title.isNotEmpty) ...[
                 const SizedBox(height: 4),
                 Text(
                   quiz.module.title,
+                  softWrap: true,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: ColorConstant.textGreyColor,
-                      ),
+                    color: ColorConstant.textGreyColor,
+                  ),
                 ),
               ],
               const SizedBox(height: 12),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${quiz.maxDurationMinutes} Menit • ${quiz.questionCounts} Soal',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: ColorConstant.textGreyColor,
-                        ),
+                  Expanded(
+                    child: Text(
+                      '${quiz.maxDurationMinutes} Menit • ${quiz.questionCounts} Soal',
+                      softWrap: true,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: ColorConstant.textGreyColor,
+                      ),
+                    ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        isDone ? 'Evaluaizer (Hasil Ujian)' : 'Kerjakan',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            isDone ? 'Evaluaizer (Hasil Ujian)' : 'Kerjakan',
+                            softWrap: true,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
                               color: ColorConstant.primary,
                               fontWeight: FontWeight.bold,
                             ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 14,
-                        color: ColorConstant.primary,
-                      ),
-                    ],
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                          color: ColorConstant.primary,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -544,20 +605,24 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
     );
   }
 
-  Widget _buildModuleCard(BuildContext context, StudentModuleModel module) {
+  Widget _buildModuleCard(
+      BuildContext context,
+      StudentModuleModel module,
+      ) {
     final percentage = module.progress?.progressPercentage ?? 0;
     final isDone = module.progress?.isDone ?? false;
 
     return Semantics(
       button: true,
       label:
-          'Kartu Materi: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? "Selesai" : "Belum Selesai"}',
+      'Kartu Materi: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? "Selesai" : "Belum Selesai"}',
       child: GestureDetector(
         onTap: () async {
           await Get.toNamed(
             Routes.MODULE_DETAIL,
             arguments: module.id,
           );
+
           await controller.onRefresh();
         },
         child: CommonCardWidget(
@@ -572,9 +637,9 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                   Text(
                     'Materi',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: ColorConstant.textPrimaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: ColorConstant.textPrimaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   if (isDone)
                     Container(
@@ -589,9 +654,9 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                       child: Text(
                         'Selesai',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: ColorConstant.green,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          color: ColorConstant.green,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                 ],
@@ -599,10 +664,11 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               const SizedBox(height: 8),
               Text(
                 module.title,
+                softWrap: true,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: ColorConstant.textDarkGreyColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: ColorConstant.textDarkGreyColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 16),
               CommonGradientProgressBarWidget(
@@ -617,8 +683,8 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               Text(
                 '$percentage% Selesai',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: ColorConstant.textGreyColor,
-                    ),
+                  color: ColorConstant.textGreyColor,
+                ),
               ),
             ],
           ),
@@ -631,7 +697,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
     return Column(
       children: List.generate(
         3,
-        (index) => Padding(
+            (index) => Padding(
           padding: const EdgeInsets.only(bottom: Dimens.spacePadding),
           child: Shimmer.fromColors(
             baseColor: Colors.grey.shade300,

@@ -4,6 +4,7 @@ import 'package:novasight_app/app/data/models/chapter_job_stream_model.dart';
 import 'package:novasight_app/app/data/models/cp_model.dart';
 import 'package:novasight_app/app/data/models/fase_model.dart';
 import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
+import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 import 'package:novasight_app/app/data/providers/teacher_provider.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
@@ -194,6 +195,18 @@ class TeacherRepository {
     final response = await teacherProvider.bulkRegenerateText(
       blockIds: blockIds,
       feedback: feedback,
+    );
+    return response.data;
+  }
+
+  /// Fetch list of quizzes for teacher: GET /api/teachers/quizzes/{quiz_id}/students
+  Future<List<StudentProgressQuiz>> getStudentQuizzesProgress({
+    required int classroomId,
+    required int quizId,
+  }) async {
+    final response = await teacherProvider.getStudentQuizzesProgress(
+      classroomId: classroomId,
+      quizId: quizId,
     );
     return response.data;
   }

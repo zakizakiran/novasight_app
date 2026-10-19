@@ -5,7 +5,6 @@ import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
-import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
 
 import '../../../../data/models/exam_model.dart';
 
@@ -87,25 +86,31 @@ class ExamCardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      exam.status == PublicStatus.done
-                          ? 'Evaluaizer (Hasil Ujian)'
-                          : 'Kerjakan',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorConstant.primary,
-                        fontWeight: FontWeight.bold,
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          exam.status == PublicStatus.done
+                              ? 'Evaluaizer (Hasil Ujian)'
+                              : 'Kerjakan',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: ColorConstant.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.end,
+                          softWrap: true,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.arrow_forward,
-                      color: ColorConstant.primary,
-                      size: 16,
-                    ),
-                  ],
+                      const SizedBox(width: 4),
+                      const Icon(
+                        Icons.arrow_forward,
+                        color: ColorConstant.primary,
+                        size: 16,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

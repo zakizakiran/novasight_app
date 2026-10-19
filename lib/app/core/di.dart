@@ -50,7 +50,6 @@ Future<void> initDepedencies() async {
     permanent: true,
   );
 
-
   Get.put<AuthRepository>(
     AuthRepository(
       authProvider: Get.find<AuthProvider>(),

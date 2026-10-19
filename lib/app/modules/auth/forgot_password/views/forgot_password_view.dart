@@ -18,7 +18,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
   const ForgotPasswordView({super.key});
   @override
   Widget build(BuildContext context) {
-    print("LoginView controller: ${controller.hashCode}");
+    print("LoginView controllers: ${controller.hashCode}");
     final height = MediaQuery.of(context).size.height;
     final appBarHeight = height * 0.3;
     return Scaffold(

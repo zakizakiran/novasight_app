@@ -11,6 +11,7 @@ import 'package:novasight_app/app/data/models/chapter_create_response_model.dart
 import 'package:novasight_app/app/data/models/chapter_job_stream_model.dart';
 import 'package:novasight_app/app/data/models/fase_model.dart';
 import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
+import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 
 class TeacherProvider {
@@ -477,6 +478,38 @@ class TeacherProvider {
         (data) => (data as List)
             .map((e) =>
                 QuizRequestTeacherModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat mengambil daftar kuis: ${e.toString()}',
+      );
+    }
+  }
+
+  /// GET /api/teachers/quizzes/{quiz_id}/students
+  Future<ApiResponse<List<StudentProgressQuiz>>> getStudentQuizzesProgress({
+    required int classroomId,
+    required int quizId,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{'classroom_id': classroomId};
+      // if (status != null && status != 'Semua' && status.isNotEmpty) {
+      //   queryParams['status'] = status;
+      // }
+      final response = await dioClient.get(
+        ApiEndpoints.teacherQuizStudentProgress(quizId),
+        queryParameters: queryParams,
+      );
+
+      return ApiResponse<List<StudentProgressQuiz>>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => (data as List)
+            .map((e) =>
+                StudentProgressQuiz.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
     } on DioException catch (e) {

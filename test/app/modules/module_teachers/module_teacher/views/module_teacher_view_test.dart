@@ -129,7 +129,7 @@ void main() {
       expect(find.text('Terpublikasi'), findsOneWidget);
     });
 
-    testWidgets('Tapping filter chip triggers controller reload',
+    testWidgets('Tapping filter chip triggers controllers reload',
         (tester) async {
       await tester.pumpWidget(buildTestableWidget());
       await tester.pumpAndSettle();

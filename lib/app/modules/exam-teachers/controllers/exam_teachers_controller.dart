@@ -5,6 +5,7 @@ import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
 import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
 import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import '../../../routes/app_pages.dart';
 import '../models/exam_teacher_model.dart';
 
 class ExamTeachersController extends GetxController {
@@ -244,6 +245,14 @@ class ExamTeachersController extends GetxController {
 
   void onAddExam(ExamTeacherModel exam) {
     fetchQuizzes(showLoading: false);
+  }
+
+  void onDetailExam(QuizRequestTeacherModel quiz) {
+    Get.toNamed(Routes.EXAM_TEACHERS_DETAIL, arguments: quiz);
+  }
+
+  void onStudentExamProgress(QuizRequestTeacherModel quiz) {
+    Get.toNamed(Routes.EXAM_TEACHER_STUDENT_PROGRESS,arguments: quiz.id);
   }
 
   List<ExamTeacherModel> get filteredExams {

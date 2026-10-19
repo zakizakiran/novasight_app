@@ -212,12 +212,14 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Progres Pembelajaran',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: ColorConstant.textPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            Expanded(
+                              child: Text(
+                                'Progres Pembelajaran',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                      color: ColorConstant.textPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                             ),
                             Text(
                               '$percentage% Selesai',

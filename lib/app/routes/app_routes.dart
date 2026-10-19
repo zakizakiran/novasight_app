@@ -34,6 +34,10 @@ abstract class Routes {
   static const GENERATE_EXAM = _Paths.GENERATE_EXAM;
   static const EXAM_TEACHERS = _Paths.EXAM_TEACHERS;
   static const EXAM_TEACHERS_DETAIL = _Paths.EXAM_TEACHERS_DETAIL;
+  static const EXAM_TEACHER_STUDENT_PROGRESS =
+      _Paths.EXAM_TEACHER_STUDENT_PROGRESS;
+  static const EXAM_TEACHER_STUDENT_PROGRESS_DETAIL =
+      _Paths.EXAM_TEACHER_STUDENT_PROGRESS_DETAIL;
 }
 
 abstract class _Paths {
@@ -69,4 +73,7 @@ abstract class _Paths {
   static const GENERATE_EXAM = '/generate-exam';
   static const EXAM_TEACHERS = '/exam-teachers';
   static const EXAM_TEACHERS_DETAIL = '/exam-teachers-detail';
+  static const EXAM_TEACHER_STUDENT_PROGRESS = '/exam-teacher-student-progress';
+  static const EXAM_TEACHER_STUDENT_PROGRESS_DETAIL =
+      '/exam-teacher-student-progress-detail';
 }
