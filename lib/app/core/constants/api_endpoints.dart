@@ -44,6 +44,7 @@ class ApiEndpoints {
   static const String fases = '/api/fases';
   static const String createChapter = '/api/chapters';
   static String chapterJobStream(int jobId) => '/api/chapters/jobs/$jobId/stream';
+  static String teacherStudentQuizResults(int quizRequestId) => '/api/teachers/quizzes/$quizRequestId/student-results';
   static const String previewChapter = '/api/chapters/preview';
   static String confirmChapter(int chapterId) => '/api/chapters/confirm/$chapterId';
   static const String bulkRegenerateText = '/api/blocks/bulk-regenerate/text';

@@ -8,8 +8,7 @@ import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../controllers/exam_teacher_student_progress_controller.dart';
 
-class ExamTeacherStudentProgressView
-    extends GetView<ExamTeacherStudentProgressController> {
+class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressController> {
   const ExamTeacherStudentProgressView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -177,6 +176,7 @@ class ExamTeacherStudentProgressView
     final isScored = score != null;
 
     return CommonCardWidget(
+      onPressed: () => controller.onStudentDetailExamProgress(quiz),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

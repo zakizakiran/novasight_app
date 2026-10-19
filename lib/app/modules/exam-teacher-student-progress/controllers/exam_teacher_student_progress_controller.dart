@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/exam_student_detail_progress_args.dart';
+import 'package:novasight_app/app/core/args/exam_student_progress_args.dart';
 import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
 
 import '../../../core/errors/api_exception.dart';
@@ -6,6 +9,7 @@ import '../../../core/utils/snackbar_helper.dart';
 import '../../../data/repositories/classroom_repository.dart';
 import '../../../data/repositories/teacher_repository.dart';
 import '../../../data/services/local/storage_service.dart';
+import '../../../routes/app_pages.dart';
 
 class ExamTeacherStudentProgressController extends GetxController {
   final TeacherRepository? teacherRepository;
@@ -21,6 +25,7 @@ class ExamTeacherStudentProgressController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final quizId = Rx<int?>(null);
+  final RxString title = ''.obs;
 
   ExamTeacherStudentProgressController({
     TeacherRepository? teacherRepository,
@@ -44,13 +49,19 @@ class ExamTeacherStudentProgressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final args = Get.arguments;
-    if (args is int) {
-      quizId.value = args;
-    }
+    final args = Get.arguments as ExamStudentProgressArgs;
+    print('Arguments : $args\nQuiz Id ${args.quizId}');
+    quizId.value = args.quizId;
+    title.value = args.title;
     fetchQuizzesProgress();
   }
 
+  void onStudentDetailExamProgress(StudentProgressQuiz quiz) {
+    final id = quizId.value;
+    Get.toNamed(Routes.EXAM_TEACHER_STUDENT_PROGRESS_DETAIL,
+      arguments: ExamStudentDetailProgressArgs(quiz: quiz, title: title.value, quizId: quizId.value!)
+    );
+  }
 
   Future<int?> _resolveClassroomId({bool forceRefresh = false}) async {
     if (!forceRefresh && _cachedClassroomId != null) return _cachedClassroomId;

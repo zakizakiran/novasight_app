@@ -14,6 +14,8 @@ import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
 import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 
+import '../models/student_quiz_model.dart';
+
 class TeacherProvider {
   final DioClient dioClient;
 
@@ -518,6 +520,38 @@ class TeacherProvider {
       if (e is ApiException) rethrow;
       throw ApiException(
         message: 'Terjadi kesalahan saat mengambil daftar kuis: ${e.toString()}',
+      );
+    }
+  }
+
+  /// GET /api/students/quizzes/{quiz_request_id}/student-results
+  Future<ApiResponse<List<QuizResultItem>>> studentQuizResults({
+    required int quizRequestId,
+    required int classroomId,
+    required int studentId
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'classroom_id': classroomId,
+        'student_id':studentId
+      };
+
+      final response = await dioClient.get(
+        ApiEndpoints.teacherStudentQuizResults(quizRequestId),
+        queryParameters: queryParams
+      );
+      return ApiResponse<List<QuizResultItem>>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => (data as List)
+            .map((e) => QuizResultItem.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat mengambil hasil kuis: ${e.toString()}',
       );
     }
   }

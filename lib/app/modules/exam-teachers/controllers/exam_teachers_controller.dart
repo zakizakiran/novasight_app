@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/args/exam_student_progress_args.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
@@ -252,7 +253,8 @@ class ExamTeachersController extends GetxController {
   }
 
   void onStudentExamProgress(QuizRequestTeacherModel quiz) {
-    Get.toNamed(Routes.EXAM_TEACHER_STUDENT_PROGRESS,arguments: quiz.id);
+    print('Quiz Id : ${quiz.id}');
+    Get.toNamed(Routes.EXAM_TEACHER_STUDENT_PROGRESS,arguments: ExamStudentProgressArgs(quizId: quiz.id, title: quiz.title));
   }
 
   List<ExamTeacherModel> get filteredExams {

@@ -9,6 +9,8 @@ import 'package:novasight_app/app/data/models/teacher_model.dart';
 import 'package:novasight_app/app/data/providers/teacher_provider.dart';
 import 'package:novasight_app/app/data/services/local/storage_service.dart';
 
+import '../models/student_quiz_model.dart';
+
 class TeacherRepository {
   final TeacherProvider teacherProvider;
   final StorageService? storageService;
@@ -207,6 +209,19 @@ class TeacherRepository {
     final response = await teacherProvider.getStudentQuizzesProgress(
       classroomId: classroomId,
       quizId: quizId,
+    );
+    return response.data;
+  }
+
+  Future<List<QuizResultItem>> studentQuizResults({
+    required int quizRequestId,
+    required int classroomId,
+    required int studentId,
+  }) async {
+    final response = await teacherProvider.studentQuizResults(
+      quizRequestId: quizRequestId,
+      classroomId: classroomId,
+      studentId: studentId
     );
     return response.data;
   }
