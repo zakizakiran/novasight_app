@@ -18,7 +18,7 @@ class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressC
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Progress Murid',
+          'Progres Murid',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorConstant.textDarkGreyColor,

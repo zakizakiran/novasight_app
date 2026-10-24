@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/args/exam_student_detail_progress_args.dart';
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 
 import '../../../core/errors/api_exception.dart';
 import '../../../core/utils/math_latex_parser.dart';
@@ -21,7 +20,7 @@ class ExamTeacherStudentProgressDetailController extends GetxController {
 
   final RxString quizTitle = 'Hasil Ujian'.obs;
   final quizId = Rx<int?>(null);
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = true.obs;
   final RxString errorMessage = ''.obs;
   final currentIndex = 0.obs;
   final questions = <ExamReviewQuestion>[].obs;

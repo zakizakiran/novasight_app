@@ -22,7 +22,7 @@ class ExamTeacherStudentProgressDetailView extends GetView<ExamTeacherStudentPro
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Detail Progress Murid',
+          'Detail Progres Murid',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorConstant.textDarkGreyColor,
