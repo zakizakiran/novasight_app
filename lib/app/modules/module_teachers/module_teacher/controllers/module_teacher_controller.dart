@@ -7,6 +7,7 @@ import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/dialog_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/show_modal_bottom_sheet_helper.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
@@ -317,9 +318,8 @@ class ModuleTeacherController extends GetxController {
   /// Dialog konfirmasi hapus modul
   void confirmDeleteModule(BuildContext context, TeacherModuleModel module) {
     DialogHelper.show(
-      title: "Hapus Modul",
-      description:
-          'Anda yakin ingin menghapus "${module.title}"? Seluruh bab dan anotasi di dalamnya akan terhapus secara permanen.',
+      title: context.l10n.deleteModule,
+      description: context.l10n.deleteModuleConfirm(module.title),
       colorDescription: ColorConstant.textDarkGreyColor,
       icon: SvgPicture.asset(
         SvgConstant.iconTrashConfirmation,
@@ -327,7 +327,7 @@ class ModuleTeacherController extends GetxController {
         height: Dimens.iconBigSize,
       ),
       actions: CommonButtonWidget(
-        buttonName: "Konfirmasi",
+        buttonName: context.l10n.confirm,
         buttonColor: ColorConstant.redColor,
         onPressed: () {
           Get.back();

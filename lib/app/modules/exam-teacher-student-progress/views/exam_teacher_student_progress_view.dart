@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
 
 import '../../../common/common_card_widget.dart';
@@ -18,7 +19,7 @@ class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressC
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Progres Murid',
+          context.l10n.studentProgressTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorConstant.textDarkGreyColor,
@@ -41,6 +42,14 @@ class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressC
                   () => Row(
                 children: controller.filterOptions.map((filter) {
                   bool isSelected = controller.selectedFilter.value == filter;
+                  String displayFilter = filter;
+                  if (filter == 'Semua') {
+                    displayFilter = context.l10n.filterAll;
+                  } else if (filter == 'Selesai') {
+                    displayFilter = context.l10n.filterDone;
+                  } else if (filter == 'Belum Dikerjakan') {
+                    displayFilter = context.l10n.filterNotAttempted;
+                  }
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: InkWell(
@@ -63,7 +72,7 @@ class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressC
                           ),
                         ),
                         child: Text(
-                          filter,
+                          displayFilter,
                           style: TextStyle(
                             color: isSelected
                                 ? ColorConstant.white
@@ -205,7 +214,7 @@ class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressC
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  'Nilai : ${isScored ? score.toString() : '-'}',
+                  '${context.l10n.score} : ${isScored ? score.toString() : '-'}',
                   style: TextStyle(
                     color: isScored
                         ? ColorConstant.green

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/date_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../common/common_card_widget.dart';
 import '../../../core/dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
@@ -41,16 +43,16 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                         const SizedBox(height: 24),
                         _buildSectionTitle(
                           context,
-                          'Modul Terbaru',
-                          'Lihat semua',
+                          context.l10n.newestModules,
+                          context.l10n.seeAll,
                           onActionTap: () => controller.onSeeAllModule(),
                         ),
                         _buildModuleList(context),
                         const SizedBox(height: 24),
                         _buildSectionTitle(
                           context,
-                          'Soal Ujian Terbaru',
-                          'Lihat semua',
+                          context.l10n.newestExams,
+                          context.l10n.seeAll,
                           onActionTap: () => controller.onSeeAllExam()
                         ),
                         _buildExamList(context),
@@ -68,6 +70,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
   }
 
   Widget _buildHeaderContent(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Dimens.innerPadding),
       child: Row(
@@ -79,7 +82,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Selamat pagi',
+                  l10n.greetingMorning,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstant.white.withValues(alpha: 0.9),
                   ),
@@ -89,7 +92,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                   () => Text(
                     controller.teacherName.value.isNotEmpty
                         ? controller.teacherName.value
-                        : 'Guru',
+                        : l10n.teacher,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: ColorConstant.white,
                       fontWeight: FontWeight.bold,
@@ -103,7 +106,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                         ? controller.classSubtitle.value
                         : (controller.className.value.isNotEmpty
                             ? controller.className.value
-                            : 'Dashboard Pengajar'),
+                            : l10n.teacherDashboard),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: ColorConstant.white.withValues(alpha: 0.9),
                     ),
@@ -124,6 +127,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
   }
 
   Widget _buildStatsRow(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Dimens.innerPadding),
       child: Obx(() {
@@ -143,7 +147,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                 context,
                 Icons.menu_book,
                 totalModules,
-                'Total Modul',
+                l10n.totalModules,
               ),
             ),
             const SizedBox(width: 12),
@@ -152,7 +156,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                 context,
                 Icons.assignment,
                 totalExams,
-                'Soal Ujian',
+                l10n.examQuestions,
               ),
             ),
             const SizedBox(width: 12),
@@ -161,7 +165,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                 context,
                 Icons.group,
                 totalStudents,
-                'Total Siswa',
+                l10n.totalStudents,
               ),
             ),
           ],
@@ -271,7 +275,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Kode Kelas',
+                                    context.l10n.classCode,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -285,8 +289,8 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                                       controller.classCode.value.isNotEmpty
                                           ? controller.classCode.value
                                           : (controller.isLoadingClassroom.value
-                                              ? 'Memuat...'
-                                              : 'Belum Ada Kelas'),
+                                              ? context.l10n.loading
+                                              : context.l10n.noClassYet),
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineLarge
@@ -299,7 +303,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Bagikan ke siswa agar bisa bergabung',
+                                    context.l10n.shareCodeDescription,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -322,7 +326,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                             ),
                             child: Semantics(
                               button: true,
-                              label: "Salin Kode Kelas",
+                              label: context.l10n.copyClassCode,
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(
                                   Dimens.radiusMedium,
@@ -343,7 +347,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        'Salin Kode Kelas',
+                                        context.l10n.copyClassCode,
                                         style: Theme.of(context)
                                             .textTheme
                                             .labelLarge
@@ -404,11 +408,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
   }
 
   String _formatDate(DateTime dt) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
-    ];
-    return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
+    return DateHelper.dateFormat(dt);
   }
 
   Widget _buildModuleList(BuildContext context) {
@@ -436,7 +436,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(
-                    'Belum ada modul yang dibuat.',
+                    context.l10n.noModulesCreated,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: ColorConstant.textGreyColor,
                         ),
@@ -529,7 +529,7 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(
-                    'Belum ada soal ujian terbaru.',
+                    context.l10n.noRecentExams,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: ColorConstant.textGreyColor,
                         ),

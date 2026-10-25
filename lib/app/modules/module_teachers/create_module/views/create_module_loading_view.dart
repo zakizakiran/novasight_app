@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
 import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
 import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/step_tile_widget.dart';
@@ -23,9 +24,9 @@ class CreateModuleLoadingView extends GetView<CreateModuleController> {
             Get.back();
           },
         ),
-        title: const Text(
-          "Memproses Modul",
-          style: TextStyle(
+        title: Text(
+          context.l10n.processingModule,
+          style: const TextStyle(
             color: Color(0xFF1E293B),
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -55,9 +56,9 @@ class CreateModuleLoadingView extends GetView<CreateModuleController> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Annoter sedang mengekstrak dan membuat anotasi\nlinear teks untuk pembaca layar",
-                  style: TextStyle(
+                Text(
+                  context.l10n.loadingModuleExtraction,
+                  style: const TextStyle(
                     fontSize: 14,
                     color: ColorConstant.textGreyColor,
                     height: 1.4,

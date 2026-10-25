@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../core/utils/user_roles.dart';
 
@@ -74,12 +75,13 @@ class RoleSwitchWidget extends StatelessWidget {
     required UserRoles role,
   }) {
     final isSelected = role == selectedRole;
+    final roleTitle = role == UserRoles.guru ? context.l10n.teacher : context.l10n.student;
 
     return Expanded(
       child: Semantics(
         button: true,
         selected: isSelected,
-        label: 'Pilih peran ${role.roleName}${isSelected ? ', terpilih' : ''}',
+        label: 'Pilih peran $roleTitle${isSelected ? ', terpilih' : ''}',
         child: InkWell(
           borderRadius: BorderRadius.circular(Dimens.radius),
           onTap: () => onChanged(role),
@@ -95,7 +97,7 @@ class RoleSwitchWidget extends StatelessWidget {
                     ? ColorConstant.white
                     : ColorConstant.textGreyColor,
               ),
-              child: Text(role.roleName),
+              child: Text(roleTitle),
             ),
           ),
         ),

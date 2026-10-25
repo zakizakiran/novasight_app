@@ -1,0 +1,545 @@
+{
+  "@@locale": "id",
+  "appName": "Nova",
+  "close": "Tutup",
+  "back": "Kembali",
+  "save": "Simpan",
+  "cancel": "Batal",
+  "confirm": "Konfirmasi",
+  "success": "Sukses",
+  "failed": "Gagal",
+  "loading": "Memuat...",
+  "tryAgain": "Coba Lagi",
+  "saveChanges": "Simpan Perubahan",
+
+  "settings": "Pengaturan",
+  "settingsDescription": "Sesuaikan pengaturan aplikasi sesuai kebutuhan Anda.",
+  "language": "Bahasa",
+  "languageDescription": "Ubah bahasa aplikasi",
+  "selectLanguage": "Pilih Bahasa",
+  "selectLanguageDescription": "Pilih bahasa yang digunakan pada aplikasi.",
+  "indonesian": "Bahasa Indonesia",
+  "english": "English",
+  "textSize": "Ukuran teks",
+  "textSizeDescription": "Perbesar atau perkecil teks",
+  "textSizeAdjustDescription": "Sesuaikan ukuran teks agar lebih mudah dibaca.",
+  "currentSize": "Ukuran saat ini",
+  "reduceTextSize": "Perkecil ukuran teks",
+  "enlargeTextSize": "Perbesar ukuran teks",
+  "textSizePercent": "Ukuran teks {percent} persen",
+  "@textSizePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "sampleTextTitle": "Contoh Tampilan",
+  "sampleTextBody": "Ini adalah teks contoh untuk melihat bagaimana tampilan teks saat ukurannya diubah.",
+  "resetTextScale": "Atur ulang ukuran teks",
+  "backToSettings": "Kembali ke pengaturan",
+
+  "profile": "Profil",
+  "schoolOrigin": "Asal Sekolah : ",
+  "gradeLevel": "Tingkat Kelas : ",
+  "studentId": "NIS/NISN : ",
+  "logout": "Logout",
+  "leaveClass": "Keluar Kelas",
+
+  "navDashboard": "Dashboard",
+  "navModule": "Modul",
+  "navExam": "Soal Ujian",
+  "navClarifier": "Clarifier",
+  "navProfile": "Profil",
+  "currentPosition": "Posisi di",
+
+  "filterAll": "Semua",
+  "filterNotDone": "Belum Selesai",
+  "filterDone": "Selesai",
+  "filterNotAttempted": "Belum Dikerjakan",
+  "filterMaterial": "Materi",
+  "filterExam": "Soal Ujian",
+  "filterPublish": "Publish",
+  "filterDraft": "Draft",
+  "filterLabel": "Filter {label}",
+  "@filterLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+
+  "learningModules": "Modul Pembelajaran",
+  "examQuestions": "Soal Ujian",
+  "examReviewTitle": "Evaluaizer — Review Hasil Ujian",
+  "noteAppBarTitle": "Scriber — Catatan Pengerjaan",
+  "pageOf": "Halaman {current} dari {total}",
+  "@pageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "questionOf": "Soal {current} dari {total}",
+  "@questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chaptersCount": "{count} Bab Materi",
+  "@chaptersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadModule": "+ Unggah Modul",
+  "createExamQuizzer": "Buat Soal (Quizzer)",
+  "examDetailTitle": "Detail Soal Ujian",
+  "studentProgressTitle": "Progres Murid",
+  "studentProgressDetailTitle": "Detail Progres Murid",
+  "generateExamTitle": "Quizzer — Buat Soal Ujian",
+  "splitPagesAndChapters": "Potong Halaman & BAB",
+  "processingModule": "Memproses Modul",
+  "annotationResult": "Hasil Annotasi",
+  "moduleEvaluationTitle": "Annoter — Evaluasi Modul",
+  "beforeAnnotation": "Sebelum Anotasi",
+  "afterAnnotation": "Sesudah Anotasi",
+  "clarifierSubtitle": "Tanya materi modul & pemahaman konsep",
+  "conversationHistory": "Riwayat Percakapan",
+  "refreshHistory": "Segarkan riwayat",
+  "loadingTableOfContents": "Memuat Daftar Isi...",
+  "learningMaterials": "Materi Pembelajaran",
+  "tableOfContents": "Daftar Isi",
+  "errorOccurred": "Terjadi Kesalahan",
+  "beforeStartingExam": "Sebelum Memulai Ujian",
+
+  "welcomeStudentGreeting": "Selamat belajar 👋",
+  "student": "Siswa",
+  "loadingClassData": "Memuat data kelas...",
+  "uncompletedModules": "Modul Belum Selesai",
+  "uncompletedExams": "Ujian Belum Selesai",
+  "materialsAndExams": "Materi dan Soal Ujian",
+  "emptyCategoryTasks": "Belum ada materi atau soal ujian pada kategori ini.",
+  "material": "Materi",
+  "exam": "Ujian",
+  "score": "Nilai",
+  "minutes": "Menit",
+  "questions": "Soal",
+  "completedStatus": "Selesai dikerjakan",
+  "notAttemptedStatus": "Belum dikerjakan",
+  "durationAndQuestions": "{minutes} Menit • {questions} Soal",
+  "@durationAndQuestions": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "questions": {
+        "type": "int"
+      }
+    }
+  },
+  "startTask": "Kerjakan",
+  "examResultEvaluaizer": "Evaluaizer (Hasil Ujian)",
+  "percentCompleted": "{percent}% Selesai",
+  "@percentCompleted": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "noModulesInCategory": "Belum ada modul pada kategori ini.",
+  "noExamsInCategory": "Belum ada soal ujian pada kategori ini.",
+
+  "greetingMorning": "Selamat pagi",
+  "teacher": "Guru",
+  "teacherDashboard": "Dashboard Pengajar",
+  "totalModules": "Total Modul",
+  "totalStudents": "Total Siswa",
+  "classCode": "Kode Kelas",
+  "shareCodeDescription": "Bagikan ke siswa agar bisa bergabung",
+  "copyClassCode": "Salin Kode Kelas",
+  "noClassYet": "Belum Ada Kelas",
+  "newestModules": "Modul Terbaru",
+  "newestExams": "Soal Ujian Terbaru",
+  "seeAll": "Lihat semua",
+  "noModulesCreated": "Belum ada modul yang dibuat.",
+  "noRecentExams": "Belum ada soal ujian terbaru.",
+  "noModulesForClass": "Belum ada modul untuk kelas ini",
+  "noExamsForClass": "Belum ada soal ujian untuk kelas ini",
+  "searchModuleHint": "Cari modul...",
+  "searchModuleLabel": "Cari modul berdasarkan judul",
+
+  "inclusiveMathApp": "Aplikasi Matematika Inklusif",
+  "joinClass": "Masuk ke Kelas",
+  "enterClassCodeFromTeacher": "Masukkan kode kelas dari gurumu",
+  "createClass": "Buat Kelas Kamu",
+  "classCreatedSuccess": "Kelas Berhasil Dibuat!",
+  "shareCodeWithStudents": "Bagikan kode dibawah ke siswamu",
+  "joinedClassSuccess": "Kamu sudah bergabung ke kelas",
+  "forgotPassword": "Lupa Password",
+  "registerAccount": "Daftar Akun",
+  "startInclusiveLearning": "Mulai perjalanan belajar inklusifmu",
+
+  "viewModule": "Lihat Modul",
+  "publishModule": "Publish Modul",
+  "published": "Terpublikasi",
+  "deleteModule": "Hapus Modul",
+  "deleteModuleConfirm": "Anda yakin ingin menghapus \"{title}\"? Seluruh bab dan anotasi di dalamnya akan terhapus secara permanen.",
+  "@deleteModuleConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "moduleDetail": "Detail Modul",
+  "chapterDetail": "Detail Bab",
+  "chapterList": "Daftar Bab / Materi",
+  "noChaptersInModule": "Belum ada bab atau materi yang ditambahkan pada modul ini.",
+  "chapter": "Bab",
+  "chapterNumber": "Bab {number}",
+  "@chapterNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "learningContentBlocks": "Konten Pembelajaran ({count} blok)",
+  "@learningContentBlocks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noContentBlocksInChapter": "Belum ada blok konten pada bab ini.",
+
+  "moduleInfo": "Informasi Modul",
+  "splitChapters": "Potong BAB",
+  "pdfPagesDetected": "File PDF terdeteksi: {count} halaman",
+  "@pdfPagesDetected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moduleTitleField": "Judul Modul *",
+  "moduleTitleHint": "Masukkan Judul Modul",
+  "moduleDescriptionField": "Deskripsi (opsional) *",
+  "moduleDescriptionHint": "Masukkan deskripsi modul...",
+  "fase": "Fase",
+  "selectFase": "Pilih Fase",
+  "loadingFases": "Memuat fase...",
+  "totalDocPages": "Total Dokumen: {count} Halaman",
+  "@totalDocPages": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chapterSplitConfig": "Konfigurasi Pemotongan BAB",
+  "chapterSplitDesc": "Masukkan rentang halaman yang akan dipotong menjadi BAB baru.",
+  "chapterTitleField": "Judul BAB *",
+  "startPageField": "Halaman Awal *",
+  "endPageField": "Halaman Akhir *",
+  "learningCompetency": "Capaian Pembelajaran",
+  "selectCompetency": "Pilih Capaian Pembelajaran",
+  "loadingCompetency": "Memuat capaian pembelajaran...",
+  "processAndCreateChapter": "Proses & Buat Chapter",
+  "createdChaptersList": "Daftar BAB Berhasil Dibuat ({count}):",
+  "@createdChaptersList": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pagesRange": "Halaman {start} - {end}",
+  "@pagesRange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "needsReview": "Perlu Ditinjau",
+  "reviewed": "Sudah Ditinjau",
+  "processingProgress": "Proses: {progress}%",
+  "@processingProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      }
+    }
+  },
+  "saveModule": "Simpan Modul",
+  "finish": "Selesai",
+  "tapToUploadFile": "Ketuk untuk unggah file",
+  "loadingModuleExtraction": "Annoter sedang mengekstrak dan membuat anotasi\nlinear teks untuk pembaca layar",
+  "statusWait": "Tunggu...",
+  "statusProcess": "Proses...",
+
+  "evaluatingAnnotationUpdating": "Annoter Sedang Memperbarui Anotasi",
+  "stopUpdatingConfirm": "Hentikan pembaruan? Perubahan yang belum tersimpan mungkin akan hilang.",
+  "yes": "Iya",
+  "no": "Tidak",
+  "evaluationInstruction": "Centang blok: Teks untuk edit langsung, atau Blok Khusus (Gambar, Tabel, Formula) untuk revisi AI.",
+  "selectAll": "Pilih Semua",
+  "deselectAll": "Batal Pilih",
+  "editAnnotation": "Ubah Anotasi",
+  "editTextAnnotation": "Edit Teks Anotasi",
+  "editTextAnnotationHeader": "Edit Anotasi Teks",
+  "reviseWithAi": "Revisi ({count}) dengan AI",
+  "@reviseWithAi": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saveToModule": "Simpan ke Modul",
+  "directEdit": "Edit Langsung",
+  "originalText": "Teks Asal:",
+  "changeAnnotationText": "Ubah Teks Anotasi",
+  "saveAnnotation": "Simpan Anotasi",
+  "correctionAnnotation": "Koreksi Anotasi",
+  "enterCorrectionAdvice": "Masukkan saran perbaikan",
+  "explainAiCorrection": "Jelaskan bagaimana AI harus memperbaiki anotasi ini",
+  "promptClarifyForBlind": "Perjelas untuk tunanetra",
+  "promptSimplifyLanguage": "Sederhanakan bahasa",
+  "promptDetailRowsCols": "Rinci baris & kolom tabel",
+  "promptExplainFormulaSteps": "Jelaskan langkah rumus",
+  "sendToAi": "Kirim ke AI →",
+  "moduleImage": "Gambar Modul",
+  "moduleTable": "Tabel Modul",
+  "moduleFormula": "Formula / Rumus",
+  "moduleDiagram": "Diagram / Grafik",
+  "textBlock": "Teks",
+
+  "viewExamQuestions": "Lihat Soal",
+  "viewStudentProgress": "Lihat Progres Murid",
+  "deleteExam": "Hapus Soal Ujian",
+  "deleteExamConfirm": "Anda yakin ingin menghapus \"{title}\"?",
+  "@deleteExamConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "publishExam": "Publish Soal",
+  "delete": "Hapus",
+  "regenerateAiStimulus": "Regenerasi Stimulus AI",
+  "aiStimulusFeedbackDesc": "Berikan masukan spesifik kepada AI untuk merevisi teks stimulus soal ini:",
+  "sendAndRegenerate": "Kirim & Regenerasi",
+  "readingStimulus": "Stimulus Bacaan",
+  "regenerateStimulus": "Regenerasi Stimulus",
+  "question": "Pertanyaan",
+  "answerOptions": "Pilihan Jawaban",
+  "justificationSteps": "Justifikasi & Langkah Penyelesaian",
+  "answerKey": "Kunci Jawaban: {key}",
+  "@answerKey": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "addStep": "Tambah Langkah",
+  "conclusion": "Kesimpulan",
+  "noExamData": "Tidak ada data ujian",
+  "noExamReviewResultsYet": "Belum ada hasil evaluasi ujian yang tersedia.",
+
+  "stepPickModule": "Pilih Modul",
+  "stepConfig": "Konfigurasi",
+  "stepReviewSave": "Review & Simpan",
+  "selectSourceModule": "Pilih Modul Sumber",
+  "selectSourceModuleDesc": "Pilih satu modul untuk dijadikan sumber soal ujian.",
+  "noModulesAvailable": "Belum ada modul yang tersedia.",
+  "reload": "Muat Ulang",
+  "examTitleField": "Judul Ujian *",
+  "examTitleHint": "Contoh: Penilaian Harian Bab 1",
+  "examDurationField": "Durasi Pengerjaan *",
+  "examScheduleField": "Jadwal Pengerjaan *",
+  "startTime": "Waktu Mulai",
+  "endTime": "Waktu Selesai",
+  "maxAttempts": "Maksimal Percobaan Pengerjaan",
+  "selectChaptersDistribution": "Pilih Bab & Distribusi Soal *",
+  "totalQuestionsCount": "Total: {count} Soal",
+  "@totalQuestionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "distributionDesc": "Tentukan jumlah soal HOTS (analisis tingkat tinggi) dan LOTS (pemahaman dasar) untuk masing-masing bab.",
+  "noChaptersFoundInModule": "Tidak ada bab yang ditemukan dalam modul ini.",
+  "hotsQuestions": "Soal HOTS",
+  "hotsDesc": "Analisis, evaluasi, sintesis",
+  "lotsQuestions": "Soal LOTS",
+  "lotsDesc": "Pemahaman & ingatan dasar",
+  "questionsCreatedSuccess": "Soal Berhasil Dibuat!",
+  "aiGeneratingQuestions": "AI Sedang Membuat Soal",
+  "saveDraft": "Simpan Draft",
+  "saveAndPublish": "Simpan & Publish",
+  "nextStep": "Selanjutnya",
+  "createQuestions": "Buat Soal",
+
+  "welcomeTitle": "Selamat Datang",
+  "signInToContinue": "Masuk untuk lanjutkan",
+  "emailField": "Email *",
+  "emailLabel": "Email",
+  "enterEmail": "Masukkan Email",
+  "passwordField": "Kata Sandi *",
+  "passwordLabel": "Kata Sandi",
+  "enterPassword": "Masukkan Kata Sandi",
+  "confirmPasswordField": "Konfirmasi Kata Sandi *",
+  "enterConfirmPassword": "Masukkan Konfirmasi Kata Sandi",
+  "forgotPasswordQuestion": "Lupa kata sandi?",
+  "signIn": "Masuk",
+  "dontHaveAccount": "Belum punya akun? ",
+  "register": "Daftar",
+  "alreadyHaveAccount": "Sudah punya akun? ",
+  "fullNameField": "Nama Lengkap *",
+  "enterFullName": "Masukkan Nama Lengkap",
+  "createAccount": "Buat Akun",
+  "enterClassCode": "Masukkan Kode Kelas",
+  "joinClassButton": "Bergabung ke kelas",
+  "askTeacherForCode": "Minta kode ini dari gurumu",
+
+  "examSubtitleFormat": "{questions} soal · Durasi {minutes} menit",
+  "@examSubtitleFormat": {
+    "placeholders": {
+      "questions": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "examSubtitleWithRetries": "{questions} soal · Durasi {minutes} menit · Maks {retries}x percobaan",
+  "@examSubtitleWithRetries": {
+    "placeholders": {
+      "questions": { "type": "int" },
+      "minutes": { "type": "int" },
+      "retries": { "type": "int" }
+    }
+  },
+  "enterExamTitle": "Masukkan judul ujian",
+  "mixedDifficulty": "Campuran",
+  "chapterEvaluationQuiz": "Kuis Evaluasi Bab",
+  "questionsGeneratedStatus": "Membuat {count} soal dari {module}...",
+  "@questionsGeneratedStatus": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "module": { "type": "String" }
+    }
+  },
+  "questionsCreatedCount": "{current} / {total} soal dibuat",
+  "@questionsCreatedCount": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "questionsCreatedDone": "{count} soal telah selesai dibuat.",
+  "@questionsCreatedDone": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "minuteShort": "{count} mnt",
+  "@minuteShort": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timesCount": "{count} Kali",
+  "@timesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "exampleChapterRangeHint": "Contoh: Halaman 1 - 44 akan diubah menjadi BAB I.",
+  "annotationProgressNotice": "Proses anotasi sedang berjalan. Tombol selesai akan aktif setelah seluruh bab selesai dan ditinjau.",
+  "reviewChaptersNotice": "Silakan klik bab dengan status \"Perlu Ditinjau\" untuk memeriksa dan mengonfirmasi hasil anotasi sebelum mempublikasikan modul.",
+
+  "questionList": "Daftar Soal",
+  "questionItem": "Soal {number}",
+  "@questionItem": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "questionOfTotal": "Soal {current} dari {total}",
+  "@questionOfTotal": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "startExamButton": "Mulai Ujian",
+  "submitExamConfirmTitle": "Apakah Kamu Yakin Mengumpulkan Sekarang?",
+  "submitExamConfirmDesc": "Jawaban yang sudah dikirim tidak bisa diubah.",
+  "sendButton": "Kirim",
+  "timeUpTitle": "Waktu Habis!",
+  "timeUpDesc": "Waktu pengerjaan ujian telah habis. Jawaban Anda telah otomatis dikirimkan.",
+  "examSubmittedTitle": "Berhasil Dikirim!",
+  "examSubmittedDesc": "Jawaban Anda telah berhasil disimpan.",
+  "examInstructionsParagraph1": "Ujian ini terdiri dari {count} soal yang mencakup pilihan ganda dan isian singkat, dan kamu memiliki waktu {duration} menit untuk menyelesaikannya.",
+  "@examInstructionsParagraph1": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "duration": { "type": "int" }
+    }
+  },
+  "examInstructionsParagraph2": "Bacalah setiap soal dengan cermat, kerjakan dengan tenang, dan pastikan semua jawaban dikirim sebelum waktu habis.",
+  "examStartsAt": "Ujian dimulai pada : ",
+  "examEndsAt": "Ujian selesai pada : ",
+  "goodLuck": "Selamat mengerjakan dan semoga sukses!",
+  "learningProgress": "Progres Pembelajaran",
+  "moduleNotFound": "Modul tidak ditemukan.",
+  "completedChapterTitle": "Selamat Telah Menyelesaikan Materi {number}",
+  "@completedChapterTitle": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "searchPageHint": "Cari halaman...",
+  "previous": "Sebelumnya",
+  "next": "Selanjutnya",
+  "correctAnswerBanner": "Jawabanmu Benar!",
+  "unansweredBanner": "Soal tidak terjawab",
+  "wrongAnswerBanner": "Jawabanmu Kurang Tepat",
+  "answersLabel": "Jawaban",
+  "justificationDiscussion": "Justifikasi & Pembahasan",
+  "yourSolutionSteps": "Langkah pengerjaan kamu:",
+  "improvementNotes": "Catatan perbaikan:",
+  "discussionSteps": "Langkah Pembahasan:",
+  "saveStep": "Simpan Langkah",
+  "workingSteps": "Langkah Pengerjaan",
+  "noConversationsYet": "Belum Ada Percakapan",
+  "startNewConversation": "Mulai Percakapan Baru",
+  "emptyConversationDesc": "Mulai tanya materi matematika atau diskusikan soal dengan menekan tombol (+) di atas!",
+  "referenceSources": "Sumber Referensi:",
+  "aiThinking": "NovaSight AI sedang berpikir...",
+  "suggestedFollowUpQuestions": "Pertanyaan Lanjutan yang Disarankan:",
+  "askQuestionHint": "Tanya materi atau soal..."
+}

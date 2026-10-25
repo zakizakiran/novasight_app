@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
@@ -37,9 +38,9 @@ Widget buildReviewBottomBar(
                   borderRadius: BorderRadius.circular(Dimens.radius),
                 ),
               ),
-              child: const Text(
-                'Simpan Draft',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              child: Text(
+                context.l10n.saveDraft,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -58,9 +59,9 @@ Widget buildReviewBottomBar(
                   borderRadius: BorderRadius.circular(Dimens.radius),
                 ),
               ),
-              child: const Text(
-                'Simpan & Publish',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              child: Text(
+                context.l10n.saveAndPublish,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),

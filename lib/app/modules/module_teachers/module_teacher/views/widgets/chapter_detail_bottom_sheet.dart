@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/date_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../controllers/module_teacher_controller.dart';
 
 class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
@@ -28,7 +29,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Detail Bab",
+                context.l10n.chapterDetail,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: ColorConstant.textDarkGreyColor,
@@ -36,7 +37,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
               ),
               Semantics(
                 button: true,
-                label: "Tutup detail bab",
+                label: context.l10n.close,
                 child: IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () => Get.back(),
@@ -62,7 +63,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
               if (chapter == null || chapter.id != chapterId) {
                 return Center(
                   child: Text(
-                    "Data bab tidak ditemukan.",
+                    context.l10n.noChaptersInModule,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: ColorConstant.textGreyColor,
                         ),
@@ -76,7 +77,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
                   children: [
                     // Chapter Title & Info
                     Text(
-                      chapter.title ?? "Bab ${chapter.number ?? ''}",
+                      chapter.title ?? context.l10n.chapterNumber(chapter.number?.toString() ?? ''),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: ColorConstant.textDarkGreyColor,
@@ -97,7 +98,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
                                   BorderRadius.circular(Dimens.radius),
                             ),
                             child: Text(
-                              "Bab ${chapter.number}",
+                              context.l10n.chapterNumber(chapter.number.toString()),
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall
@@ -149,7 +150,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
 
                     const SizedBox(height: Dimens.spacePadding),
                     Text(
-                      "Konten Pembelajaran (${chapter.blocks.length} blok)",
+                      context.l10n.learningContentBlocks(chapter.blocks.length),
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: ColorConstant.textDarkGreyColor,
@@ -166,7 +167,7 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
                           borderRadius: BorderRadius.circular(Dimens.radius),
                         ),
                         child: Text(
-                          "Belum ada blok konten pada bab ini.",
+                          context.l10n.noContentBlocksInChapter,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(

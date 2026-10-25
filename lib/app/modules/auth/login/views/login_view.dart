@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/auth/forgot_password/controllers/forgot_password_controller.dart';
 import 'package:novasight_app/app/modules/auth/login/views/widgets/footer_auth_button.dart';
 import 'package:novasight_app/app/modules/auth/widgets/auth_appbar.dart';
@@ -26,7 +27,7 @@ class LoginView extends GetView<LoginController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(title: AppStrings.nameApp, description: "Aplikasi Matematika Inklusif",height: appBarHeight,showBack: false,),
+            AuthAppbar(title: AppStrings.nameApp, description: context.l10n.inclusiveMathApp,height: appBarHeight,showBack: false,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: Column(
@@ -43,11 +44,11 @@ class LoginView extends GetView<LoginController> {
                       spacing: Dimens.spacePadding,
                       children: [
                         Text(
-                          "Selamat Datang",
+                          context.l10n.welcomeTitle,
                           style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(
-                          "Masuk untuk lanjutkan",
+                          context.l10n.signInToContinue,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: ColorConstant.textGreyColor
                           ),
@@ -64,9 +65,9 @@ class LoginView extends GetView<LoginController> {
                             spacing: Dimens.spacePadding,
                             children: [
                               Obx(() => CommonTextFormFieldWidget(
-                                  title: "Email",
+                                  title: context.l10n.emailLabel,
                                   controller: controller.emailController,
-                                  hint: "Masukkan Email",
+                                  hint: context.l10n.enterEmail,
                                   isReadOnly: controller.isLoading.value,
                                   onChanged: controller.onChange,
                                   validator: ValidateHelper.isEmailValidate(),
@@ -91,8 +92,8 @@ class LoginView extends GetView<LoginController> {
                               ),
                               Obx(() => CommonTextFormFieldWidget(
                                   controller: controller.passwordController,
-                                  title: "Kata Sandi",
-                                  hint: "Masukkan Kata Sandi",
+                                  title: context.l10n.passwordLabel,
+                                  hint: context.l10n.enterPassword,
                                   isPassword: true,
                                   isReadOnly: controller.isLoading.value,
                                   onChanged: controller.onChange,
@@ -123,7 +124,7 @@ class LoginView extends GetView<LoginController> {
                           alignment: Alignment.centerRight,
                           child: Semantics(
                             button: true,
-                            label: "Lupa kata sandi?",
+                            label: context.l10n.forgotPasswordQuestion,
                             child: GestureDetector(
                               onTap: () {
                                 Get.toNamed(
@@ -132,7 +133,7 @@ class LoginView extends GetView<LoginController> {
                                 );
                               },
                               child: Text(
-                                "Lupa kata sandi?",
+                                context.l10n.forgotPasswordQuestion,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: ColorConstant.primary,
                                   fontWeight: FontWeight.w700,
@@ -146,7 +147,7 @@ class LoginView extends GetView<LoginController> {
                                 buttonWidth: double.infinity,
                                 isLoading: controller.isLoading.value,
                                 isValid: controller.isValid.value,
-                                buttonName: "Masuk",
+                                buttonName: context.l10n.signIn,
                                 onPressed: controller.onLogin
                             )
                         )
@@ -154,8 +155,8 @@ class LoginView extends GetView<LoginController> {
                     ),
                   ),
                   FooterAuthButton(
-                      title: "Daftar",
-                      description: "Belum punya akun? ",
+                      title: context.l10n.register,
+                      description: context.l10n.dontHaveAccount,
                       onClick: (){
                         Get.toNamed(Routes.REGISTER_ACCOUNT);
                       }

@@ -7,6 +7,7 @@ import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
@@ -18,11 +19,13 @@ class ModuleView extends GetView<ModuleController> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       body: Column(
         children: [
-          const CommonAppBar(
-            description: "Modul Pembelajaran",
+          CommonAppBar(
+            description: l10n.learningModules,
             showBackButton: false,
           ),
           Expanded(
@@ -70,7 +73,7 @@ class ModuleView extends GetView<ModuleController> {
                                   const SizedBox(height: 16),
                                   ElevatedButton(
                                     onPressed: controller.onLoad,
-                                    child: const Text('Coba Lagi'),
+                                    child: Text(l10n.tryAgain),
                                   ),
                                 ],
                               ),
@@ -92,6 +95,7 @@ class ModuleView extends GetView<ModuleController> {
   Widget _buildContent(BuildContext context) {
     if (controller.hasApiModules) {
       return _buildStudentModuleColumn(
+        context: context,
         modules: controller.studentModules,
         onDetail: controller.onDetailStudent,
       );
@@ -128,14 +132,16 @@ class ModuleView extends GetView<ModuleController> {
   }
 
   Widget _buildStudentModuleColumn({
+    required BuildContext context,
     required List<StudentModuleModel> modules,
     required void Function(StudentModuleModel) onDetail,
   }) {
+    final l10n = context.l10n;
     if (modules.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Belum ada modul pada kategori ini.',
-          style: TextStyle(color: ColorConstant.textGreyColor),
+          l10n.noModulesInCategory,
+          style: const TextStyle(color: ColorConstant.textGreyColor),
         ),
       );
     }
@@ -151,7 +157,7 @@ class ModuleView extends GetView<ModuleController> {
         return Semantics(
           button: true,
           label:
-              'Kartu Modul: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? "Selesai" : "Belum Selesai"}',
+              'Kartu Modul: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? l10n.filterDone : l10n.filterNotDone}',
           child: GestureDetector(
             onTap: () => onDetail(module),
             child: CommonCardWidget(
@@ -164,7 +170,7 @@ class ModuleView extends GetView<ModuleController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Materi',
+                        l10n.material,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: ColorConstant.textPrimaryColor,
                               fontWeight: FontWeight.w600,
@@ -181,7 +187,7 @@ class ModuleView extends GetView<ModuleController> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            'Selesai',
+                            l10n.filterDone,
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: ColorConstant.green,
@@ -210,7 +216,7 @@ class ModuleView extends GetView<ModuleController> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '$percentage% Selesai',
+                    l10n.percentCompleted(percentage),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: ColorConstant.textGreyColor,
                         ),

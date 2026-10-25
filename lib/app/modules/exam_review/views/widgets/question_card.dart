@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/text_theme.dart';
@@ -37,7 +38,7 @@ class QuestionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Soal',
+                  context.l10n.question,
                   style: const MainTextTheme().titleMedium?.copyWith(
                     color: ColorConstant.primary,
                     fontWeight: FontWeight.bold,
@@ -50,7 +51,7 @@ class QuestionCard extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'Jawaban',
+            context.l10n.answersLabel,
             style: const MainTextTheme().titleMedium?.copyWith(
               color: ColorConstant.textGreyColor,
               fontWeight: FontWeight.bold,

@@ -6,6 +6,7 @@ import 'package:novasight_app/app/common/common_card_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../core/utils/date_helper.dart';
 import '../controllers/exam_detail_controller.dart';
 
@@ -34,7 +35,7 @@ class ExamDetailView extends GetView<ExamDetailController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Sebelum Memulai Ujian",
+                          context.l10n.beforeStartingExam,
                           style: Theme.of(context).textTheme.headlineMedium
                               ?.copyWith(
                                 color: ColorConstant.primary,
@@ -42,34 +43,19 @@ class ExamDetailView extends GetView<ExamDetailController> {
                               ),
                         ),
                         const SizedBox(height: Dimens.spacePadding),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: ColorConstant.textDarkGreyColor,
-                                  height: 1.5,
-                                ),
-                            children: [
-                              const TextSpan(text: "Ujian ini terdiri dari "),
-                              TextSpan(
-                                text: "${controller.questionCount.value} soal ",
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const TextSpan(
-                                text:
-                                    "yang mencakup pilihan ganda dan isian singkat, dan kamu memiliki waktu ",
-                              ),
-                              TextSpan(
-                                text: "${controller.durationMinutes.value} menit ",
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const TextSpan(text: "untuk menyelesaikannya."),
-                            ],
+                        Text(
+                          context.l10n.examInstructionsParagraph1(
+                            controller.questionCount.value,
+                            controller.durationMinutes.value,
+                          ),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: ColorConstant.textDarkGreyColor,
+                            height: 1.5,
                           ),
                         ),
                         const SizedBox(height: Dimens.spaceMediumPadding),
                         Text(
-                          "Bacalah setiap soal dengan cermat, kerjakan dengan tenang, dan pastikan semua jawaban dikirim sebelum waktu habis.",
+                          context.l10n.examInstructionsParagraph2,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: ColorConstant.textDarkGreyColor,
                             height: 1.5,
@@ -84,12 +70,12 @@ class ExamDetailView extends GetView<ExamDetailController> {
                               height: 1.5,
                             ),
                             children: [
-                              const TextSpan(text: "Ujian dimulai pada : "),
+                              TextSpan(text: context.l10n.examStartsAt),
                               TextSpan(
                                 text: "${DateHelper.dateTimeFormat(controller.quiz.value!.startTime)} ",
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              const TextSpan(text: "\nUjian selesai pada : "),
+                              TextSpan(text: "\n${context.l10n.examEndsAt}"),
                               TextSpan(
                                 text: "${DateHelper.dateTimeFormat(controller.quiz.value!.endTime)} ",
                                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -99,7 +85,7 @@ class ExamDetailView extends GetView<ExamDetailController> {
                         ),
                         const SizedBox(height: Dimens.spaceMediumPadding),
                         Text(
-                          "Selamat mengerjakan dan semoga sukses!",
+                          context.l10n.goodLuck,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: ColorConstant.textDarkGreyColor,
                             fontWeight: FontWeight.bold,
@@ -115,7 +101,7 @@ class ExamDetailView extends GetView<ExamDetailController> {
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonButtonWidget(
-                buttonName: "Mulai Ujian",
+                buttonName: context.l10n.startExamButton,
                 onPressed: controller.onStartExam,
               ),
             ),

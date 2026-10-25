@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
@@ -60,10 +61,10 @@ class ExamHeaderWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: ColorConstant.textDarkGreyColor,
                     ),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       isDense: true,
                       border: InputBorder.none,
-                      hintText: "Masukkan judul ujian",
+                      hintText: context.l10n.enterExamTitle,
                     ),
                   ),
                 ),
@@ -77,7 +78,7 @@ class ExamHeaderWidget extends StatelessWidget {
             Text(
               subtitle ??
                   (durationMinutes != null
-                      ? '$numberOfQuestions soal · Durasi $durationMinutes menit'
+                      ? context.l10n.examSubtitleFormat(numberOfQuestions, durationMinutes!)
                       : '$numberOfQuestions soal · Pilihan Ganda ($answerOptions) · $difficulty'),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: ColorConstant.textGreyColor,

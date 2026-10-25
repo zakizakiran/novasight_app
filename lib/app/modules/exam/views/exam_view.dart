@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import 'package:novasight_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
 import 'package:novasight_app/app/modules/exam/views/widgets/exam_card_widget.dart';
@@ -14,10 +15,12 @@ class ExamView extends GetView<ExamController> {
   const ExamView({super.key});
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       body: Column(
         children: [
-          const CommonAppBar(description: "Soal Ujian", showBackButton: false),
+          CommonAppBar(description: l10n.examQuestions, showBackButton: false),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -40,7 +43,7 @@ class ExamView extends GetView<ExamController> {
                       if (exams.isEmpty) {
                         return Center(
                           child: Text(
-                            'Belum ada soal ujian pada kategori ini.',
+                            l10n.noExamsInCategory,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium

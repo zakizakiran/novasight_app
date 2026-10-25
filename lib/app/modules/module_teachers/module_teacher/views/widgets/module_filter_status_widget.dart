@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 import '../../controllers/module_teacher_controller.dart';
 
@@ -24,11 +25,12 @@ class ModuleFilterStatusWidget extends GetView<ModuleTeacherController> {
       final fontWeight = isSelected ? FontWeight.w800 : FontWeight.w500;
       final borderColor =
           isSelected ? ColorConstant.primary : ColorConstant.borderBlueGrey;
+      final label = status.localizedLabel(context);
 
       return Semantics(
         button: true,
         selected: isSelected,
-        label: "Filter status ${status.label}",
+        label: context.l10n.filterLabel(label),
         child: InkWell(
           onTap: () {
             controller.onSelectedStatus(status);
@@ -57,7 +59,7 @@ class ModuleFilterStatusWidget extends GetView<ModuleTeacherController> {
               ),
             ),
             child: Text(
-              status.label,
+              label,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: fontWeight,

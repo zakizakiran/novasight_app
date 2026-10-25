@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/auth/forgot_password/views/widgets/email_step_widget.dart';
 import 'package:novasight_app/app/modules/auth/forgot_password/views/widgets/otp_step_widget.dart';
 import 'package:novasight_app/app/modules/auth/forgot_password/views/widgets/reset_password_widget.dart';
@@ -25,7 +26,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Obx(() => AuthAppbar(icon: IconTxt.lock, title: "Lupa Password", description: controller.step.value.description,height: appBarHeight,
+            Obx(() => AuthAppbar(icon: IconTxt.lock, title: context.l10n.forgotPassword, description: controller.step.value.description,height: appBarHeight,
                   top:  StepIndicatorWidget(step: controller.step.value.step,maxStep: 3,)),
             ),
             Padding(

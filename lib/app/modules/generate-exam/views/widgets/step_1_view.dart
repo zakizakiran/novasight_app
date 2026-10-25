@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../controllers/generate_exam_controller.dart';
@@ -16,14 +17,14 @@ class Step1View extends GetView<GenerateExamController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Pilih Modul Sumber',
+            context.l10n.selectSourceModule,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
-            'Pilih satu modul untuk dijadikan sumber soal ujian.',
+            context.l10n.selectSourceModuleDesc,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: ColorConstant.textGreyColor,
             ),
@@ -51,9 +52,9 @@ class Step1View extends GetView<GenerateExamController> {
                         color: ColorConstant.textGreyColor,
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        'Belum ada modul yang tersedia.',
-                        style: TextStyle(color: ColorConstant.textGreyColor),
+                      Text(
+                        context.l10n.noModulesAvailable,
+                        style: const TextStyle(color: ColorConstant.textGreyColor),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
@@ -62,7 +63,7 @@ class Step1View extends GetView<GenerateExamController> {
                           backgroundColor: ColorConstant.primary,
                           foregroundColor: ColorConstant.white,
                         ),
-                        child: const Text('Muat Ulang'),
+                        child: Text(context.l10n.reload),
                       ),
                     ],
                   ),

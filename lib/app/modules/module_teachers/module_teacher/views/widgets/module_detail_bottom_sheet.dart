@@ -4,6 +4,7 @@ import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/date_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 import '../../controllers/module_teacher_controller.dart';
 
@@ -30,7 +31,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Detail Modul",
+                context.l10n.moduleDetail,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: ColorConstant.textDarkGreyColor,
@@ -81,7 +82,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                             borderRadius: BorderRadius.circular(Dimens.radius),
                           ),
                           child: Text(
-                            "Fase ${module.faseId}",
+                            "${context.l10n.fase} ${module.faseId}",
                             style: Theme.of(context)
                                 .textTheme
                                 .labelSmall
@@ -105,7 +106,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
 
                   // Chapters Section Header
                   Text(
-                    "Daftar Bab / Materi",
+                    context.l10n.chapterList,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: ColorConstant.textDarkGreyColor,
@@ -136,7 +137,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                           borderRadius: BorderRadius.circular(Dimens.radius),
                         ),
                         child: Text(
-                          "Belum ada bab atau materi yang ditambahkan pada modul ini.",
+                          context.l10n.noChaptersInModule,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -197,10 +198,10 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          chapter.title ??
-                                              "Bab ${chapter.number ?? index + 1}",
-                                          style: Theme.of(context)
+                                         Text(
+                                           chapter.title ??
+                                               context.l10n.chapterNumber((chapter.number ?? index + 1).toString()),
+                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium
                                               ?.copyWith(
@@ -255,7 +256,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                 children: [
                   Expanded(
                     child: CommonButtonWidget(
-                      buttonName: "Tutup",
+                      buttonName: context.l10n.close,
                       onPressed: () => Get.back(),
                     ),
                   ),
@@ -295,7 +296,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                 Expanded(
                   flex: 3,
                   child: CommonButtonWidget(
-                    buttonName: "Tutup",
+                    buttonName: context.l10n.close,
                     buttonColor: ColorConstant.white,
                     border: const BorderSide(
                       color: ColorConstant.borderBlueGrey,
@@ -330,7 +331,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                           ),
                         )
                       : CommonButtonWidget(
-                          buttonName: "Publish Modul",
+                          buttonName: context.l10n.publishModule,
                           boxShadows: const [],
                           onPressed: () async {
                             await controller.onPublishModule(module);
@@ -387,7 +388,7 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
           borderRadius: BorderRadius.circular(Dimens.radius),
         ),
         child: Text(
-          isPublished ? "Publish" : "Draft",
+          isPublished ? context.l10n.filterPublish : context.l10n.filterDraft,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: isPublished
                     ? ColorConstant.green

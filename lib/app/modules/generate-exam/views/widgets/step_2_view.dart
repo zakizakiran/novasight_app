@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/utils/snackbar_helper.dart';
@@ -140,11 +141,11 @@ class Step2View extends GetView<GenerateExamController> {
           const SizedBox(height: 20),
 
           // Judul Ujian
-          buildFieldLabel(context, 'Judul Ujian *'),
+          buildFieldLabel(context, context.l10n.examTitleField),
           TextField(
             controller: controller.titleController,
             decoration: InputDecoration(
-              hintText: 'Contoh: Penilaian Harian Bab 1',
+              hintText: context.l10n.examTitleHint,
               hintStyle: const TextStyle(color: ColorConstant.grey),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(Dimens.radius),
@@ -172,7 +173,7 @@ class Step2View extends GetView<GenerateExamController> {
           const SizedBox(height: 20),
 
           // Durasi Pengerjaan
-          buildFieldLabel(context, 'Durasi Pengerjaan *'),
+          buildFieldLabel(context, context.l10n.examDurationField),
           Row(
             children: [30, 45, 60, 90, 120]
                 .map(
@@ -182,7 +183,7 @@ class Step2View extends GetView<GenerateExamController> {
                       child: Obx(
                         () => buildSelectableButton(
                           context,
-                          '$val mnt',
+                          context.l10n.minuteShort(val),
                           controller.maxDurationMinutes.value == val,
                           () => controller.setDuration(val),
                         ),
@@ -195,7 +196,7 @@ class Step2View extends GetView<GenerateExamController> {
           const SizedBox(height: 20),
 
           // Jadwal Pengerjaan (Waktu Mulai & Waktu Selesai)
-          buildFieldLabel(context, 'Jadwal Pengerjaan *'),
+          buildFieldLabel(context, context.l10n.examScheduleField),
           Row(
             children: [
               // Start Time
@@ -203,9 +204,9 @@ class Step2View extends GetView<GenerateExamController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Waktu Mulai',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.startTime,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: ColorConstant.textGreyColor,
                         fontWeight: FontWeight.w500,
@@ -261,9 +262,9 @@ class Step2View extends GetView<GenerateExamController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Waktu Selesai',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.endTime,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: ColorConstant.textGreyColor,
                         fontWeight: FontWeight.w500,
@@ -318,7 +319,7 @@ class Step2View extends GetView<GenerateExamController> {
           const SizedBox(height: 20),
 
           // Maksimal Pengulangan (max_retry)
-          buildFieldLabel(context, 'Maksimal Percobaan Pengerjaan'),
+          buildFieldLabel(context, context.l10n.maxAttempts),
           Row(
             children: [1, 2, 3]
                 .map(
@@ -328,7 +329,7 @@ class Step2View extends GetView<GenerateExamController> {
                       child: Obx(
                         () => buildSelectableButton(
                           context,
-                          '$val Kali',
+                          context.l10n.timesCount(val),
                           controller.maxRetry.value == val,
                           () => controller.setMaxRetry(val),
                         ),
@@ -344,7 +345,7 @@ class Step2View extends GetView<GenerateExamController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildFieldLabel(context, 'Pilih Bab & Distribusi Soal *'),
+              buildFieldLabel(context, context.l10n.selectChaptersDistribution),
               Obx(
                 () => Container(
                   padding: const EdgeInsets.symmetric(
@@ -356,7 +357,7 @@ class Step2View extends GetView<GenerateExamController> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    'Total: ${controller.totalQuestions} Soal',
+                    context.l10n.totalQuestionsCount(controller.totalQuestions),
                     style: const TextStyle(
                       color: ColorConstant.primary,
                       fontSize: 12,
@@ -369,7 +370,7 @@ class Step2View extends GetView<GenerateExamController> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Tentukan jumlah soal HOTS (analisis tingkat tinggi) dan LOTS (pemahaman dasar) untuk masing-masing bab.',
+            context.l10n.distributionDesc,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorConstant.textGreyColor,
                 ),
@@ -532,16 +533,16 @@ class Step2View extends GetView<GenerateExamController> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Soal HOTS',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.hotsQuestions,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                           color: ColorConstant.textDarkGreyColor,
                         ),
                       ),
                       Text(
-                        'Analisis, evaluasi, sintesis',
+                        context.l10n.hotsDesc,
                         style: TextStyle(
                           fontSize: 11,
                           color: ColorConstant.textGreyColor.withValues(alpha: 0.8),
@@ -564,16 +565,16 @@ class Step2View extends GetView<GenerateExamController> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Soal LOTS',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.lotsQuestions,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                           color: ColorConstant.textDarkGreyColor,
                         ),
                       ),
                       Text(
-                        'Pemahaman & ingatan dasar',
+                        context.l10n.lotsDesc,
                         style: TextStyle(
                           fontSize: 11,
                           color: ColorConstant.textGreyColor.withValues(alpha: 0.8),

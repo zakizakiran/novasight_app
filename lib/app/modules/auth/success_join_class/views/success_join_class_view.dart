@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/model/class_model.dart';
 import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/class_card.dart';
 import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/feature_card.dart';
@@ -27,7 +28,7 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(iconSvg: SvgConstant.iconCheck, title: "Berhasil", description: "Kamu sudah bergabung ke kelas",height: appBarHeight,),
+            AuthAppbar(iconSvg: SvgConstant.iconCheck, title: context.l10n.success, description: context.l10n.joinedClassSuccess,height: appBarHeight,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(

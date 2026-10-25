@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../common/common_button_widget.dart';
 import '../../../core/Dimens.dart';
 import '../../../core/constants/math_symbol_repository.dart';
@@ -50,9 +51,9 @@ class MathKeyboardWidget extends StatelessWidget {
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: Semantics(
                 button: true,
-                label: "Simpan Langkah",
+                label: context.l10n.saveStep,
                 child: CommonButtonWidget(
-                  buttonName: "Simpan Langkah",
+                  buttonName: context.l10n.saveStep,
                   onPressed: controller.saveStep,
                 ),
               ),

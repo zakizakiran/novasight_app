@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../core/styles/text_theme.dart';
 import '../../../../data/models/exam_review_question_model.dart';
@@ -22,8 +23,8 @@ class StatusBanner extends StatelessWidget {
     final icon = question.isCorrect ? Icons.check : Icons.close;
     final userNotAnswered = question.userAnswerIndex == -1;
     final text = question.isCorrect
-        ? 'Jawabanmu Benar!'
-        : userNotAnswered ? 'Soal tidak terjawab' : 'Jawabanmu Kurang Tepat';
+        ? context.l10n.correctAnswerBanner
+        : userNotAnswered ? context.l10n.unansweredBanner : context.l10n.wrongAnswerBanner;
 
     return Semantics(
       container: true,
@@ -58,7 +59,7 @@ class StatusBanner extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Nilai: +${question.score.toStringAsFixed(1)}',
+              '${context.l10n.score}: +${question.score.toStringAsFixed(1)}',
               style: const MainTextTheme().bodyLarge?.copyWith(
                 color: textColor,
                 fontWeight: FontWeight.bold,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/accessbility/controllers/accessibility_controller.dart';
 
 
@@ -14,6 +15,7 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Obx(() {
       final scale = controller.textScale.value;
@@ -23,7 +25,7 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Ukuran saat ini',
+            l10n.currentSize,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -32,7 +34,7 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
 
           Semantics(
             liveRegion: true,
-            label: 'Ukuran teks ${ (scale * 100).round() } persen',
+            label: l10n.textSizePercent((scale * 100).round()),
             child: Text(
               '${(scale * 100).round()}%',
               textAlign: TextAlign.center,
@@ -48,7 +50,7 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
           Row(
             children: [
               IconButton(
-                tooltip: 'Perkecil ukuran teks',
+                tooltip: l10n.reduceTextSize,
                 constraints: const BoxConstraints(
                   minWidth: 48,
                   minHeight: 48,
@@ -66,12 +68,12 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
                   divisions: 12,
                   label: '${(scale * 100).round()}%',
                   semanticFormatterCallback: (value) =>
-                  'Ukuran teks ${(value * 100).round()} persen',
+                      l10n.textSizePercent((value * 100).round()),
                   onChanged: controller.setTextScale,
                 ),
               ),
               IconButton(
-                tooltip: 'Perbesar ukuran teks',
+                tooltip: l10n.enlargeTextSize,
                 constraints: const BoxConstraints(
                   minWidth: 48,
                   minHeight: 48,
@@ -100,26 +102,18 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Pratinjau teks',
+                  l10n.sampleTextTitle,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Belajar matematika menjadi lebih mudah '
-                      'ketika teks dapat dibaca dengan nyaman.',
+                  l10n.sampleTextBody,
                   style: theme.textTheme.bodyLarge,
                 ),
               ],
             ),
-          ),
-
-          const SizedBox(height: 8),
-
-          Text(
-            'Anda dapat mengubah ukuran teks kapan saja.',
-            style: theme.textTheme.bodyMedium,
           ),
 
           const SizedBox(height: 12),
@@ -127,7 +121,7 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
           OutlinedButton.icon(
             onPressed: controller.resetTextScale,
             icon: const Icon(Icons.restart_alt),
-            label: const Text('Atur ulang ukuran teks'),
+            label: Text(l10n.resetTextScale),
           ),
 
           const SizedBox(height: 8),
@@ -135,7 +129,7 @@ class TextScaleDialogWidget extends GetView<AccessibilityController> {
           OutlinedButton.icon(
             onPressed: onBack,
             icon: const Icon(Icons.arrow_back),
-            label: const Text('Kembali ke pengaturan'),
+            label: Text(l10n.backToSettings),
           ),
         ],
       );

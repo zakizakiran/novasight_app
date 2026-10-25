@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_teacher/views/widgets/module_card_widget.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_teacher/views/widgets/module_filter_status_widget.dart';
@@ -68,7 +69,7 @@ class ModuleTeacherView extends GetView<ModuleTeacherController> {
                             ),
                             const SizedBox(height: Dimens.spacePadding),
                             CommonButtonWidget(
-                              buttonName: "Coba Lagi",
+                              buttonName: context.l10n.tryAgain,
                               onPressed: () => controller.onLoad(),
                             ),
                           ],
@@ -92,7 +93,7 @@ class ModuleTeacherView extends GetView<ModuleTeacherController> {
                           ),
                           const SizedBox(height: Dimens.spaceSmallPadding),
                           Text(
-                            "Belum ada modul untuk kelas ini",
+                            context.l10n.noModulesForClass,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium

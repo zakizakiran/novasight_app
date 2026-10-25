@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../controllers/generate_exam_controller.dart';
 import 'widgets/bottom_action_bars.dart';
@@ -16,7 +17,7 @@ class GenerateExamView extends GetView<GenerateExamController> {
     return Scaffold(
       backgroundColor: ColorConstant.background,
       appBar: AppBar(
-        title: const Text('Quizzer — Buat Soal Ujian'),
+        title: Text(context.l10n.generateExamTitle),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -52,7 +53,7 @@ class GenerateExamView extends GetView<GenerateExamController> {
         if(!controller.isGenerating.value){
           return buildBottomButton(
             context,
-            controller.currentStep.value == 0 ? 'Selanjutnya' : 'Buat Soal',
+            controller.currentStep.value == 0 ? context.l10n.nextStep : context.l10n.createQuestions,
             controller.nextStep,
           );
         }

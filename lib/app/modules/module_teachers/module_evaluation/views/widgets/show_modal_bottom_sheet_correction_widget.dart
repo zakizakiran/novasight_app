@@ -4,6 +4,7 @@ import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 
 import '../../../../../data/model/module_teacher_model.dart';
@@ -35,7 +36,7 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
                       style: TextStyle(fontSize: Dimens.iconRegularSize),
                     ),
                     Text(
-                      "Koreksi Anotasi",
+                      context.l10n.correctionAnnotation,
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ],
@@ -197,11 +198,11 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Masukkan saran perbaikan",
+                context.l10n.enterCorrectionAdvice,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
-                "Jelaskan bagaimana AI harus memperbaiki anotasi ini",
+                context.l10n.explainAiCorrection,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: ColorConstant.darkGrey,
                 ),
@@ -213,19 +214,19 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
                 children: [
                   _buildSuggestionChip(
                     context,
-                    "Perjelas untuk tunanetra",
+                    context.l10n.promptClarifyForBlind,
                   ),
                   _buildSuggestionChip(
                     context,
-                    "Sederhanakan bahasa",
+                    context.l10n.promptSimplifyLanguage,
                   ),
                   _buildSuggestionChip(
                     context,
-                    "Rinci baris & kolom tabel",
+                    context.l10n.promptDetailRowsCols,
                   ),
                   _buildSuggestionChip(
                     context,
-                    "Jelaskan langkah rumus",
+                    context.l10n.promptExplainFormulaSteps,
                   ),
                 ],
               ),
@@ -252,7 +253,7 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
             children: [
               Expanded(
                 child: CommonButtonWidget(
-                  buttonName: "Batal",
+                  buttonName: context.l10n.cancel,
                   onPressed: () => Get.back(),
                   boxShadows: const [],
                   buttonColor: ColorConstant.secondary,
@@ -266,7 +267,7 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
               const SizedBox(width: Dimens.spaceBigPadding),
               Expanded(
                 child: Obx(() => CommonButtonWidget(
-                  buttonName: "Kirim ke AI →",
+                  buttonName: context.l10n.sendToAi,
                   isValid: controller.isValid.value,
                   isLoading: controller.isLoading.value,
                   onPressed: () => controller.onSendAdvice(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/text_theme.dart';
@@ -38,7 +39,7 @@ class JustificationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Justifikasi & Pembahasan',
+            context.l10n.justificationDiscussion,
             style: const MainTextTheme().titleMedium?.copyWith(
               color: ColorConstant.primary,
               fontWeight: FontWeight.bold,
@@ -47,7 +48,7 @@ class JustificationCard extends StatelessWidget {
           const SizedBox(height: 16),
           if (question.userStep.isNotEmpty) ...[
             Text(
-              'Langkah pengerjaan kamu:',
+              context.l10n.yourSolutionSteps,
               style: const MainTextTheme().bodyLarge,
             ),
             const SizedBox(height: 12),
@@ -134,9 +135,9 @@ class JustificationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Letak kesalahan:',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.improvementNotes,
+                      style: const TextStyle(
                         color: Color(0xFFE65100),
                         fontWeight: FontWeight.bold,
                       ),

@@ -6,11 +6,13 @@ import 'package:novasight_app/app/core/args/main_bar_args.dart';
 import 'package:novasight_app/app/core/errors/api_exception.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/dialog_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
 import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/data/repositories/student_repository.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:novasight_app/l10n/app_localizations.dart';
 
 import '../../../common/common_button_widget.dart';
 import '../../../core/Dimens.dart';
@@ -273,21 +275,21 @@ class ExamActiveController extends GetxController {
         Get.back();
       }
 
+      final l10n = Get.context?.l10n ?? lookupAppLocalizations(const Locale('id', 'ID'));
+
       DialogHelper.show(
         icon: SvgPicture.asset(
           SvgConstant.iconInformation,
           height: Dimens.iconBigSize,
           width: Dimens.iconBigSize,
         ),
-        title: isAutoTimeout ? "Waktu Habis!" : "Berhasil Dikirim!",
-        description: isAutoTimeout
-            ? "Waktu pengerjaan ujian telah habis. Jawaban Anda telah otomatis dikirimkan."
-            : "Jawaban Anda telah berhasil disimpan. Silakan pilih untuk melihat hasil evaluasi atau kembali ke menu utama.",
+        title: isAutoTimeout ? l10n.timeUpTitle : l10n.examSubmittedTitle,
+        description: isAutoTimeout ? l10n.timeUpDesc : l10n.examSubmittedDesc,
         actions: Row(
           children: [
             Expanded(
               child: CommonButtonWidget(
-                buttonName: "Kembali",
+                buttonName: l10n.back,
                 boxShadows: const [],
                 onPressed: () {
                   SnackbarHelper.showSuccess(

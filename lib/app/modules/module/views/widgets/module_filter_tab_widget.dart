@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 
@@ -14,9 +15,10 @@ class ModuleFilterTabWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool condition = selectedStatus == status;
+    final title = status.localizedName(context);
     return Semantics(
       button: true,
-      label: 'Filter ',
+      label: context.l10n.filterLabel(title),
       child: InkWell(
         onTap: (){
           onChanged(status);
@@ -56,7 +58,7 @@ class ModuleFilterTabWidget extends StatelessWidget {
                   width: Dimens.iconRegularSize,
                 ),
               Text(
-                status.name,
+                title,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: condition ? ColorConstant.white : ColorConstant.textDarkGreyColor
                 ),

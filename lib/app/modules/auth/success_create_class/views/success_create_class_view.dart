@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/auth/success_create_class/views/widgets/code_class_widget.dart';
 import 'package:novasight_app/app/modules/auth/success_create_class/views/widgets/copy_code_widget.dart';
 import 'package:novasight_app/app/modules/auth/success_create_class/views/widgets/information_student_widget.dart';
@@ -25,7 +26,7 @@ class SuccessCreateClassView extends GetView<SuccessCreateClassController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(iconSvg: SvgConstant.iconCheck, title: "Kelas Berhasil Dibuat!", description: "Bagikan kode dibawah ke siswamu", height: appBarHeight,
+            AuthAppbar(iconSvg: SvgConstant.iconCheck, title: context.l10n.classCreatedSuccess, description: context.l10n.shareCodeWithStudents, height: appBarHeight,
               top: const StepIndicatorWidget(step: 2,maxStep: 2,),),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),

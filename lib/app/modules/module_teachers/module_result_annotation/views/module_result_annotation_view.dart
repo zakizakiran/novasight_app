@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/args/module_result_args.dart';
 import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_teacher_appbar.dart';
@@ -56,7 +57,7 @@ class ModuleResultAnnotationView extends GetView<ModuleResultAnnotationControlle
           child: Column(
             children: [
               CommonTeacherAppbar(
-                title: "Hasil Annotasi",
+                title: context.l10n.annotationResult,
                 showBack: canPop,
                 border: BorderStyleConstant.borderTeacherAppbar,
               ),

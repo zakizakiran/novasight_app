@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:novasight_app/app/modules/profile/views/widgets/language_dialog_widget.dart';
 import 'package:novasight_app/app/modules/profile/views/widgets/text_scale_dialog_widget.dart';
 
 import '../../../../common/common_dialog_widget.dart';
-import '../../../../core/utils/snackbar_helper.dart';
 import '../../../accessbility/controllers/accessibility_controller.dart';
 
 class SettingsDialogWidget extends GetView<AccessibilityController> {
@@ -22,54 +23,73 @@ class SettingsDialogWidget extends GetView<AccessibilityController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final showTextScale = controller.showTextScaleSettings.value;
+      final showLanguage = controller.showLanguageSettings.value;
+      final isSubView = showTextScale || showLanguage;
+      final l10n = context.l10n;
+
+      String title = l10n.settings;
+      String description = l10n.settingsDescription;
+      IconData icon = Icons.settings_outlined;
+
+      if (showTextScale) {
+        title = l10n.textSize;
+        description = l10n.textSizeAdjustDescription;
+        icon = Icons.text_fields;
+      } else if (showLanguage) {
+        title = l10n.selectLanguage;
+        description = l10n.selectLanguageDescription;
+        icon = Icons.language;
+      }
+
+      Widget content;
+      if (showTextScale) {
+        content = TextScaleDialogWidget(
+          onBack: controller.backToSettings,
+        );
+      } else if (showLanguage) {
+        content = LanguageDialogWidget(
+          onBack: controller.backToSettings,
+        );
+      } else {
+        content = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _SettingsOptionTile(
+              icon: Icons.language,
+              title: l10n.language,
+              description: l10n.languageDescription,
+              onTap: controller.openLanguageSettings,
+            ),
+            const SizedBox(height: 12),
+            _SettingsOptionTile(
+              icon: Icons.text_fields,
+              title: l10n.textSize,
+              description: l10n.textSizeDescription,
+              onTap: controller.openTextScaleSettings,
+            ),
+          ],
+        );
+      }
 
       return PopScope(
-        canPop: !showTextScale,
+        canPop: !isSubView,
         onPopInvokedWithResult: (didPop, result) {
-          if (!didPop && showTextScale) {
+          if (!didPop && isSubView) {
             controller.backToSettings();
           }
         },
         child: CommonDialogWidget(
-          title: showTextScale ? 'Ukuran Teks' : 'Pengaturan',
-          description: showTextScale
-              ? 'Sesuaikan ukuran teks agar lebih mudah dibaca.'
-              : 'Sesuaikan pengaturan aplikasi sesuai kebutuhan Anda.',
+          title: title,
+          description: description,
           icon: Icon(
-            showTextScale ? Icons.text_fields : Icons.settings_outlined,
+            icon,
             size: 40,
             color: ColorConstant.linearPrimary,
           ),
-          content: showTextScale
-              ? TextScaleDialogWidget(
-            onBack: controller.backToSettings,
-          )
-              : Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _SettingsOptionTile(
-                icon: Icons.language,
-                title: 'Bahasa',
-                description: 'Ubah bahasa aplikasi',
-                onTap: () {
-                  SnackbarHelper.showError(
-                    title: "Gagal",
-                    message: 'Pengafturan bahasa belum tersedia.',
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
-              _SettingsOptionTile(
-                icon: Icons.text_fields,
-                title: 'Ukuran teks',
-                description: 'Perbesar atau perkecil teks',
-                onTap: controller.openTextScaleSettings,
-              ),
-            ],
-          ),
+          content: content,
           actions: TextButton(
             onPressed: controller.backToSettings,
-            child: const Text('Tutup'),
+            child: Text(l10n.close),
           ),
         ),
       );

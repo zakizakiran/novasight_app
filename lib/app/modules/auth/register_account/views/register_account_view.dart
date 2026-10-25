@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/constants/app_string_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_card_widget.dart';
@@ -26,7 +27,7 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
         child: Column(
           children: [
             AuthAppbar(
-              title: "Daftar Akun",
+              title: context.l10n.registerAccount,
               description: "Bergabung sebagai ke ${AppStrings.nameApp}",
               height: appBarHeight,
             ),
@@ -57,10 +58,10 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                             children: [
                               Obx(
                                 () => CommonTextFormFieldWidget(
-                                  title: "Nama Lengkap *",
+                                  title: context.l10n.fullNameField,
                                   controller: controller.fullNameController,
                                   successColor: ColorConstant.green,
-                                  hint: "Masukkan Nama Lengkap",
+                                  hint: context.l10n.enterFullName,
                                   isReadOnly: controller.isLoading.value,
                                   onChanged: controller.onChange,
                                   validator: ValidateHelper.isNormalValidate(
@@ -85,13 +86,13 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                               ),
                               Obx(
                                 () => CommonTextFormFieldWidget(
-                                  title: "Email *",
+                                  title: context.l10n.emailField,
                                   successColor: ColorConstant.green,
                                   controller: controller.emailController,
                                   suffixIcon: ValidIconFieldWidget(
                                     isValid: controller.isValidEmail.value,
                                   ),
-                                  hint: "Masukkan Email",
+                                  hint: context.l10n.enterEmail,
                                   isReadOnly: controller.isLoading.value,
                                   onChanged: controller.onChange,
                                   validator: ValidateHelper.isEmailValidate(),
@@ -112,9 +113,9 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                               Obx(
                                 () => CommonTextFormFieldWidget(
                                   controller: controller.passwordController,
-                                  title: "Kata Sandi *",
+                                  title: context.l10n.passwordField,
                                   successColor: ColorConstant.green,
-                                  hint: "Masukkan Katas Sandi",
+                                  hint: context.l10n.enterPassword,
                                   isPassword: true,
                                   isReadOnly: controller.isLoading.value,
                                   onChanged: controller.onChange,
@@ -139,8 +140,8 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                                 () => CommonTextFormFieldWidget(
                                   controller:
                                       controller.confirmPasswordController,
-                                  title: "Konfirmasi Kata Sandi *",
-                                  hint: "Masukkan Ulang Katas Sandi",
+                                  title: context.l10n.confirmPasswordField,
+                                  hint: context.l10n.enterConfirmPassword,
                                   successColor: ColorConstant.green,
                                   isPassword: true,
                                   isReadOnly: controller.isLoading.value,
@@ -177,7 +178,7 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                             buttonWidth: double.infinity,
                             isLoading: controller.isLoading.value,
                             isValid: controller.isValid.value,
-                            buttonName: "Buat Akun",
+                            buttonName: context.l10n.createAccount,
                             onPressed: controller.onRegister,
                           ),
                         ),
@@ -186,8 +187,8 @@ class RegisterAccountView extends GetView<RegisterAccountController> {
                   ),
                   const SizedBox(height: Dimens.innerPadding),
                   FooterAuthButton(
-                    title: "Masuk",
-                    description: "Sudah punya akun? ",
+                    title: context.l10n.signIn,
+                    description: context.l10n.alreadyHaveAccount,
                     onClick: () {
                       Get.offNamed(Routes.LOGIN);
                     },

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/file_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
 
@@ -50,7 +51,7 @@ class PickModuleWidget extends GetView<CreateModuleController> {
                   ),
                   const SizedBox(height: Dimens.spacePadding),
                   Text(
-                    "Ketuk untuk unggah file",
+                    context.l10n.tapToUploadFile,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: Dimens.spacePadding),

@@ -8,6 +8,7 @@ import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 import 'package:novasight_app/app/data/models/student_quiz_model.dart';
 import 'package:novasight_app/app/routes/app_pages.dart';
@@ -67,13 +68,14 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final l10n = context.l10n;
     return Obx(() {
       final name = controller.studentName.value.isNotEmpty
           ? controller.studentName.value
-          : 'Siswa';
+          : l10n.student;
       final subtitle = controller.classroomSubtitle.value.isNotEmpty
           ? controller.classroomSubtitle.value
-          : 'Memuat data kelas...';
+          : l10n.loadingClassData;
 
       return Semantics(
         container: true,
@@ -86,7 +88,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Selamat belajar 👋',
+                    l10n.welcomeStudentGreeting,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: ColorConstant.white.withValues(alpha: 0.9),
                     ),
@@ -132,6 +134,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
   }
 
   Widget _buildMetricCards(BuildContext context) {
+    final l10n = context.l10n;
     return Obx(() {
       final dashboard = controller.dashboardData.value;
       final modulesCount = dashboard?.modulesNotDone.toString() ?? '0';
@@ -143,8 +146,8 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
             child: _buildInfoCard(
               context,
               modulesCount,
-              'Modul Belum Selesai',
-              semanticsLabel: '$modulesCount Modul Belum Selesai',
+              l10n.uncompletedModules,
+              semanticsLabel: '$modulesCount ${l10n.uncompletedModules}',
             ),
           ),
           const SizedBox(width: 15),
@@ -152,8 +155,8 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
             child: _buildInfoCard(
               context,
               examCount,
-              'Ujian Belum Selesai',
-              semanticsLabel: '$examCount Ujian Belum Selesai',
+              l10n.uncompletedExams,
+              semanticsLabel: '$examCount ${l10n.uncompletedExams}',
             ),
           ),
         ],
@@ -207,7 +210,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Materi dan Soal Ujian',
+          context.l10n.materialsAndExams,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorConstant.textDarkGreyColor,
@@ -222,6 +225,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
   }
 
   Widget _buildFilters(BuildContext context) {
+    final l10n = context.l10n;
     return Obx(() {
       final current = controller.selectedFilter.value;
 
@@ -231,21 +235,21 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
           children: [
             _buildFilterChip(
               context,
-              'Semua',
+              l10n.filterAll,
               current == StudentTaskStatus.semua,
                   () => controller.onFilterChanged(StudentTaskStatus.semua),
             ),
             const SizedBox(width: 10),
             _buildFilterChip(
               context,
-              'Materi',
+              l10n.filterMaterial,
               current == StudentTaskStatus.materi,
                   () => controller.onFilterChanged(StudentTaskStatus.materi),
             ),
             const SizedBox(width: 10),
             _buildFilterChip(
               context,
-              'Soal Ujian',
+              l10n.filterExam,
               current == StudentTaskStatus.soalUjian,
                   () => controller.onFilterChanged(StudentTaskStatus.soalUjian),
             ),
@@ -359,10 +363,10 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 const SizedBox(height: 16),
                 Semantics(
                   button: true,
-                  label: 'Coba lagi memuat tugas',
+                  label: context.l10n.tryAgain,
                   child: ElevatedButton(
                     onPressed: controller.onRefresh,
-                    child: const Text('Coba Lagi'),
+                    child: Text(context.l10n.tryAgain),
                   ),
                 ),
               ],
@@ -400,7 +404,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Belum ada materi atau soal ujian pada kategori ini.',
+                    context.l10n.emptyCategoryTasks,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorConstant.textGreyColor,
@@ -457,7 +461,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
     return Semantics(
       button: true,
       label:
-      'Kartu Soal Ujian: ${quiz.title}, Modul: ${quiz.module.title}, Status: ${isDone ? "Selesai dikerjakan, Nilai: $scoreText" : "Belum dikerjakan"}',
+      'Kartu Soal Ujian: ${quiz.title}, Modul: ${quiz.module.title}, Status: ${isDone ? "${context.l10n.completedStatus}, ${context.l10n.score}: $scoreText" : context.l10n.notAttemptedStatus}',
       child: GestureDetector(
         onTap: () async {
           if (isDone) {
@@ -485,7 +489,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 children: [
                   Flexible(
                     child: Text(
-                      'Soal Ujian',
+                      context.l10n.examQuestions,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: ColorConstant.textPrimaryColor,
                         fontWeight: FontWeight.w600,
@@ -505,7 +509,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                         border: Border.all(color: ColorConstant.green),
                       ),
                       child: Text(
-                        'Nilai: $scoreText',
+                        '${context.l10n.score}: $scoreText',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: ColorConstant.green,
                           fontWeight: FontWeight.bold,
@@ -526,7 +530,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'Belum Dikerjakan',
+                          context.l10n.filterNotAttempted,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: ColorConstant.primary,
                             fontWeight: FontWeight.w600,
@@ -562,7 +566,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 children: [
                   Expanded(
                     child: Text(
-                      '${quiz.maxDurationMinutes} Menit • ${quiz.questionCounts} Soal',
+                      context.l10n.durationAndQuestions(quiz.maxDurationMinutes, quiz.questionCounts),
                       softWrap: true,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: ColorConstant.textGreyColor,
@@ -576,7 +580,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                       children: [
                         Flexible(
                           child: Text(
-                            isDone ? 'Evaluaizer (Hasil Ujian)' : 'Kerjakan',
+                            isDone ? context.l10n.examResultEvaluaizer : context.l10n.startTask,
                             softWrap: true,
                             style: Theme.of(context)
                                 .textTheme
@@ -615,7 +619,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
     return Semantics(
       button: true,
       label:
-      'Kartu Materi: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? "Selesai" : "Belum Selesai"}',
+      'Kartu Materi: ${module.title}, Progres: $percentage% selesai, Status: ${isDone ? context.l10n.filterDone : context.l10n.filterNotDone}',
       child: GestureDetector(
         onTap: () async {
           await Get.toNamed(
@@ -635,7 +639,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Materi',
+                    context.l10n.material,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: ColorConstant.textPrimaryColor,
                       fontWeight: FontWeight.w600,
@@ -652,7 +656,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        'Selesai',
+                        context.l10n.filterDone,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: ColorConstant.green,
                           fontWeight: FontWeight.bold,

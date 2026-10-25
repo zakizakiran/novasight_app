@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_dropdown_widget.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/classroom_model.dart';
 import 'package:novasight_app/app/modules/auth/create_class/views/widgets/chip_grade_widget.dart';
 import 'package:novasight_app/app/modules/auth/create_class/views/widgets/information_widget.dart';
@@ -31,7 +32,7 @@ class CreateClassView extends GetView<CreateClassController> {
             children: [
               AuthAppbar(
                 icon: IconTxt.classIcon,
-                title: "Buat Kelas Kamu",
+                title: context.l10n.createClass,
                 description: "Isi informasi kelas untuk memulai",
                 height: appBarHeight,
                 top: const StepIndicatorWidget(step: 1, maxStep: 2),
@@ -53,7 +54,7 @@ class CreateClassView extends GetView<CreateClassController> {
             children: [
               AuthAppbar(
                 icon: IconTxt.classIcon,
-                title: "Buat Kelas Kamu",
+                title: context.l10n.createClass,
                 description: "Isi informasi kelas untuk memulai",
                 height: appBarHeight,
                 top: const StepIndicatorWidget(step: 1, maxStep: 2),
@@ -99,7 +100,7 @@ class CreateClassView extends GetView<CreateClassController> {
             children: [
               AuthAppbar(
                 icon: IconTxt.classIcon,
-                title: "Buat Kelas Kamu",
+                title: context.l10n.createClass,
                 description: "Isi informasi kelas untuk memulai",
                 height: appBarHeight,
                 top: const StepIndicatorWidget(step: 1, maxStep: 2),

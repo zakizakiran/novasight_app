@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/core/utils/dialog_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/exam-teachers-detail/views/widgets/exam_header_widget.dart';
 import 'package:novasight_app/app/modules/exam-teachers-detail/views/widgets/icon_status.dart';
 
@@ -19,7 +20,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
     return Scaffold(
       backgroundColor: ColorConstant.background,
       appBar: AppBar(
-        title: const Text('Detail Soal Ujian'),
+        title: Text(context.l10n.examDetailTitle),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -33,7 +34,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         return Padding(
           padding: const EdgeInsets.all(Dimens.innerPadding),
           child: CommonButtonWidget(
-            buttonName: "Simpan Perubahan",
+            buttonName: context.l10n.saveChanges,
             isValid: controller.hasChanges,
             onPressed: () {
               controller.onConfirmChange();
@@ -171,7 +172,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                     child: Row(
                       children: [
                         Text(
-                          'Soal ${index + 1} dari ${controller.generatedQuestions.length}',
+                          context.l10n.questionOfTotal(index + 1, controller.generatedQuestions.length),
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: ColorConstant.textDarkGreyColor,
@@ -236,9 +237,8 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
   void _showRegenerateStimulusDialog(BuildContext context, int index) {
     final feedbackController = TextEditingController();
     DialogHelper.show(
-      title: "Regenerasi Stimulus AI",
-      description:
-          "Berikan masukan spesifik kepada AI untuk merevisi teks stimulus soal ini:",
+      title: context.l10n.regenerateAiStimulus,
+      description: context.l10n.aiStimulusFeedbackDesc,
       colorDescription: ColorConstant.textDarkGreyColor,
       content: Padding(
         padding: const EdgeInsets.only(top: 12.0),
@@ -253,7 +253,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         ),
       ),
       actions: CommonButtonWidget(
-        buttonName: "Kirim & Regenerasi",
+        buttonName: context.l10n.sendAndRegenerate,
         buttonColor: ColorConstant.primary,
         onPressed: () {
           Get.back();
@@ -282,7 +282,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Stimulus Bacaan',
+                context.l10n.readingStimulus,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: ColorConstant.primary,
                       fontWeight: FontWeight.bold,
@@ -295,9 +295,9 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                   size: 14,
                   color: ColorConstant.primary,
                 ),
-                label: const Text(
-                  'Regenerasi Stimulus',
-                  style: TextStyle(
+                label: Text(
+                  context.l10n.regenerateStimulus,
+                  style: const TextStyle(
                     fontSize: 11,
                     color: ColorConstant.primary,
                     fontWeight: FontWeight.bold,
@@ -329,7 +329,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         ],
 
         Text(
-          'Pertanyaan',
+          context.l10n.question,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: ColorConstant.textDarkGreyColor,
           ),
@@ -353,7 +353,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
 
         const SizedBox(height: 16),
         Text(
-          'Pilihan Jawaban',
+          context.l10n.answerOptions,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: ColorConstant.textDarkGreyColor,
           ),
@@ -419,7 +419,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
 
         const SizedBox(height: 16),
         Text(
-          'Justifikasi & Langkah Penyelesaian',
+          context.l10n.justificationSteps,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: ColorConstant.textDarkGreyColor,
           ),
@@ -819,7 +819,7 @@ class QuestionEditFormState extends State<QuestionEditForm> {
         OutlinedButton.icon(
           onPressed: _addStep,
           icon: const Icon(Icons.add, size: 16),
-          label: const Text('Tambah Langkah'),
+          label: Text(context.l10n.addStep),
           style: OutlinedButton.styleFrom(
             foregroundColor: ColorConstant.primary,
             side: BorderSide(
@@ -834,7 +834,7 @@ class QuestionEditFormState extends State<QuestionEditForm> {
 
         const SizedBox(height: 16),
         Text(
-          'Kesimpulan',
+          context.l10n.conclusion,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: ColorConstant.textDarkGreyColor,
           ),
@@ -874,7 +874,7 @@ class QuestionEditFormState extends State<QuestionEditForm> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const Text('Batal'),
+                child: Text(context.l10n.cancel),
               ),
             ),
             const SizedBox(width: 16),
@@ -889,7 +889,7 @@ class QuestionEditFormState extends State<QuestionEditForm> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const Text('Simpan Perubahan'),
+                child: Text(context.l10n.saveChanges),
               ),
             ),
           ],

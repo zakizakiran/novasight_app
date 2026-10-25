@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/text_helper.dart';
 import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:novasight_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
@@ -22,6 +23,7 @@ class ProfileStudentWidget extends StatelessWidget {
     }
 
     return Obx(() {
+      final l10n = context.l10n;
       final studentProfile = controller.profile.value?.student;
       final cachedClass = controller.className.value;
 
@@ -46,7 +48,7 @@ class ProfileStudentWidget extends StatelessWidget {
           _buildField(
             context: context,
             icon: Icons.person,
-            title: "NIS/NISN : ",
+            title: l10n.studentId,
             description: nisText,
             spellDigits: true,
           ),
@@ -54,21 +56,21 @@ class ProfileStudentWidget extends StatelessWidget {
           _buildField(
             context: context,
             icon: Icons.school,
-            title: "Asal Sekolah / Kelas : ",
+            title: l10n.schoolOrigin,
             description: schoolOrClass,
           ),
           const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
           _buildField(
             context: context,
             icon: Icons.class_,
-            title: "Tingkat Kelas : ",
+            title: l10n.gradeLevel,
             description: gradeText,
           ),
           const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
           _buildField(
             context: context,
             icon: Icons.settings,
-            title: "Pengaturan",
+            title: l10n.settings,
             onPressed: () {
               SettingsDialogWidget.show(context);
             }
@@ -79,13 +81,14 @@ class ProfileStudentWidget extends StatelessWidget {
   }
 
   Widget _buildStaticContent(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       spacing: Dimens.spacePadding,
       children: [
         _buildField(
           context: context,
           icon: Icons.person,
-          title: "NIS/NISN : ",
+          title: l10n.studentId,
           description: student.studentId,
           spellDigits: true,
         ),
@@ -93,14 +96,14 @@ class ProfileStudentWidget extends StatelessWidget {
         _buildField(
           context: context,
           icon: Icons.school,
-          title: "Asal Sekolah : ",
+          title: l10n.schoolOrigin,
           description: student.nameSchools,
         ),
         const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
         _buildField(
           context: context,
           icon: Icons.class_,
-          title: "Tingkat Kelas : ",
+          title: l10n.gradeLevel,
         ),
       ],
     );

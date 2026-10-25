@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/core/constants/app_string_constant.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/text_theme.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/chatbot_model.dart';
 import '../controllers/chatbot_controller.dart';
 
@@ -39,7 +40,7 @@ class ChatbotView extends GetView<ChatbotController> {
             children: [
               Expanded(
                 child: Text(
-                  'Riwayat Percakapan',
+                  context.l10n.conversationHistory,
                   style: const MainTextTheme().titleLarge?.copyWith(
                     color: ColorConstant.textDarkGreyColor,
                     fontWeight: FontWeight.w700,
@@ -53,7 +54,7 @@ class ChatbotView extends GetView<ChatbotController> {
                   color: ColorConstant.primary,
                   size: 22,
                 ),
-                tooltip: 'Segarkan riwayat',
+                tooltip: context.l10n.refreshHistory,
               ),
             ],
           ),
@@ -92,9 +93,9 @@ class ChatbotView extends GetView<ChatbotController> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorConstant.primary,
                         ),
-                        child: const Text(
-                          'Coba Lagi',
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          context.l10n.tryAgain,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],
@@ -124,7 +125,7 @@ class ChatbotView extends GetView<ChatbotController> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Belum Ada Percakapan',
+                        context.l10n.noConversationsYet,
                         style: const MainTextTheme().titleLarge?.copyWith(
                           color: ColorConstant.textDarkGreyColor,
                           fontWeight: FontWeight.bold,
@@ -132,7 +133,7 @@ class ChatbotView extends GetView<ChatbotController> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Mulai tanya materi matematika atau diskusikan soal dengan menekan tombol (+) di atas!',
+                        context.l10n.emptyConversationDesc,
                         textAlign: TextAlign.center,
                         style: const MainTextTheme().bodyMedium?.copyWith(
                           color: ColorConstant.textGreyColor,
@@ -142,9 +143,9 @@ class ChatbotView extends GetView<ChatbotController> {
                       ElevatedButton.icon(
                         onPressed: controller.startNewChat,
                         icon: const Icon(Icons.add, color: Colors.white),
-                        label: const Text(
-                          'Mulai Percakapan Baru',
-                          style: TextStyle(color: Colors.white),
+                        label: Text(
+                          context.l10n.startNewConversation,
+                          style: const TextStyle(color: Colors.white),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorConstant.primary,
@@ -297,9 +298,9 @@ class ChatbotView extends GetView<ChatbotController> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorConstant.primary,
                         ),
-                        child: const Text(
-                          'Coba Lagi',
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          context.l10n.tryAgain,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],
@@ -409,7 +410,7 @@ class ChatbotView extends GetView<ChatbotController> {
               ),
               const SizedBox(width: 6),
               Text(
-                'Sumber Referensi:',
+                context.l10n.referenceSources,
                 style: const MainTextTheme().bodySmall?.copyWith(
                   color: ColorConstant.primary,
                   fontWeight: FontWeight.bold,
@@ -595,7 +596,7 @@ class ChatbotView extends GetView<ChatbotController> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Tanya materi modul & pemahaman konsep',
+                    context.l10n.clarifierSubtitle,
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

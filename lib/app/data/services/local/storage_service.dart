@@ -11,6 +11,7 @@ class StorageService {
   static const String _EMAIL_KEY = "emailKey";
   static const String _CLASS_CODE_KEY = "classCodeKey";
   static const String _CLASS_NAME_KEY = "classNameKey";
+  static const String _LANGUAGE_CODE_KEY = "languageCodeKey";
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions()
   );
@@ -65,6 +66,14 @@ class StorageService {
     await _storage.write(key: _PASSWORD_KEY, value: value);
   }
 
+  Future<void> writeLanguageCode(String value) async {
+    await _prefs.setString(_LANGUAGE_CODE_KEY, value);
+  }
+
+  String? getLanguageCode() {
+    return _prefs.getString(_LANGUAGE_CODE_KEY);
+  }
+
   Future<String?> getPassword() async {
     return _storage.read(key: _PASSWORD_KEY);
   }
@@ -77,9 +86,13 @@ class StorageService {
     return _storage.read(key: _ACCESS_TOKEN_KEY);
   }
 
-  Future<void> clearAll() async{
+  Future<void> clearAll() async {
+    final savedLang = getLanguageCode();
     await _storage.deleteAll();
     await _prefs.clear();
+    if (savedLang != null) {
+      await writeLanguageCode(savedLang);
+    }
   }
 
   Future<void> clearAccessToken() async {

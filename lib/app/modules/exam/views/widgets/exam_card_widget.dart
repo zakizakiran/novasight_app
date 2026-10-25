@@ -4,6 +4,7 @@ import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/module_status.dart';
 
 import '../../../../data/models/exam_model.dart';
@@ -30,7 +31,7 @@ class ExamCardWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Soal Ujian',
+                    context.l10n.examQuestions,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: ColorConstant.textPrimaryColor,
                     ),
@@ -49,7 +50,7 @@ class ExamCardWidget extends StatelessWidget {
                     border: Border.all(color: ColorConstant.green),
                   ),
                   child: Text(
-                    'Nilai: ${exam.score}',
+                    '${context.l10n.score}: ${exam.score}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: ColorConstant.green,
                       fontWeight: FontWeight.bold,
@@ -77,7 +78,9 @@ class ExamCardWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    exam.statusText,
+                    exam.status == PublicStatus.done
+                        ? context.l10n.completedStatus
+                        : context.l10n.notAttemptedStatus,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorConstant.textGreyColor,
                     ),
@@ -93,8 +96,8 @@ class ExamCardWidget extends StatelessWidget {
                       Flexible(
                         child: Text(
                           exam.status == PublicStatus.done
-                              ? 'Evaluaizer (Hasil Ujian)'
-                              : 'Kerjakan',
+                              ? context.l10n.examResultEvaluaizer
+                              : context.l10n.startTask,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: ColorConstant.primary,
                             fontWeight: FontWeight.bold,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/core/dimens.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/exam_review/views/widgets/justification_card.dart';
 import 'package:novasight_app/app/modules/exam_review/views/widgets/progress_indicator.dart';
 import 'package:novasight_app/app/modules/exam_review/views/widgets/question_card.dart';
@@ -25,7 +26,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
             return Column(
               children: [
                 CommonAppBar(
-                  title: 'Evaluaizer — Review Hasil Ujian',
+                  title: context.l10n.examReviewTitle,
                   description: controller.quizTitle.value,
                 ),
                 const Expanded(
@@ -43,7 +44,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
             return Column(
               children: [
                 CommonAppBar(
-                  title: 'Evaluaizer — Review Hasil Ujian',
+                  title: context.l10n.examReviewTitle,
                   description: controller.quizTitle.value,
                 ),
                 Expanded(

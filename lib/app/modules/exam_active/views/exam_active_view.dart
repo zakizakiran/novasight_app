@@ -9,6 +9,7 @@ import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
 import 'package:novasight_app/app/core/utils/dialog_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import 'package:novasight_app/app/routes/app_pages.dart';
 import '../controllers/exam_active_controller.dart';
@@ -36,7 +37,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Daftar Soal",
+                    context.l10n.questionList,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: ColorConstant.textDarkGreyColor,
                           fontWeight: FontWeight.bold,
@@ -115,7 +116,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Soal ${safeIndex + 1}",
+                              context.l10n.questionItem(safeIndex + 1),
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(
                                     color: ColorConstant.primary,
@@ -133,7 +134,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                             ),
                             const SizedBox(height: Dimens.spacePadding),
                             Text(
-                              "Jawaban",
+                              context.l10n.answersLabel,
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(
                                     color: ColorConstant.primary,
@@ -194,7 +195,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
             print("Soal nomor ${index + 1}\nIs Answered $isAnswered ${question.selectedOptionId}");
             return Semantics(
               label:
-                  "Soal nomor ${index + 1} dari ${controller.questions.length}",
+                  context.l10n.questionOfTotal(index + 1, controller.questions.length),
               button: true,
               child: GestureDetector(
                 onTap: () => controller.goToQuestion(index),
@@ -320,13 +321,13 @@ class ExamActiveView extends GetView<ExamActiveController> {
         final isLast =
             controller.currentIndex.value == controller.questions.length - 1;
         final bool isAllAnswered = isLast ? controller.isAllAnswered : true;
-        final String title = isLast ? "Selesai" : "Selanjutnya";
+        final String title = isLast ? context.l10n.finish : context.l10n.next;
 
         return Row(
           children: [
             Expanded(
               child: CommonButtonWidget(
-                buttonName: "Sebelumnya",
+                buttonName: context.l10n.previous,
                 buttonColor: isFirst
                     ? ColorConstant.grey
                     : ColorConstant.borderNormalGrey,
@@ -378,10 +379,11 @@ class ExamActiveView extends GetView<ExamActiveController> {
                     ? () {
                         DialogHelper.show(
                           icon: _buildQuestionIconDialog(),
-                          title: 'Apakah Kamu Yakin Mengumpulkan Sekarang',
+                          title: context.l10n.submitExamConfirmTitle,
                           description:
-                              "Jawaban yang sudah dikirim tidak bisa diubah",
+                              context.l10n.submitExamConfirmDesc,
                           actions: _buildActionDialog(
+                            context: context,
                             onCancel: () {
                               Get.back();
                             },
@@ -464,6 +466,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
   }
 
   Widget _buildActionDialog({
+    required BuildContext context,
     required Function() onCancel,
     required Function() onSend,
   }) {
@@ -471,7 +474,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
       children: [
         Expanded(
           child: CommonButtonWidget(
-            buttonName: "Batal",
+            buttonName: context.l10n.cancel,
             buttonColor: ColorConstant.redColor,
             boxShadows: const [],
             onPressed: onCancel,
@@ -480,7 +483,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
         const SizedBox(width: Dimens.innerPadding),
         Expanded(
           child: CommonButtonWidget(
-            buttonName: "Kirim",
+            buttonName: context.l10n.sendButton,
             boxShadows: const [],
             onPressed: onSend,
           ),

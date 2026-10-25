@@ -9,6 +9,7 @@ import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/ui_state.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 import 'package:shimmer/shimmer.dart';
@@ -46,9 +47,9 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CommonAppBar(
-          title: "Memuat Daftar Isi...",
-          description: "Materi Pembelajaran",
+        CommonAppBar(
+          title: context.l10n.loadingTableOfContents,
+          description: context.l10n.learningMaterials,
         ),
         Padding(
           padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -148,9 +149,9 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CommonAppBar(
-          title: "Terjadi Kesalahan",
-          description: "Daftar Isi",
+        CommonAppBar(
+          title: context.l10n.errorOccurred,
+          description: context.l10n.tableOfContents,
         ),
         Padding(
           padding: const EdgeInsets.all(Dimens.innerPadding),
@@ -175,7 +176,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: controller.onLoad,
-                  child: const Text('Coba Lagi'),
+                  child: Text(context.l10n.tryAgain),
                 ),
               ],
             ),
@@ -194,7 +195,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
       return Column(
         children: [
           CommonAppBar(
-            title: "${detail.chapters.length} Bab Materi",
+            title: context.l10n.chaptersCount(detail.chapters.length),
             description: detail.title,
           ),
           Padding(
@@ -214,7 +215,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Progres Pembelajaran',
+                                context.l10n.learningProgress,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                       color: ColorConstant.textPrimaryColor,
                                       fontWeight: FontWeight.bold,
@@ -222,7 +223,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                               ),
                             ),
                             Text(
-                              '$percentage% Selesai',
+                              context.l10n.percentCompleted(percentage),
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: ColorConstant.primary,
                                     fontWeight: FontWeight.bold,
@@ -245,7 +246,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                   const SizedBox(height: Dimens.spacePadding),
                 ],
                 Text(
-                  "Daftar Isi",
+                  context.l10n.tableOfContents,
                   style: Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: ColorConstant.informationColor,
                         fontWeight: FontWeight.w800,
@@ -263,9 +264,9 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
       );
     }
 
-    return const SizedBox(
+    return SizedBox(
         height: 200,
-        child: Center(child: Text('Modul tidak ditemukan.')),
+        child: Center(child: Text(context.l10n.moduleNotFound)),
       );
   }
 
@@ -295,7 +296,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                 enabled: !isAnyStarting,
                 label: isStarting
                     ? 'Membuka Bab ${i + 1}: ${chapter.title}, sedang memuat materi...'
-                    : 'Bab ${i + 1}: ${chapter.title}, Status: ${isDone ? "Selesai" : "Belum Selesai"}',
+                    : '${context.l10n.chapterNumber((i + 1).toString())}: ${chapter.title}, Status: ${isDone ? context.l10n.filterDone : context.l10n.filterNotDone}',
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: isAnyStarting && !isStarting ? 0.6 : 1.0,
@@ -373,7 +374,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                             ),
                           )
                         else
-                          _buildCheckmark(isDone),
+                          _buildCheckmark(context, isDone),
                       ],
                     ),
                   ),
@@ -386,7 +387,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
     );
   }
 
-  Widget _buildCheckmark(bool isDone) {
+  Widget _buildCheckmark(BuildContext context, bool isDone) {
     final backgroundColor = isDone ? ColorConstant.green : ColorConstant.white;
     final shadowColor =
         isDone ? ColorConstant.greenShadow : ColorConstant.shadowColor;
@@ -394,7 +395,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
         isDone ? ColorConstant.green : ColorConstant.borderNormalGrey;
 
     return Semantics(
-      label: isDone ? "Selesai" : "Belum Selesai",
+      label: isDone ? context.l10n.filterDone : context.l10n.filterNotDone,
       child: Container(
         width: 50,
         height: 50,

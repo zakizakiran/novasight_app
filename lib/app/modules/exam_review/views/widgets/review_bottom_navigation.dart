@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
 
 import '../../../../core/styles/colors/color_constant.dart';
@@ -37,7 +38,7 @@ class ReviewBottomNavigation extends StatelessWidget {
                 ? previousQuestion
                 : null,
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Sebelumnya'),
+            label: Text(context.l10n.previous),
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorConstant.background,
               foregroundColor: Colors.grey.shade600,
@@ -73,8 +74,8 @@ class ReviewBottomNavigation extends StatelessWidget {
               children: [
                 Text(
                   currentIndex < questions.length - 1
-                      ? 'Selanjutnya'
-                      : 'Selesai',
+                      ? context.l10n.next
+                      : context.l10n.finish,
                   style: const MainTextTheme().bodyLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

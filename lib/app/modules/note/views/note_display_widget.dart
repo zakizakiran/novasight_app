@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/exam_active/controllers/exam_active_controller.dart';
 import '../../../common/common_card_widget.dart';
 import '../../../core/Dimens.dart';
@@ -51,7 +52,7 @@ class NoteDisplayWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Dimens.innerPadding),
                   child: Text(
-                    'Langkah Pengerjaan',
+                    context.l10n.workingSteps,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: ColorConstant.textDarkGreyColor,
                       fontWeight: FontWeight.bold,

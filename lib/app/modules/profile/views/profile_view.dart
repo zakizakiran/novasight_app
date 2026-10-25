@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/user_roles.dart';
 import 'package:novasight_app/app/modules/profile/views/widgets/profile_app_bar_widget.dart';
 import 'package:novasight_app/app/modules/profile/views/widgets/profile_student_widget.dart';
@@ -44,7 +45,7 @@ class ProfileView extends GetView<ProfileController> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Dimens.spaceBigPadding),
                   child: CommonButtonWidget(
-                      buttonName: "Keluar Kelas",
+                      buttonName: context.l10n.leaveClass,
                       boxShadows: const [
                         BoxShadowConstant.redShadowColor
                       ],
@@ -57,7 +58,7 @@ class ProfileView extends GetView<ProfileController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: Dimens.spaceBigPadding),
               child: CommonButtonWidget(
-                  buttonName: "Logout",
+                  buttonName: context.l10n.logout,
                   onPressed: controller.onLogout
               ),
             ),

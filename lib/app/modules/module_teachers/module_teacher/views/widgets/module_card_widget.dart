@@ -5,6 +5,7 @@ import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/utils/date_helper.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/teacher_model.dart';
 import '../../controllers/module_teacher_controller.dart';
 
@@ -75,7 +76,7 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
                   button: true,
                   label: "Lihat detail modul ${module.title}",
                   child: CommonButtonWidget(
-                    buttonName: "Lihat Modul",
+                    buttonName: context.l10n.viewModule,
                     buttonColor: ColorConstant.white,
                     border: const BorderSide(
                       color: ColorConstant.borderBlueGrey,
@@ -131,7 +132,7 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
                           )
                         : CommonButtonWidget(
                             buttonName:
-                                isPublished ? "Terpublikasi" : "Publish Modul",
+                                isPublished ? context.l10n.published : context.l10n.publishModule,
                             isValid: !isPublished,
                             boxShadows: const [],
                             onPressed: () {
@@ -205,7 +206,7 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
         borderRadius: BorderRadius.all(Radius.circular(Dimens.radius)),
       ),
       child: Text(
-        module.faseId != null ? "Fase ${module.faseId}" : "Modul",
+        module.faseId != null ? "${context.l10n.fase} ${module.faseId}" : context.l10n.navModule,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: ColorConstant.primary,
               fontWeight: FontWeight.bold,
@@ -231,7 +232,7 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
         borderRadius: const BorderRadius.all(Radius.circular(Dimens.radius)),
       ),
       child: Text(
-        isPublished ? "Publish" : "Draft",
+        isPublished ? context.l10n.filterPublish : context.l10n.filterDraft,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: textColor,
               fontWeight: FontWeight.w700,

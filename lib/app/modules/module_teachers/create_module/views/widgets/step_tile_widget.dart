@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../controllers/create_module_controller.dart';
 
@@ -14,20 +15,20 @@ class StepTileWidget extends StatelessWidget {
       final status = step.status.value;
       IconData icon = Icons.radio_button_off;
       Color iconColor = Colors.grey;
-      String statusText = "Tunggu...";
+      String statusText = context.l10n.statusWait;
       Color statusBgColor = Colors.grey.shade100;
       Color statusTextColor = ColorConstant.darkGrey;
 
       if (status == LoadingStepStatus.processing) {
         icon = Icons.radio_button_checked;
         iconColor = ColorConstant.primary;
-        statusText = "Proses...";
+        statusText = context.l10n.statusProcess;
         statusBgColor = ColorConstant.secondary;
         statusTextColor = ColorConstant.primary;
       } else if (status == LoadingStepStatus.completed) {
         icon = Icons.check_circle;
         iconColor = ColorConstant.green;
-        statusText = "Selesai";
+        statusText = context.l10n.filterDone;
         statusBgColor = ColorConstant.lightGreen;
         statusTextColor = ColorConstant.green;
       }

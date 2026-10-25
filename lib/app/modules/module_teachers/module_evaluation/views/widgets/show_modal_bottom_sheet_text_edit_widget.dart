@@ -6,6 +6,7 @@ import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/icon_txt.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/validate_helper.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
@@ -36,7 +37,7 @@ class ShowModalBottomSheetTextEditWidget
                       style: TextStyle(fontSize: Dimens.iconRegularSize),
                     ),
                     Text(
-                      "Edit Anotasi Teks",
+                      context.l10n.editTextAnnotationHeader,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ],
@@ -105,7 +106,7 @@ class ShowModalBottomSheetTextEditWidget
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "Edit Langsung",
+                        context.l10n.directEdit,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: ColorConstant.darkGrey,
                               fontWeight: FontWeight.w600,
@@ -116,7 +117,7 @@ class ShowModalBottomSheetTextEditWidget
                   if (chunk.text.isNotEmpty) ...[
                     const SizedBox(height: 8),
                     Text(
-                      "Teks Asal:",
+                      context.l10n.originalText,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: ColorConstant.grey,
@@ -141,7 +142,7 @@ class ShowModalBottomSheetTextEditWidget
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Ubah Teks Anotasi",
+                context.l10n.changeAnnotationText,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
@@ -171,7 +172,7 @@ class ShowModalBottomSheetTextEditWidget
             children: [
               Expanded(
                 child: CommonButtonWidget(
-                  buttonName: "Batal",
+                  buttonName: context.l10n.cancel,
                   onPressed: () => Get.back(),
                   boxShadows: const [],
                   buttonColor: ColorConstant.secondary,
@@ -186,7 +187,7 @@ class ShowModalBottomSheetTextEditWidget
               Expanded(
                 child: Obx(
                   () => CommonButtonWidget(
-                    buttonName: "Simpan Anotasi",
+                    buttonName: context.l10n.saveAnnotation,
                     isValid: controller.isTextValid.value,
                     onPressed: () => controller.onSaveDirectText(),
                   ),

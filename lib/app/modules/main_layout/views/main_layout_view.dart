@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:novasight_app/app/core/utils/user_roles.dart';
 import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../controllers/main_layout_controller.dart';
@@ -84,45 +86,86 @@ class MainLayoutView extends GetView<MainLayoutController> {
     });
   }
 
+  String _getItemTitle(BuildContext context, int index) {
+    final l10n = context.l10n;
+    if (controller.currentRole == UserRoles.siswa) {
+      switch (index) {
+        case 0:
+          return l10n.navDashboard;
+        case 1:
+          return l10n.navModule;
+        case 2:
+          return l10n.navExam;
+        case 3:
+          return l10n.navClarifier;
+        case 4:
+          return l10n.navProfile;
+        default:
+          return '';
+      }
+    } else {
+      switch (index) {
+        case 0:
+          return l10n.navDashboard;
+        case 1:
+          return l10n.navModule;
+        case 2:
+          return l10n.navExam;
+        case 3:
+          return l10n.navProfile;
+        default:
+          return '';
+      }
+    }
+  }
+
   Widget _bottomBar({
     required int selectedIndex,
     required int index,
     required BottomNavItem item,
   }) {
-    final selected = selectedIndex == index;
-    String label = selected ? "Posisi di" : "";
-    return Semantics(
-      button: true,
-      label: "$label ${item.semanticLabel}",
-      excludeSemantics: true,
-      child: InkWell(
-        onTap: () => controller.changePage(index),
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                item.icon,
-                color: selected ? ColorConstant.primary : Colors.grey,
+    return Builder(
+      builder: (context) {
+        final selected = selectedIndex == index;
+        final title = _getItemTitle(context, index);
+        final label = selected
+            ? "${context.l10n.currentPosition} $title"
+            : title;
+
+        return Semantics(
+          button: true,
+          label: label,
+          excludeSemantics: true,
+          child: InkWell(
+            onTap: () => controller.changePage(index),
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    item.icon,
+                    color: selected ? ColorConstant.primary : Colors.grey,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    title.isNotEmpty ? title : item.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
+                      fontSize: 12,
+                      color: selected ? ColorConstant.primary : Colors.grey,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                item.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
-                  fontSize: 12,
-                  color: selected ? ColorConstant.primary : Colors.grey,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

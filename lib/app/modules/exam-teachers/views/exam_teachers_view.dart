@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
 import '../../../common/common_button_widget.dart';
 import '../../../core/dimens.dart';
@@ -22,7 +23,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Soal Ujian',
+          context.l10n.examQuestions,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorConstant.textDarkGreyColor,
@@ -38,7 +39,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                   Get.toNamed(Routes.GENERATE_EXAM);
                 },
                 icon: const Icon(Icons.add, size: 16),
-                label: const Text('Buat Soal (Quizzer)'),
+                label: Text(context.l10n.createExamQuizzer),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorConstant.primary,
                   foregroundColor: ColorConstant.white,
@@ -70,6 +71,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
               () => Row(
                 children: controller.filterOptions.map((filter) {
                   bool isSelected = controller.selectedFilter.value == filter;
+                  final displayFilter = filter == 'Semua' ? context.l10n.filterAll : filter;
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: InkWell(
@@ -92,7 +94,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                           ),
                         ),
                         child: Text(
-                          filter,
+                          displayFilter,
                           style: TextStyle(
                             color: isSelected
                                 ? ColorConstant.white
@@ -149,7 +151,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                             backgroundColor: ColorConstant.primary,
                             foregroundColor: ColorConstant.white,
                           ),
-                          child: const Text('Coba Lagi'),
+                          child: Text(context.l10n.tryAgain),
                         ),
                       ],
                     ),
@@ -167,10 +169,10 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                     children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.4,
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            'Tidak ada data ujian',
-                            style: TextStyle(color: ColorConstant.textGreyColor),
+                            context.l10n.noExamsForClass,
+                            style: const TextStyle(color: ColorConstant.textGreyColor),
                           ),
                         ),
                       ),
@@ -239,7 +241,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  isPublish ? 'Publish' : 'Draft',
+                  isPublish ? context.l10n.filterPublish : context.l10n.filterDraft,
                   style: TextStyle(
                     color: isPublish
                         ? ColorConstant.green
@@ -254,7 +256,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
           const SizedBox(height: 4),
           // Subtitle
           Text(
-            '${quiz.questionCounts} soal · Durasi ${quiz.maxDurationMinutes} menit',
+            context.l10n.examSubtitleFormat(quiz.questionCounts, quiz.maxDurationMinutes),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorConstant.textGreyColor,
             ),
@@ -290,9 +292,9 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildExamButton(context, 'Lihat Soal', () => controller.onDetailExam(quiz),),
+                    _buildExamButton(context, context.l10n.viewExamQuestions, () => controller.onDetailExam(quiz),),
                     const SizedBox(height: 8),
-                    _buildExamButton(context, 'Lihat Progres Murid', () => controller.onStudentExamProgress(quiz)),
+                    _buildExamButton(context, context.l10n.viewStudentProgress, () => controller.onStudentExamProgress(quiz)),
                   ],
                 ),
               ),
@@ -312,9 +314,9 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                               ? null
                               : () {
                             DialogHelper.show(
-                              title: 'Hapus Soal Ujian',
+                              title: context.l10n.deleteExam,
                               description:
-                              'Anda yakin ingin menghapus "${quiz.title}"?',
+                              context.l10n.deleteExamConfirm(quiz.title),
                               colorDescription:
                               ColorConstant.textDarkGreyColor,
                               icon: SvgPicture.asset(
@@ -323,7 +325,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                                 height: Dimens.iconBigSize,
                               ),
                               actions: CommonButtonWidget(
-                                buttonName: 'Konfirmasi',
+                                buttonName: context.l10n.confirm,
                                 buttonColor: ColorConstant.redColor,
                                 onPressed: () {
                                   controller.onDeleteQuiz(quiz);
@@ -344,7 +346,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                             Icons.delete_outline,
                             size: 16,
                           ),
-                          label: const Text('Hapus'),
+                          label: Text(context.l10n.delete),
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(
@@ -391,8 +393,8 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                               color: ColorConstant.white,
                             ),
                           )
-                              : const Text(
-                            'Publish Soal',
+                              : Text(
+                            context.l10n.publishExam,
                             textAlign: TextAlign.center,
                           ),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../controllers/generate_exam_controller.dart';
 
@@ -13,11 +14,11 @@ class StepperIndicator extends GetView<GenerateExamController> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildStepItem(context, 0, 'Pilih Modul', step),
+          _buildStepItem(context, 0, context.l10n.stepPickModule, step),
           _buildStepDivider(step >= 1),
-          _buildStepItem(context, 1, 'Konfigurasi', step),
+          _buildStepItem(context, 1, context.l10n.stepConfig, step),
           _buildStepDivider(step >= 2),
-          _buildStepItem(context, 2, 'Review & Simpan', step),
+          _buildStepItem(context, 2, context.l10n.stepReviewSave, step),
         ],
       );
     });

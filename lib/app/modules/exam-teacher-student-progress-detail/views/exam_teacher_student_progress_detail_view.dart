@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
@@ -22,7 +23,7 @@ class ExamTeacherStudentProgressDetailView extends GetView<ExamTeacherStudentPro
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Detail Progres Murid',
+          context.l10n.studentProgressDetailTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorConstant.textDarkGreyColor,
@@ -61,7 +62,7 @@ class ExamTeacherStudentProgressDetailView extends GetView<ExamTeacherStudentPro
                       Text(
                         controller.errorMessage.value.isNotEmpty
                             ? controller.errorMessage.value
-                            : 'Belum ada hasil evaluasi ujian yang tersedia.',
+                            : context.l10n.noExamReviewResultsYet,
                         textAlign: TextAlign.center,
                         style: const MainTextTheme().bodyLarge?.copyWith(
                           color: ColorConstant.textGreyColor,
@@ -73,7 +74,7 @@ class ExamTeacherStudentProgressDetailView extends GetView<ExamTeacherStudentPro
                         children: [
                           OutlinedButton(
                             onPressed: () => Get.back(),
-                            child: const Text('Kembali'),
+                            child: Text(context.l10n.back),
                           ),
                           const SizedBox(
                             width: Dimens.spaceMediumPadding,
@@ -83,9 +84,9 @@ class ExamTeacherStudentProgressDetailView extends GetView<ExamTeacherStudentPro
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstant.primary,
                             ),
-                            child: const Text(
-                              'Coba Lagi',
-                              style: TextStyle(color: Colors.white),
+                            child: Text(
+                              context.l10n.tryAgain,
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
                         ],

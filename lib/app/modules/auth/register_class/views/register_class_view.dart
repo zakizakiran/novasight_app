@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/core/utils/text_input_formatter.dart';
 
 import '../../../../core/styles/box_shadow_style.dart';
@@ -24,7 +25,7 @@ class RegisterView extends GetView<RegisterController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(icon: IconTxt.key, title: "Masuk ke Kelas", description: "Masukkan kode kelas dari gurumu",height: appBarHeight,),
+            AuthAppbar(icon: IconTxt.key, title: context.l10n.joinClass, description: context.l10n.enterClassCodeFromTeacher,height: appBarHeight,),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(
@@ -48,11 +49,11 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                     ),
                     Text(
-                      "Kode Kelas",
+                      context.l10n.classCode,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     Text(
-                      "Minta kode ini dari gurumu",
+                      context.l10n.askTeacherForCode,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: ColorConstant.textGreyColor
                       ),
@@ -60,7 +61,7 @@ class RegisterView extends GetView<RegisterController> {
                     Obx(()
                     => CommonTextFormFieldWidget(
                       controller: controller.codeController,
-                      hint: "Masukkan Kode Kelas",
+                      hint: context.l10n.enterClassCode,
                       textAlign: TextAlign.center,
                       isReadOnly: controller.isLoading.value,
                       textStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -90,7 +91,7 @@ class RegisterView extends GetView<RegisterController> {
                             buttonWidth: double.infinity,
                             isLoading: controller.isLoading.value,
                             isValid: controller.isValid.value,
-                            buttonName: "Bergabung ke kelas",
+                            buttonName: context.l10n.joinClassButton,
                             onPressed: controller.onRegister
                         )
                     )

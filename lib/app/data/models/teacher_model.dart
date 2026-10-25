@@ -8,6 +8,8 @@
 // - ChapterResponse -> TeacherChapterSummaryModel
 // - ChapterDetailResponse -> TeacherChapterDetailModel
 
+import 'package:flutter/widgets.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/student_model.dart';
 
 enum TeacherModuleStatus {
@@ -26,6 +28,17 @@ enum TeacherModuleStatus {
         return 'Draft';
       case TeacherModuleStatus.publish:
         return 'Publish';
+    }
+  }
+
+  String localizedLabel(BuildContext context) {
+    switch (this) {
+      case TeacherModuleStatus.semua:
+        return context.l10n.filterAll;
+      case TeacherModuleStatus.draft:
+        return context.l10n.filterDraft;
+      case TeacherModuleStatus.publish:
+        return context.l10n.filterPublish;
     }
   }
 

@@ -11,6 +11,7 @@ import 'package:novasight_app/app/core/Dimens.dart';
 import 'package:novasight_app/app/core/styles/border_style.dart';
 import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/subject/views/widgets/row_subject_button_widget.dart';
 
 import '../../../common/common_button_widget.dart';
@@ -34,8 +35,10 @@ class SubjectView extends GetView<SubjectController> {
           children: [
             Obx(() => CommonAppBar(
                 title: controller.subject.title,
-                description:
-                "Halaman ${controller.currentPageNumber.value} dari ${controller.subject.pages.length}",
+                description: context.l10n.pageOf(
+                  controller.currentPageNumber.value,
+                  controller.subject.pages.length,
+                ),
               ),
             ),
             _searchBar(context: context, controller: controller.searchController, onChange: controller.onPage),
@@ -96,15 +99,15 @@ class SubjectView extends GetView<SubjectController> {
                         width: Dimens.iconBigSize,
                         height: Dimens.iconBigSize,
                       ),
-                      title: "Selamat Telah Menyelesaikan Materi ${controller.index + 1}",
+                      title: context.l10n.completedChapterTitle(controller.index + 1),
                       actions: CommonButtonWidget(
                           buttonWidth: 120,
-                          buttonName: "Selesai",
+                          buttonName: context.l10n.finish,
                           onPressed: controller.onDone,
                       )
                   );
                 } : controller.onNext,
-                next: condition ? "Selesai" : "Selanjutnya",
+                next: condition ? context.l10n.finish : context.l10n.next,
                 onPrevious: controller.onPrevious,
                 enableNext: condition ? !subject.isDone : currentPageNumber <= length,
                 enablePrevious: currentPageNumber > 1,
@@ -128,7 +131,7 @@ class SubjectView extends GetView<SubjectController> {
         child: CommonTextFormFieldWidget(
           controller: controller,
           prefixIcon: const Text(IconTxt.lens),
-          hint: "Cari halaman...",
+          hint: context.l10n.searchPageHint,
           onChanged: (value) => onChange(int.tryParse(value) ?? -1),
           fillColor: ColorConstant.white,
           inputFormatters: [

@@ -1,0 +1,545 @@
+{
+  "@@locale": "en",
+  "appName": "Nova",
+  "close": "Close",
+  "back": "Back",
+  "save": "Save",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "success": "Success",
+  "failed": "Failed",
+  "loading": "Loading...",
+  "tryAgain": "Try Again",
+  "saveChanges": "Save Changes",
+
+  "settings": "Settings",
+  "settingsDescription": "Adjust application settings according to your needs.",
+  "language": "Language",
+  "languageDescription": "Change application language",
+  "selectLanguage": "Select Language",
+  "selectLanguageDescription": "Select the language used in the application.",
+  "indonesian": "Bahasa Indonesia",
+  "english": "English",
+  "textSize": "Text size",
+  "textSizeDescription": "Enlarge or reduce text size",
+  "textSizeAdjustDescription": "Adjust text size for easier reading.",
+  "currentSize": "Current size",
+  "reduceTextSize": "Reduce text size",
+  "enlargeTextSize": "Enlarge text size",
+  "textSizePercent": "Text size {percent} percent",
+  "@textSizePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "sampleTextTitle": "Preview",
+  "sampleTextBody": "This is sample text to show how it looks with the current size.",
+  "resetTextScale": "Reset text size",
+  "backToSettings": "Back to settings",
+
+  "profile": "Profile",
+  "schoolOrigin": "School Origin : ",
+  "gradeLevel": "Grade Level : ",
+  "studentId": "NIS/NISN : ",
+  "logout": "Log Out",
+  "leaveClass": "Leave Class",
+
+  "navDashboard": "Dashboard",
+  "navModule": "Module",
+  "navExam": "Exam Questions",
+  "navClarifier": "Clarifier",
+  "navProfile": "Profile",
+  "currentPosition": "Current position at",
+
+  "filterAll": "All",
+  "filterNotDone": "Incomplete",
+  "filterDone": "Completed",
+  "filterNotAttempted": "Not Attempted",
+  "filterMaterial": "Materials",
+  "filterExam": "Exams",
+  "filterPublish": "Publish",
+  "filterDraft": "Draft",
+  "filterLabel": "Filter {label}",
+  "@filterLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+
+  "learningModules": "Learning Modules",
+  "examQuestions": "Exam Questions",
+  "examReviewTitle": "Evaluaizer — Exam Results Review",
+  "noteAppBarTitle": "Scriber — Work Notes",
+  "pageOf": "Page {current} of {total}",
+  "@pageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "questionOf": "Question {current} of {total}",
+  "@questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chaptersCount": "{count} Chapters",
+  "@chaptersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadModule": "+ Upload Module",
+  "createExamQuizzer": "Create Exam (Quizzer)",
+  "examDetailTitle": "Exam Details",
+  "studentProgressTitle": "Student Progress",
+  "studentProgressDetailTitle": "Student Progress Detail",
+  "generateExamTitle": "Quizzer — Create Exam",
+  "splitPagesAndChapters": "Split Pages & Chapters",
+  "processingModule": "Processing Module",
+  "annotationResult": "Annotation Results",
+  "moduleEvaluationTitle": "Annoter — Module Evaluation",
+  "beforeAnnotation": "Before Annotation",
+  "afterAnnotation": "After Annotation",
+  "clarifierSubtitle": "Ask about module materials & concept understanding",
+  "conversationHistory": "Conversation History",
+  "refreshHistory": "Refresh history",
+  "loadingTableOfContents": "Loading Table of Contents...",
+  "learningMaterials": "Learning Materials",
+  "tableOfContents": "Table of Contents",
+  "errorOccurred": "An Error Occurred",
+  "beforeStartingExam": "Before Starting the Exam",
+
+  "welcomeStudentGreeting": "Happy learning 👋",
+  "student": "Student",
+  "loadingClassData": "Loading class data...",
+  "uncompletedModules": "Incomplete Modules",
+  "uncompletedExams": "Incomplete Exams",
+  "materialsAndExams": "Materials and Exams",
+  "emptyCategoryTasks": "No materials or exams in this category.",
+  "material": "Material",
+  "exam": "Exam",
+  "score": "Score",
+  "minutes": "Minutes",
+  "questions": "Questions",
+  "completedStatus": "Completed",
+  "notAttemptedStatus": "Not attempted",
+  "durationAndQuestions": "{minutes} Minutes • {questions} Questions",
+  "@durationAndQuestions": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "questions": {
+        "type": "int"
+      }
+    }
+  },
+  "startTask": "Start",
+  "examResultEvaluaizer": "Evaluaizer (Exam Result)",
+  "percentCompleted": "{percent}% Completed",
+  "@percentCompleted": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "noModulesInCategory": "No modules in this category.",
+  "noExamsInCategory": "No exams in this category.",
+
+  "greetingMorning": "Good morning",
+  "teacher": "Teacher",
+  "teacherDashboard": "Teacher Dashboard",
+  "totalModules": "Total Modules",
+  "totalStudents": "Total Students",
+  "classCode": "Class Code",
+  "shareCodeDescription": "Share with students to join",
+  "copyClassCode": "Copy Class Code",
+  "noClassYet": "No Class Yet",
+  "newestModules": "Recent Modules",
+  "newestExams": "Recent Exams",
+  "seeAll": "See all",
+  "noModulesCreated": "No modules created yet.",
+  "noRecentExams": "No recent exams.",
+  "noModulesForClass": "No modules for this class yet",
+  "noExamsForClass": "No exams for this class yet",
+  "searchModuleHint": "Search module...",
+  "searchModuleLabel": "Search module by title",
+
+  "inclusiveMathApp": "Inclusive Mathematics App",
+  "joinClass": "Join Class",
+  "enterClassCodeFromTeacher": "Enter class code from your teacher",
+  "createClass": "Create Your Class",
+  "classCreatedSuccess": "Class Successfully Created!",
+  "shareCodeWithStudents": "Share the code below with your students",
+  "joinedClassSuccess": "You have joined the class",
+  "forgotPassword": "Forgot Password",
+  "registerAccount": "Register Account",
+  "startInclusiveLearning": "Start your inclusive learning journey",
+
+  "viewModule": "View Module",
+  "publishModule": "Publish Module",
+  "published": "Published",
+  "deleteModule": "Delete Module",
+  "deleteModuleConfirm": "Are you sure you want to delete \"{title}\"? All chapters and annotations inside will be permanently deleted.",
+  "@deleteModuleConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "moduleDetail": "Module Detail",
+  "chapterDetail": "Chapter Detail",
+  "chapterList": "Chapter / Material List",
+  "noChaptersInModule": "No chapters or materials have been added to this module yet.",
+  "chapter": "Chapter",
+  "chapterNumber": "Chapter {number}",
+  "@chapterNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "learningContentBlocks": "Learning Content ({count} blocks)",
+  "@learningContentBlocks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noContentBlocksInChapter": "No content blocks in this chapter yet.",
+
+  "moduleInfo": "Module Information",
+  "splitChapters": "Split Chapters",
+  "pdfPagesDetected": "PDF file detected: {count} pages",
+  "@pdfPagesDetected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moduleTitleField": "Module Title *",
+  "moduleTitleHint": "Enter Module Title",
+  "moduleDescriptionField": "Description (optional) *",
+  "moduleDescriptionHint": "Enter module description...",
+  "fase": "Phase",
+  "selectFase": "Select Phase",
+  "loadingFases": "Loading phases...",
+  "totalDocPages": "Total Document: {count} Pages",
+  "@totalDocPages": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chapterSplitConfig": "Chapter Split Configuration",
+  "chapterSplitDesc": "Enter page ranges to split into a new Chapter.",
+  "chapterTitleField": "Chapter Title *",
+  "startPageField": "Start Page *",
+  "endPageField": "End Page *",
+  "learningCompetency": "Learning Objectives",
+  "selectCompetency": "Select Learning Objectives",
+  "loadingCompetency": "Loading learning objectives...",
+  "processAndCreateChapter": "Process & Create Chapter",
+  "createdChaptersList": "Created Chapters List ({count}):",
+  "@createdChaptersList": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pagesRange": "Page {start} - {end}",
+  "@pagesRange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "needsReview": "Needs Review",
+  "reviewed": "Reviewed",
+  "processingProgress": "Processing: {progress}%",
+  "@processingProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      }
+    }
+  },
+  "saveModule": "Save Module",
+  "finish": "Finish",
+  "tapToUploadFile": "Tap to upload file",
+  "loadingModuleExtraction": "Annoter is extracting and creating linear text annotations for screen readers",
+  "statusWait": "Waiting...",
+  "statusProcess": "Processing...",
+
+  "evaluatingAnnotationUpdating": "Annoter is Updating Annotations",
+  "stopUpdatingConfirm": "Stop update? Unsaved changes may be lost.",
+  "yes": "Yes",
+  "no": "No",
+  "evaluationInstruction": "Select blocks: Text for direct edit, or Special Blocks (Image, Table, Formula) for AI revision.",
+  "selectAll": "Select All",
+  "deselectAll": "Deselect",
+  "editAnnotation": "Edit Annotation",
+  "editTextAnnotation": "Edit Text Annotation",
+  "editTextAnnotationHeader": "Edit Text Annotation",
+  "reviseWithAi": "Revise ({count}) with AI",
+  "@reviseWithAi": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saveToModule": "Save to Module",
+  "directEdit": "Direct Edit",
+  "originalText": "Original Text:",
+  "changeAnnotationText": "Change Annotation Text",
+  "saveAnnotation": "Save Annotation",
+  "correctionAnnotation": "Annotation Correction",
+  "enterCorrectionAdvice": "Enter improvement suggestions",
+  "explainAiCorrection": "Explain how AI should improve this annotation",
+  "promptClarifyForBlind": "Clarify for screen reader",
+  "promptSimplifyLanguage": "Simplify language",
+  "promptDetailRowsCols": "Detail rows & columns of table",
+  "promptExplainFormulaSteps": "Explain formula steps",
+  "sendToAi": "Send to AI →",
+  "moduleImage": "Module Image",
+  "moduleTable": "Module Table",
+  "moduleFormula": "Formula / Math",
+  "moduleDiagram": "Diagram / Graph",
+  "textBlock": "Text",
+
+  "viewExamQuestions": "View Questions",
+  "viewStudentProgress": "View Student Progress",
+  "deleteExam": "Delete Exam Questions",
+  "deleteExamConfirm": "Are you sure you want to delete \"{title}\"?",
+  "@deleteExamConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "publishExam": "Publish Exam",
+  "delete": "Delete",
+  "regenerateAiStimulus": "Regenerate AI Stimulus",
+  "aiStimulusFeedbackDesc": "Provide specific feedback to AI to revise this question's reading stimulus:",
+  "sendAndRegenerate": "Send & Regenerate",
+  "readingStimulus": "Reading Stimulus",
+  "regenerateStimulus": "Regenerate Stimulus",
+  "question": "Question",
+  "answerOptions": "Answer Options",
+  "justificationSteps": "Justification & Solution Steps",
+  "answerKey": "Answer Key: {key}",
+  "@answerKey": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "addStep": "Add Step",
+  "conclusion": "Conclusion",
+  "noExamData": "No exam data",
+  "noExamReviewResultsYet": "No exam evaluation results available yet.",
+
+  "stepPickModule": "Select Module",
+  "stepConfig": "Configuration",
+  "stepReviewSave": "Review & Save",
+  "selectSourceModule": "Select Source Module",
+  "selectSourceModuleDesc": "Select one module to be the source for exam questions.",
+  "noModulesAvailable": "No modules available yet.",
+  "reload": "Reload",
+  "examTitleField": "Exam Title *",
+  "examTitleHint": "Example: Chapter 1 Daily Assessment",
+  "examDurationField": "Duration *",
+  "examScheduleField": "Schedule *",
+  "startTime": "Start Time",
+  "endTime": "End Time",
+  "maxAttempts": "Max Attempts",
+  "selectChaptersDistribution": "Select Chapters & Question Distribution *",
+  "totalQuestionsCount": "Total: {count} Questions",
+  "@totalQuestionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "distributionDesc": "Determine the number of HOTS (higher order thinking) and LOTS (basic understanding) questions for each chapter.",
+  "noChaptersFoundInModule": "No chapters found in this module.",
+  "hotsQuestions": "HOTS Questions",
+  "hotsDesc": "Analysis, evaluation, synthesis",
+  "lotsQuestions": "LOTS Questions",
+  "lotsDesc": "Basic understanding & recall",
+  "questionsCreatedSuccess": "Questions Successfully Created!",
+  "aiGeneratingQuestions": "AI is Generating Questions",
+  "saveDraft": "Save Draft",
+  "saveAndPublish": "Save & Publish",
+  "nextStep": "Next",
+  "createQuestions": "Create Questions",
+
+  "welcomeTitle": "Welcome",
+  "signInToContinue": "Sign in to continue",
+  "emailField": "Email *",
+  "emailLabel": "Email",
+  "enterEmail": "Enter Email",
+  "passwordField": "Password *",
+  "passwordLabel": "Password",
+  "enterPassword": "Enter Password",
+  "confirmPasswordField": "Confirm Password *",
+  "enterConfirmPassword": "Enter Confirm Password",
+  "forgotPasswordQuestion": "Forgot password?",
+  "signIn": "Sign In",
+  "dontHaveAccount": "Don't have an account? ",
+  "register": "Register",
+  "alreadyHaveAccount": "Already have an account? ",
+  "fullNameField": "Full Name *",
+  "enterFullName": "Enter Full Name",
+  "createAccount": "Create Account",
+  "enterClassCode": "Enter Class Code",
+  "joinClassButton": "Join class",
+  "askTeacherForCode": "Ask for this code from your teacher",
+
+  "examSubtitleFormat": "{questions} questions · Duration {minutes} minutes",
+  "@examSubtitleFormat": {
+    "placeholders": {
+      "questions": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "examSubtitleWithRetries": "{questions} questions · Duration {minutes} minutes · Max {retries}x attempts",
+  "@examSubtitleWithRetries": {
+    "placeholders": {
+      "questions": { "type": "int" },
+      "minutes": { "type": "int" },
+      "retries": { "type": "int" }
+    }
+  },
+  "enterExamTitle": "Enter exam title",
+  "mixedDifficulty": "Mixed",
+  "chapterEvaluationQuiz": "Chapter Evaluation Quiz",
+  "questionsGeneratedStatus": "Generating {count} questions from {module}...",
+  "@questionsGeneratedStatus": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "module": { "type": "String" }
+    }
+  },
+  "questionsCreatedCount": "{current} / {total} questions created",
+  "@questionsCreatedCount": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "questionsCreatedDone": "{count} questions created successfully.",
+  "@questionsCreatedDone": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "minuteShort": "{count} min",
+  "@minuteShort": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timesCount": "{count} Times",
+  "@timesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "exampleChapterRangeHint": "Example: Pages 1 - 44 will be converted to Chapter I.",
+  "annotationProgressNotice": "Annotation process is running. The finish button will activate after all chapters are completed and reviewed.",
+  "reviewChaptersNotice": "Please click chapters with \"Needs Review\" status to check and confirm annotation results before publishing.",
+
+  "questionList": "Question List",
+  "questionItem": "Question {number}",
+  "@questionItem": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "questionOfTotal": "Question {current} of {total}",
+  "@questionOfTotal": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "startExamButton": "Start Exam",
+  "submitExamConfirmTitle": "Are you sure you want to submit now?",
+  "submitExamConfirmDesc": "Submitted answers cannot be changed.",
+  "sendButton": "Submit",
+  "timeUpTitle": "Time is Up!",
+  "timeUpDesc": "Exam time has run out. Your answers have been automatically submitted.",
+  "examSubmittedTitle": "Successfully Submitted!",
+  "examSubmittedDesc": "Your answers have been successfully saved.",
+  "examInstructionsParagraph1": "This exam consists of {count} questions including multiple choice and short answers, and you have {duration} minutes to complete it.",
+  "@examInstructionsParagraph1": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "duration": { "type": "int" }
+    }
+  },
+  "examInstructionsParagraph2": "Read each question carefully, work calmly, and ensure all answers are submitted before time runs out.",
+  "examStartsAt": "Exam starts at : ",
+  "examEndsAt": "Exam ends at : ",
+  "goodLuck": "Good luck and all the best!",
+  "learningProgress": "Learning Progress",
+  "moduleNotFound": "Module not found.",
+  "completedChapterTitle": "Congratulations on completing Chapter {number}",
+  "@completedChapterTitle": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "searchPageHint": "Search page...",
+  "previous": "Previous",
+  "next": "Next",
+  "correctAnswerBanner": "Your Answer is Correct!",
+  "unansweredBanner": "Question not answered",
+  "wrongAnswerBanner": "Your Answer is Incorrect",
+  "answersLabel": "Answers",
+  "justificationDiscussion": "Justification & Discussion",
+  "yourSolutionSteps": "Your solution steps:",
+  "improvementNotes": "Improvement notes:",
+  "discussionSteps": "Discussion Steps:",
+  "saveStep": "Save Step",
+  "workingSteps": "Working Steps",
+  "noConversationsYet": "No Conversations Yet",
+  "startNewConversation": "Start New Conversation",
+  "emptyConversationDesc": "Start asking math topics or discussing questions by tapping the (+) button above!",
+  "referenceSources": "Reference Sources:",
+  "aiThinking": "NovaSight AI is thinking...",
+  "suggestedFollowUpQuestions": "Suggested Follow-up Questions:",
+  "askQuestionHint": "Ask about materials or questions..."
+}

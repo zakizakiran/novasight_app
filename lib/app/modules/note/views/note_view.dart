@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_app_bar.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 
 import '../controllers/note_controller.dart';
 import 'note_display_widget.dart';
@@ -25,8 +26,8 @@ class NoteView extends GetView<NoteController> {
           body: Column(
             children: [
               CommonAppBar(
-                title: "Scriber — Catatan Pengerjaan",
-                description: "Soal ${controller.index} dari ${controller.total}",
+                title: context.l10n.noteAppBarTitle,
+                description: context.l10n.questionOf(controller.index, controller.total),
               ),
               Expanded(child: NoteDisplayWidget()),
             ],

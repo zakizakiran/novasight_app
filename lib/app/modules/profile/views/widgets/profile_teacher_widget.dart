@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:novasight_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
@@ -9,13 +11,15 @@ class ProfileTeacherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Column(
       spacing: Dimens.spacePadding,
       children: [
         _buildField(
           context: context,
           icon: Icons.school,
-          title: "Asal Sekolah : ",
+          title: l10n.schoolOrigin,
           description: teacher.nameSchools,
         ),
         const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
@@ -24,6 +28,15 @@ class ProfileTeacherWidget extends StatelessWidget {
           icon: Icons.class_,
           title: "Ajar Tingkat Kelas : ",
           description: teacher.grades.map((g) => g.name).join(", "),
+        ),
+        const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
+        _buildField(
+          context: context,
+          icon: Icons.settings,
+          title: l10n.settings,
+          onPressed: () {
+            SettingsDialogWidget.show(context);
+          },
         ),
       ],
     );
@@ -34,46 +47,43 @@ class ProfileTeacherWidget extends StatelessWidget {
     required String title,
     String? description,
     required BuildContext context,
+    VoidCallback? onPressed,
   }) {
-    return Row(
-      spacing: Dimens.spacePadding,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: Dimens.iconMidSize, color: ColorConstant.darkGrey),
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ColorConstant.informationColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (description != null)
-                Expanded(
-                  child: Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColorConstant.informationColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        spacing: Dimens.spacePadding,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: Dimens.iconMidSize, color: ColorConstant.darkGrey),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: ColorConstant.informationColor,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-            ],
+                if (description != null)
+                  Expanded(
+                    child: Text(
+                      description,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: ColorConstant.informationColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-        // GestureDetector(
-        //   onTap: onTap,
-        //   child: const Icon(
-        //     Icons.keyboard_arrow_right_rounded,
-        //     size: Dimens.iconMediumSize,
-        //     color: ColorConstant.grey,
-        //   ),
-        // )
-      ],
+        ],
+      ),
     );
   }
 }

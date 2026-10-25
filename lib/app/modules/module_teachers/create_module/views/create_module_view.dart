@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/common/common_teacher_appbar.dart';
 import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/models/cp_model.dart';
 import 'package:novasight_app/app/data/models/fase_model.dart';
 import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/pick_module_widget.dart';
@@ -30,8 +31,8 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   title:
                       controller.currentStep.value ==
                               CreateModuleStep.infoModul
-                          ? "Unggah Modul"
-                          : "Potong Halaman & BAB",
+                          ? context.l10n.uploadModule
+                          : context.l10n.splitPagesAndChapters,
                 ),
               ),
               Padding(
@@ -80,7 +81,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
           children: [
             _buildStepBadge(
               number: "1",
-              label: "Informasi Modul",
+              label: context.l10n.moduleInfo,
               isActive: isStep1,
               isDone: !isStep1,
             ),
@@ -93,7 +94,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
             ),
             _buildStepBadge(
               number: "2",
-              label: "Potong BAB",
+              label: context.l10n.splitChapters,
               isActive: !isStep1,
               isDone: false,
             ),
@@ -184,7 +185,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      "File PDF terdeteksi: ${controller.totalPages.value} halaman",
+                      context.l10n.pdfPagesDetected(controller.totalPages.value),
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
@@ -205,9 +206,9 @@ class CreateModuleView extends GetView<CreateModuleController> {
             children: [
               Obx(
                 () => CommonTextFormFieldWidget(
-                  title: "Judul Modul *",
+                  title: context.l10n.moduleTitleField,
                   controller: controller.titleModuleController,
-                  hint: "Masukkan Judul Modul",
+                  hint: context.l10n.moduleTitleHint,
                   successColor: ColorConstant.primary,
                   isReadOnly: controller.isSavingModule.value,
                   onChanged: controller.onChange,
@@ -222,9 +223,9 @@ class CreateModuleView extends GetView<CreateModuleController> {
               const SizedBox(height: Dimens.spacePadding),
               Obx(
                 () => CommonTextFormFieldWidget(
-                  title: "Deskripsi (opsional) *",
+                  title: context.l10n.moduleDescriptionField,
                   controller: controller.descriptionModuleController,
-                  hint: "Masukkan deskripsi modul...",
+                  hint: context.l10n.moduleDescriptionHint,
                   minLines: 4,
                   isReadOnly: controller.isSavingModule.value,
                   onChanged: controller.onChange,
@@ -238,12 +239,12 @@ class CreateModuleView extends GetView<CreateModuleController> {
               const SizedBox(height: Dimens.spacePadding),
               Obx(
                 () => CommonDropdownWidget<FaseModel>(
-                  title: "Fase",
+                  title: context.l10n.fase,
                   listValue: controller.listFase,
                   selectedValue: controller.selectedFase.value,
                   initialLabel: controller.isLoadingFase.value
-                      ? "Memuat fase..."
-                      : "Pilih Fase",
+                      ? context.l10n.loadingFases
+                      : context.l10n.selectFase,
                   itemLabel: (f) => f.displayName,
                   onSelect: controller.onSelectFase,
                   isEnabled:
@@ -301,7 +302,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      "Total Dokumen: ${controller.totalPages.value} Halaman",
+                      context.l10n.totalDocPages(controller.totalPages.value),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: ColorConstant.textGreyColor,
                       ),
@@ -326,14 +327,14 @@ class CreateModuleView extends GetView<CreateModuleController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Konfigurasi Pemotongan BAB",
+                context.l10n.chapterSplitConfig,
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
               Text(
-                "Masukkan rentang halaman yang akan dipotong menjadi BAB baru.",
+                context.l10n.chapterSplitDesc,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorConstant.textGreyColor,
                 ),
@@ -347,7 +348,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   SizedBox(
                     width: 90,
                     child: CommonTextFormFieldWidget(
-                      title: "BAB Ke-",
+                      title: context.l10n.chapter,
                       controller: controller.chapterNumberController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -363,7 +364,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   const SizedBox(width: Dimens.spacePadding),
                   Expanded(
                     child: CommonTextFormFieldWidget(
-                      title: "Judul BAB *",
+                      title: context.l10n.chapterTitleField,
                       controller: controller.chapterTitleController,
                       hint: "cth: BAB I : Eksponen",
                       hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -384,7 +385,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                 children: [
                   Expanded(
                     child: CommonTextFormFieldWidget(
-                      title: "Halaman Awal *",
+                      title: context.l10n.startPageField,
                       controller: controller.startPageController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -400,7 +401,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   const SizedBox(width: Dimens.spacePadding),
                   Expanded(
                     child: CommonTextFormFieldWidget(
-                      title: "Halaman Akhir *",
+                      title: context.l10n.endPageField,
                       controller: controller.endPageController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -420,12 +421,12 @@ class CreateModuleView extends GetView<CreateModuleController> {
               // Cp dropdown
               Obx(
                     () => CommonDropdownWidget<CpModel>(
-                  title: "Capaian Pembelajaran",
+                  title: context.l10n.learningCompetency,
                   listValue: controller.listCp,
                   selectedValue: controller.selectedCp.value,
                   initialLabel: controller.isLoadingCp.value
-                      ? "Memuat capaian pembelajaran..."
-                      : "Pilih Capaian Pembelajaran",
+                      ? context.l10n.loadingCompetency
+                      : context.l10n.selectCompetency,
                   itemLabel: (c) => c.domain,
                   onSelect: controller.onSelectCp,
                   isEnabled: !controller.isLoadingCp.value,
@@ -449,7 +450,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        "Contoh: Halaman 1 - 44 akan diubah menjadi BAB I.",
+                        context.l10n.exampleChapterRangeHint,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontSize: 11,
                           color: ColorConstant.textGreyColor,
@@ -463,7 +464,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
 
               // Action button to cut & create chapter
               CommonButtonWidget(
-                buttonName: "Proses & Buat Chapter",
+                buttonName: context.l10n.processAndCreateChapter,
                 boxShadows: const [],
                 isValid: true,
                 isLoading: controller.isCreatingChapter.value,
@@ -489,7 +490,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
             children: [
               const SizedBox(height: Dimens.spacePadding),
               Text(
-                "Daftar BAB Berhasil Dibuat ($count):",
+                context.l10n.createdChaptersList(count),
                 style: Theme.of(
                   context,
                 ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -638,7 +639,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            "Halaman ${job.startPage} - ${job.endPage}",
+                            context.l10n.pagesRange(job.startPage, job.endPage),
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: ColorConstant.textGreyColor,
@@ -683,7 +684,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  "Perlu Ditinjau",
+                                  context.l10n.needsReview,
                                   style: TextStyle(
                                     color: Colors.amber.shade900,
                                     fontSize: 11,
@@ -715,7 +716,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                "Sudah Ditinjau",
+                                context.l10n.reviewed,
                                 style: TextStyle(
                                   color: Colors.green.shade700,
                                   fontSize: 11,
@@ -739,7 +740,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                             border: Border.all(color: Colors.red.shade200),
                           ),
                           child: Text(
-                            "Gagal",
+                            context.l10n.failed,
                             style: TextStyle(
                               color: Colors.red.shade700,
                               fontSize: 11,
@@ -760,7 +761,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                           border: Border.all(color: Colors.blue.shade200),
                         ),
                         child: Text(
-                          "Proses: $progInt%",
+                          context.l10n.processingProgress(progInt),
                           style: TextStyle(
                             color: Colors.blue.shade700,
                             fontSize: 11,
@@ -829,7 +830,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
       return Padding(
         padding: const EdgeInsets.all(Dimens.innerPadding),
         child: CommonButtonWidget(
-          buttonName: "Simpan Modul",
+          buttonName: context.l10n.saveModule,
           boxShadows: const [],
           isValid: controller.isValid.value,
           isLoading: controller.isSavingModule.value,
@@ -869,7 +870,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      "Proses anotasi sedang berjalan. Tombol selesai akan aktif setelah seluruh bab selesai dan ditinjau.",
+                      context.l10n.annotationProgressNotice,
                       style: TextStyle(
                         color: Colors.blue.shade800,
                         fontSize: 11,
@@ -902,7 +903,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      "Silakan klik bab dengan status \"Perlu Ditinjau\" untuk memeriksa dan mengonfirmasi hasil anotasi sebelum mempublikasikan modul.",
+                      context.l10n.reviewChaptersNotice,
                       style: TextStyle(
                         color: Colors.amber.shade900,
                         fontSize: 11,
@@ -930,9 +931,9 @@ class CreateModuleView extends GetView<CreateModuleController> {
                     ),
                     side: const BorderSide(color: ColorConstant.textGreyColor),
                   ),
-                  child: const Text(
-                    "Kembali",
-                    style: TextStyle(
+                  child: Text(
+                    context.l10n.back,
+                    style: const TextStyle(
                       color: ColorConstant.textGreyColor,
                       fontWeight: FontWeight.bold,
                     ),
@@ -943,7 +944,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
               Expanded(
                 child: Obx(
                   () => CommonButtonWidget(
-                    buttonName: "Selesai",
+                    buttonName: context.l10n.finish,
                     boxShadows: const [],
                     isValid: controller.canFinishModule,
                     isLoading: controller.isPublishingModule.value,

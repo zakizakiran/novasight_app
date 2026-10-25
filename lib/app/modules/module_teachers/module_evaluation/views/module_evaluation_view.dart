@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/chunk_card_widget.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_correction_widget.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_text_edit_widget.dart';
@@ -27,13 +28,13 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         DialogHelper.show(
-            title: "Annoter Sedang Memperbarui Anotasi",
-            description: "Hentikan pembaruan? Perubahan yang belum tersimpan mungkin akan hilang.",
+            title: context.l10n.evaluatingAnnotationUpdating,
+            description: context.l10n.stopUpdatingConfirm,
             actions: Row(
               children: [
                 Expanded(
                   child: CommonButtonWidget(
-                      buttonName: "Iya",
+                      buttonName: context.l10n.yes,
                       buttonColor: ColorConstant.redColor,
                       onPressed: () {
                         controller.cancelLoadingProcess();
@@ -45,7 +46,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                 const SizedBox(width: Dimens.spacePadding),
                 Expanded(
                   child: CommonButtonWidget(
-                      buttonName: "Tidak",
+                      buttonName: context.l10n.no,
                       onPressed: () {
                         Get.back();
                       }
@@ -60,8 +61,8 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
         body: SafeArea(
           child: Column(
             children: [
-              const CommonTeacherAppbar(
-                title: "Annoter — Evaluasi Modul",
+              CommonTeacherAppbar(
+                title: context.l10n.moduleEvaluationTitle,
                 border: BorderStyleConstant.borderTeacherAppbar,
               ),
 
@@ -79,7 +80,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                   children: [
                     Expanded(
                       child: Text(
-                        "Sebelum Anotasi",
+                        context.l10n.beforeAnnotation,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: ColorConstant.darkGrey,
@@ -89,7 +90,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                     ),
                     Expanded(
                       child: Text(
-                        "Sesudah Anotasi",
+                        context.l10n.afterAnnotation,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: ColorConstant.darkGrey,
@@ -121,7 +122,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            "Centang blok: Teks untuk edit langsung, atau Blok Khusus (Gambar, Tabel, Formula) untuk revisi AI.",
+                            context.l10n.evaluationInstruction,
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: ColorConstant.darkGrey,
@@ -209,8 +210,8 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                             ),
                             child: Text(
                               controller.isAllSpecialSelected
-                                  ? "Batal Pilih"
-                                  : "Pilih Semua",
+                                  ? context.l10n.deselectAll
+                                  : context.l10n.selectAll,
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -263,11 +264,11 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
 
                   String buttonName;
                   if (count == 0) {
-                    buttonName = "Ubah Anotasi";
+                    buttonName = context.l10n.editAnnotation;
                   } else if (isText) {
-                    buttonName = "Edit Teks Anotasi";
+                    buttonName = context.l10n.editTextAnnotation;
                   } else {
-                    buttonName = "Revisi ($count) dengan AI";
+                    buttonName = context.l10n.reviseWithAi(count);
                   }
 
                   return CommonButtonWidget(
@@ -307,7 +308,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
               Expanded(
                 child: Obx(
                   () => CommonButtonWidget(
-                    buttonName: "Simpan ke Modul",
+                    buttonName: context.l10n.saveToModule,
                     isValid: !controller.isLoading.value,
                     onPressed: controller.onSaveModule,
                   ),
