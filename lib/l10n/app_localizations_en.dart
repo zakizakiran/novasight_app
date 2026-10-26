@@ -316,10 +316,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get selectToRevisionAI => 'Select for AI Revision';
+
+  @override
+  String get selectToRevisionText => 'Select for Manual Edit';
+
+  @override
   String get noModulesInCategory => 'No modules in this category.';
 
   @override
   String get noExamsInCategory => 'No exams in this category.';
+
+  @override
+  String get evaluate => 'Re-evaluate';
 
   @override
   String get greetingMorning => 'Good morning';
@@ -766,6 +775,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get distributionDesc =>
       'Determine the number of HOTS (higher order thinking) and LOTS (basic understanding) questions for each chapter.';
+
+  @override
+  String get errorExamReviewDefault => 'No exam review results available yet';
 
   @override
   String get noChaptersFoundInModule => 'No chapters found in this module.';

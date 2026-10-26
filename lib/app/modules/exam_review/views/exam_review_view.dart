@@ -63,7 +63,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                           Text(
                             controller.errorMessage.value.isNotEmpty
                                 ? controller.errorMessage.value
-                                : 'Belum ada hasil evaluasi ujian yang tersedia.',
+                                : context.l10n.errorExamReviewDefault,
                             textAlign: TextAlign.center,
                             style: const MainTextTheme().bodyLarge?.copyWith(
                               color: ColorConstant.textGreyColor,
@@ -80,7 +80,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text('Kembali'),
+                                child: Text(context.l10n.back),
                               ),
                               const SizedBox(width: Dimens.spaceMediumPadding),
                               ElevatedButton(
@@ -91,8 +91,8 @@ class ExamReviewView extends GetView<ExamReviewController> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text(
-                                  'Coba Lagi',
+                                child: Text(
+                                  context.l10n.tryAgain,
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -112,7 +112,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
           return Column(
             children: [
               CommonAppBar(
-                title: 'Evaluaizer — Review Hasil Ujian',
+                title: context.l10n.examReviewTitle,
                 description: controller.quizTitle.value,
               ),
               const SizedBox(height: Dimens.spaceBigPadding),

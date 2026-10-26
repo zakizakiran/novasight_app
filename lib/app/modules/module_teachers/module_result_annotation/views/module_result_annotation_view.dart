@@ -97,7 +97,7 @@ class ModuleResultAnnotationView extends GetView<ModuleResultAnnotationControlle
             children: [
               Expanded(
                 child: CommonButtonWidget(
-                    buttonName: "Evaluasi Ulang",
+                    buttonName: context.l10n.evaluate,
                     boxShadows: const [],
                     textColor: ColorConstant.primary,
                     onPressed: controller.onEvaluate,
@@ -111,7 +111,7 @@ class ModuleResultAnnotationView extends GetView<ModuleResultAnnotationControlle
               const SizedBox(width: Dimens.spaceBigPadding),
               Expanded(
                 child: CommonButtonWidget(
-                    buttonName: "Simpan ke Modul",
+                    buttonName: context.l10n.saveToModule,
                     onPressed: controller.onSaveModule
                 ),
               ),

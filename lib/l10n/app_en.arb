@@ -160,8 +160,11 @@
       }
     }
   },
+  "selectToRevisionAI" : "Select for AI Revision",
+  "selectToRevisionText" : "Select for Manual Edit",
   "noModulesInCategory": "No modules in this category.",
   "noExamsInCategory": "No exams in this category.",
+  "evaluate":"Re-evaluate",
 
   "greetingMorning": "Good morning",
   "teacher": "Teacher",
@@ -393,6 +396,7 @@
     }
   },
   "distributionDesc": "Determine the number of HOTS (higher order thinking) and LOTS (basic understanding) questions for each chapter.",
+  "errorExamReviewDefault" : "No exam review results available yet",
   "noChaptersFoundInModule": "No chapters found in this module.",
   "hotsQuestions": "HOTS Questions",
   "hotsDesc": "Analysis, evaluation, synthesis",

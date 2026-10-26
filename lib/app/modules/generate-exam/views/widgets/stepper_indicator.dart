@@ -11,15 +11,18 @@ class StepperIndicator extends GetView<GenerateExamController> {
   Widget build(BuildContext context) {
     return Obx(() {
       int step = controller.currentStep.value;
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildStepItem(context, 0, context.l10n.stepPickModule, step),
-          _buildStepDivider(step >= 1),
-          _buildStepItem(context, 1, context.l10n.stepConfig, step),
-          _buildStepDivider(step >= 2),
-          _buildStepItem(context, 2, context.l10n.stepReviewSave, step),
-        ],
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildStepItem(context, 0, context.l10n.stepPickModule, step),
+            _buildStepDivider(step >= 1),
+            _buildStepItem(context, 1, context.l10n.stepConfig, step),
+            _buildStepDivider(step >= 2),
+            _buildStepItem(context, 2, context.l10n.stepReviewSave, step),
+          ],
+        ),
       );
     });
   }

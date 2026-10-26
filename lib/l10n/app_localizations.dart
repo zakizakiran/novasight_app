@@ -674,6 +674,18 @@ abstract class AppLocalizations {
   /// **'{percent}% Completed'**
   String percentCompleted(int percent);
 
+  /// No description provided for @selectToRevisionAI.
+  ///
+  /// In en, this message translates to:
+  /// **'Select for AI Revision'**
+  String get selectToRevisionAI;
+
+  /// No description provided for @selectToRevisionText.
+  ///
+  /// In en, this message translates to:
+  /// **'Select for Manual Edit'**
+  String get selectToRevisionText;
+
   /// No description provided for @noModulesInCategory.
   ///
   /// In en, this message translates to:
@@ -685,6 +697,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No exams in this category.'**
   String get noExamsInCategory;
+
+  /// No description provided for @evaluate.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-evaluate'**
+  String get evaluate;
 
   /// No description provided for @greetingMorning.
   ///
@@ -1507,6 +1525,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Determine the number of HOTS (higher order thinking) and LOTS (basic understanding) questions for each chapter.'**
   String get distributionDesc;
+
+  /// No description provided for @errorExamReviewDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'No exam review results available yet'**
+  String get errorExamReviewDefault;
 
   /// No description provided for @noChaptersFoundInModule.
   ///

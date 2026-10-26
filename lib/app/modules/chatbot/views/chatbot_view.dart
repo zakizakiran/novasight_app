@@ -381,7 +381,7 @@ class ChatbotView extends GetView<ChatbotController> {
                   msg.citations != null &&
                   msg.citations!.isNotEmpty) ...[
                 const SizedBox(height: 12),
-                _buildCitationsSection(msg.citations!),
+                _buildCitationsSection(msg.citations!, context),
               ],
             ],
           ),
@@ -390,7 +390,7 @@ class ChatbotView extends GetView<ChatbotController> {
     );
   }
 
-  Widget _buildCitationsSection(List<SourceCitation> citations) {
+  Widget _buildCitationsSection(List<SourceCitation> citations, BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(

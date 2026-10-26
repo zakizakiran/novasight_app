@@ -11,6 +11,7 @@
   "loading": "Memuat...",
   "tryAgain": "Coba Lagi",
   "saveChanges": "Simpan Perubahan",
+  "errorExamReviewDefault" : "Belum ada hasil evaluasi ujian yang tersedia",
 
   "settings": "Pengaturan",
   "settingsDescription": "Sesuaikan pengaturan aplikasi sesuai kebutuhan Anda.",
@@ -317,6 +318,8 @@
     }
   },
   "saveToModule": "Simpan ke Modul",
+  "selectToRevisionAI" : "Pilih untuk revisi AI",
+  "selectToRevisionText" : "Pilih untuk edit teks",
   "directEdit": "Edit Langsung",
   "originalText": "Teks Asal:",
   "changeAnnotationText": "Ubah Teks Anotasi",
@@ -368,6 +371,7 @@
   "conclusion": "Kesimpulan",
   "noExamData": "Tidak ada data ujian",
   "noExamReviewResultsYet": "Belum ada hasil evaluasi ujian yang tersedia.",
+  "evaluate":"Evaluasi Ulang",
 
   "stepPickModule": "Pilih Modul",
   "stepConfig": "Konfigurasi",

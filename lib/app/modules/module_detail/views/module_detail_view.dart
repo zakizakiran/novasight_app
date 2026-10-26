@@ -254,6 +254,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
                 ),
                 const SizedBox(height: Dimens.spacePadding),
                 _buildStudentChapterList(
+                  context: context,
                   chapters: detail.chapters,
                   onDetail: controller.onChapterStudent,
                 ),
@@ -271,6 +272,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
   }
 
   Widget _buildStudentChapterList({
+    required BuildContext context,
     required List<StudentChapterSummaryModel> chapters,
     required void Function(StudentChapterSummaryModel, int) onDetail,
   }) {

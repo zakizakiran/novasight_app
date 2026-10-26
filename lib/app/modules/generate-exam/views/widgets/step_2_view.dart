@@ -344,8 +344,9 @@ class Step2View extends GetView<GenerateExamController> {
           // Distribusi Bab, HOTS & LOTS
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildFieldLabel(context, context.l10n.selectChaptersDistribution),
+              Expanded(child: buildFieldLabel(context, context.l10n.selectChaptersDistribution)),
               Obx(
                 () => Container(
                   padding: const EdgeInsets.symmetric(

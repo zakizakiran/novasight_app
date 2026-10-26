@@ -262,7 +262,10 @@ class Step3View extends GetView<GenerateExamController> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Row(
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 4,
                       children: [
                         Text(
                           context.l10n.questionOfTotal(index + 1, controller.generatedQuestions.length),
@@ -298,6 +301,7 @@ class Step3View extends GetView<GenerateExamController> {
                       ],
                     ),
                   ),
+
                   if (!isEditing && isExpanded)
                     GestureDetector(
                       onTap: () => controller.toggleEdit(index),

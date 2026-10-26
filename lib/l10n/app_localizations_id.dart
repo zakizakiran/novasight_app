@@ -316,10 +316,19 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get selectToRevisionAI => 'Pilih untuk revisi AI';
+
+  @override
+  String get selectToRevisionText => 'Pilih untuk edit teks';
+
+  @override
   String get noModulesInCategory => 'Belum ada modul pada kategori ini.';
 
   @override
   String get noExamsInCategory => 'Belum ada soal ujian pada kategori ini.';
+
+  @override
+  String get evaluate => 'Evaluasi Ulang';
 
   @override
   String get greetingMorning => 'Selamat pagi';
@@ -766,6 +775,10 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get distributionDesc =>
       'Tentukan jumlah soal HOTS (analisis tingkat tinggi) dan LOTS (pemahaman dasar) untuk masing-masing bab.';
+
+  @override
+  String get errorExamReviewDefault =>
+      'Belum ada hasil evaluasi ujian yang tersedia';
 
   @override
   String get noChaptersFoundInModule =>

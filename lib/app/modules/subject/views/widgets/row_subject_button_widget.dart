@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:novasight_app/app/common/common_button_widget.dart';
 import 'package:novasight_app/app/core/dimens.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+
+import '../../../../core/utils/l10n_extension.dart';
 class RowSubjectButtonWidget extends StatelessWidget {
   final Function() onNext;
   final bool enableNext;
@@ -21,7 +23,7 @@ class RowSubjectButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String prev = "Sebelumnya";
+    final String prev = context.l10n.previous;
     const IconData prevIcon = Icons.arrow_back;
     const IconData nextIcon = Icons.arrow_forward;
     const double sizeIcon = Dimens.iconRegularSize;

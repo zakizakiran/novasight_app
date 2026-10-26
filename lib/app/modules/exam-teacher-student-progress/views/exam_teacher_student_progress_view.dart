@@ -129,7 +129,7 @@ class ExamTeacherStudentProgressView extends GetView<ExamTeacherStudentProgressC
                             backgroundColor: ColorConstant.primary,
                             foregroundColor: ColorConstant.white,
                           ),
-                          child: const Text('Coba Lagi'),
+                          child: Text(context.l10n.tryAgain),
                         ),
                       ],
                     ),

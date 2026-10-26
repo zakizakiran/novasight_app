@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
 import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import 'package:novasight_app/app/data/model/module_teacher_model.dart';
 import 'package:novasight_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 import '../../../../../core/Dimens.dart';
@@ -160,7 +161,7 @@ class SelectWidget extends GetView<ModuleEvaluationController> {
                 )
               else
                 Text(
-                  isImage ? "Pilih untuk revisi AI" : "Pilih untuk edit teks",
+                  isImage ? context.l10n.selectToRevisionAI : context.l10n.selectToRevisionAI,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                         color: ColorConstant.textGreyColor,

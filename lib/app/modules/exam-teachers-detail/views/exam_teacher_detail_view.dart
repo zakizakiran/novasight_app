@@ -76,7 +76,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                     controller.fetchDetail(controller.quizId.value!);
                   }
                 },
-                child: const Text('Coba Lagi'),
+                child: Text(context.l10n.tryAgain),
               ),
             ],
           ),
@@ -142,6 +142,7 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Card Header
           InkWell(
@@ -168,18 +169,26 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                     ),
                   ),
                   const SizedBox(width: 12),
+
                   Expanded(
-                    child: Row(
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 4,
                       children: [
                         Text(
-                          context.l10n.questionOfTotal(index + 1, controller.generatedQuestions.length),
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: ColorConstant.textDarkGreyColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          context.l10n.questionOfTotal(
+                            index + 1,
+                            controller.generatedQuestions.length,
+                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                            color: ColorConstant.textDarkGreyColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
@@ -205,12 +214,15 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                       ],
                     ),
                   ),
+
                   if (!isEditing && isExpanded)
                     IconStatus(
                       toggle: () => controller.toggleEdit(index),
                       type: IconStatusType.edit,
                     ),
+
                   const SizedBox(width: 8),
+
                   Icon(
                     isExpanded
                         ? Icons.keyboard_arrow_up
@@ -224,7 +236,11 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
 
           if (isExpanded)
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                bottom: 16,
+              ),
               child: isEditing
                   ? _buildEditMode(context, index)
                   : _buildViewMode(context, index),

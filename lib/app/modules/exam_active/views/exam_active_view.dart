@@ -353,7 +353,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                       const SizedBox(width: 8),
                       const SizedBox(width: 8),
                       Text(
-                        "Sebelumnya",
+                        context.l10n.previous,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               color: isFirst
