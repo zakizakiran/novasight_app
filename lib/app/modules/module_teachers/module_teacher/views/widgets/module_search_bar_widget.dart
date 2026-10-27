@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/icon_txt.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/icon_txt.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 
 class ModuleSearchBarWidget extends StatelessWidget {
   final TextEditingController controller;

@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/main_bar_args.dart';
-import 'package:novasight_app/app/core/args/module_result_args.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/core/args/main_bar_args.dart';
+import 'package:lydera_app/app/core/args/module_result_args.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
 import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../data/model/module_teacher_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../create_module/controllers/create_module_controller.dart';
-import 'package:novasight_app/app/modules/main_layout/controllers/main_layout_controller.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
+import 'package:lydera_app/app/modules/main_layout/controllers/main_layout_controller.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
 
 class ModuleEvaluationController extends GetxController {
   final TextEditingController adviceController = TextEditingController();

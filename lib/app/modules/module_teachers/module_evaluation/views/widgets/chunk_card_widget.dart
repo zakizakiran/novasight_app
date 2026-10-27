@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/select_widget.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/data/model/module_teacher_model.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/select_widget.dart';
 
 import 'dart:typed_data';
-import 'package:novasight_app/app/core/constants/env_config.dart';
+import 'package:lydera_app/app/core/constants/env_config.dart';
 import '../../../../../core/styles/colors/color_constant.dart';
 import '../../controllers/module_evaluation_controller.dart';
 import '../../shimmer/chunk_text_shimmer.dart';

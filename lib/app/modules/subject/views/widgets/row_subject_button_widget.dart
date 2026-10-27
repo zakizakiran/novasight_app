@@ -1,9 +1,9 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/core/dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/core/dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 
 import '../../../../core/utils/l10n_extension.dart';
 class RowSubjectButtonWidget extends StatelessWidget {

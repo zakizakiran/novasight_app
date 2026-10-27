@@ -1,4 +1,4 @@
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 
 // DTO models for Student API endpoints.
 // Maps strictly to OpenAPI schema contract:

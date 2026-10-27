@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class AuthInterceptor extends QueuedInterceptor {
   final StorageService storageService;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class AccessibilityController extends GetxController {
   final RxBool showTextScaleSettings = false.obs;

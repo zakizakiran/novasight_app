@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/exam_student_progress_args.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
-import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/core/args/exam_student_progress_args.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
+import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 import '../../../routes/app_pages.dart';
 import '../models/exam_teacher_model.dart';
 

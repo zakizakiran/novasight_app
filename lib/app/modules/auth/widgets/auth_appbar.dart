@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/icon_txt.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/icon_txt.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 
 import 'icon_auth_app.dart';
 

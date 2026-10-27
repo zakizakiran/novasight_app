@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/module_status.dart';
-import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/module_status.dart';
+import 'package:lydera_app/app/data/models/classroom_model.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/exam/controllers/exam_controller.dart';
 
 class MockStudentRepository extends Mock implements StudentRepository {}
 

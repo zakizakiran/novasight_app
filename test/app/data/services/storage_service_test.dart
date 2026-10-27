@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

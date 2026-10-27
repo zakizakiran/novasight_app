@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/constants/app_string_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/constants/app_string_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_card_widget.dart';
 import '../../../../common/common_text_form_field_widget.dart';

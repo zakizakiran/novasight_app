@@ -2,8 +2,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/exam_active/controllers/exam_active_controller.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/exam_active/controllers/exam_active_controller.dart';
 import '../../../common/common_card_widget.dart';
 import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
@@ -94,7 +94,7 @@ class NoteDisplayWidget extends StatelessWidget {
             Semantics(
               header: true,
               child: Text(
-                "SOAL",
+                context.l10n.questionExam,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: ColorConstant.primary,
                   fontWeight: FontWeight.bold,
@@ -179,7 +179,14 @@ class NoteDisplayWidget extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         for (final node in step.nodes)
-                          _buildNodeWidget(context, node, controller),
+                          IgnorePointer(
+                            ignoring: true,
+                            child: _buildNodeWidget(
+                              context,
+                              node,
+                              controller,
+                            ),
+                          ),
                       ],
                     ),
                   ),

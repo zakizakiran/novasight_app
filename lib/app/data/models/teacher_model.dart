@@ -9,8 +9,8 @@
 // - ChapterDetailResponse -> TeacherChapterDetailModel
 
 import 'package:flutter/widgets.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/data/models/student_model.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/student_model.dart';
 
 enum TeacherModuleStatus {
   semua('Semua'),

@@ -1,8 +1,8 @@
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novasight_app/app/core/utils/math_latex_parser.dart';
+import 'package:lydera_app/app/core/utils/math_latex_parser.dart';
 
-import 'package:novasight_app/app/data/models/math_symbol.dart';
+import 'package:lydera_app/app/data/models/math_symbol.dart';
 
 
 void main() {

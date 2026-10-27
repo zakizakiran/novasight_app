@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 class CommonFailedWidget extends StatelessWidget {
   final String message;
   const CommonFailedWidget({super.key, required this.message});

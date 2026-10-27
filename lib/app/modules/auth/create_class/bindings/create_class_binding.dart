@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
 
 import '../controllers/create_class_controller.dart';
 

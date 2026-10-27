@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 
 import '../../../../../core/Dimens.dart';
 

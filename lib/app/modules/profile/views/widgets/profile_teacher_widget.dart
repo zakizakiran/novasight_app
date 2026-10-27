@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 class CodeClassWidget extends StatelessWidget {
   final String code;
   const CodeClassWidget({super.key, required this.code});

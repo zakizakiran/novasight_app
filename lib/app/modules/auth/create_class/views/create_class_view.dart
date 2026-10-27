@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_dropdown_widget.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/modules/auth/create_class/views/widgets/chip_grade_widget.dart';
-import 'package:novasight_app/app/modules/auth/create_class/views/widgets/information_widget.dart';
-import 'package:novasight_app/app/modules/auth/widgets/step_indicator_widget.dart';
+import 'package:lydera_app/app/common/common_dropdown_widget.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/classroom_model.dart';
+import 'package:lydera_app/app/modules/auth/create_class/views/widgets/chip_grade_widget.dart';
+import 'package:lydera_app/app/modules/auth/create_class/views/widgets/information_widget.dart';
+import 'package:lydera_app/app/modules/auth/widgets/step_indicator_widget.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_card_widget.dart';
 import '../../../../common/common_text_form_field_widget.dart';

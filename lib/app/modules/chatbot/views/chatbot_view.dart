@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/constants/app_string_constant.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/text_theme.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/data/models/chatbot_model.dart';
+import 'package:lydera_app/app/core/constants/app_string_constant.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/text_theme.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/chatbot_model.dart';
 import '../controllers/chatbot_controller.dart';
 
 class ChatbotView extends GetView<ChatbotController> {

@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import 'package:novasight_app/app/core/constants/api_endpoints.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/network/dio_client.dart';
-import 'package:novasight_app/app/data/models/cp_model.dart';
-import 'package:novasight_app/app/data/models/api_response.dart';
-import 'package:novasight_app/app/data/models/block_regenerate_model.dart';
-import 'package:novasight_app/app/data/models/chapter_create_response_model.dart';
-import 'package:novasight_app/app/data/models/chapter_job_stream_model.dart';
-import 'package:novasight_app/app/data/models/fase_model.dart';
-import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
-import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
-import 'package:novasight_app/app/data/models/teacher_model.dart';
+import 'package:lydera_app/app/core/constants/api_endpoints.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/network/dio_client.dart';
+import 'package:lydera_app/app/data/models/cp_model.dart';
+import 'package:lydera_app/app/data/models/api_response.dart';
+import 'package:lydera_app/app/data/models/block_regenerate_model.dart';
+import 'package:lydera_app/app/data/models/chapter_create_response_model.dart';
+import 'package:lydera_app/app/data/models/chapter_job_stream_model.dart';
+import 'package:lydera_app/app/data/models/fase_model.dart';
+import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
+import 'package:lydera_app/app/data/models/student_progress_quiz.dart';
+import 'package:lydera_app/app/data/models/teacher_model.dart';
 
 import '../models/student_quiz_model.dart';
 

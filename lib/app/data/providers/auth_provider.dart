@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:novasight_app/app/core/constants/api_endpoints.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/network/dio_client.dart';
-import 'package:novasight_app/app/data/models/api_response.dart';
-import 'package:novasight_app/app/data/models/auth_request_model.dart';
-import 'package:novasight_app/app/data/models/user_model.dart';
+import 'package:lydera_app/app/core/constants/api_endpoints.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/network/dio_client.dart';
+import 'package:lydera_app/app/data/models/api_response.dart';
+import 'package:lydera_app/app/data/models/auth_request_model.dart';
+import 'package:lydera_app/app/data/models/user_model.dart';
 
 class AuthProvider {
   final DioClient dioClient;

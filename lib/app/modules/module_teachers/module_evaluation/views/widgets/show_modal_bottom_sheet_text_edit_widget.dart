@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/icon_txt.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/core/utils/validate_helper.dart';
-import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/icon_txt.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/validate_helper.dart';
+import 'package:lydera_app/app/data/model/module_teacher_model.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 
 class ShowModalBottomSheetTextEditWidget
     extends GetView<ModuleEvaluationController> {

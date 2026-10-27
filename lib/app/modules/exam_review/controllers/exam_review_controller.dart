@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/math_semantic_serializer.dart';
-import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
+import 'package:lydera_app/app/data/models/exam_review_question_model.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
 
 import '../../../core/utils/math_latex_parser.dart';
 

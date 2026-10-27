@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/common/common_dropdown_widget.dart';
-import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
-import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/modules/auth/create_class/controllers/create_class_controller.dart';
-import 'package:novasight_app/app/modules/auth/create_class/views/create_class_view.dart';
-import 'package:novasight_app/app/modules/auth/create_class/views/widgets/chip_grade_widget.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/common/common_dropdown_widget.dart';
+import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
+import 'package:lydera_app/app/data/models/classroom_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/modules/auth/create_class/controllers/create_class_controller.dart';
+import 'package:lydera_app/app/modules/auth/create_class/views/create_class_view.dart';
+import 'package:lydera_app/app/modules/auth/create_class/views/widgets/chip_grade_widget.dart';
 
 class MockClassroomRepository extends Mock implements ClassroomRepository {}
 

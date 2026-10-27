@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novasight_app/app/data/models/chatbot_model.dart';
+import 'package:lydera_app/app/data/models/chatbot_model.dart';
 
 void main() {
   group('ChatbotModel Tests', () {

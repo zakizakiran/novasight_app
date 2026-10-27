@@ -1,5 +1,5 @@
 
-import 'package:novasight_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
 
 class MainBarArgs {
   final int index;

@@ -164,6 +164,12 @@ abstract class AppLocalizations {
   /// **'Save Changes'**
   String get saveChanges;
 
+  /// No description provided for @questionExam.
+  ///
+  /// In en, this message translates to:
+  /// **'QUESTION'**
+  String get questionExam;
+
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:

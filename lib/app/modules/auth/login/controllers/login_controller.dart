@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/core/utils/validate_helper.dart';
-import 'package:novasight_app/app/data/repositories/auth_repository.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/core/utils/validate_helper.dart';
+import 'package:lydera_app/app/data/repositories/auth_repository.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   final AuthRepository repository;

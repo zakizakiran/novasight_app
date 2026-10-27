@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
-import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/exam-teachers/controllers/exam_teachers_controller.dart';
-import 'package:novasight_app/app/modules/exam-teachers/models/exam_teacher_model.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
+import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/exam-teachers/controllers/exam_teachers_controller.dart';
+import 'package:lydera_app/app/modules/exam-teachers/models/exam_teacher_model.dart';
 
 import '../../../core/args/main_bar_args.dart';
 import '../../../core/utils/user_roles.dart';

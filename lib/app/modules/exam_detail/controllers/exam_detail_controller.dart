@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 import '../../../data/models/exam_model.dart';
 

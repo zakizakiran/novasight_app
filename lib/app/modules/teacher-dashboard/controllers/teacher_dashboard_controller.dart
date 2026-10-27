@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
-import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/data/models/teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
+import 'package:lydera_app/app/data/models/classroom_model.dart';
+import 'package:lydera_app/app/data/models/teacher_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 import '../../main_layout/controllers/main_layout_controller.dart';
 

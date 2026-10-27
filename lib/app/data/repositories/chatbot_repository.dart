@@ -1,5 +1,5 @@
-import 'package:novasight_app/app/data/models/chatbot_model.dart';
-import 'package:novasight_app/app/data/providers/chatbot_provider.dart';
+import 'package:lydera_app/app/data/models/chatbot_model.dart';
+import 'package:lydera_app/app/data/providers/chatbot_provider.dart';
 
 class ChatbotRepository {
   final ChatbotProvider chatbotProvider;

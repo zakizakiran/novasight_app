@@ -18,6 +18,7 @@ class MathLatexParser {
   List<MathNode> parse(String latex) {
     _latex = latex;
     _index = 0;
+    print('Parser input: $latex');
     return _parseSequence();
   }
 
@@ -29,20 +30,33 @@ class MathLatexParser {
 
       if (_index >= _latex.length) break;
 
+      // Handle \right) before parsing the closing delimiter as an atom.
+      if (_startsWith(r'\right')) {
+        _index += r'\right'.length;
+        _skipWhitespace();
+
+        // Consume the delimiter after \right.
+        if (_index < _latex.length) {
+          if (_latex[_index] == r'\') {
+            _readCommand();
+          } else {
+            _index++;
+          }
+        }
+
+        // The enclosing sequence will finish here.
+        break;
+      }
+
       if (endChar != null && _latex[_index] == endChar) {
         _index++;
         break;
       }
 
+      // Ignore \left but preserve its opening delimiter.
       if (_startsWith(r'\left')) {
-        _readCommand();
-        _skipDelimiter();
-        continue;
-      }
-
-      if (_startsWith(r'\right')) {
-        _readCommand();
-        _skipDelimiter();
+        _index += r'\left'.length;
+        _skipWhitespace();
         continue;
       }
 
@@ -79,6 +93,8 @@ class MathLatexParser {
         default:
           nodes.add(_parsePostfix(node));
       }
+
+      print('Parser sequences $_index: $endChar');
     }
 
     return nodes;

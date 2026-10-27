@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:novasight_app/app/core/constants/env_config.dart';
-import 'package:novasight_app/app/core/network/interceptors/auth_interceptor.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/core/constants/env_config.dart';
+import 'package:lydera_app/app/core/network/interceptors/auth_interceptor.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class DioClient {
   final Dio _dio;

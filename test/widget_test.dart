@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/repositories/auth_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/auth/login/controllers/login_controller.dart';
-import 'package:novasight_app/app/modules/auth/login/views/login_view.dart';
-import 'package:novasight_app/app/modules/auth/widgets/role_switch_widget.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/repositories/auth_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/auth/login/controllers/login_controller.dart';
+import 'package:lydera_app/app/modules/auth/login/views/login_view.dart';
+import 'package:lydera_app/app/modules/auth/widgets/role_switch_widget.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 class MockStorageService extends Mock implements StorageService {}

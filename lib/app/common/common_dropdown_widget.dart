@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 
 class CommonDropdownWidget<T> extends StatefulWidget {
   final List<T> listValue;

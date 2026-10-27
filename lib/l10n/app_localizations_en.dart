@@ -42,6 +42,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveChanges => 'Save Changes';
 
   @override
+  String get questionExam => 'QUESTION';
+
+  @override
   String get settings => 'Settings';
 
   @override

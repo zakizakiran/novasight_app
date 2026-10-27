@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/exam_student_detail_progress_args.dart';
+import 'package:lydera_app/app/core/args/exam_student_detail_progress_args.dart';
 
 import '../../../core/errors/api_exception.dart';
 import '../../../core/utils/math_latex_parser.dart';

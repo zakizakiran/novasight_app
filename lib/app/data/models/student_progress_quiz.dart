@@ -1,5 +1,5 @@
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/data/models/user_model.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/models/user_model.dart';
 
 class StudentProgressQuiz {
   ProfileResponseModel profileResponse;

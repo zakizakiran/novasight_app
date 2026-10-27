@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/data/models/exam_review_question_model.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/exam_review_question_model.dart';
 
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/text_theme.dart';

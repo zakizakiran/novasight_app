@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/data/model/selected_pdf_model.dart';
-import 'package:novasight_app/app/data/models/chapter_create_response_model.dart';
-import 'package:novasight_app/app/data/models/fase_model.dart';
-import 'package:novasight_app/app/data/models/teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/data/model/selected_pdf_model.dart';
+import 'package:lydera_app/app/data/models/chapter_create_response_model.dart';
+import 'package:lydera_app/app/data/models/fase_model.dart';
+import 'package:lydera_app/app/data/models/teacher_model.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
 
 class MockTeacherRepository extends Mock implements TeacherRepository {}
 

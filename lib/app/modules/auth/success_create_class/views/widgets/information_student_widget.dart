@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 
 import '../../../../../core/constants/app_string_constant.dart';
 class InformationStudentWidget extends StatelessWidget {

@@ -1,15 +1,15 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/modules/exam-teachers/controllers/exam_teachers_controller.dart';
-import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
-import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
-import 'package:novasight_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
-import 'package:novasight_app/app/modules/exam/controllers/exam_controller.dart';
-import 'package:novasight_app/app/modules/chatbot/controllers/chatbot_controller.dart';
-import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/teacher-dashboard/controllers/teacher_dashboard_controller.dart';
+import 'package:lydera_app/app/modules/exam-teachers/controllers/exam_teachers_controller.dart';
+import 'package:lydera_app/app/modules/module/controllers/module_controller.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
+import 'package:lydera_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:lydera_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
+import 'package:lydera_app/app/modules/exam/controllers/exam_controller.dart';
+import 'package:lydera_app/app/modules/chatbot/controllers/chatbot_controller.dart';
+import 'package:lydera_app/app/data/repositories/chatbot_repository.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/teacher-dashboard/controllers/teacher_dashboard_controller.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../controllers/main_layout_controller.dart';
 

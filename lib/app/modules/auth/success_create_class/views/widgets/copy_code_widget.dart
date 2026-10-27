@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/icon_txt.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/icon_txt.dart';
 class CopyCodeWidget extends StatelessWidget {
   final Function() copyCode;
   const CopyCodeWidget({super.key, required this.copyCode});

@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {

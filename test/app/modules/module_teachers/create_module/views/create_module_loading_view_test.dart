@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/views/create_module_loading_view.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/views/create_module_loading_view.dart';
 
 class MockTeacherRepository extends Mock implements TeacherRepository {}
 

@@ -1,4 +1,4 @@
-import 'package:novasight_app/app/data/models/student_progress_quiz.dart';
+import 'package:lydera_app/app/data/models/student_progress_quiz.dart';
 
 class ExamStudentDetailProgressArgs {
   final StudentProgressQuiz quiz;

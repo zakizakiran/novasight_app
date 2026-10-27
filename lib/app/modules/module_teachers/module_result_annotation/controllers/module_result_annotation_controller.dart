@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/module_result_args.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
-import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/args/module_result_args.dart';
+import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
+import 'package:lydera_app/app/data/model/module_teacher_model.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 import '../../create_module/controllers/create_module_controller.dart';
 
 class ModuleResultAnnotationController extends GetxController {

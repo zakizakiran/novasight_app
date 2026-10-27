@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/data/models/student_model.dart';
-import 'package:novasight_app/app/data/models/teacher_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/data/models/classroom_model.dart';
+import 'package:lydera_app/app/data/models/student_model.dart';
+import 'package:lydera_app/app/data/models/teacher_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
 
 class MockClassroomRepository extends Mock implements ClassroomRepository {}
 

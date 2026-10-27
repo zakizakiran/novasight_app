@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/modules/profile/controllers/profile_controller.dart';
 
 import '../../../../core/styles/svg/svg_constant.dart';
 
@@ -51,8 +51,8 @@ class ProfileAppBarWidget extends GetView<ProfileController> {
             final userEmail = controller.email.value.isNotEmpty
                 ? controller.email.value
                 : (controller.role.value == UserRoles.siswa
-                      ? 'siswa@novasight.id'
-                      : 'guru@novasight.id');
+                      ? 'siswa@lyeedera.id'
+                      : 'guru@lyeedera.id');
             final userName = controller.name.value.isNotEmpty
                 ? controller.name.value
                 : (controller.role.value == UserRoles.siswa ? 'Siswa' : 'Guru');

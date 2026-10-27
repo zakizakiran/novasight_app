@@ -42,6 +42,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get saveChanges => 'Simpan Perubahan';
 
   @override
+  String get questionExam => 'SOAL';
+
+  @override
   String get settings => 'Pengaturan';
 
   @override

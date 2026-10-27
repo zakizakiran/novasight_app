@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
 import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../controllers/main_layout_controller.dart';

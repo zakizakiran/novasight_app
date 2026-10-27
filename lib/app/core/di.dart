@@ -1,20 +1,20 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/network/dio_client.dart';
-import 'package:novasight_app/app/data/providers/auth_provider.dart';
-import 'package:novasight_app/app/data/providers/chatbot_provider.dart';
-import 'package:novasight_app/app/data/providers/classroom_provider.dart';
-import 'package:novasight_app/app/data/providers/student_provider.dart';
-import 'package:novasight_app/app/data/providers/teacher_provider.dart';
-import 'package:novasight_app/app/data/repositories/auth_repository.dart';
-import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/module_repository.dart';
-import 'package:novasight_app/app/data/repositories/note_repository.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
-import 'package:novasight_app/app/data/repositories/teacher_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/data/services/remote/module_service.dart';
-import 'package:novasight_app/app/data/services/remote/module_teacher_service.dart';
+import 'package:lydera_app/app/core/network/dio_client.dart';
+import 'package:lydera_app/app/data/providers/auth_provider.dart';
+import 'package:lydera_app/app/data/providers/chatbot_provider.dart';
+import 'package:lydera_app/app/data/providers/classroom_provider.dart';
+import 'package:lydera_app/app/data/providers/student_provider.dart';
+import 'package:lydera_app/app/data/providers/teacher_provider.dart';
+import 'package:lydera_app/app/data/repositories/auth_repository.dart';
+import 'package:lydera_app/app/data/repositories/chatbot_repository.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/module_repository.dart';
+import 'package:lydera_app/app/data/repositories/note_repository.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/data/services/remote/module_service.dart';
+import 'package:lydera_app/app/data/services/remote/module_teacher_service.dart';
 
 Future<void> initDepedencies() async {
   final storageService = StorageService();

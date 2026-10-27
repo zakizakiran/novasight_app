@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/main_bar_args.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/repositories/auth_repository.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/args/main_bar_args.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/repositories/auth_repository.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 class SplashController extends GetxController {
   final AuthRepository authRepository;

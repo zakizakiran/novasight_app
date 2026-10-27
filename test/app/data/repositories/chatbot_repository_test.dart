@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/data/models/api_response.dart';
-import 'package:novasight_app/app/data/models/chatbot_model.dart';
-import 'package:novasight_app/app/data/providers/chatbot_provider.dart';
-import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
+import 'package:lydera_app/app/data/models/api_response.dart';
+import 'package:lydera_app/app/data/models/chatbot_model.dart';
+import 'package:lydera_app/app/data/providers/chatbot_provider.dart';
+import 'package:lydera_app/app/data/repositories/chatbot_repository.dart';
 
 class MockChatbotProvider extends Mock implements ChatbotProvider {}
 

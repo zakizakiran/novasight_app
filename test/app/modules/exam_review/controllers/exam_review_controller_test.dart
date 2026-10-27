@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
-import 'package:novasight_app/app/modules/exam_review/controllers/exam_review_controller.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/modules/exam_review/controllers/exam_review_controller.dart';
 
 class MockStudentRepository extends Mock implements StudentRepository {}
 

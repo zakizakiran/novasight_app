@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/data/models/quiz_teacher_model.dart';
+import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 
 class ChapterExamConfig {
   final int chapterId;

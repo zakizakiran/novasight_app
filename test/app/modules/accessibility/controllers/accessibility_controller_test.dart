@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/accessbility/controllers/accessibility_controller.dart';
-import 'package:novasight_app/l10n/app_localizations.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/accessbility/controllers/accessibility_controller.dart';
+import 'package:lydera_app/l10n/app_localizations.dart';
 
 class MockStorageService extends Mock implements StorageService {}
 

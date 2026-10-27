@@ -1,4 +1,4 @@
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 
 import '../../core/utils/math_latex_parser.dart';
 import 'math_symbol.dart';
@@ -22,4 +22,5 @@ class MathDocument {
       nodes: nodes
     );
   }
+
 }

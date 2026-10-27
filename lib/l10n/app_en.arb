@@ -12,6 +12,8 @@
   "tryAgain": "Try Again",
   "saveChanges": "Save Changes",
 
+  "questionExam": "QUESTION",
+
   "settings": "Settings",
   "settingsDescription": "Adjust application settings according to your needs.",
   "language": "Language",

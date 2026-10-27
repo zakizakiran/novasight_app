@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/models/user_model.dart';
-import 'package:novasight_app/app/data/repositories/auth_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/models/user_model.dart';
+import 'package:lydera_app/app/data/repositories/auth_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 class ProfileController extends GetxController {
   final AuthRepository _repository;

@@ -17,7 +17,7 @@ class SplashView extends GetView<SplashController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 36),
           child: Image.asset(
-            ImgConstant.mobileApp,
+            ImgConstant.lyderaApp,
             fit: BoxFit.contain,
             width: 240,
             cacheWidth: 480,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/main_bar_args.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/core/args/main_bar_args.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
 
 import '../../chatbot/views/chatbot_view.dart' show ChatbotView;
 import '../../exam-teachers/views/exam_teachers_view.dart';

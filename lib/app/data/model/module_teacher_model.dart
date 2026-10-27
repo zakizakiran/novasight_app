@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
-import 'package:novasight_app/app/data/model/class_model.dart';
+import 'package:lydera_app/app/data/model/class_model.dart';
 
 import '../../core/styles/img/img_constant.dart';
 

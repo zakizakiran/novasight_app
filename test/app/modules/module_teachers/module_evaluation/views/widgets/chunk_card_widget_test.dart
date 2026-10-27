@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/data/model/class_model.dart';
-import 'package:novasight_app/app/data/model/module_teacher_model.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/chunk_card_widget.dart';
+import 'package:lydera_app/app/data/model/class_model.dart';
+import 'package:lydera_app/app/data/model/module_teacher_model.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/chunk_card_widget.dart';
 
 class MockModuleTeacherRepository extends Mock {}
 

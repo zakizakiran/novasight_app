@@ -1,8 +1,8 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/data/repositories/note_repository.dart';
-import 'package:novasight_app/app/modules/exam_active/controllers/exam_active_controller.dart';
+import 'package:lydera_app/app/data/repositories/note_repository.dart';
+import 'package:lydera_app/app/modules/exam_active/controllers/exam_active_controller.dart';
 
 import '../../../core/utils/math_semantic_serializer.dart';
 import '../../../data/models/math_document.dart';
@@ -30,10 +30,12 @@ class NoteController extends GetxController {
   final MathLatexParser _parser = MathLatexParser();
 
   final NoteRepository noteRepository;
+  final ExamActiveController examActiveController;
 
   NoteController({
-    NoteRepository? noteRepository,
-  }) : noteRepository = noteRepository ?? Get.find<NoteRepository>();
+    required this.noteRepository,
+    required this.examActiveController,
+  });
 
   @override
   void onInit() {
@@ -41,8 +43,9 @@ class NoteController extends GetxController {
     final args = Get.arguments;
     index = args is Map ? args['index'] ?? 1 : 1;
     total = args is Map ? args['total'] ?? 1 : 1;
+
     if (args is Map) {
-      question = args['question'];
+      question = examActiveController.questions[index];
       question?.steps.forEach((step) {
         print('Step text: ${step.text}');
 
@@ -51,7 +54,7 @@ class NoteController extends GetxController {
       });
       steps.assignAll(question?.steps.map((step) => MathDocument.fromStudentStep(step, _parser)).toList() ?? []);
     }
-    // print("Test mas\n");
+    print("Test mas\n");
     // final testExpressions = [
     //   r'\lim_{x\to5} 5',
     //   r'x^2',
@@ -76,7 +79,6 @@ class NoteController extends GetxController {
 
     for (final node in nodes) {
       final symbol = node.symbol;
-
       print('${indent}Node ID: ${symbol.id}');
       print('${indent}Visual Label: ${symbol.visualLabel}');
       print('${indent}LaTeX: ${symbol.renderSyntax}');
@@ -114,7 +116,6 @@ class NoteController extends GetxController {
     });
   }
 
-
   void selectSlot(MathSlot slot, {int? position}) {
     selectedStepIndex.value = -1;
     isInputActive.value = true;
@@ -136,7 +137,6 @@ class NoteController extends GetxController {
     activeSlot.value = null;
   }
 
-
   void activateInput() {
     selectedStepIndex.value = -1;
     activeSlot.value = null;
@@ -153,18 +153,20 @@ class NoteController extends GetxController {
   Future<void> saveStep() async {
     if (noteNodes.isEmpty) return;
     print('Note : ${_latexSerializer.serializeNodes(noteNodes)}',);
-    await noteRepository.submitStepAnswer(
+    final step = await noteRepository.submitStepAnswer(
       soalId: int.tryParse(question?.id.toString() ?? '') ?? 0,
       request: SoalStepRequest(step: _latexSerializer.serializeNodes(noteNodes)),
     );
+    final nodes = noteNodes.map((node) => node.copy()).toList();
     steps.add(
       MathDocument(
-        nodes: noteNodes.map((node) => node.copy()).toList(),
+        nodes: nodes,
       ),
     );
     noteNodes.clear();
     cursorIndex.value = 0;
     activeSlot.value = null;
+    examActiveController.addStep(step, index);
     scrollToBottom();
   }
 
@@ -179,7 +181,7 @@ class NoteController extends GetxController {
       stepId: int.tryParse(step?.id.toString() ?? '') ?? 0,
     );
     steps.removeAt(index);
-
+    examActiveController.removeStep(step?.id ?? 0, index);
     if (selectedStepIndex.value == index) {
       selectedStepIndex.value = -1;
     } else if (selectedStepIndex.value > index) {

@@ -1,8 +1,8 @@
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/models/auth_request_model.dart';
-import 'package:novasight_app/app/data/models/user_model.dart';
-import 'package:novasight_app/app/data/providers/auth_provider.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/models/auth_request_model.dart';
+import 'package:lydera_app/app/data/models/user_model.dart';
+import 'package:lydera_app/app/data/providers/auth_provider.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class AuthRepository {
   final AuthProvider authProvider;

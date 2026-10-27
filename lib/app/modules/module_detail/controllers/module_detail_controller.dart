@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/subject_args.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/model/subject_model.dart';
-import 'package:novasight_app/app/data/model/subject_page_module.dart';
-import 'package:novasight_app/app/data/models/student_model.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
-import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
-import 'package:novasight_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/args/subject_args.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/ui_state.dart';
+import 'package:lydera_app/app/data/model/subject_model.dart';
+import 'package:lydera_app/app/data/model/subject_page_module.dart';
+import 'package:lydera_app/app/data/models/student_model.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/modules/module/controllers/module_controller.dart';
+import 'package:lydera_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 class ModuleDetailController extends GetxController {
   final int id;

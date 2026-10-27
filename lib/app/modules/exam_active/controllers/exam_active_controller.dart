@@ -1,18 +1,19 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/main_bar_args.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
-import 'package:novasight_app/app/core/utils/dialog_helper.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/core/utils/snackbar_helper.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/models/student_quiz_model.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
-import 'package:novasight_app/l10n/app_localizations.dart';
+import 'package:lydera_app/app/core/args/main_bar_args.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/utils/dialog_helper.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/models/student_quiz_model.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
+import 'package:lydera_app/l10n/app_localizations.dart';
 
 import '../../../common/common_button_widget.dart';
 import '../../../core/Dimens.dart';
@@ -106,6 +107,28 @@ class ExamActiveController extends GetxController {
     _updateTimerDisplay(_remainingSeconds);
     _startLocalCountdown();
     startQuiz();
+  }
+
+
+  void addStep(StudentStep step, int questionIndex) {
+    if (questionIndex < 0 || questionIndex >= questions.length) {
+      return;
+    }
+
+    questions[questionIndex].steps.add(step);
+    questions.refresh();
+  }
+
+  void removeStep(int stepId, int questionIndex) {
+    if (questionIndex < 0 || questionIndex >= questions.length) {
+      return;
+    }
+
+    questions[questionIndex].steps.removeWhere(
+          (element) => element.id == stepId,
+    );
+
+    questions.refresh();
   }
 
   void _updateTimerDisplay(int seconds) {

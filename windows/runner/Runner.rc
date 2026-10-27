@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.novasight" "\0"
-            VALUE "FileDescription", "novasight_app" "\0"
+            VALUE "CompanyName", "com.lyeedera" "\0"
+            VALUE "FileDescription", "lydera_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "novasight_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.novasight. All rights reserved." "\0"
-            VALUE "OriginalFilename", "novasight_app.exe" "\0"
-            VALUE "ProductName", "novasight_app" "\0"
+            VALUE "InternalName", "lydera_app" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 com.lyeedera. All rights reserved." "\0"
+            VALUE "OriginalFilename", "lydera_app.exe" "\0"
+            VALUE "ProductName", "lydera_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

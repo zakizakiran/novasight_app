@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/core/utils/text_helper.dart';
-import 'package:novasight_app/app/modules/profile/controllers/profile_controller.dart';
-import 'package:novasight_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/text_helper.dart';
+import 'package:lydera_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:lydera_app/app/modules/profile/views/widgets/setting_dialog_widget.dart';
 
 import '../../../../core/Dimens.dart';
 import '../../../../data/model/user_profile_model.dart';

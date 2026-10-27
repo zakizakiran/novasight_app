@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/date_helper.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/date_helper.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import '../../../common/common_card_widget.dart';
 import '../../../core/dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';

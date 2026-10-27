@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/icon_txt.dart';
-import 'package:novasight_app/app/data/model/class_model.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/icon_txt.dart';
+import 'package:lydera_app/app/data/model/class_model.dart';
 class ClassCard extends StatelessWidget {
   final ClassModel classModel;
   const ClassCard({super.key,required this.classModel});

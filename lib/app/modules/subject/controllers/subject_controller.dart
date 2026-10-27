@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/semantics.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/args/subject_args.dart';
-import 'package:novasight_app/app/data/model/subject_model.dart';
-import 'package:novasight_app/app/data/repositories/module_repository.dart';
-import 'package:novasight_app/app/data/repositories/student_repository.dart';
-import 'package:novasight_app/app/modules/module/controllers/module_controller.dart';
-import 'package:novasight_app/app/modules/module_detail/controllers/module_detail_controller.dart';
-import 'package:novasight_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
+import 'package:lydera_app/app/core/args/subject_args.dart';
+import 'package:lydera_app/app/data/model/subject_model.dart';
+import 'package:lydera_app/app/data/repositories/module_repository.dart';
+import 'package:lydera_app/app/data/repositories/student_repository.dart';
+import 'package:lydera_app/app/modules/module/controllers/module_controller.dart';
+import 'package:lydera_app/app/modules/module_detail/controllers/module_detail_controller.dart';
+import 'package:lydera_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
 
 class SubjectController extends GetxController {
   final ModuleRepository? moduleRepository;
@@ -53,10 +53,14 @@ class SubjectController extends GetxController {
 
   void onPage(int page) {
     if (page < 1){
-      return ;
+      return;
+    }
+    if (page > subject.pages.length){
+      return;
     }
     currentPageNumber.value = page;
     SemanticsService.announce("Pergi ke halaman $page", TextDirection.ltr);
+    print('Current Number : ${currentPageNumber.value}');
   }
 
   void onPrevious() {

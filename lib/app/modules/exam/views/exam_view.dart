@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_app_bar.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/core/utils/module_status.dart';
-import 'package:novasight_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
-import 'package:novasight_app/app/modules/exam/views/widgets/exam_card_widget.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/common/common_app_bar.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/module_status.dart';
+import 'package:lydera_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
+import 'package:lydera_app/app/modules/exam/views/widgets/exam_card_widget.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 import '../controllers/exam_controller.dart';
 

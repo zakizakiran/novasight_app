@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_app_bar.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/common/common_card_widget.dart';
-import 'package:novasight_app/app/core/dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
-import 'package:novasight_app/app/core/utils/dialog_helper.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/common/common_app_bar.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/common/common_card_widget.dart';
+import 'package:lydera_app/app/core/dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/utils/dialog_helper.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 import '../controllers/exam_active_controller.dart';
 
 class ExamActiveView extends GetView<ExamActiveController> {
@@ -429,9 +429,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
                   Get.toNamed(
                     Routes.NOTE,
                     arguments: {
-                      'question':
-                          controller.questions[controller.currentIndex.value],
-                      'index': controller.currentIndex.value + 1,
+                      'index': controller.currentIndex.value,
                       'total': controller.questions.length,
                     },
                   );

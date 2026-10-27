@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/styles/border_style.dart';
-import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
+import 'package:lydera_app/app/core/styles/border_style.dart';
+import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
 
 import '../core/Dimens.dart';
 import '../core/styles/colors/color_constant.dart';

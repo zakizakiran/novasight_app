@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novasight_app/app/data/models/chapter_job_stream_model.dart';
+import 'package:lydera_app/app/data/models/chapter_job_stream_model.dart';
 
 void main() {
   group('ChapterJobStreamEvent Tests', () {

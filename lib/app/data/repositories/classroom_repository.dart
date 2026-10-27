@@ -1,5 +1,5 @@
-import 'package:novasight_app/app/data/models/classroom_model.dart';
-import 'package:novasight_app/app/data/providers/classroom_provider.dart';
+import 'package:lydera_app/app/data/models/classroom_model.dart';
+import 'package:lydera_app/app/data/providers/classroom_provider.dart';
 
 class ClassroomRepository {
   final ClassroomProvider classroomProvider;

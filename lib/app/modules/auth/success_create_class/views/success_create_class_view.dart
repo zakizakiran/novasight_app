@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/auth/success_create_class/views/widgets/code_class_widget.dart';
-import 'package:novasight_app/app/modules/auth/success_create_class/views/widgets/copy_code_widget.dart';
-import 'package:novasight_app/app/modules/auth/success_create_class/views/widgets/information_student_widget.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/auth/success_create_class/views/widgets/code_class_widget.dart';
+import 'package:lydera_app/app/modules/auth/success_create_class/views/widgets/copy_code_widget.dart';
+import 'package:lydera_app/app/modules/auth/success_create_class/views/widgets/information_student_widget.dart';
 
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_card_widget.dart';

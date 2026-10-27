@@ -1,11 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
 import '../../../common/common_button_widget.dart';
 import '../../../core/Dimens.dart';
 import '../../../core/constants/math_symbol_repository.dart';
 import '../../../core/styles/colors/color_constant.dart';
+import '../../../core/utils/l10n_extension.dart';
 import '../../../data/models/math_symbol.dart';
 import '../controllers/note_controller.dart';
 

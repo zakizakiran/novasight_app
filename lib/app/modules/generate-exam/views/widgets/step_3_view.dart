@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/core/utils/dialog_helper.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/core/utils/dialog_helper.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/utils/snackbar_helper.dart';

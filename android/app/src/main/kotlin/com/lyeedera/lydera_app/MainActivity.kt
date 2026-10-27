@@ -1,4 +1,4 @@
-package com.novasight.novasight_app
+package com.lyeedera.lydera_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/step_tile_widget.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/views/widgets/step_tile_widget.dart';
 
 class CreateModuleLoadingView extends GetView<CreateModuleController> {
   const CreateModuleLoadingView({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/data/models/chatbot_model.dart';
-import 'package:novasight_app/app/data/repositories/chatbot_repository.dart';
-import 'package:novasight_app/app/data/repositories/classroom_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/data/models/chatbot_model.dart';
+import 'package:lydera_app/app/data/repositories/chatbot_repository.dart';
+import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class ChatbotController extends GetxController {
   final ChatbotRepository repository;

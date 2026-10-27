@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 
 import '../../../core/utils/user_roles.dart';
 

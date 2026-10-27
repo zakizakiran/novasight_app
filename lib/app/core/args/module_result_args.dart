@@ -1,4 +1,4 @@
-import 'package:novasight_app/app/data/model/module_teacher_model.dart';
+import 'package:lydera_app/app/data/model/module_teacher_model.dart';
 
 class ModuleResultArgs {
   final ModuleTeacherModel module;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/chunk_card_widget.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_correction_widget.dart';
-import 'package:novasight_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_text_edit_widget.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/chunk_card_widget.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_correction_widget.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_text_edit_widget.dart';
 
 import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_teacher_appbar.dart';

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 
 class SnackbarHelper {
 
   static void showSuccess({
     required String title,
     required String message,
+    int durationMilliseconds = 2300,
   }) {
     if (Get.context == null) return;
     if (Get.isSnackbarOpen) Get.closeCurrentSnackbar();
@@ -19,7 +20,7 @@ class SnackbarHelper {
       borderRadius: Dimens.radius,
       margin: const EdgeInsets.all(Dimens.innerPadding),
       snackPosition: SnackPosition.TOP,
-      duration: const Duration(milliseconds: 2300),
+      duration: Duration(milliseconds: durationMilliseconds),
       messageText: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraint){
           return Row(
@@ -84,6 +85,7 @@ class SnackbarHelper {
   static void showError({
     required String title,
     required String message,
+    int durationMilliseconds = 3000,
   }) {
     if (Get.context == null) return;
     if (Get.isSnackbarOpen) Get.closeCurrentSnackbar();
@@ -93,7 +95,7 @@ class SnackbarHelper {
       borderRadius: Dimens.radius,
       margin: const EdgeInsets.all(Dimens.innerPadding),
       snackPosition: SnackPosition.TOP,
-      duration: const Duration(milliseconds: 3000),
+      duration: Duration(milliseconds: durationMilliseconds),
       messageText: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraint) {
           return Row(

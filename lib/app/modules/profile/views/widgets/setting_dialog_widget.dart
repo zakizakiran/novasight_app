@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/modules/profile/views/widgets/language_dialog_widget.dart';
-import 'package:novasight_app/app/modules/profile/views/widgets/text_scale_dialog_widget.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/modules/profile/views/widgets/language_dialog_widget.dart';
+import 'package:lydera_app/app/modules/profile/views/widgets/text_scale_dialog_widget.dart';
 
 import '../../../../common/common_dialog_widget.dart';
 import '../../../accessbility/controllers/accessibility_controller.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/modules/auth/forgot_password/controllers/forgot_password_controller.dart';
+import 'package:lydera_app/app/modules/auth/forgot_password/controllers/forgot_password_controller.dart';
 import '../../../../../common/common_text_form_field_widget.dart';
 import '../../../../../core/dimens.dart';
 import '../../../../../core/styles/colors/color_constant.dart';

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:novasight_app/app/data/model/subject_page_module.dart';
+import 'package:lydera_app/app/data/model/subject_page_module.dart';
 
 class SubjectModel extends Equatable {
   final int id;

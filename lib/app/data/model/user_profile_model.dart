@@ -1,4 +1,4 @@
-import 'package:novasight_app/app/data/model/class_model.dart';
+import 'package:lydera_app/app/data/model/class_model.dart';
 
 class UserProfileModel {
   final int id;

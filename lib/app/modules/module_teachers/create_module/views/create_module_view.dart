@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_button_widget.dart';
-import 'package:novasight_app/app/common/common_teacher_appbar.dart';
-import 'package:novasight_app/app/common/common_text_form_field_widget.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/data/models/cp_model.dart';
-import 'package:novasight_app/app/data/models/fase_model.dart';
-import 'package:novasight_app/app/modules/module_teachers/create_module/views/widgets/pick_module_widget.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/common/common_teacher_appbar.dart';
+import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/cp_model.dart';
+import 'package:lydera_app/app/data/models/fase_model.dart';
+import 'package:lydera_app/app/modules/module_teachers/create_module/views/widgets/pick_module_widget.dart';
 
 import '../../../../common/common_dropdown_widget.dart';
 import '../../../../core/Dimens.dart';

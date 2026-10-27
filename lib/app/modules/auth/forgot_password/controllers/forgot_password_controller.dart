@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/utils/validate_helper.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/utils/validate_helper.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 import '../../login/controllers/login_controller.dart';
 

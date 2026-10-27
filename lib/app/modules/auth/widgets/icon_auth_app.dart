@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:novasight_app/app/core/dimens.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/dimens.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 
 class IconAuthApp extends StatelessWidget {
   final String icon;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:novasight_app/app/core/styles/svg/svg_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/data/model/class_model.dart';
-import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/class_card.dart';
-import 'package:novasight_app/app/modules/auth/success_join_class/views/widgets/feature_card.dart';
-import 'package:novasight_app/app/routes/app_pages.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/model/class_model.dart';
+import 'package:lydera_app/app/modules/auth/success_join_class/views/widgets/class_card.dart';
+import 'package:lydera_app/app/modules/auth/success_join_class/views/widgets/feature_card.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 
 import '../../../../core/styles/box_shadow_style.dart';
 import '../../../../core/utils/user_roles.dart';

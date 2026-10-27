@@ -1,0 +1,29 @@
+# flutter pub run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: "assets/img/lydeera_icon_app_out.png"
+
+  android: "launcher_icon"
+  min_sdk_android: 21
+
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/img/lydeera_icon_app_out.png"
+  adaptive_icon_foreground_inset: 16
+
+  ios: true
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"
+
+#  web:
+#    generate: true
+#    image_path: "path/to/image.png"
+#    background_color: "#hexcode"
+#    theme_color: "#hexcode"
+#
+#  windows:
+#    generate: true
+#    image_path: "path/to/image.png"
+#    icon_size: 48 # min:48, max:256, default: 48
+#
+#  macos:
+#    generate: true
+#    image_path: "path/to/image.png"

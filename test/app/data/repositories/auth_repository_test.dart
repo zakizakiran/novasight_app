@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:novasight_app/app/core/errors/api_exception.dart';
-import 'package:novasight_app/app/core/utils/user_roles.dart';
-import 'package:novasight_app/app/data/models/api_response.dart';
-import 'package:novasight_app/app/data/models/auth_request_model.dart';
-import 'package:novasight_app/app/data/models/user_model.dart';
-import 'package:novasight_app/app/data/providers/auth_provider.dart';
-import 'package:novasight_app/app/data/repositories/auth_repository.dart';
-import 'package:novasight_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/models/api_response.dart';
+import 'package:lydera_app/app/data/models/auth_request_model.dart';
+import 'package:lydera_app/app/data/models/user_model.dart';
+import 'package:lydera_app/app/data/providers/auth_provider.dart';
+import 'package:lydera_app/app/data/repositories/auth_repository.dart';
+import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class MockAuthProvider extends Mock implements AuthProvider {}
 

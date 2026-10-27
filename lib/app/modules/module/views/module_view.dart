@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:novasight_app/app/common/common_app_bar.dart';
-import 'package:novasight_app/app/common/common_card_widget.dart';
-import 'package:novasight_app/app/common/common_gradient_progress_bar_widget.dart';
-import 'package:novasight_app/app/core/Dimens.dart';
-import 'package:novasight_app/app/core/styles/border_style.dart';
-import 'package:novasight_app/app/core/styles/box_shadow_style.dart';
-import 'package:novasight_app/app/core/styles/colors/color_constant.dart';
-import 'package:novasight_app/app/core/utils/l10n_extension.dart';
-import 'package:novasight_app/app/core/utils/module_status.dart';
-import 'package:novasight_app/app/core/utils/ui_state.dart';
-import 'package:novasight_app/app/data/models/student_model.dart';
-import 'package:novasight_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
+import 'package:lydera_app/app/common/common_app_bar.dart';
+import 'package:lydera_app/app/common/common_card_widget.dart';
+import 'package:lydera_app/app/common/common_gradient_progress_bar_widget.dart';
+import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/styles/border_style.dart';
+import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/module_status.dart';
+import 'package:lydera_app/app/core/utils/ui_state.dart';
+import 'package:lydera_app/app/data/models/student_model.dart';
+import 'package:lydera_app/app/modules/module/views/widgets/module_filter_tab_widget.dart';
 import '../controllers/module_controller.dart';
 
 class ModuleView extends GetView<ModuleController> {

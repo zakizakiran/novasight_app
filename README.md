@@ -1,4 +1,4 @@
-# novasight_app
+# lydera_app
 
 A new Flutter project.
 
