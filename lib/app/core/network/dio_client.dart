@@ -2,40 +2,53 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lydera_app/app/core/constants/env_config.dart';
 import 'package:lydera_app/app/core/network/interceptors/auth_interceptor.dart';
+import 'package:lydera_app/app/data/providers/auth_provider.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class DioClient {
   final Dio _dio;
+  final Dio _authDio;
 
-  DioClient({required StorageService storageService, Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: EnvConfig.baseUrl,
-                connectTimeout: const Duration(milliseconds: EnvConfig.connectTimeout),
-                receiveTimeout: const Duration(milliseconds: EnvConfig.receiveTimeout),
-                sendTimeout: const Duration(milliseconds: EnvConfig.connectTimeout),
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                },
-              ),
-            ) {
-    _dio.interceptors.add(AuthInterceptor(storageService: storageService));
+  DioClient({
+    required StorageService storageService,
+    Dio? dio,
+    Dio? authDio,
+  })  : _dio = dio ?? _createDio(),
+        _authDio = authDio ?? _createDio() {
+    _dio.interceptors.add(
+      AuthInterceptor(
+        storageService: storageService,
+        dio: _dio,
+        authDio: _authDio,
+      ),
+    );
 
-    // Logging only in debug mode
     if (kDebugMode) {
       _dio.interceptors.add(
         LogInterceptor(
           request: true,
           requestHeader: true,
           requestBody: true,
-          responseHeader: false,
           responseBody: true,
           error: true,
         ),
       );
     }
+  }
+
+  static Dio _createDio() {
+    return Dio(
+      BaseOptions(
+        baseUrl: EnvConfig.baseUrl,
+        connectTimeout: const Duration(milliseconds: EnvConfig.connectTimeout),
+        receiveTimeout: const Duration(milliseconds: EnvConfig.receiveTimeout),
+        sendTimeout: const Duration(milliseconds: EnvConfig.connectTimeout),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
   }
 
   Dio get dio => _dio;
