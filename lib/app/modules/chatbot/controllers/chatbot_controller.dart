@@ -6,6 +6,8 @@ import 'package:lydera_app/app/data/repositories/chatbot_repository.dart';
 import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
+import '../../../core/constants/app_string_constant.dart';
+
 class ChatbotController extends GetxController {
   final ChatbotRepository repository;
   final ClassroomRepository? classroomRepository;
@@ -137,7 +139,7 @@ class ChatbotController extends GetxController {
           id: 0,
           role: 'assistant',
           content:
-              'Halo! 👋 Aku Clarifier, asisten belajar modulmu di NovaSight AI. Ada bagian modul yang belum jelas atau materi yang ingin kamu tanyakan? Tanyakan langsung ya!',
+              'Halo! 👋 Aku Clarifier, asisten belajar modulmu di ${AppStrings.nameApp}. Ada bagian modul yang belum jelas atau materi yang ingin kamu tanyakan? Tanyakan langsung ya!',
           createdAt: DateTime.now(),
         ),
       );

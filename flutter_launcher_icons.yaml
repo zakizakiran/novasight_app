@@ -1,11 +1,13 @@
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:
+#  image_path: "assets/img/novasight_icon_app_out.png"
   image_path: "assets/img/lydeera_icon_app_out.png"
 
   android: "launcher_icon"
   min_sdk_android: 21
 
   adaptive_icon_background: "#FFFFFF"
+#  adaptive_icon_foreground: "assets/img/novasight_icon_app_out.png"
   adaptive_icon_foreground: "assets/img/lydeera_icon_app_out.png"
   adaptive_icon_foreground_inset: 16
 
