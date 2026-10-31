@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/semantics.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/subject_args.dart';
+import 'package:lydera_app/app/core/utils/table_mode.dart';
 import 'package:lydera_app/app/data/model/subject_model.dart';
 import 'package:lydera_app/app/data/repositories/module_repository.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
@@ -16,6 +17,7 @@ class SubjectController extends GetxController {
   late final SubjectModel subject;
   late final int index;
   final Rx<int> currentPageNumber = 1.obs;
+  final Rx<TableMode> selectedMode = TableMode.cell.obs;
 
   final TextEditingController searchController = TextEditingController();
 

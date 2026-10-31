@@ -170,6 +170,18 @@ abstract class AppLocalizations {
   /// **'QUESTION'**
   String get questionExam;
 
+  /// No description provided for @modeDetailCell.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-Cell Detail'**
+  String get modeDetailCell;
+
+  /// No description provided for @modeDetailSentences.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-Sentence Detail'**
+  String get modeDetailSentences;
+
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:

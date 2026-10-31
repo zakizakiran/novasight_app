@@ -45,6 +45,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get questionExam => 'SOAL';
 
   @override
+  String get modeDetailCell => 'Detail per Sel';
+
+  @override
+  String get modeDetailSentences => 'Detail per Kalimat';
+
+  @override
   String get settings => 'Pengaturan';
 
   @override

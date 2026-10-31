@@ -45,6 +45,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get questionExam => 'QUESTION';
 
   @override
+  String get modeDetailCell => 'Per-Cell Detail';
+
+  @override
+  String get modeDetailSentences => 'Per-Sentence Detail';
+
+  @override
   String get settings => 'Settings';
 
   @override

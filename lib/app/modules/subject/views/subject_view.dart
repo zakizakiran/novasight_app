@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,6 +12,7 @@ import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/modules/subject/views/widgets/row_subject_button_widget.dart';
+import 'package:lydera_app/app/modules/subject/views/widgets/table_mode_switch_widget.dart';
 
 import '../../../common/common_button_widget.dart';
 import '../../../common/common_html_table_renderer.dart';
@@ -20,6 +20,7 @@ import '../../../common/common_text_form_field_widget.dart';
 import '../../../core/styles/icon_txt.dart';
 import '../../../core/styles/svg/svg_constant.dart';
 import '../../../core/utils/dialog_helper.dart';
+import '../../../core/utils/table_mode.dart';
 import '../controllers/subject_controller.dart';
 import 'package:flutter/gestures.dart';
 
@@ -41,12 +42,34 @@ class SubjectView extends GetView<SubjectController> {
                 ),
               ),
             ),
+            _tableMode(context: context),
             _searchBar(context: context, controller: controller.searchController, onChange: controller.onPage),
             _body(context: context)
           ],
         ),
       ),
     );
+  }
+
+  Widget _tableMode({required BuildContext context}){
+    return Obx(() {
+      final page = controller.subject.pages[controller.currentPageNumber.value - 1];
+      final isTable = page.blockType == 'table';
+      if(isTable){
+        return Padding(
+          padding: const EdgeInsets.all(Dimens.innerBigPadding),
+          child: CommonCardWidget(
+              boxShadow: const [BoxShadowConstant.subjectPage],
+              border: BorderStyleConstant.outlineBorderCard,
+              child: TableModeSwitchWidget(
+                  selectedMode: controller.selectedMode.value,
+                  onChanged: controller.selectedMode.call
+              )
+          ),
+        );
+      }
+      return const SizedBox.shrink();
+    });
   }
 
   Widget _body({
@@ -165,7 +188,6 @@ class SubjectView extends GetView<SubjectController> {
     );
   }
 
-
   Widget _subject({required BuildContext context, required String subject}) {
     final sentences = subject.split(RegExp(r'(?<=[.!?])\s+'));
     return Semantics(
@@ -201,6 +223,25 @@ class SubjectView extends GetView<SubjectController> {
     required String semantic,
     required String html,
   }) {
+    final mode = controller.selectedMode.value;
+
+    if (mode == TableMode.sentence) {
+      return _buildSentenceSemantics(
+        semantic: semantic,
+        child: CommonHtmlTableRenderer(
+          html: html,
+          semanticLabel: '',
+          borderColor: Theme.of(context).colorScheme.outline,
+          headerBackgroundColor:
+          Theme.of(context).colorScheme.surfaceContainerHighest,
+          textStyle: Theme.of(context).textTheme.bodyMedium,
+          headerTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
     return CommonHtmlTableRenderer(
       html: html,
       semanticLabel: semantic,
@@ -208,62 +249,27 @@ class SubjectView extends GetView<SubjectController> {
       headerBackgroundColor:
       Theme.of(context).colorScheme.surfaceContainerHighest,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      headerTextStyle:
-      Theme.of(context).textTheme.bodyMedium?.copyWith(
+      headerTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
         fontWeight: FontWeight.bold,
       ),
     );
   }
-
-
-
 
   Widget _imageUrl({
     required BuildContext context,
     required String semantic,
     required String imageUrl,
   }) {
-    final sentences = semantic
-        .split(RegExp(r'(?<=[.!?])\s+'))
-        .map((sentence) => sentence.trim())
-        .where((sentence) => sentence.isNotEmpty)
-        .toList();
-
-    if (sentences.isEmpty) {
-      return ClipRRect(
+    return _buildSentenceSemantics(
+      semantic: semantic,
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimens.radius),
-        child: Image.network(imageUrl, fit: BoxFit.fitWidth),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(Dimens.radius),
-          child: Image.network(
-            imageUrl,
-            fit: BoxFit.fitWidth,
-          ),
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.fitWidth,
+          excludeFromSemantics: true,
         ),
-
-        ExcludeSemantics(
-          excluding: false,
-          child: Column(
-            children: sentences.map((sentence) {
-              return Semantics(
-                container: true,
-                label: sentence,
-                child: const SizedBox(
-                  width: 1,
-                  height: 1,
-                  child: SizedBox.shrink(),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -283,6 +289,39 @@ class SubjectView extends GetView<SubjectController> {
             fontWeight: FontWeight.w500
         )
       ),
+    );
+  }
+
+  Widget _buildSentenceSemantics({
+    required String semantic,
+    required Widget child,
+  }) {
+    final sentences = semantic
+        .split(RegExp(r'(?<=[.!?])\s+'))
+        .map((sentence) => sentence.trim())
+        .where((sentence) => sentence.isNotEmpty)
+        .toList();
+
+    if (sentences.isEmpty) {
+      return child;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ExcludeSemantics(child: child),
+        ...sentences.map(
+              (sentence) => Semantics(
+            container: true,
+            label: sentence,
+            child: const SizedBox(
+              width: 1,
+              height: 1,
+              child: SizedBox.shrink(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -3,7 +3,11 @@ import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 
+import '../../../common/common_switch_widget.dart';
 import '../../../core/utils/user_roles.dart';
+
+
+import 'package:flutter/material.dart';
 
 class RoleSwitchWidget extends StatelessWidget {
   final UserRoles selectedRole;
@@ -14,96 +18,36 @@ class RoleSwitchWidget extends StatelessWidget {
     required this.selectedRole,
     required this.onChanged,
   });
-  static const _animationDuration = Duration(milliseconds: 250);
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Container(
+    return CommonSwitchWidget<UserRoles>(
+      selectedValue: selectedRole,
+      values: const [
+        UserRoles.guru,
+        UserRoles.siswa,
+      ],
+      onChanged: onChanged,
+      labelBuilder: (role) {
+        switch (role) {
+          case UserRoles.guru:
+            return context.l10n.teacher;
+          case UserRoles.siswa:
+            return context.l10n.student;
+        }
+      },
       height: 50,
-      padding: const EdgeInsets.all(4),
-      decoration: const BoxDecoration(
-        color: ColorConstant.secondary,
-        borderRadius: BorderRadius.all(
-          Radius.circular(Dimens.radius),
-        ),
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Stack(
-            children: [
-              AnimatedAlign(
-                duration: _animationDuration, // can use your const variable
-                curve: Curves.easeInOut,
-                alignment: selectedRole == UserRoles.guru
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
-                child: Container(
-                  width: constraints.maxWidth / 2,
-                  decoration: const BoxDecoration(
-                    color: ColorConstant.primary,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(Dimens.radius),
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  _buildRoleButton(
-                    context: context,
-                    textTheme: textTheme,
-                    role: UserRoles.guru,
-                  ),
-                  _buildRoleButton(
-                    context: context,
-                    textTheme: textTheme,
-                    role: UserRoles.siswa,
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildRoleButton({
-    required BuildContext context,
-    required TextTheme textTheme,
-    required UserRoles role,
-  }) {
-    final isSelected = role == selectedRole;
-    final roleTitle = role == UserRoles.guru ? context.l10n.teacher : context.l10n.student;
-
-    return Expanded(
-      child: Semantics(
-        button: true,
-        selected: isSelected,
-        label: 'Pilih peran $roleTitle${isSelected ? ', terpilih' : ''}',
-        child: InkWell(
-          borderRadius: BorderRadius.circular(Dimens.radius),
-          onTap: () => onChanged(role),
-          child: Center(
-            child: AnimatedDefaultTextStyle(
-              duration: _animationDuration,
-              curve: Curves.easeInOut,
-              style: textTheme.titleMedium!.copyWith(
-                fontWeight: isSelected
-                    ? FontWeight.w700
-                    : FontWeight.w500,
-                color: isSelected
-                    ? ColorConstant.white
-                    : ColorConstant.textGreyColor,
-              ),
-              child: Text(roleTitle),
-            ),
-          ),
-        ),
+      animationDuration: const Duration(milliseconds: 250),
+      backgroundColor: ColorConstant.secondary,
+      selectedColor: ColorConstant.primary,
+      selectedTextColor: ColorConstant.white,
+      unselectedTextColor: ColorConstant.textGreyColor,
+      borderRadius: const BorderRadius.all(
+        Radius.circular(Dimens.radius),
       ),
     );
   }
 }
+
 
 

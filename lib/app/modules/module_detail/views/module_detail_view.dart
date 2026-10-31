@@ -57,7 +57,7 @@ class ModuleDetailView extends GetView<ModuleDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Daftar Isi",
+                context.l10n.tableOfContents,
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: ColorConstant.informationColor,
                       fontWeight: FontWeight.w800,

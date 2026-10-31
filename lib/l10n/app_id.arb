@@ -126,6 +126,8 @@
   "tableOfContents": "Daftar Isi",
   "errorOccurred": "Terjadi Kesalahan",
   "beforeStartingExam": "Sebelum Memulai Ujian",
+  "modeDetailCell": "Detail per Sel",
+  "modeDetailSentences": "Detail per Kalimat",
 
   "welcomeStudentGreeting": "Selamat belajar 👋",
   "student": "Siswa",
