@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/subject_args.dart';
 import 'package:lydera_app/app/core/utils/table_mode.dart';
@@ -10,6 +12,39 @@ import 'package:lydera_app/app/modules/module/controllers/module_controller.dart
 import 'package:lydera_app/app/modules/module_detail/controllers/module_detail_controller.dart';
 import 'package:lydera_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
 
+enum WordTyping {
+  bold(
+    Icons.format_bold,
+  ),
+  italic(
+    Icons.format_italic,
+  ),
+  underline(
+    Icons.format_underline,
+  ),
+  strikethrough(
+    Icons.strikethrough_s,
+  );
+
+  final IconData icon;
+  const WordTyping(this.icon);
+}
+
+enum AlignParagraft {
+  left(
+      Icons.format_align_left
+  ),
+  center(
+      Icons.format_align_center
+  ),
+  right(
+    Icons.format_align_right
+  );
+
+  final IconData icon;
+  const AlignParagraft(this.icon);
+}
+
 class SubjectController extends GetxController {
   final ModuleRepository? moduleRepository;
   final StudentRepository? studentRepository;
@@ -18,8 +53,18 @@ class SubjectController extends GetxController {
   late final int index;
   final Rx<int> currentPageNumber = 1.obs;
   final Rx<TableMode> selectedMode = TableMode.cell.obs;
+  final formKey = GlobalKey<FormState>();
+  final RxBool isValidNote = false.obs;
+  final RxBool isTyping = false.obs;
+
+  final Rx<AlignParagraft> selectedAlignment = AlignParagraft.left.obs;
+  final RxBool isBold = false.obs;
+  final RxBool isItalic = false.obs;
+  final RxBool isUnderline = false.obs;
+  final RxBool isStrikethrough = false.obs;
 
   final TextEditingController searchController = TextEditingController();
+  late final QuillController noteController;
 
   SubjectController({
     ModuleRepository? moduleRepository,
@@ -37,20 +82,103 @@ class SubjectController extends GetxController {
 
   @override
   void onInit() {
-    final args = Get.arguments as SubjectArgs;
     super.onInit();
+    final args = Get.arguments as SubjectArgs;
     subject = args.subject;
     index = args.index;
+    noteController = QuillController.basic();
+    noteController.addListener(_updateToolbar);
   }
 
   @override
-  void dispose() {
+  void onClose() {
+    noteController.removeListener(_updateToolbar);
+    noteController.dispose();
     searchController.dispose();
-    super.dispose();
+    super.onClose();
   }
 
   void onNext() {
     currentPageNumber.value += 1;
+  }
+
+  void onChangeMode(WordTyping typing) {
+    final attribute = switch (typing) {
+      WordTyping.bold => Attribute.bold,
+      WordTyping.italic => Attribute.italic,
+      WordTyping.underline => Attribute.underline,
+      WordTyping.strikethrough => Attribute.strikeThrough,
+    };
+
+    final isActive = noteController
+        .getSelectionStyle()
+        .containsKey(attribute.key);
+
+    noteController.formatSelection(
+      isActive
+          ? Attribute(attribute.key, AttributeScope.inline, null)
+          : attribute,
+    );
+
+    _updateToolbar();
+  }
+
+  void onChangeAlignment(AlignParagraft alignment, {bool wholeDocument = false}) {
+    final attribute = switch (alignment) {
+      AlignParagraft.left => Attribute.leftAlignment,
+      AlignParagraft.center => Attribute.centerAlignment,
+      AlignParagraft.right => Attribute.rightAlignment,
+    };
+
+    final previousSelection = noteController.selection;
+    selectedAlignment.value = alignment;
+
+    if (wholeDocument) {
+      noteController.updateSelection(
+        TextSelection(
+          baseOffset: 0,
+          extentOffset: noteController.document.length - 1,
+        ),
+        ChangeSource.local,
+      );
+    }
+
+    noteController.formatSelection(attribute);
+
+    if (wholeDocument) {
+      noteController.updateSelection(
+        previousSelection,
+        ChangeSource.local,
+      );
+    }
+  }
+
+  void onChangeNote(String note){
+
+  }
+
+  void onSaveNote(){
+
+  }
+
+  void _updateToolbar() {
+    final style = noteController.getSelectionStyle();
+
+    isBold.value = style.containsKey(Attribute.bold.key);
+    isItalic.value = style.containsKey(Attribute.italic.key);
+    isUnderline.value = style.containsKey(Attribute.underline.key);
+    isStrikethrough.value = style.containsKey(Attribute.strikeThrough.key);
+    final alignment = style.attributes[Attribute.align.key]?.value;
+    switch (alignment) {
+      case 'center':
+        selectedAlignment.value = AlignParagraft.center;
+        break;
+      case 'right':
+        selectedAlignment.value = AlignParagraft.right;
+        break;
+      default:
+        selectedAlignment.value = AlignParagraft.left;
+    }
   }
 
   void onPage(int page) {
@@ -62,7 +190,6 @@ class SubjectController extends GetxController {
     }
     currentPageNumber.value = page;
     SemanticsService.announce("Pergi ke halaman $page", TextDirection.ltr);
-    print('Current Number : ${currentPageNumber.value}');
   }
 
   void onPrevious() {

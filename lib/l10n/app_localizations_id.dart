@@ -51,6 +51,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get modeDetailSentences => 'Detail per Kalimat';
 
   @override
+  String get openNoteChapter => 'Buka Catatan';
+
+  @override
   String get settings => 'Pengaturan';
 
   @override
@@ -559,6 +562,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get saveModule => 'Simpan Modul';
 
   @override
+  String get saveRecordNote => 'Simpan Catatan';
+
+  @override
+  String get hintRecordNote => 'Masukkan catatan untuk bab ini...';
+
+  @override
+  String get recordNote => 'Teks Catatan';
+
+  @override
   String get finish => 'Selesai';
 
   @override
@@ -573,6 +585,27 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get statusProcess => 'Proses...';
+
+  @override
+  String get boldText => 'Tebal Teks';
+
+  @override
+  String get italicText => 'Miring Teks';
+
+  @override
+  String get underlineText => 'Garis Bawah Teks';
+
+  @override
+  String get strikethroughText => 'Coret Teks';
+
+  @override
+  String get alignLeft => 'Rata Kiri';
+
+  @override
+  String get alignCenter => 'Rata Tengah';
+
+  @override
+  String get alignRight => 'Rata Kanan';
 
   @override
   String get evaluatingAnnotationUpdating =>

@@ -4,10 +4,14 @@ import 'package:lydera_app/app/common/common_show_modal_bottom_sheet.dart';
 
 class ShowModalBottomSheetHelper {
   static void showCustomBottomSheet(
-      Widget child
-      ){
+      Widget child, {
+        double? padding,
+      }) {
     Get.bottomSheet(
-      CommonShowModalBottomSheet(child: child),
+      CommonShowModalBottomSheet(
+        padding: padding,
+        child: child,
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
     );

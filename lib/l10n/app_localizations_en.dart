@@ -51,6 +51,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modeDetailSentences => 'Per-Sentence Detail';
 
   @override
+  String get openNoteChapter => 'Open Note';
+
+  @override
   String get settings => 'Settings';
 
   @override
@@ -560,6 +563,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveModule => 'Save Module';
 
   @override
+  String get saveRecordNote => 'Save Note';
+
+  @override
+  String get hintRecordNote => 'Enter a note for this chapter...';
+
+  @override
+  String get recordNote => 'Text Note';
+
+  @override
   String get finish => 'Finish';
 
   @override
@@ -574,6 +586,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusProcess => 'Processing...';
+
+  @override
+  String get boldText => 'Bold Text';
+
+  @override
+  String get italicText => 'Italic Text';
+
+  @override
+  String get underlineText => 'Underline Text';
+
+  @override
+  String get strikethroughText => 'Strikethrough Text';
+
+  @override
+  String get alignLeft => 'Align Left';
+
+  @override
+  String get alignCenter => 'Align Center';
+
+  @override
+  String get alignRight => 'Align Right';
 
   @override
   String get evaluatingAnnotationUpdating => 'Annoter is Updating Annotations';

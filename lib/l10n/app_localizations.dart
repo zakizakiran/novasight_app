@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'Per-Sentence Detail'**
   String get modeDetailSentences;
 
+  /// No description provided for @openNoteChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Note'**
+  String get openNoteChapter;
+
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:
@@ -1124,6 +1130,24 @@ abstract class AppLocalizations {
   /// **'Save Module'**
   String get saveModule;
 
+  /// No description provided for @saveRecordNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Note'**
+  String get saveRecordNote;
+
+  /// No description provided for @hintRecordNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a note for this chapter...'**
+  String get hintRecordNote;
+
+  /// No description provided for @recordNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Text Note'**
+  String get recordNote;
+
   /// No description provided for @finish.
   ///
   /// In en, this message translates to:
@@ -1153,6 +1177,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Processing...'**
   String get statusProcess;
+
+  /// No description provided for @boldText.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold Text'**
+  String get boldText;
+
+  /// No description provided for @italicText.
+  ///
+  /// In en, this message translates to:
+  /// **'Italic Text'**
+  String get italicText;
+
+  /// No description provided for @underlineText.
+  ///
+  /// In en, this message translates to:
+  /// **'Underline Text'**
+  String get underlineText;
+
+  /// No description provided for @strikethroughText.
+  ///
+  /// In en, this message translates to:
+  /// **'Strikethrough Text'**
+  String get strikethroughText;
+
+  /// No description provided for @alignLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Align Left'**
+  String get alignLeft;
+
+  /// No description provided for @alignCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Align Center'**
+  String get alignCenter;
+
+  /// No description provided for @alignRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Align Right'**
+  String get alignRight;
 
   /// No description provided for @evaluatingAnnotationUpdating.
   ///

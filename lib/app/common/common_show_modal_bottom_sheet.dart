@@ -5,7 +5,8 @@ import '../core/styles/colors/color_constant.dart';
 
 class CommonShowModalBottomSheet extends StatelessWidget {
   final Widget child;
-  const CommonShowModalBottomSheet({super.key, required this.child});
+  final double? padding;
+  const CommonShowModalBottomSheet({super.key, required this.child, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class CommonShowModalBottomSheet extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.all(Dimens.innerPadding),
+          padding: EdgeInsets.all(padding ?? Dimens.innerPadding),
           child: child,
         ),
       ),

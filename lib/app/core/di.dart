@@ -3,6 +3,7 @@ import 'package:lydera_app/app/core/network/dio_client.dart';
 import 'package:lydera_app/app/data/providers/auth_provider.dart';
 import 'package:lydera_app/app/data/providers/chatbot_provider.dart';
 import 'package:lydera_app/app/data/providers/classroom_provider.dart';
+import 'package:lydera_app/app/data/providers/local/record_note_local_provider.dart';
 import 'package:lydera_app/app/data/providers/student_provider.dart';
 import 'package:lydera_app/app/data/providers/teacher_provider.dart';
 import 'package:lydera_app/app/data/repositories/auth_repository.dart';
@@ -16,7 +17,12 @@ import 'package:lydera_app/app/data/services/local/storage_service.dart';
 import 'package:lydera_app/app/data/services/remote/module_service.dart';
 import 'package:lydera_app/app/data/services/remote/module_teacher_service.dart';
 
+import '../data/services/local/database_service.dart';
+import 'network/database.dart';
+
 Future<void> initDepedencies() async {
+  Get.put(DatabaseService(), permanent: true,);
+
   final storageService = StorageService();
   await storageService.init();
   Get.put(storageService, permanent: true);
@@ -54,6 +60,13 @@ Future<void> initDepedencies() async {
     AuthRepository(
       authProvider: Get.find<AuthProvider>(),
       storageService: Get.find<StorageService>(),
+    ),
+    permanent: true,
+  );
+
+  Get.put<RecordNoteLocalProvider>(
+    RecordNoteLocalProvider(
+      service: Get.find<DatabaseService>(),
     ),
     permanent: true,
   );

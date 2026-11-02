@@ -16,8 +16,7 @@
 
   "modeDetailCell": "Per-Cell Detail",
   "modeDetailSentences": "Per-Sentence Detail",
-
-
+  "openNoteChapter": "Open Note",
 
   "settings": "Settings",
   "settingsDescription": "Adjust application settings according to your needs.",
@@ -302,11 +301,21 @@
     }
   },
   "saveModule": "Save Module",
+  "saveRecordNote": "Save Note",
+  "hintRecordNote": "Enter a note for this chapter...",
+  "recordNote": "Text Note",
   "finish": "Finish",
   "tapToUploadFile": "Tap to upload file",
   "loadingModuleExtraction": "Annoter is extracting and creating linear text annotations for screen readers",
   "statusWait": "Waiting...",
   "statusProcess": "Processing...",
+  "boldText": "Bold Text",
+  "italicText": "Italic Text",
+  "underlineText": "Underline Text",
+  "strikethroughText": "Strikethrough Text",
+  "alignLeft": "Align Left",
+  "alignCenter": "Align Center",
+  "alignRight": "Align Right",
 
   "evaluatingAnnotationUpdating": "Annoter is Updating Annotations",
   "stopUpdatingConfirm": "Stop update? Unsaved changes may be lost.",

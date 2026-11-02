@@ -1,11 +1,14 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/modules/subject/views/widgets/show_modal_bottom_sheet_note.dart';
 
 import '../../../../core/utils/l10n_extension.dart';
+import '../../../../core/utils/show_modal_bottom_sheet_helper.dart';
 class RowSubjectButtonWidget extends StatelessWidget {
   final Function() onNext;
   final bool enableNext;
@@ -27,7 +30,7 @@ class RowSubjectButtonWidget extends StatelessWidget {
     const IconData prevIcon = Icons.arrow_back;
     const IconData nextIcon = Icons.arrow_forward;
     const double sizeIcon = Dimens.iconRegularSize;
-    final style = Theme.of(context).textTheme.titleLarge?.copyWith(
+    final style = Theme.of(context).textTheme.titleMedium?.copyWith(
       color: ColorConstant.white,
       fontWeight: FontWeight.bold
     );
@@ -43,7 +46,7 @@ class RowSubjectButtonWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(prevIcon, color: ColorConstant.white,size: sizeIcon,),
-                const SizedBox(width: Dimens.spacePadding),
+                const SizedBox(width: Dimens.spaceMediumPadding),
                 Expanded(child: Text(prev,style: style,)),
               ],
             ),
@@ -51,18 +54,47 @@ class RowSubjectButtonWidget extends StatelessWidget {
         ),
         const SizedBox(width: Dimens.spacePadding),
         Expanded(
-          child: CommonButtonWidget(
-            buttonName: next,
-            onPressed: onNext,
-            isValid: enableNext,
-            buttonWidth: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(child: Text(next,style: style,)),
-                const SizedBox(width: Dimens.spacePadding),
-                const Icon(nextIcon, color: ColorConstant.white,size: sizeIcon,),
-              ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: Dimens.spacePadding),
+            child: CommonButtonWidget(
+              buttonName: next,
+              onPressed: onNext,
+              isValid: enableNext,
+              buttonWidth: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(child: Text(next,style: style,)),
+                  const SizedBox(width: Dimens.spaceMediumPadding),
+                  const Icon(nextIcon, color: ColorConstant.white,size: sizeIcon,),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: Dimens.spacePadding),
+        Semantics(
+          label: context.l10n.openNoteChapter,
+          button: true,
+          child: GestureDetector(
+            onTap: () {
+              ShowModalBottomSheetHelper.showCustomBottomSheet(
+                const ShowModalBottomSheetNote(),
+                padding: 0,
+              );
+            },
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: ColorConstant.card,
+                borderRadius: BorderRadius.circular(Dimens.radius),
+                border: Border.all(color: ColorConstant.primary),
+              ),
+              child: const Icon(
+                Icons.edit_square,
+                color: ColorConstant.primary,
+              ),
             ),
           ),
         ),

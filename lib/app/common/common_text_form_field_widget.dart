@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +15,11 @@ class CommonTextFormFieldWidget extends StatefulWidget {
   final String? title;
   final bool isReadOnly;
   final int minLines;
+  final int maxLines;
   final int? maxLength;
+  final FocusNode? focusNode;
+  final bool expands;
+  final TextAlignVertical? textAlignVertical;
   final TextAlign textAlign;
   final TextStyle? textStyle;
   final List<TextInputFormatter> inputFormatters;
@@ -40,14 +46,18 @@ class CommonTextFormFieldWidget extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.title,
+    this.focusNode,
     this.prefixIcon,
     this.isReadOnly = false,
     required this.hint,
     this.minLines = 1,
+    this.maxLines = 1,
+    this.expands = false,
     this.maxLength,
     this.isPassword,
     this.enableLinearPassword = false,
     this.inputFormatters = const [],
+    this.textAlignVertical,
     this.keyboardType,
     this.suffixIcon,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
@@ -99,7 +109,8 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
             final color = hasText
                 ? (widget.successColor ?? widget.enableColor)
                 : widget.enableColor;
-
+            final maxLines = max(widget.minLines, widget.maxLines);
+        
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -107,8 +118,10 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                   textField: true,
                   child: TextFormField(
                     maxLength: widget.maxLength,
-                    maxLines: widget.minLines,
-                    minLines: widget.minLines,
+                    focusNode: widget.focusNode,
+                    maxLines: maxLines,
+                    minLines: widget.expands ? null : widget.minLines,
+                    textAlignVertical: widget.textAlignVertical,
                     obscureText: _obscureText,
                     controller: widget.controller,
                     readOnly: widget.isReadOnly,
@@ -220,7 +233,7 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                     ),
                   ),
                 ),
-
+        
                 if (_errorText != null)
                   Padding(
                     padding: const EdgeInsets.only(left: 12, top: 4),
@@ -234,7 +247,7 @@ class _CommonTextFormFieldWidgetState extends State<CommonTextFormFieldWidget> {
                       ),
                     ),
                   ),
-
+        
                 if (widget.enableLinearPassword)
                   Padding(
                     padding: const EdgeInsets.only(top: Dimens.spacePadding),
