@@ -48,14 +48,29 @@ class DatabaseClient {
         .getSingleOrNull();
   }
 
+  Future<D> selectSingleNonNull<T extends Table, D extends DataClass>(
+      TableInfo<T, D> table, {
+        required Expression<bool> Function(T tbl) predicate,
+      }) {
+    return (_database.select(table)
+      ..where(predicate))
+        .getSingle();
+  }
+
   // UPSERT
   Future<int> upsert<T extends Table, D extends DataClass>(
       TableInfo<T, D> table,
-      Insertable<D> data,
-      ) {
-    return _database.into(table).insertOnConflictUpdate(data);
+      Insertable<D> data, {
+        List<Column>? target,
+      }) {
+    return _database.into(table).insert(
+      data,
+      onConflict: DoUpdate(
+            (old) => data,
+        target: target,
+      ),
+    );
   }
-
   // INSERT
   Future<int> insert<T extends Table, D extends DataClass>(
       TableInfo<T, D> table,

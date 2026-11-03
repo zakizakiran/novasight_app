@@ -14,41 +14,31 @@ import 'package:lydera_app/app/data/repositories/student_repository.dart';
 import 'package:lydera_app/app/modules/module/controllers/module_controller.dart';
 import 'package:lydera_app/app/modules/module_detail/controllers/module_detail_controller.dart';
 import 'package:lydera_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
-
 import '../../../core/errors/api_exception.dart';
 import '../../../core/utils/snackbar_helper.dart';
 
 enum WordTyping {
-  bold(
-    Icons.format_bold,
-  ),
-  italic(
-    Icons.format_italic,
-  ),
-  underline(
-    Icons.format_underline,
-  ),
-  strikethrough(
-    Icons.strikethrough_s,
-  );
+  bold(Icons.format_bold),
+  italic(Icons.format_italic),
+  underline(Icons.format_underline),
+  strikethrough(Icons.strikethrough_s);
 
   final IconData icon;
   const WordTyping(this.icon);
 }
 
 enum AlignParagraft {
-  left(
-      Icons.format_align_left
-  ),
-  center(
-      Icons.format_align_center
-  ),
-  right(
-    Icons.format_align_right
-  );
+  left(Icons.format_align_left),
+  center(Icons.format_align_center),
+  right(Icons.format_align_right);
 
   final IconData icon;
   const AlignParagraft(this.icon);
+}
+
+enum NoteMode {
+  reader,
+  editor,
 }
 
 class SubjectController extends GetxController {
@@ -64,17 +54,24 @@ class SubjectController extends GetxController {
   final RxBool isValidNote = false.obs;
   final RxBool isTyping = false.obs;
 
+  final Rx<NoteMode> noteMode = NoteMode.reader.obs;
+
   final Rx<AlignParagraft> selectedAlignment = AlignParagraft.left.obs;
   final RxBool isBold = false.obs;
   final RxBool isItalic = false.obs;
   final RxBool isUnderline = false.obs;
   final RxBool isStrikethrough = false.obs;
-  final isNoteLoaded = false.obs;
+
+  final RxBool isNoteLoaded = false.obs;
+  final RxString prevContent = ''.obs;
+  final RxBool isSameContent = false.obs;
 
   RecordNoteData? existingNote;
 
   final TextEditingController searchController = TextEditingController();
-  late final QuillController noteController;
+  late QuillController noteController;
+
+  bool get isReader => noteMode.value == NoteMode.reader;
 
   SubjectController({
     ModuleRepository? moduleRepository,
@@ -82,12 +79,13 @@ class SubjectController extends GetxController {
     StudentRepository? studentRepository,
     RecordNoteRepository? recordNoteRepository,
   })  : moduleRepository = moduleRepository ??
-            repository ??
-            (Get.isRegistered<ModuleRepository>()
-                ? Get.find<ModuleRepository>()
-                : null),
+      repository ??
+      (Get.isRegistered<ModuleRepository>()
+          ? Get.find<ModuleRepository>()
+          : null),
         recordNoteRepository = recordNoteRepository ??
-            (Get.isRegistered<RecordNoteRepository>() ? Get.find<RecordNoteRepository>()
+            (Get.isRegistered<RecordNoteRepository>()
+                ? Get.find<RecordNoteRepository>()
                 : null),
         studentRepository = studentRepository ??
             (Get.isRegistered<StudentRepository>()
@@ -100,12 +98,15 @@ class SubjectController extends GetxController {
     final args = Get.arguments as SubjectArgs;
     subject = args.subject;
     index = args.index;
+    noteController = QuillController.basic();
+    noteController.readOnly = true;
+    noteController.addListener(_onNoteChanged);
     _initializeNote();
   }
 
   @override
   void onClose() {
-    noteController.removeListener(_updateToolbar);
+    noteController.removeListener(_onNoteChanged);
     noteController.dispose();
     searchController.dispose();
     super.onClose();
@@ -115,7 +116,28 @@ class SubjectController extends GetxController {
     currentPageNumber.value += 1;
   }
 
-  void onChangeMode(WordTyping typing) {
+  void changeNoteMode(NoteMode mode) {
+    noteMode.value = mode;
+    final reader = mode == NoteMode.reader;
+    noteController.readOnly = reader;
+
+    if (reader) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      noteController.updateSelection(
+        const TextSelection.collapsed(offset: 0),
+        ChangeSource.local,
+      );
+    }
+
+    SemanticsService.announce(
+      reader ? 'Mode baca' : 'Mode edit',
+      TextDirection.ltr,
+    );
+  }
+
+  void onChangeTextMode(WordTyping typing) {
+    if (isReader) return;
+
     final attribute = switch (typing) {
       WordTyping.bold => Attribute.bold,
       WordTyping.italic => Attribute.italic,
@@ -123,9 +145,8 @@ class SubjectController extends GetxController {
       WordTyping.strikethrough => Attribute.strikeThrough,
     };
 
-    final isActive = noteController
-        .getSelectionStyle()
-        .containsKey(attribute.key);
+    final isActive =
+    noteController.getSelectionStyle().containsKey(attribute.key);
 
     noteController.formatSelection(
       isActive
@@ -137,6 +158,8 @@ class SubjectController extends GetxController {
   }
 
   void onChangeAlignment(AlignParagraft alignment, {bool wholeDocument = false}) {
+    if (isReader) return;
+
     final attribute = switch (alignment) {
       AlignParagraft.left => Attribute.leftAlignment,
       AlignParagraft.center => Attribute.centerAlignment,
@@ -169,7 +192,6 @@ class SubjectController extends GetxController {
   Future<void> _initializeNote() async {
     try {
       existingNote = await recordNoteRepository?.getNoteByChapterId(chapterId: subject.id);
-
       Document document;
 
       if (existingNote != null) {
@@ -178,26 +200,36 @@ class SubjectController extends GetxController {
         document = Document.fromJson(
           List.castFrom(deltaJson),
         );
+        prevContent.value = existingNote!.content;
       } else {
         document = Document();
+        prevContent.value = jsonEncode(document.toDelta().toJson());
       }
 
-      noteController = QuillController(
-        document: document,
-        selection: const TextSelection.collapsed(offset: 0),
+      noteController.document = document;
+
+      noteController.updateSelection(
+        const TextSelection.collapsed(offset: 0),
+        ChangeSource.local,
       );
-
-      noteController.addListener(_updateToolbar);
-
     } catch (e) {
       debugPrint('Failed to initialize note: $e');
-
-      noteController = QuillController.basic();
-      noteController.addListener(_updateToolbar);
-
     } finally {
       isNoteLoaded.value = true;
+      checkContentChanged();
     }
+  }
+
+  void checkContentChanged() {
+    final currentContent = jsonEncode(
+      noteController.document.toDelta().toJson(),
+    );
+    isSameContent.value = currentContent == prevContent.value;
+  }
+
+  void _onNoteChanged() {
+    _updateToolbar();
+    checkContentChanged();
   }
 
   Future<void> onSaveNote(String title) async {
@@ -209,7 +241,9 @@ class SubjectController extends GetxController {
       final content = jsonEncode(delta.toJson());
 
       final now = DateTime.now();
-
+      SnackbarHelper.showSuccess(title: 'Berhasil', message: 'Menyimpan catatan');
+      prevContent.value = content;
+      isSameContent.value = true;
       await recordNoteRepository?.submitNote(
         recordNote: RecordNoteCompanion(
           title: drift.Value<String>(existingNote?.title ?? title),
@@ -218,13 +252,15 @@ class SubjectController extends GetxController {
           updatedAt: drift.Value<DateTime?>(now),
         ),
       );
-      Get.back();
     } on ApiException catch (e) {
       SnackbarHelper.showError(
         title: 'Error Failed to Save Note',
         message: e.message,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('Error General: $e');
+      debugPrintStack(stackTrace: stackTrace);
+
       SnackbarHelper.showError(
         title: 'Error Failed to Save Note',
         message: e.toString(),
@@ -253,10 +289,10 @@ class SubjectController extends GetxController {
   }
 
   void onPage(int page) {
-    if (page < 1){
+    if (page < 1) {
       return;
     }
-    if (page > subject.pages.length){
+    if (page > subject.pages.length) {
       return;
     }
     currentPageNumber.value = page;
@@ -267,7 +303,7 @@ class SubjectController extends GetxController {
     currentPageNumber.value -= 1;
   }
 
-  void onSentenceTapped(sentence){
+  void onSentenceTapped(sentence) {
     SemanticsService.announce(sentence, TextDirection.ltr);
   }
 
@@ -280,18 +316,12 @@ class SubjectController extends GetxController {
     if (Get.isRegistered<ModuleDetailController>()) {
       Get.find<ModuleDetailController>().markChapterDoneLocally(subject.id);
     }
-
-    // 1. Mark complete on backend via Student API
     if (studentRepository != null) {
       try {
         await studentRepository!.markChapterComplete(chapterId: subject.id);
       } catch (_) {
-        // Continue even if network error so local state updates
       }
     }
-
-
-    // 3. Trigger background sync for ModuleController & StudentDashboardController
     if (Get.isRegistered<ModuleController>()) {
       Get.find<ModuleController>().onLoad();
     }
@@ -299,4 +329,5 @@ class SubjectController extends GetxController {
       Get.find<StudentDashboardController>().onRefresh();
     }
   }
+
 }

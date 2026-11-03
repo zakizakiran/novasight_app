@@ -15,6 +15,7 @@ import 'package:lydera_app/app/data/repositories/note_repository.dart';
 import 'package:lydera_app/app/data/repositories/record_note_repository.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/data/services/connectivity_service.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
 import 'package:lydera_app/app/data/services/remote/module_service.dart';
 import 'package:lydera_app/app/data/services/remote/module_teacher_service.dart';
@@ -28,6 +29,11 @@ Future<void> initDepedencies() async {
   final storageService = StorageService();
   await storageService.init();
   Get.put(storageService, permanent: true);
+
+  Get.put<ConnectivityService>(
+    ConnectivityService(),
+    permanent: true
+  );
 
   // Network & Providers
   final dioClient = DioClient(storageService: storageService);
@@ -81,6 +87,8 @@ Future<void> initDepedencies() async {
   Get.put<RecordNoteRepository>(
     RecordNoteRepository(
       recordNoteLocalProvider: Get.find<RecordNoteLocalProvider>(),
+      recordNoteRemoteProvider: Get.find<RecordNoteRemoteProvider>(),
+      connectivityService: Get.find<ConnectivityService>()
     ),
     permanent: true,
   );

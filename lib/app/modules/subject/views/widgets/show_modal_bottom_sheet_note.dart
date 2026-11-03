@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/modules/subject/controllers/subject_controller.dart';
-import '../../../../common/common_text_form_field_widget.dart';
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/utils/l10n_extension.dart';
-import '../../../../core/utils/validate_helper.dart';
 
 class ShowModalBottomSheetNote extends StatelessWidget {
   const ShowModalBottomSheetNote({super.key});
@@ -25,34 +24,7 @@ class ShowModalBottomSheetNote extends StatelessWidget {
         spacing: Dimens.spacePadding,
         children: [
           const SizedBox(height: Dimens.innerPadding),
-          Container(
-            padding: const EdgeInsets.all(Dimens.innerPadding),
-            color: Theme.of(context).colorScheme.surfaceContainer,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    Get.back();
-                  },
-                    child: const Icon(Icons.arrow_back, size: sizeIcon)
-                ),
-                Text(
-                  context.l10n.recordNote,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                GestureDetector(
-                  onTap: (){
-                    subjectController.onSaveNote(
-                        '${context.l10n.chapter} ${subjectController.subject.id} ${context.l10n.recordNote}'
-                    );
-                  },
-                  child: const Icon(Icons.check_rounded, size: sizeIcon),
-                ),
-              ],
-            ),
-          ),
-          // buat pass horizontal
+          _buildHeader(context, subjectController, sizeIcon),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -63,37 +35,206 @@ class ShowModalBottomSheetNote extends StatelessWidget {
                 data: Theme.of(context).copyWith(
                   textSelectionTheme: TextSelectionThemeData(
                     selectionColor: Theme.of(context)
-                        .colorScheme.primary
+                        .colorScheme
+                        .primary
                         .withValues(alpha: 0.25),
                     cursorColor: Theme.of(context).colorScheme.primary,
                     selectionHandleColor: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                child: QuillEditor.basic(
-                  controller: subjectController.noteController,
-                  config: QuillEditorConfig(
-                    placeholder: context.l10n.hintRecordNote,
-                    padding: const EdgeInsets.all(Dimens.spacePadding),
-                    expands: true,
-                  ),
-                ),
-              )
+                child: Obx(() {
+                  final isReader =
+                      subjectController.noteMode.value == NoteMode.reader;
+
+                  if (!subjectController.isNoteLoaded.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final editor = QuillEditor.basic(
+                    key: ValueKey(isReader),
+                    controller: subjectController.noteController,
+                    config: QuillEditorConfig(
+                      autoFocus: false,
+                      enableInteractiveSelection: true,
+                      showCursor: !isReader,
+                      checkBoxReadOnly: isReader,
+                      placeholder: context.l10n.hintRecordNote,
+                      padding: const EdgeInsets.all(Dimens.spacePadding),
+                      expands: true,
+                      onTapUp: (details, getPosition) {
+                        if (isReader) return false;
+                        if (!MediaQuery.of(context).accessibleNavigation) return false;
+
+                        final ctrl = subjectController.noteController;
+                        final tapped = getPosition(details.globalPosition).offset;
+
+                        final text = ctrl.document.toPlainText();
+                        var end = text.indexOf('\n', tapped);
+                        if (end == -1) end = ctrl.document.length - 1;
+
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ctrl.updateSelection(
+                            TextSelection.collapsed(offset: end),
+                            ChangeSource.local,
+                          );
+                        });
+                        return false;
+                      },
+
+                      customStyles: DefaultStyles(
+                        placeHolder: DefaultTextBlockStyle(
+                          Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.grey,
+                          ),
+                          const HorizontalSpacing(0, 0),
+                          const VerticalSpacing(0, 0),
+                          const VerticalSpacing(0, 0),
+                          const BoxDecoration(),
+                        ),
+                      ),
+                    ),
+                  );
+
+                  return isReader
+                      ? editor
+                      : _accessibleEditor(subjectController, editor);
+                }),
+              ),
             ),
           ),
-          _buildBottomSection(context, subjectController),
+
+          Obx(() => subjectController.noteMode.value == NoteMode.editor
+              ? _buildBottomSection(context, subjectController)
+              : const SizedBox.shrink()),
           const SizedBox(height: Dimens.innerPadding),
         ],
       ),
     );
   }
 
-  Widget _buildBottomSection(BuildContext context, SubjectController subjectController){
+  Widget _buildHeader(BuildContext context, SubjectController subjectController, double sizeIcon,) {
+    return Container(
+      padding: const EdgeInsets.all(Dimens.innerPadding),
+      color: Theme.of(context).colorScheme.surfaceContainer,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Semantics(
+            button: true,
+            label: 'Kembali',
+            child: GestureDetector(
+              onTap: () => Get.back(),
+              child: Icon(Icons.arrow_back, size: sizeIcon),
+            ),
+          ),
+          Text(
+            context.l10n.recordNote,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: Dimens.innerPadding,
+            children: [
+              Obx(() {
+                final isReader =
+                    subjectController.noteMode.value == NoteMode.reader;
+                return Semantics(
+                  button: true,
+                  label: isReader ? 'Ubah ke mode edit' : 'Ubah ke mode baca',
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => subjectController.changeNoteMode(
+                      isReader ? NoteMode.editor : NoteMode.reader,
+                    ),
+                    child: Icon(
+                      isReader ? Icons.edit : Icons.visibility,
+                      size: sizeIcon,
+                    ),
+                  ),
+                );
+              }),
+              Obx(() {
+                final isSameContent = subjectController.isSameContent.value;
+                final isLoaded = subjectController.isNoteLoaded.value;
+                final color = isLoaded
+                    ? (isSameContent ? Colors.grey : Colors.black)
+                    : Colors.grey;
+                return Semantics(
+                  button: true,
+                  label: context.l10n.recordNote,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      if (!isSameContent) {
+                        subjectController.onSaveNote(
+                          '${context.l10n.chapter} ${subjectController.subject.id} ${context.l10n.recordNote}',
+                        );
+                      }
+                    },
+                    child: Icon(Icons.check_rounded, size: sizeIcon, color: color),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _accessibleEditor(SubjectController c, Widget editor) {
+    final ctrl = c.noteController;
+
+    void move(int delta, bool extend) {
+      final sel = ctrl.selection;
+      final max = ctrl.document.length - 1;
+      final base = sel.isValid ? sel.baseOffset : 0;
+      final extent = sel.isValid ? sel.extentOffset : 0;
+      final newExtent = (extent + delta).clamp(0, max);
+      ctrl.updateSelection(
+        extend
+            ? TextSelection(baseOffset: base, extentOffset: newExtent)
+            : TextSelection.collapsed(offset: newExtent),
+        ChangeSource.local,
+      );
+      final text = ctrl.document.toPlainText();
+      final from = delta > 0 ? extent : newExtent;
+      final to = delta > 0 ? newExtent : extent;
+      if (from >= 0 && to <= text.length && from < to) {
+        final ch = text.substring(from, to);
+        SemanticsService.announce(
+          ch.trim().isEmpty ? 'spasi' : ch,
+          TextDirection.ltr,
+        );
+      }
+    }
+
+    return ListenableBuilder(
+      listenable: ctrl,
+      builder: (context, child) {
+        return Semantics(
+          textField: true,
+          multiline: true,
+          value: ctrl.document.toPlainText(),
+          onSetSelection: (selection) {
+            ctrl.updateSelection(selection, ChangeSource.local);
+          },
+          onMoveCursorForwardByCharacter: (extend) => move(1, extend),
+          onMoveCursorBackwardByCharacter: (extend) => move(-1, extend),
+          child: child,
+        );
+      },
+      child: editor,
+    );
+  }
+
+  Widget _buildBottomSection(BuildContext context, SubjectController subjectController) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Dimens.innerPadding),
       padding: const EdgeInsets.symmetric(vertical: Dimens.spaceMediumPadding),
       decoration: const BoxDecoration(
         color: ColorConstant.grey,
-        borderRadius: BorderRadius.all(Radius.circular(Dimens.radius))
+        borderRadius: BorderRadius.all(Radius.circular(Dimens.radius)),
       ),
       child: Obx(() {
         final selectedAlignment = subjectController.selectedAlignment.value;
@@ -101,10 +242,14 @@ class ShowModalBottomSheetNote extends StatelessWidget {
           spacing: Dimens.spaceMediumPadding,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildIconWord(WordTyping.bold, context, subjectController.onChangeMode, label: context.l10n.boldText, isSelected: subjectController.isBold.value),
-            _buildIconWord(WordTyping.italic, context, subjectController.onChangeMode, label: context.l10n.italicText, isSelected: subjectController.isItalic.value),
-            _buildIconWord(WordTyping.underline, context, subjectController.onChangeMode, label: context.l10n.underlineText, isSelected: subjectController.isUnderline.value),
-            _buildIconWord(WordTyping.strikethrough, context, subjectController.onChangeMode, label: context.l10n.strikethroughText, isSelected: subjectController.isStrikethrough.value),
+            _buildIconWord(WordTyping.bold, context, subjectController.onChangeTextMode,
+                label: context.l10n.boldText, isSelected: subjectController.isBold.value),
+            _buildIconWord(WordTyping.italic, context, subjectController.onChangeTextMode,
+                label: context.l10n.italicText, isSelected: subjectController.isItalic.value),
+            _buildIconWord(WordTyping.underline, context, subjectController.onChangeTextMode,
+                label: context.l10n.underlineText, isSelected: subjectController.isUnderline.value),
+            _buildIconWord(WordTyping.strikethrough, context, subjectController.onChangeTextMode,
+                label: context.l10n.strikethroughText, isSelected: subjectController.isStrikethrough.value),
             SizedBox(
               height: 24,
               child: VerticalDivider(
@@ -113,30 +258,32 @@ class ShowModalBottomSheetNote extends StatelessWidget {
                 width: 8,
               ),
             ),
-            _buildIconAlign(AlignParagraft.left, context, subjectController.onChangeAlignment, label: context.l10n.alignLeft, selectedAlignment: selectedAlignment),
-            _buildIconAlign(AlignParagraft.center, context, subjectController.onChangeAlignment, label: context.l10n.alignCenter, selectedAlignment: selectedAlignment),
-            _buildIconAlign(AlignParagraft.right, context, subjectController.onChangeAlignment, label: context.l10n.alignRight, selectedAlignment: selectedAlignment),
+            _buildIconAlign(AlignParagraft.left, context, subjectController.onChangeAlignment,
+                label: context.l10n.alignLeft, selectedAlignment: selectedAlignment),
+            _buildIconAlign(AlignParagraft.center, context, subjectController.onChangeAlignment,
+                label: context.l10n.alignCenter, selectedAlignment: selectedAlignment),
+            _buildIconAlign(AlignParagraft.right, context, subjectController.onChangeAlignment,
+                label: context.l10n.alignRight, selectedAlignment: selectedAlignment),
           ],
         );
-      }
-      ),
+      }),
     );
   }
 
-  Widget _buildIconWord(WordTyping word, BuildContext context, Function(WordTyping) onClick, {required String label,  bool isSelected = false}) {
+  Widget _buildIconWord(WordTyping word, BuildContext context, Function(WordTyping) onClick, {required String label, bool isSelected = false,}) {
     return Semantics(
       selected: isSelected,
       button: true,
       label: label,
-      child:  GestureDetector(
+      child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTapDown: (_) => onClick(word),
-        child: _buildIcon(context, word.icon, label: label, isSelected: isSelected,),
+        child: _buildIcon(context, word.icon, label: label, isSelected: isSelected),
       ),
     );
   }
 
-  Widget _buildIconAlign(AlignParagraft align, BuildContext context, Function(AlignParagraft) onClick, {required String label,  AlignParagraft selectedAlignment = AlignParagraft.left}) {
+  Widget _buildIconAlign(AlignParagraft align, BuildContext context, Function(AlignParagraft) onClick, {required String label, AlignParagraft selectedAlignment = AlignParagraft.left,}) {
     final isSelected = selectedAlignment == align;
     return Semantics(
       selected: isSelected,
@@ -150,14 +297,15 @@ class ShowModalBottomSheetNote extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(BuildContext context, IconData icon,{required String label, bool isSelected = false}){
-    return Container(padding: const EdgeInsets.all(Dimens.spaceMediumPadding),
-    decoration: BoxDecoration(
-    color: isSelected
-    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15) // Light background tint
-        : Colors.transparent,
-    shape: BoxShape.circle,
-    ),
+  Widget _buildIcon(BuildContext context, IconData icon, {required String label, bool isSelected = false,}) {
+    return Container(
+      padding: const EdgeInsets.all(Dimens.spaceMediumPadding),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
+            : Colors.transparent,
+        shape: BoxShape.circle,
+      ),
       child: Icon(
         icon,
         size: Dimens.iconMidSize,

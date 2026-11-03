@@ -33,6 +33,7 @@ class ApiEndpoints {
   static String studentSoalSubmit(int soalId) => '/api/students/soal/$soalId/select-option';
   static String studentSoalStep(int soalId) => '/api/students/soal/$soalId/steps';
   static String studentDeleteStep(int stepId) => '/api/students/steps/$stepId';
+  static const String studentRecordNote = '/api/students/record-note';
 
   // Teacher endpoints
   static const String teacherDashboard = '/api/teachers/dashboard';
@@ -58,9 +59,6 @@ class ApiEndpoints {
   static String teacherQuizStatus(int quizId) => '/api/teachers/quizzes/statuses/$quizId';
   static String teacherSoalStimulusRegenerate(int soalId) => '/api/teachers/soal/stimulus/regenerate/$soalId';
   static String teacherSoalEdit(int soalId) => '/api/teachers/soal/$soalId';
-
-  // Record Note
-  static const String recordNotes = '/api/';
 
   // Chatbot endpoints
   static const String chatbotSessions = '/api/chatbot/sessions';

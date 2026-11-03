@@ -1,5 +1,4 @@
-import 'package:lydera_app/app/data/models/local/record_note.dart';
-
+import 'package:drift/drift.dart';
 import '../../../core/network/database.dart';
 import '../../../core/network/database_client.dart';
 import '../../services/local/database_service.dart';
@@ -15,8 +14,25 @@ class RecordNoteLocalProvider {
     return db.selectSingle(database.recordNote, predicate: (tbl) => tbl.chapter.equals(chapterId));
   }
 
-  Future<int> createOrUpdateNote(RecordNoteCompanion  recordNote) {
-    return db.upsert(database.recordNote, recordNote);
+  Future<RecordNoteData> createOrUpdateNote(RecordNoteCompanion recordNote) async {
+    await db.upsert(database.recordNote, recordNote, target: [database.recordNote.chapter]);
+    return db.selectSingleNonNull(database.recordNote, predicate: (tbl) => tbl.chapter.equals(recordNote.chapter.value));
+  }
+
+  Future<void> markAsSynced(int id) async {
+    await db.update(database.recordNote, data: const RecordNoteCompanion(
+      isSynced: Value(true),
+    ), predicate: (tbl) => tbl.id.equals(id));
+  }
+
+  Future<void> updateLastFetchedAt(int id) async {
+    await (database.update(database.recordNote)
+      ..where((tbl) => tbl.id.equals(id)))
+        .write(
+      RecordNoteCompanion(
+        lastFetchedAt: Value(DateTime.now()),
+      ),
+    );
   }
 
   Future<int> deleteNote(int chapterId) {

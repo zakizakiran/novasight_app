@@ -215,13 +215,25 @@ class $RecordNoteTable extends RecordNote
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
     'title',
     aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 6,
-      maxTextLength: 255,
-    ),
+    true,
+    additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 255),
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isSyncedMeta = const VerificationMeta(
+    'isSynced',
+  );
+  @override
+  late final GeneratedColumn<bool> isSynced = GeneratedColumn<bool>(
+    'is_synced',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_synced" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
   );
   static const VerificationMeta _contentMeta = const VerificationMeta(
     'content',
@@ -248,6 +260,18 @@ class $RecordNoteTable extends RecordNote
       'REFERENCES chapter (id)',
     ),
   );
+  static const VerificationMeta _lastFetchedAtMeta = const VerificationMeta(
+    'lastFetchedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastFetchedAt =
+      GeneratedColumn<DateTime>(
+        'last_fetched_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _updatedAtMeta = const VerificationMeta(
     'updatedAt',
   );
@@ -274,8 +298,10 @@ class $RecordNoteTable extends RecordNote
   List<GeneratedColumn> get $columns => [
     id,
     title,
+    isSynced,
     content,
     chapter,
+    lastFetchedAt,
     updatedAt,
     createdAt,
   ];
@@ -299,8 +325,12 @@ class $RecordNoteTable extends RecordNote
         _titleMeta,
         title.isAcceptableOrUnknown(data['title']!, _titleMeta),
       );
-    } else if (isInserting) {
-      context.missing(_titleMeta);
+    }
+    if (data.containsKey('is_synced')) {
+      context.handle(
+        _isSyncedMeta,
+        isSynced.isAcceptableOrUnknown(data['is_synced']!, _isSyncedMeta),
+      );
     }
     if (data.containsKey('content')) {
       context.handle(
@@ -317,6 +347,15 @@ class $RecordNoteTable extends RecordNote
       );
     } else if (isInserting) {
       context.missing(_chapterMeta);
+    }
+    if (data.containsKey('last_fetched_at')) {
+      context.handle(
+        _lastFetchedAtMeta,
+        lastFetchedAt.isAcceptableOrUnknown(
+          data['last_fetched_at']!,
+          _lastFetchedAtMeta,
+        ),
+      );
     }
     if (data.containsKey('updated_at')) {
       context.handle(
@@ -350,6 +389,10 @@ class $RecordNoteTable extends RecordNote
       title: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}title'],
+      ),
+      isSynced: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_synced'],
       )!,
       content: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -359,6 +402,10 @@ class $RecordNoteTable extends RecordNote
         DriftSqlType.int,
         data['${effectivePrefix}chapter'],
       )!,
+      lastFetchedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_fetched_at'],
+      ),
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
@@ -378,16 +425,20 @@ class $RecordNoteTable extends RecordNote
 
 class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
   final int id;
-  final String title;
+  final String? title;
+  final bool isSynced;
   final String content;
   final int chapter;
+  final DateTime? lastFetchedAt;
   final DateTime? updatedAt;
   final DateTime? createdAt;
   const RecordNoteData({
     required this.id,
-    required this.title,
+    this.title,
+    required this.isSynced,
     required this.content,
     required this.chapter,
+    this.lastFetchedAt,
     this.updatedAt,
     this.createdAt,
   });
@@ -395,9 +446,15 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['title'] = Variable<String>(title);
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String>(title);
+    }
+    map['is_synced'] = Variable<bool>(isSynced);
     map['content'] = Variable<String>(content);
     map['chapter'] = Variable<int>(chapter);
+    if (!nullToAbsent || lastFetchedAt != null) {
+      map['last_fetched_at'] = Variable<DateTime>(lastFetchedAt);
+    }
     if (!nullToAbsent || updatedAt != null) {
       map['updated_at'] = Variable<DateTime>(updatedAt);
     }
@@ -410,9 +467,15 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
   RecordNoteCompanion toCompanion(bool nullToAbsent) {
     return RecordNoteCompanion(
       id: Value(id),
-      title: Value(title),
+      title: title == null && nullToAbsent
+          ? const Value.absent()
+          : Value(title),
+      isSynced: Value(isSynced),
       content: Value(content),
       chapter: Value(chapter),
+      lastFetchedAt: lastFetchedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastFetchedAt),
       updatedAt: updatedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(updatedAt),
@@ -429,9 +492,11 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return RecordNoteData(
       id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
+      title: serializer.fromJson<String?>(json['title']),
+      isSynced: serializer.fromJson<bool>(json['isSynced']),
       content: serializer.fromJson<String>(json['content']),
       chapter: serializer.fromJson<int>(json['chapter']),
+      lastFetchedAt: serializer.fromJson<DateTime?>(json['lastFetchedAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
     );
@@ -441,9 +506,11 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
+      'title': serializer.toJson<String?>(title),
+      'isSynced': serializer.toJson<bool>(isSynced),
       'content': serializer.toJson<String>(content),
       'chapter': serializer.toJson<int>(chapter),
+      'lastFetchedAt': serializer.toJson<DateTime?>(lastFetchedAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
     };
@@ -451,16 +518,22 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
 
   RecordNoteData copyWith({
     int? id,
-    String? title,
+    Value<String?> title = const Value.absent(),
+    bool? isSynced,
     String? content,
     int? chapter,
+    Value<DateTime?> lastFetchedAt = const Value.absent(),
     Value<DateTime?> updatedAt = const Value.absent(),
     Value<DateTime?> createdAt = const Value.absent(),
   }) => RecordNoteData(
     id: id ?? this.id,
-    title: title ?? this.title,
+    title: title.present ? title.value : this.title,
+    isSynced: isSynced ?? this.isSynced,
     content: content ?? this.content,
     chapter: chapter ?? this.chapter,
+    lastFetchedAt: lastFetchedAt.present
+        ? lastFetchedAt.value
+        : this.lastFetchedAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
     createdAt: createdAt.present ? createdAt.value : this.createdAt,
   );
@@ -468,8 +541,12 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
     return RecordNoteData(
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
+      isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
       content: data.content.present ? data.content.value : this.content,
       chapter: data.chapter.present ? data.chapter.value : this.chapter,
+      lastFetchedAt: data.lastFetchedAt.present
+          ? data.lastFetchedAt.value
+          : this.lastFetchedAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
@@ -480,8 +557,10 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
     return (StringBuffer('RecordNoteData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
+          ..write('isSynced: $isSynced, ')
           ..write('content: $content, ')
           ..write('chapter: $chapter, ')
+          ..write('lastFetchedAt: $lastFetchedAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -489,58 +568,77 @@ class RecordNoteData extends DataClass implements Insertable<RecordNoteData> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, title, content, chapter, updatedAt, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    title,
+    isSynced,
+    content,
+    chapter,
+    lastFetchedAt,
+    updatedAt,
+    createdAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is RecordNoteData &&
           other.id == this.id &&
           other.title == this.title &&
+          other.isSynced == this.isSynced &&
           other.content == this.content &&
           other.chapter == this.chapter &&
+          other.lastFetchedAt == this.lastFetchedAt &&
           other.updatedAt == this.updatedAt &&
           other.createdAt == this.createdAt);
 }
 
 class RecordNoteCompanion extends UpdateCompanion<RecordNoteData> {
   final Value<int> id;
-  final Value<String> title;
+  final Value<String?> title;
+  final Value<bool> isSynced;
   final Value<String> content;
   final Value<int> chapter;
+  final Value<DateTime?> lastFetchedAt;
   final Value<DateTime?> updatedAt;
   final Value<DateTime?> createdAt;
   const RecordNoteCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
+    this.isSynced = const Value.absent(),
     this.content = const Value.absent(),
     this.chapter = const Value.absent(),
+    this.lastFetchedAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   RecordNoteCompanion.insert({
     this.id = const Value.absent(),
-    required String title,
+    this.title = const Value.absent(),
+    this.isSynced = const Value.absent(),
     required String content,
     required int chapter,
+    this.lastFetchedAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
-  }) : title = Value(title),
-       content = Value(content),
+  }) : content = Value(content),
        chapter = Value(chapter);
   static Insertable<RecordNoteData> custom({
     Expression<int>? id,
     Expression<String>? title,
+    Expression<bool>? isSynced,
     Expression<String>? content,
     Expression<int>? chapter,
+    Expression<DateTime>? lastFetchedAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
+      if (isSynced != null) 'is_synced': isSynced,
       if (content != null) 'content': content,
       if (chapter != null) 'chapter': chapter,
+      if (lastFetchedAt != null) 'last_fetched_at': lastFetchedAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (createdAt != null) 'created_at': createdAt,
     });
@@ -548,17 +646,21 @@ class RecordNoteCompanion extends UpdateCompanion<RecordNoteData> {
 
   RecordNoteCompanion copyWith({
     Value<int>? id,
-    Value<String>? title,
+    Value<String?>? title,
+    Value<bool>? isSynced,
     Value<String>? content,
     Value<int>? chapter,
+    Value<DateTime?>? lastFetchedAt,
     Value<DateTime?>? updatedAt,
     Value<DateTime?>? createdAt,
   }) {
     return RecordNoteCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
+      isSynced: isSynced ?? this.isSynced,
       content: content ?? this.content,
       chapter: chapter ?? this.chapter,
+      lastFetchedAt: lastFetchedAt ?? this.lastFetchedAt,
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -573,11 +675,17 @@ class RecordNoteCompanion extends UpdateCompanion<RecordNoteData> {
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
+    if (isSynced.present) {
+      map['is_synced'] = Variable<bool>(isSynced.value);
+    }
     if (content.present) {
       map['content'] = Variable<String>(content.value);
     }
     if (chapter.present) {
       map['chapter'] = Variable<int>(chapter.value);
+    }
+    if (lastFetchedAt.present) {
+      map['last_fetched_at'] = Variable<DateTime>(lastFetchedAt.value);
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
@@ -593,8 +701,10 @@ class RecordNoteCompanion extends UpdateCompanion<RecordNoteData> {
     return (StringBuffer('RecordNoteCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
+          ..write('isSynced: $isSynced, ')
           ..write('content: $content, ')
           ..write('chapter: $chapter, ')
+          ..write('lastFetchedAt: $lastFetchedAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -849,18 +959,22 @@ typedef $$ChapterTableProcessedTableManager =
 typedef $$RecordNoteTableCreateCompanionBuilder =
     RecordNoteCompanion Function({
       Value<int> id,
-      required String title,
+      Value<String?> title,
+      Value<bool> isSynced,
       required String content,
       required int chapter,
+      Value<DateTime?> lastFetchedAt,
       Value<DateTime?> updatedAt,
       Value<DateTime?> createdAt,
     });
 typedef $$RecordNoteTableUpdateCompanionBuilder =
     RecordNoteCompanion Function({
       Value<int> id,
-      Value<String> title,
+      Value<String?> title,
+      Value<bool> isSynced,
       Value<String> content,
       Value<int> chapter,
+      Value<DateTime?> lastFetchedAt,
       Value<DateTime?> updatedAt,
       Value<DateTime?> createdAt,
     });
@@ -906,8 +1020,18 @@ class $$RecordNoteTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get isSynced => $composableBuilder(
+    column: $table.isSynced,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get content => $composableBuilder(
     column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastFetchedAt => $composableBuilder(
+    column: $table.lastFetchedAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -964,8 +1088,18 @@ class $$RecordNoteTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get isSynced => $composableBuilder(
+    column: $table.isSynced,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get content => $composableBuilder(
     column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastFetchedAt => $composableBuilder(
+    column: $table.lastFetchedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1018,8 +1152,16 @@ class $$RecordNoteTableAnnotationComposer
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
 
+  GeneratedColumn<bool> get isSynced =>
+      $composableBuilder(column: $table.isSynced, builder: (column) => column);
+
   GeneratedColumn<String> get content =>
       $composableBuilder(column: $table.content, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastFetchedAt => $composableBuilder(
+    column: $table.lastFetchedAt,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
@@ -1080,32 +1222,40 @@ class $$RecordNoteTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<String> title = const Value.absent(),
+                Value<String?> title = const Value.absent(),
+                Value<bool> isSynced = const Value.absent(),
                 Value<String> content = const Value.absent(),
                 Value<int> chapter = const Value.absent(),
+                Value<DateTime?> lastFetchedAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
                 Value<DateTime?> createdAt = const Value.absent(),
               }) => RecordNoteCompanion(
                 id: id,
                 title: title,
+                isSynced: isSynced,
                 content: content,
                 chapter: chapter,
+                lastFetchedAt: lastFetchedAt,
                 updatedAt: updatedAt,
                 createdAt: createdAt,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                required String title,
+                Value<String?> title = const Value.absent(),
+                Value<bool> isSynced = const Value.absent(),
                 required String content,
                 required int chapter,
+                Value<DateTime?> lastFetchedAt = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
                 Value<DateTime?> createdAt = const Value.absent(),
               }) => RecordNoteCompanion.insert(
                 id: id,
                 title: title,
+                isSynced: isSynced,
                 content: content,
                 chapter: chapter,
+                lastFetchedAt: lastFetchedAt,
                 updatedAt: updatedAt,
                 createdAt: createdAt,
               ),
