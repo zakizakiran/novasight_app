@@ -1,16 +1,22 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:lydera_app/app/core/args/subject_args.dart';
+import 'package:lydera_app/app/core/network/database.dart';
 import 'package:lydera_app/app/core/utils/table_mode.dart';
 import 'package:lydera_app/app/data/model/subject_model.dart';
 import 'package:lydera_app/app/data/repositories/module_repository.dart';
+import 'package:lydera_app/app/data/repositories/record_note_repository.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 import 'package:lydera_app/app/modules/module/controllers/module_controller.dart';
 import 'package:lydera_app/app/modules/module_detail/controllers/module_detail_controller.dart';
 import 'package:lydera_app/app/modules/student-dashboard/controllers/student_dashboard_controller.dart';
+
+import '../../../core/errors/api_exception.dart';
+import '../../../core/utils/snackbar_helper.dart';
 
 enum WordTyping {
   bold(
@@ -48,6 +54,7 @@ enum AlignParagraft {
 class SubjectController extends GetxController {
   final ModuleRepository? moduleRepository;
   final StudentRepository? studentRepository;
+  final RecordNoteRepository? recordNoteRepository;
 
   late final SubjectModel subject;
   late final int index;
@@ -62,6 +69,9 @@ class SubjectController extends GetxController {
   final RxBool isItalic = false.obs;
   final RxBool isUnderline = false.obs;
   final RxBool isStrikethrough = false.obs;
+  final isNoteLoaded = false.obs;
+
+  RecordNoteData? existingNote;
 
   final TextEditingController searchController = TextEditingController();
   late final QuillController noteController;
@@ -70,10 +80,14 @@ class SubjectController extends GetxController {
     ModuleRepository? moduleRepository,
     ModuleRepository? repository,
     StudentRepository? studentRepository,
+    RecordNoteRepository? recordNoteRepository,
   })  : moduleRepository = moduleRepository ??
             repository ??
             (Get.isRegistered<ModuleRepository>()
                 ? Get.find<ModuleRepository>()
+                : null),
+        recordNoteRepository = recordNoteRepository ??
+            (Get.isRegistered<RecordNoteRepository>() ? Get.find<RecordNoteRepository>()
                 : null),
         studentRepository = studentRepository ??
             (Get.isRegistered<StudentRepository>()
@@ -86,8 +100,7 @@ class SubjectController extends GetxController {
     final args = Get.arguments as SubjectArgs;
     subject = args.subject;
     index = args.index;
-    noteController = QuillController.basic();
-    noteController.addListener(_updateToolbar);
+    _initializeNote();
   }
 
   @override
@@ -153,12 +166,70 @@ class SubjectController extends GetxController {
     }
   }
 
-  void onChangeNote(String note){
+  Future<void> _initializeNote() async {
+    try {
+      existingNote = await recordNoteRepository?.getNoteByChapterId(chapterId: subject.id);
 
+      Document document;
+
+      if (existingNote != null) {
+        final deltaJson = jsonDecode(existingNote!.content);
+
+        document = Document.fromJson(
+          List.castFrom(deltaJson),
+        );
+      } else {
+        document = Document();
+      }
+
+      noteController = QuillController(
+        document: document,
+        selection: const TextSelection.collapsed(offset: 0),
+      );
+
+      noteController.addListener(_updateToolbar);
+
+    } catch (e) {
+      debugPrint('Failed to initialize note: $e');
+
+      noteController = QuillController.basic();
+      noteController.addListener(_updateToolbar);
+
+    } finally {
+      isNoteLoaded.value = true;
+    }
   }
 
-  void onSaveNote(){
+  Future<void> onSaveNote(String title) async {
+    if (!isNoteLoaded.value) return;
 
+    try {
+      final delta = noteController.document.toDelta();
+
+      final content = jsonEncode(delta.toJson());
+
+      final now = DateTime.now();
+
+      await recordNoteRepository?.submitNote(
+        recordNote: RecordNoteCompanion(
+          title: drift.Value<String>(existingNote?.title ?? title),
+          content: drift.Value<String>(content),
+          chapter: drift.Value<int>(subject.id),
+          updatedAt: drift.Value<DateTime?>(now),
+        ),
+      );
+      Get.back();
+    } on ApiException catch (e) {
+      SnackbarHelper.showError(
+        title: 'Error Failed to Save Note',
+        message: e.message,
+      );
+    } catch (e) {
+      SnackbarHelper.showError(
+        title: 'Error Failed to Save Note',
+        message: e.toString(),
+      );
+    }
   }
 
   void _updateToolbar() {

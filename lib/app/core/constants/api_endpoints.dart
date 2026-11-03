@@ -59,6 +59,9 @@ class ApiEndpoints {
   static String teacherSoalStimulusRegenerate(int soalId) => '/api/teachers/soal/stimulus/regenerate/$soalId';
   static String teacherSoalEdit(int soalId) => '/api/teachers/soal/$soalId';
 
+  // Record Note
+  static const String recordNotes = '/api/';
+
   // Chatbot endpoints
   static const String chatbotSessions = '/api/chatbot/sessions';
   static String chatbotSessionMessages(int sessionId) => '/api/chatbot/sessions/$sessionId/messages';

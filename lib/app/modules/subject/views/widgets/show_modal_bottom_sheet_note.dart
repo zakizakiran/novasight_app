@@ -31,13 +31,22 @@ class ShowModalBottomSheetNote extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(Icons.arrow_back, size: sizeIcon),
+                GestureDetector(
+                  onTap: (){
+                    Get.back();
+                  },
+                    child: const Icon(Icons.arrow_back, size: sizeIcon)
+                ),
                 Text(
                   context.l10n.recordNote,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 GestureDetector(
-                  onTap: subjectController.onSaveNote,
+                  onTap: (){
+                    subjectController.onSaveNote(
+                        '${context.l10n.chapter} ${subjectController.subject.id} ${context.l10n.recordNote}'
+                    );
+                  },
                   child: const Icon(Icons.check_rounded, size: sizeIcon),
                 ),
               ],

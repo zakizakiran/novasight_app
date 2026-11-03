@@ -336,6 +336,10 @@ class $RecordNoteTable extends RecordNote
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {chapter},
+  ];
+  @override
   RecordNoteData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return RecordNoteData(
@@ -603,11 +607,19 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $ChapterTable chapter = $ChapterTable(this);
   late final $RecordNoteTable recordNote = $RecordNoteTable(this);
+  late final Index idxChapterId = Index(
+    'idx_chapter_id',
+    'CREATE INDEX idx_chapter_id ON record_note (chapter)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [chapter, recordNote];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    chapter,
+    recordNote,
+    idxChapterId,
+  ];
 }
 
 typedef $$ChapterTableCreateCompanionBuilder =

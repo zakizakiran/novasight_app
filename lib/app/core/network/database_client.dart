@@ -48,6 +48,14 @@ class DatabaseClient {
         .getSingleOrNull();
   }
 
+  // UPSERT
+  Future<int> upsert<T extends Table, D extends DataClass>(
+      TableInfo<T, D> table,
+      Insertable<D> data,
+      ) {
+    return _database.into(table).insertOnConflictUpdate(data);
+  }
+
   // INSERT
   Future<int> insert<T extends Table, D extends DataClass>(
       TableInfo<T, D> table,
