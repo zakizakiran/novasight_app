@@ -191,7 +191,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examReviewTitle => 'Assessify — Exam Results Review';
 
   @override
-  String get noteAppBarTitle => 'Scriber — Work Notes';
+  String get noteAppBarTitle => 'Notefy — Work Notes';
 
   @override
   String pageOf(int current, int total) {

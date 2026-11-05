@@ -75,7 +75,7 @@
   "learningModules": "Modul Pembelajaran",
   "examQuestions": "Soal Ujian",
   "examReviewTitle": "Assessify — Review Hasil Ujian",
-  "noteAppBarTitle": "Scriber — Catatan Pengerjaan",
+  "noteAppBarTitle": "Notefy — Catatan Pengerjaan",
   "pageOf": "Halaman {current} dari {total}",
   "@pageOf": {
     "placeholders": {

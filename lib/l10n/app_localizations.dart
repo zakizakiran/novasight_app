@@ -449,7 +449,7 @@ abstract class AppLocalizations {
   /// No description provided for @noteAppBarTitle.
   ///
   /// In en, this message translates to:
-  /// **'Scriber — Work Notes'**
+  /// **'Notefy — Work Notes'**
   String get noteAppBarTitle;
 
   /// No description provided for @pageOf.

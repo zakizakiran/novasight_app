@@ -422,7 +422,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
             ),
             const SizedBox(width: Dimens.spaceMediumPadding),
             Semantics(
-              label: "Buka Scriber (Catatan Pengerjaan)",
+              label: "Buka Notefy (Catatan Pengerjaan)",
               button: true,
               child: GestureDetector(
                 onTap: () {

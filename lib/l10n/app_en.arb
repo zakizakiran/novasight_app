@@ -79,7 +79,7 @@
   "learningModules": "Learning Modules",
   "examQuestions": "Exam Questions",
   "examReviewTitle": "Assessify — Exam Results Review",
-  "noteAppBarTitle": "Scriber — Work Notes",
+  "noteAppBarTitle": "Notefy — Work Notes",
   "pageOf": "Page {current} of {total}",
   "@pageOf": {
     "placeholders": {
