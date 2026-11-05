@@ -39,7 +39,7 @@ class ExamTeachersView extends GetView<ExamTeachersController> {
                   Get.toNamed(Routes.GENERATE_EXAM);
                 },
                 icon: const Icon(Icons.add, size: 16),
-                label: Text(context.l10n.createExamQuizzer),
+                label: Text(context.l10n.createExamQuesify),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorConstant.primary,
                   foregroundColor: ColorConstant.white,

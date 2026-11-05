@@ -50,7 +50,7 @@
   "navDashboard": "Dashboard",
   "navModule": "Modul",
   "navExam": "Soal Ujian",
-  "navClarifier": "Clarifier",
+  "navLearnify": "Learnify",
   "navProfile": "Profil",
   "currentPosition": "Posisi di",
   "questionExam": "SOAL",
@@ -74,7 +74,7 @@
 
   "learningModules": "Modul Pembelajaran",
   "examQuestions": "Soal Ujian",
-  "examReviewTitle": "Evaluaizer — Review Hasil Ujian",
+  "examReviewTitle": "Assessify — Review Hasil Ujian",
   "noteAppBarTitle": "Scriber — Catatan Pengerjaan",
   "pageOf": "Halaman {current} dari {total}",
   "@pageOf": {
@@ -107,18 +107,18 @@
     }
   },
   "uploadModule": "+ Unggah Modul",
-  "createExamQuizzer": "Buat Soal (Quizzer)",
+  "createExamQuesify": "Buat Soal (Quesify)",
   "examDetailTitle": "Detail Soal Ujian",
   "studentProgressTitle": "Progres Murid",
   "studentProgressDetailTitle": "Detail Progres Murid",
-  "generateExamTitle": "Quizzer — Buat Soal Ujian",
+  "generateExamTitle": "Quesify — Buat Soal Ujian",
   "splitPagesAndChapters": "Potong Halaman & BAB",
   "processingModule": "Memproses Modul",
   "annotationResult": "Hasil Annotasi",
-  "moduleEvaluationTitle": "Annoter — Evaluasi Modul",
+  "moduleEvaluationTitle": "Annotify — Evaluasi Modul",
   "beforeAnnotation": "Sebelum Anotasi",
   "afterAnnotation": "Sesudah Anotasi",
-  "clarifierSubtitle": "Tanya materi modul & pemahaman konsep",
+  "learnifySubtitle": "Tanya materi modul & pemahaman konsep",
   "conversationHistory": "Riwayat Percakapan",
   "refreshHistory": "Segarkan riwayat",
   "loadingTableOfContents": "Memuat Daftar Isi...",
@@ -165,7 +165,7 @@
     }
   },
   "startTask": "Kerjakan",
-  "examResultEvaluaizer": "Evaluaizer (Hasil Ujian)",
+  "examResultAssessify": "Assessify (Hasil Ujian)",
   "percentCompleted": "{percent}% Selesai",
   "@percentCompleted": {
     "placeholders": {
@@ -308,11 +308,11 @@
   "saveModule": "Simpan Modul",
   "finish": "Selesai",
   "tapToUploadFile": "Ketuk untuk unggah file",
-  "loadingModuleExtraction": "Annoter sedang mengekstrak dan membuat anotasi\nlinear teks untuk pembaca layar",
+  "loadingModuleExtraction": "Annotify sedang mengekstrak dan membuat anotasi\nlinear teks untuk pembaca layar",
   "statusWait": "Tunggu...",
   "statusProcess": "Proses...",
 
-  "evaluatingAnnotationUpdating": "Annoter Sedang Memperbarui Anotasi",
+  "evaluatingAnnotationUpdating": "Annotify Sedang Memperbarui Anotasi",
   "stopUpdatingConfirm": "Hentikan pembaruan? Perubahan yang belum tersimpan mungkin akan hilang.",
   "yes": "Iya",
   "no": "Tidak",
@@ -560,7 +560,7 @@
   "startNewConversation": "Mulai Percakapan Baru",
   "emptyConversationDesc": "Mulai tanya materi matematika atau diskusikan soal dengan menekan tombol (+) di atas!",
   "referenceSources": "Sumber Referensi:",
-  "aiThinking": "NovaSight AI sedang berpikir...",
+  "aiThinking": "Learnify AI sedang berpikir...",
   "suggestedFollowUpQuestions": "Pertanyaan Lanjutan yang Disarankan:",
   "askQuestionHint": "Tanya materi atau soal..."
 }

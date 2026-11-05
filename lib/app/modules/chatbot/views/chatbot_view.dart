@@ -339,7 +339,7 @@ class ChatbotView extends GetView<ChatbotController> {
     return Semantics(
       container: true,
       label:
-          'Pesan dari ${isAi ? "${AppStrings.nameApp} AI" : "Anda"}: ${msg.content}',
+          'Pesan dari ${isAi ? "${AppStrings.aiName} AI" : "Anda"}: ${msg.content}',
       child: Align(
         alignment: isAi ? Alignment.centerLeft : Alignment.centerRight,
         child: Container(
@@ -465,7 +465,7 @@ class ChatbotView extends GetView<ChatbotController> {
             ),
             const SizedBox(width: 10),
             Text(
-              'NovaSight AI sedang berpikir...',
+              '${AppStrings.aiName} AI sedang berpikir...',
               style: const MainTextTheme().bodyMedium?.copyWith(
                 color: ColorConstant.textGreyColor,
                 fontStyle: FontStyle.italic,
@@ -587,7 +587,7 @@ class ChatbotView extends GetView<ChatbotController> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Clarifier AI',
+                    'Learnify AI',
                     textAlign: TextAlign.center,
                     style: const MainTextTheme().titleLarge?.copyWith(
                           color: ColorConstant.white,
@@ -596,7 +596,7 @@ class ChatbotView extends GetView<ChatbotController> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    context.l10n.clarifierSubtitle,
+                    context.l10n.learnifySubtitle,
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

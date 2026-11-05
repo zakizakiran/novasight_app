@@ -580,7 +580,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                       children: [
                         Flexible(
                           child: Text(
-                            isDone ? context.l10n.examResultEvaluaizer : context.l10n.startTask,
+                            isDone ? context.l10n.examResultAssessify : context.l10n.startTask,
                             softWrap: true,
                             style: Theme.of(context)
                                 .textTheme

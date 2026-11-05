@@ -332,12 +332,12 @@ class ExamActiveController extends GetxController {
             const SizedBox(width: Dimens.innerPadding),
             Expanded(
               child: CommonButtonWidget(
-                buttonName: "Evaluaizer",
+                buttonName: "Assessify",
                 boxShadows: const [],
                 onPressed: () {
                   SnackbarHelper.showSuccess(
                     title: "Pengerjaan Selesai!",
-                    message: "Buka Evaluaizer untuk analisis hasil pengerjaan",
+                    message: "Buka Assessify untuk analisis hasil pengerjaan",
                   );
                   Get.offNamedUntil(
                     Routes.EXAM_REVIEW,

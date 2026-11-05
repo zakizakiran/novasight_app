@@ -42,8 +42,8 @@ class SubjectView extends GetView<SubjectController> {
                 ),
               ),
             ),
-            _tableMode(context: context),
             _searchBar(context: context, controller: controller.searchController, onChange: controller.onPage),
+            _tableMode(context: context),
             _body(context: context)
           ],
         ),

@@ -356,11 +356,11 @@ abstract class AppLocalizations {
   /// **'Exam Questions'**
   String get navExam;
 
-  /// No description provided for @navClarifier.
+  /// No description provided for @navLearnify.
   ///
   /// In en, this message translates to:
-  /// **'Clarifier'**
-  String get navClarifier;
+  /// **'Learnify'**
+  String get navLearnify;
 
   /// No description provided for @navProfile.
   ///
@@ -443,7 +443,7 @@ abstract class AppLocalizations {
   /// No description provided for @examReviewTitle.
   ///
   /// In en, this message translates to:
-  /// **'Evaluaizer — Exam Results Review'**
+  /// **'Assessify — Exam Results Review'**
   String get examReviewTitle;
 
   /// No description provided for @noteAppBarTitle.
@@ -476,11 +476,11 @@ abstract class AppLocalizations {
   /// **'+ Upload Module'**
   String get uploadModule;
 
-  /// No description provided for @createExamQuizzer.
+  /// No description provided for @createExamQuesify.
   ///
   /// In en, this message translates to:
-  /// **'Create Exam (Quizzer)'**
-  String get createExamQuizzer;
+  /// **'Create Exam (Quesify)'**
+  String get createExamQuesify;
 
   /// No description provided for @examDetailTitle.
   ///
@@ -503,7 +503,7 @@ abstract class AppLocalizations {
   /// No description provided for @generateExamTitle.
   ///
   /// In en, this message translates to:
-  /// **'Quizzer — Create Exam'**
+  /// **'Quesify — Create Exam'**
   String get generateExamTitle;
 
   /// No description provided for @splitPagesAndChapters.
@@ -527,7 +527,7 @@ abstract class AppLocalizations {
   /// No description provided for @moduleEvaluationTitle.
   ///
   /// In en, this message translates to:
-  /// **'Annoter — Module Evaluation'**
+  /// **'Annotify — Module Evaluation'**
   String get moduleEvaluationTitle;
 
   /// No description provided for @beforeAnnotation.
@@ -542,11 +542,11 @@ abstract class AppLocalizations {
   /// **'After Annotation'**
   String get afterAnnotation;
 
-  /// No description provided for @clarifierSubtitle.
+  /// No description provided for @learnifySubtitle.
   ///
   /// In en, this message translates to:
   /// **'Ask about module materials & concept understanding'**
-  String get clarifierSubtitle;
+  String get learnifySubtitle;
 
   /// No description provided for @conversationHistory.
   ///
@@ -686,11 +686,11 @@ abstract class AppLocalizations {
   /// **'Start'**
   String get startTask;
 
-  /// No description provided for @examResultEvaluaizer.
+  /// No description provided for @examResultAssessify.
   ///
   /// In en, this message translates to:
-  /// **'Evaluaizer (Exam Result)'**
-  String get examResultEvaluaizer;
+  /// **'Assessify (Exam Result)'**
+  String get examResultAssessify;
 
   /// No description provided for @percentCompleted.
   ///
@@ -1163,7 +1163,7 @@ abstract class AppLocalizations {
   /// No description provided for @loadingModuleExtraction.
   ///
   /// In en, this message translates to:
-  /// **'Annoter is extracting and creating linear text annotations for screen readers'**
+  /// **'Annotify is extracting and creating linear text annotations for screen readers'**
   String get loadingModuleExtraction;
 
   /// No description provided for @statusWait.
@@ -1223,7 +1223,7 @@ abstract class AppLocalizations {
   /// No description provided for @evaluatingAnnotationUpdating.
   ///
   /// In en, this message translates to:
-  /// **'Annoter is Updating Annotations'**
+  /// **'Annotify is Updating Annotations'**
   String get evaluatingAnnotationUpdating;
 
   /// No description provided for @stopUpdatingConfirm.
@@ -2105,7 +2105,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiThinking.
   ///
   /// In en, this message translates to:
-  /// **'NovaSight AI is thinking...'**
+  /// **'Learnify AI is thinking...'**
   String get aiThinking;
 
   /// No description provided for @suggestedFollowUpQuestions.

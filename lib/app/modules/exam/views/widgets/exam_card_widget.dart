@@ -96,7 +96,7 @@ class ExamCardWidget extends StatelessWidget {
                       Flexible(
                         child: Text(
                           exam.status == PublicStatus.done
-                              ? context.l10n.examResultEvaluaizer
+                              ? context.l10n.examResultAssessify
                               : context.l10n.startTask,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: ColorConstant.primary,

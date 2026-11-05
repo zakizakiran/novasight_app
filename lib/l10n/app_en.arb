@@ -55,7 +55,7 @@
   "navDashboard": "Dashboard",
   "navModule": "Module",
   "navExam": "Exam Questions",
-  "navClarifier": "Clarifier",
+  "navLearnify": "Learnify",
   "navProfile": "Profile",
   "currentPosition": "Current position at",
 
@@ -78,7 +78,7 @@
 
   "learningModules": "Learning Modules",
   "examQuestions": "Exam Questions",
-  "examReviewTitle": "Evaluaizer — Exam Results Review",
+  "examReviewTitle": "Assessify — Exam Results Review",
   "noteAppBarTitle": "Scriber — Work Notes",
   "pageOf": "Page {current} of {total}",
   "@pageOf": {
@@ -111,18 +111,18 @@
     }
   },
   "uploadModule": "+ Upload Module",
-  "createExamQuizzer": "Create Exam (Quizzer)",
+  "createExamQuesify": "Create Exam (Quesify)",
   "examDetailTitle": "Exam Details",
   "studentProgressTitle": "Student Progress",
   "studentProgressDetailTitle": "Student Progress Detail",
-  "generateExamTitle": "Quizzer — Create Exam",
+  "generateExamTitle": "Quesify — Create Exam",
   "splitPagesAndChapters": "Split Pages & Chapters",
   "processingModule": "Processing Module",
   "annotationResult": "Annotation Results",
-  "moduleEvaluationTitle": "Annoter — Module Evaluation",
+  "moduleEvaluationTitle": "Annotify — Module Evaluation",
   "beforeAnnotation": "Before Annotation",
   "afterAnnotation": "After Annotation",
-  "clarifierSubtitle": "Ask about module materials & concept understanding",
+  "learnifySubtitle": "Ask about module materials & concept understanding",
   "conversationHistory": "Conversation History",
   "refreshHistory": "Refresh history",
   "loadingTableOfContents": "Loading Table of Contents...",
@@ -157,7 +157,7 @@
     }
   },
   "startTask": "Start",
-  "examResultEvaluaizer": "Evaluaizer (Exam Result)",
+  "examResultAssessify": "Assessify (Exam Result)",
   "percentCompleted": "{percent}% Completed",
   "@percentCompleted": {
     "placeholders": {
@@ -306,7 +306,7 @@
   "recordNote": "Text Note",
   "finish": "Finish",
   "tapToUploadFile": "Tap to upload file",
-  "loadingModuleExtraction": "Annoter is extracting and creating linear text annotations for screen readers",
+  "loadingModuleExtraction": "Annotify is extracting and creating linear text annotations for screen readers",
   "statusWait": "Waiting...",
   "statusProcess": "Processing...",
   "boldText": "Bold Text",
@@ -317,7 +317,7 @@
   "alignCenter": "Align Center",
   "alignRight": "Align Right",
 
-  "evaluatingAnnotationUpdating": "Annoter is Updating Annotations",
+  "evaluatingAnnotationUpdating": "Annotify is Updating Annotations",
   "stopUpdatingConfirm": "Stop update? Unsaved changes may be lost.",
   "yes": "Yes",
   "no": "No",
@@ -559,7 +559,7 @@
   "startNewConversation": "Start New Conversation",
   "emptyConversationDesc": "Start asking math topics or discussing questions by tapping the (+) button above!",
   "referenceSources": "Reference Sources:",
-  "aiThinking": "NovaSight AI is thinking...",
+  "aiThinking": "Learnify AI is thinking...",
   "suggestedFollowUpQuestions": "Suggested Follow-up Questions:",
   "askQuestionHint": "Ask about materials or questions..."
 }

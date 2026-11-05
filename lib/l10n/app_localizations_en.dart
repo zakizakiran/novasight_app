@@ -144,7 +144,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navExam => 'Exam Questions';
 
   @override
-  String get navClarifier => 'Clarifier';
+  String get navLearnify => 'Learnify';
 
   @override
   String get navProfile => 'Profile';
@@ -188,7 +188,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examQuestions => 'Exam Questions';
 
   @override
-  String get examReviewTitle => 'Evaluaizer — Exam Results Review';
+  String get examReviewTitle => 'Assessify — Exam Results Review';
 
   @override
   String get noteAppBarTitle => 'Scriber — Work Notes';
@@ -212,7 +212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uploadModule => '+ Upload Module';
 
   @override
-  String get createExamQuizzer => 'Create Exam (Quizzer)';
+  String get createExamQuesify => 'Create Exam (Quesify)';
 
   @override
   String get examDetailTitle => 'Exam Details';
@@ -224,7 +224,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studentProgressDetailTitle => 'Student Progress Detail';
 
   @override
-  String get generateExamTitle => 'Quizzer — Create Exam';
+  String get generateExamTitle => 'Quesify — Create Exam';
 
   @override
   String get splitPagesAndChapters => 'Split Pages & Chapters';
@@ -236,7 +236,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get annotationResult => 'Annotation Results';
 
   @override
-  String get moduleEvaluationTitle => 'Annoter — Module Evaluation';
+  String get moduleEvaluationTitle => 'Annotify — Module Evaluation';
 
   @override
   String get beforeAnnotation => 'Before Annotation';
@@ -245,7 +245,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get afterAnnotation => 'After Annotation';
 
   @override
-  String get clarifierSubtitle =>
+  String get learnifySubtitle =>
       'Ask about module materials & concept understanding';
 
   @override
@@ -320,7 +320,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startTask => 'Start';
 
   @override
-  String get examResultEvaluaizer => 'Evaluaizer (Exam Result)';
+  String get examResultAssessify => 'Assessify (Exam Result)';
 
   @override
   String percentCompleted(int percent) {
@@ -579,7 +579,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadingModuleExtraction =>
-      'Annoter is extracting and creating linear text annotations for screen readers';
+      'Annotify is extracting and creating linear text annotations for screen readers';
 
   @override
   String get statusWait => 'Waiting...';
@@ -609,7 +609,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alignRight => 'Align Right';
 
   @override
-  String get evaluatingAnnotationUpdating => 'Annoter is Updating Annotations';
+  String get evaluatingAnnotationUpdating => 'Annotify is Updating Annotations';
 
   @override
   String get stopUpdatingConfirm => 'Stop update? Unsaved changes may be lost.';
@@ -1093,7 +1093,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get referenceSources => 'Reference Sources:';
 
   @override
-  String get aiThinking => 'NovaSight AI is thinking...';
+  String get aiThinking => 'Learnify AI is thinking...';
 
   @override
   String get suggestedFollowUpQuestions => 'Suggested Follow-up Questions:';

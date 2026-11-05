@@ -144,7 +144,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get navExam => 'Soal Ujian';
 
   @override
-  String get navClarifier => 'Clarifier';
+  String get navLearnify => 'Learnify';
 
   @override
   String get navProfile => 'Profil';
@@ -188,7 +188,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get examQuestions => 'Soal Ujian';
 
   @override
-  String get examReviewTitle => 'Evaluaizer — Review Hasil Ujian';
+  String get examReviewTitle => 'Assessify — Review Hasil Ujian';
 
   @override
   String get noteAppBarTitle => 'Scriber — Catatan Pengerjaan';
@@ -212,7 +212,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get uploadModule => '+ Unggah Modul';
 
   @override
-  String get createExamQuizzer => 'Buat Soal (Quizzer)';
+  String get createExamQuesify => 'Buat Soal (Quesify)';
 
   @override
   String get examDetailTitle => 'Detail Soal Ujian';
@@ -224,7 +224,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get studentProgressDetailTitle => 'Detail Progres Murid';
 
   @override
-  String get generateExamTitle => 'Quizzer — Buat Soal Ujian';
+  String get generateExamTitle => 'Quesify — Buat Soal Ujian';
 
   @override
   String get splitPagesAndChapters => 'Potong Halaman & BAB';
@@ -236,7 +236,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get annotationResult => 'Hasil Annotasi';
 
   @override
-  String get moduleEvaluationTitle => 'Annoter — Evaluasi Modul';
+  String get moduleEvaluationTitle => 'Annotify — Evaluasi Modul';
 
   @override
   String get beforeAnnotation => 'Sebelum Anotasi';
@@ -245,7 +245,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get afterAnnotation => 'Sesudah Anotasi';
 
   @override
-  String get clarifierSubtitle => 'Tanya materi modul & pemahaman konsep';
+  String get learnifySubtitle => 'Tanya materi modul & pemahaman konsep';
 
   @override
   String get conversationHistory => 'Riwayat Percakapan';
@@ -320,7 +320,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get startTask => 'Kerjakan';
 
   @override
-  String get examResultEvaluaizer => 'Evaluaizer (Hasil Ujian)';
+  String get examResultAssessify => 'Assessify (Hasil Ujian)';
 
   @override
   String percentCompleted(int percent) {
@@ -578,7 +578,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get loadingModuleExtraction =>
-      'Annoter sedang mengekstrak dan membuat anotasi\nlinear teks untuk pembaca layar';
+      'Annotify sedang mengekstrak dan membuat anotasi\nlinear teks untuk pembaca layar';
 
   @override
   String get statusWait => 'Tunggu...';
@@ -609,7 +609,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get evaluatingAnnotationUpdating =>
-      'Annoter Sedang Memperbarui Anotasi';
+      'Annotify Sedang Memperbarui Anotasi';
 
   @override
   String get stopUpdatingConfirm =>
@@ -1097,7 +1097,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get referenceSources => 'Sumber Referensi:';
 
   @override
-  String get aiThinking => 'NovaSight AI sedang berpikir...';
+  String get aiThinking => 'Learnify AI sedang berpikir...';
 
   @override
   String get suggestedFollowUpQuestions =>

@@ -87,8 +87,8 @@ class MainLayoutController extends GetxController {
     ),
     BottomNavItem(
       icon: Icons.chat_bubble_outline,
-      title: "Clarifier",
-      semanticLabel: "Clarifier (Tanya Materi Modul)",
+      title: "Learnify",
+      semanticLabel: "Learnify (Tanya Materi Modul)",
     ),
     BottomNavItem(
       icon: Icons.person_outline,

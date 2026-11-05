@@ -97,7 +97,7 @@ class MainLayoutView extends GetView<MainLayoutController> {
         case 2:
           return l10n.navExam;
         case 3:
-          return l10n.navClarifier;
+          return l10n.navLearnify;
         case 4:
           return l10n.navProfile;
         default:
