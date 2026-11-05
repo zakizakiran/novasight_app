@@ -1,15 +1,21 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lydera_app/app/core/utils/math_latex_parser.dart';
+import 'package:lydera_app/app/core/utils/math_latex_serializer.dart';
+import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
 
 import 'package:lydera_app/app/data/models/math_symbol.dart';
 
 
 void main() {
   late MathLatexParser parser;
+  late MathSemanticSerializer semanticSerializer;
+  late MathLatexSerializer latexSerializer;
 
   setUp(() {
     parser = MathLatexParser();
+    semanticSerializer = MathSemanticSerializer();
+    latexSerializer = MathLatexSerializer();
   });
 
   test('definite integral has correct bounds and integrand', () {
@@ -107,5 +113,62 @@ void main() {
     expect(nodes.first.symbol.id, 'binom');
     expect(nodes.first.slots[0].children.single.symbol.id, '5');
     expect(nodes.first.slots[1].children.single.symbol.id, '2');
+  });
+
+  test('semantic serializer reads absolute value, logs, factorial, decimals and Greek symbols', () {
+    expect(
+      semanticSerializer.serializeLatex(r'\left|x - 3\right|', parser),
+      'nilai mutlak dari x Kurang tiga',
+    );
+    expect(
+      semanticSerializer.serializeLatex(r'\log_{2}(8)', parser),
+      'logaritma basis dua dari delapan',
+    );
+    expect(
+      semanticSerializer.serializeLatex(r'\log_{3}(9)', parser),
+      'logaritma basis tiga dari sembilan',
+    );
+    expect(
+      semanticSerializer.serializeLatex(r'5!', parser),
+      'lima faktorial',
+    );
+    expect(
+      semanticSerializer.serializeLatex(r'3.14', parser),
+      'tiga koma satu empat',
+    );
+    expect(
+      semanticSerializer.serializeLatex(r'\alpha + \theta = 90^\circ', parser),
+      'alfa Tambah teta Sama dengan sembilan puluh derajat',
+    );
+  });
+
+  test('toAccessibleText converts inline LaTeX and symbols inside Indonesian sentences', () {
+    expect(
+      MathSemanticSerializer.toAccessibleText(
+        r'Hitung nilai $\frac{3}{4} + \sqrt[3]{8}$ untuk $x^2 \ge 4$',
+      ),
+      'Hitung nilai pecahan dengan pembilang tiga dan penyebut empat Tambah akar pangkat tiga dari delapan untuk x pangkat dua Lebih besar atau sama dengan empat',
+    );
+    expect(
+      MathSemanticSerializer.toAccessibleText(
+        r'Jika \frac{1}{2} × 4 = 2, maka x_1 ≠ 0',
+      ),
+      'Jika pecahan dengan pembilang satu dan penyebut dua kali 4 = 2, maka x indeks satu tidak sama dengan 0',
+    );
+  });
+
+  test('latex serializer round-trips abs, log_base, factorial, and binomial without placeholder boxes', () {
+    for (final expr in [
+      r'\left|x\right|',
+      r'\log_{3}(x)',
+      r'\log_{2}(x)',
+      r'5!',
+      r'\binom{5}{2}',
+    ]) {
+      final nodes = parser.parse(expr);
+      final serialized = latexSerializer.serializeNodes(nodes);
+      expect(serialized.contains('□'), isFalse);
+      expect(serialized, expr);
+    }
   });
 }

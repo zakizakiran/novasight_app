@@ -4,6 +4,7 @@ import 'package:lydera_app/app/core/constants/app_string_constant.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/styles/text_theme.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
 import 'package:lydera_app/app/data/models/chatbot_model.dart';
 import '../controllers/chatbot_controller.dart';
 
@@ -339,7 +340,7 @@ class ChatbotView extends GetView<ChatbotController> {
     return Semantics(
       container: true,
       label:
-          'Pesan dari ${isAi ? "${AppStrings.aiName} AI" : "Anda"}: ${msg.content}',
+          'Pesan dari ${isAi ? "${AppStrings.aiName} AI" : "Anda"}: ${MathSemanticSerializer.toAccessibleText(msg.content)}',
       child: Align(
         alignment: isAi ? Alignment.centerLeft : Alignment.centerRight,
         child: Container(
@@ -368,13 +369,15 @@ class ChatbotView extends GetView<ChatbotController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                msg.content,
-                style: const MainTextTheme().bodyLarge?.copyWith(
-                  color: isAi
-                      ? ColorConstant.textDarkGreyColor
-                      : ColorConstant.white,
-                  height: 1.5,
+              ExcludeSemantics(
+                child: Text(
+                  msg.content,
+                  style: const MainTextTheme().bodyLarge?.copyWith(
+                    color: isAi
+                        ? ColorConstant.textDarkGreyColor
+                        : ColorConstant.white,
+                    height: 1.5,
+                  ),
                 ),
               ),
               if (isAi &&

@@ -232,33 +232,34 @@ class NoteController extends GetxController {
   }
 
   void deletePrevious() {
-    SemanticsService.announce(
-      'Karakter dihapus',
-      TextDirection.ltr,
-    );
+    MathNode? removed;
     final slot = activeSlot.value;
     if (slot != null) {
       if (slot.cursorIndex.value > 0 && slot.children.isNotEmpty) {
-        slot.children.removeAt(slot.cursorIndex.value - 1,);
+        removed = slot.children.removeAt(slot.cursorIndex.value - 1);
         slot.cursorIndex.value--;
       } else {
         // At start of slot: step cursor out to the left.
         moveCursorLeft();
+        return;
       }
     } else if (cursorIndex.value > 0 &&
         noteNodes.isNotEmpty) {
-      noteNodes.removeAt(cursorIndex.value - 1);
+      removed = noteNodes.removeAt(cursorIndex.value - 1);
       cursorIndex.value--;
     }
+    SemanticsService.announce(
+      removed != null
+          ? '${removed.symbol.semanticText} dihapus'
+          : 'Karakter dihapus',
+      TextDirection.ltr,
+    );
     noteNodes.refresh();
   }
 
   /// Right arrow navigation through the math tree.
   void moveCursorRight() {
-    SemanticsService.announce(
-      'Kursor dipindahkan ke kanan',
-      TextDirection.ltr,
-    );
+    final prevSlot = activeSlot.value;
     final slot = activeSlot.value;
     if (slot != null) {
       if (slot.cursorIndex.value < slot.children.length) {
@@ -304,15 +305,13 @@ class NoteController extends GetxController {
       }
     }
 
+    _announceCursorChange(prevSlot, 'kanan');
     noteNodes.refresh();
   }
 
   /// Left arrow navigation through the math tree.
   void moveCursorLeft() {
-    SemanticsService.announce(
-      'Kursor dipindahkan ke kiri',
-      TextDirection.ltr,
-    );
+    final prevSlot = activeSlot.value;
     final slot = activeSlot.value;
 
     if (slot != null) {
@@ -340,9 +339,9 @@ class NoteController extends GetxController {
           if (currentSlotIdx > 0) {
             // Move to previous slot in parentNode
             // at its end.
-            final prevSlot = parentNode.slots[currentSlotIdx - 1];
+            final prevSlotTarget = parentNode.slots[currentSlotIdx - 1];
 
-            selectSlot(prevSlot, position: prevSlot.children.length,);
+            selectSlot(prevSlotTarget, position: prevSlotTarget.children.length,);
           } else {
             // Reached first slot:
             // step out of parentNode to the left.
@@ -367,7 +366,30 @@ class NoteController extends GetxController {
       }
     }
 
+    _announceCursorChange(prevSlot, 'kiri');
     noteNodes.refresh();
+  }
+
+  void _announceCursorChange(MathSlot? prevSlot, String direction) {
+    final currentSlot = activeSlot.value;
+    if (currentSlot != prevSlot) {
+      if (currentSlot != null) {
+        SemanticsService.announce(
+          'Kursor ke $direction, masuk ke ${currentSlot.label}',
+          TextDirection.ltr,
+        );
+      } else {
+        SemanticsService.announce(
+          'Kursor ke $direction, keluar dari kotak isian',
+          TextDirection.ltr,
+        );
+      }
+    } else {
+      SemanticsService.announce(
+        'Kursor dipindahkan ke $direction',
+        TextDirection.ltr,
+      );
+    }
   }
 
   void _stepOutOfNodeRight(MathNode node) {

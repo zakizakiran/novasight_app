@@ -42,6 +42,13 @@ class MathLatexSerializer {
         return _serializeSummation(node);
 
       case MathSymbolType.text:
+        if (node.symbol.id == 'vector' && node.slots.isNotEmpty) {
+          return '(${node.slots.map(serializeSlot).join(',')})';
+        }
+        if (node.symbol.id == 'dvar' && node.slots.isNotEmpty) {
+          return 'd${serializeSlot(node.slots[0])}';
+        }
+        return node.symbol.renderSyntax;
       case MathSymbolType.number:
       case MathSymbolType.operator:
       default:
@@ -97,6 +104,11 @@ class MathLatexSerializer {
   }
 
   String _serializeSubscript(MathNode node) {
+    if (node.slots.length == 1) {
+      final index = serializeSlot(node.slots[0]);
+      return 'a_{$index}';
+    }
+
     if (node.slots.length < 2) {
       return '';
     }
@@ -108,19 +120,48 @@ class MathLatexSerializer {
   }
 
   String _serializeParentheses(MathNode node) {
+    final isAbs = node.symbol.id == 'abs';
     if (node.slots.isEmpty) {
-      return r'\left(\right)';
+      return isAbs ? r'\left|\right|' : r'\left(\right)';
     }
 
     final content = serializeSlot(node.slots[0]);
 
-    return '\\left($content\\right)';
+    return isAbs ? '\\left|$content\\right|' : '\\left($content\\right)';
   }
 
   String _serializeFunction(MathNode node) {
     final arguments = node.slots
         .map(serializeSlot)
         .toList();
+
+    switch (node.symbol.id) {
+      case 'log_base':
+        final base = arguments.isNotEmpty ? arguments[0] : '';
+        final arg = arguments.length > 1 ? arguments[1] : '';
+        return '\\log_{$base}($arg)';
+      case 'log10':
+        return '\\log_{10}(${arguments.join(',')})';
+      case 'log2':
+        return '\\log_{2}(${arguments.join(',')})';
+      case 'binom':
+        final n = arguments.isNotEmpty ? arguments[0] : '';
+        final k = arguments.length > 1 ? arguments[1] : '';
+        return '\\binom{$n}{$k}';
+      case 'fact':
+        final arg = arguments.isNotEmpty ? arguments[0] : '';
+        return '$arg!';
+      case 'bar':
+        final arg = arguments.isNotEmpty ? arguments[0] : '';
+        return '\\bar{$arg}';
+      case 'fx':
+      case 'fxy':
+        return 'f(${arguments.join(',')})';
+      case 'perm':
+        return 'P(${arguments.join(',')})';
+      case 'comb':
+        return 'C(${arguments.join(',')})';
+    }
 
     final name = switch (node.symbol.id) {
       'sin' => r'\sin',
@@ -139,6 +180,10 @@ class MathLatexSerializer {
       'cosh' => r'\cosh',
       'tanh' => r'\tanh',
       'coth' => r'\coth',
+      'arsinh' => r'\operatorname{arsinh}',
+      'arcosh' => r'\operatorname{arcosh}',
+      'artanh' => r'\operatorname{artanh}',
+      'arcoth' => r'\operatorname{arcoth}',
       'ln' => r'\ln',
       'log' => r'\log',
       'exp' => r'\exp',

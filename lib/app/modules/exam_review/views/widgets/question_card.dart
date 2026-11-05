@@ -3,6 +3,7 @@ import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/text_theme.dart';
+import '../../../../core/utils/math_semantic_serializer.dart';
 import '../../../../data/models/exam_review_question_model.dart';
 
 class QuestionCard extends StatelessWidget {
@@ -32,7 +33,8 @@ class QuestionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Semantics(
-            label: 'Soal: ${question.question}',
+            label:
+                'Soal: ${MathSemanticSerializer.toAccessibleText(question.question)}',
             excludeSemantics: true,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +94,7 @@ class QuestionCard extends StatelessWidget {
 
             return Semantics(
               label:
-                  'Pilihan $letter: ${question.options[index]}. $semanticsStatus',
+                  'Pilihan $letter: ${MathSemanticSerializer.toAccessibleText(question.options[index])}. $semanticsStatus',
               excludeSemantics: true,
               child: Container(
                 margin: const EdgeInsets.only(bottom: 12),
