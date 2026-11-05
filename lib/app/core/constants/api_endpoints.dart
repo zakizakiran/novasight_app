@@ -61,10 +61,10 @@ class ApiEndpoints {
   static String teacherSoalEdit(int soalId) => '/api/teachers/soal/$soalId';
 
   // Chatbot endpoints
-  static const String chatbotSessions = '/api/chatbot/sessions';
-  static String chatbotSessionMessages(int sessionId) => '/api/chatbot/sessions/$sessionId/messages';
-  static String chatbotChapterReindex(int chapterId) => '/api/chatbot/chapters/$chapterId/reindex';
-  static String chatbotClassroomReindex(int classroomId) => '/api/chatbot/classrooms/$classroomId/reindex';
+  static const String chatbotSessions = '/api/clarifier/sessions';
+  static String chatbotSessionMessages(int sessionId) => '/api/clarifier/sessions/$sessionId/messages';
+  static String chatbotChapterReindex(int chapterId) => '/api/clarifier/chapters/$chapterId/reindex';
+  static String chatbotClassroomReindex(int classroomId) => '/api/clarifier/classrooms/$classroomId/reindex';
 
   // Health
   static const String health = '/health';
