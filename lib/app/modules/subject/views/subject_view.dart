@@ -189,33 +189,43 @@ class SubjectView extends GetView<SubjectController> {
     );
   }
 
-  Widget _subject({required BuildContext context, required String subject}) {
-    final sentences = subject.split(RegExp(r'(?<=[.!?])\s+'));
+  Widget _subject({
+    required BuildContext context,
+    required String subject,
+  }) {
+    final sentences = subject
+        .split(RegExp(r'(?<=[.!?])\s+'))
+        .map((sentence) => sentence.trim())
+        .where((sentence) => sentence.isNotEmpty)
+        .toList();
+
+    final textStyle = Theme.of(context).textTheme.displaySmall?.copyWith(
+      color: ColorConstant.textDarkGreyColor,
+      fontWeight: FontWeight.w500,
+    );
+
     return Semantics(
-      label: MathSemanticSerializer.toAccessibleText(subject),
-      excludeSemantics: true,
-      button: false,
-      child: GestureDetector(
-        onTap: () {
-          controller.onSentenceTapped(subject);
-        },
-        child: RichText(
-          text: TextSpan(
-            style: Theme.of(context).textTheme.displaySmall?.copyWith(
-              color: ColorConstant.textDarkGreyColor,
-              fontWeight: FontWeight.w500,
+      container: true,
+      explicitChildNodes: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: sentences.map((sentence) {
+          final accessibleSentence = MathSemanticSerializer.toAccessibleText(sentence);
+
+          return Semantics(
+            container: true,
+            label: accessibleSentence,
+            onTap: () => controller.onSentenceTapped(sentence),
+            excludeSemantics: true,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                sentence,
+                style: textStyle,
+              ),
             ),
-            children: sentences.map((sentence) {
-              return TextSpan(
-                text: '$sentence ',
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    controller.onSentenceTapped(sentence);
-                  },
-              );
-            }).toList(),
-          ),
-        ),
+          );
+        }).toList(),
       ),
     );
   }

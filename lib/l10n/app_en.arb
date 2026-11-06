@@ -130,6 +130,7 @@
   "tableOfContents": "Table of Contents",
   "errorOccurred": "An Error Occurred",
   "beforeStartingExam": "Before Starting the Exam",
+    "diagnosis":"Diagnosis",
 
   "welcomeStudentGreeting": "Happy learning 👋",
   "student": "Student",

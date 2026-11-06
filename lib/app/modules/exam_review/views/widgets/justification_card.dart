@@ -99,17 +99,21 @@ class JustificationCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: Math.tex(
-                          step.text,
-                          mathStyle: MathStyle.text,
-                          textStyle: const MainTextTheme().bodyLarge?.copyWith(
-                              color: isErrorStep
-                                  ? const Color(0xFFF44336)
-                                  : Colors.black87,
-                              fontWeight: isErrorStep
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                        child: Column(
+                          children: [
+                            Math.tex(
+                              step.text,
+                              mathStyle: MathStyle.text,
+                              textStyle: const MainTextTheme().bodyLarge?.copyWith(
+                                  color: isErrorStep
+                                      ? const Color(0xFFF44336)
+                                      : Colors.black87,
+                                  fontWeight: isErrorStep
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
                             ),
+                          ],
                         ),
                         // child: Text(
                         //   step.text,
@@ -229,9 +233,9 @@ class JustificationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Seharusnya:',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.diagnosis,
+                      style: const TextStyle(
                         color: Color(0xFF2E7D32),
                         fontWeight: FontWeight.bold,
                       ),

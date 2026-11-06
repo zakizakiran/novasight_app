@@ -66,10 +66,17 @@ class ExamReviewController extends GetxController {
         questions.value = results.map((item) {
           final List<String> options = item.options.map((option) => option.opsiText,).toList();
           const defaultOptions = ['A','B','C','D'];
-          final correctIdx = options.indexOf(item.correctOption.trim().toUpperCase());
+          final correctIdx = defaultOptions.indexOf(item.correctOption.trim().toUpperCase());
           final userIdx = item.selectedOption != null
               ? defaultOptions.indexOf(item.selectedOption!.trim().toUpperCase())
               : -1;
+          print('Correct Answer');
+          print(item.correctOption);
+          print(correctIdx);
+          print('');
+          print('Select Answer');
+          print(item.selectedOption);
+          print(userIdx);
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
           return ExamReviewQuestion(
@@ -89,8 +96,10 @@ class ExamReviewController extends GetxController {
                     ? item.justification!.divergenceStep! - 1
                     : 0)
                 : null,
-            errorExplanation: item.justification?.diagnosis,
-            correction: item.justification?.personalizedJustification,
+            // errorExplanation: item.justification?.diagnosis,
+            errorExplanation: item.conclusion,
+            // correction: item.justification?.personalizedJustification,
+            correction: item.importantNote?.join('. ')
           );
         }).toList();
         currentIndex.value = 0;
