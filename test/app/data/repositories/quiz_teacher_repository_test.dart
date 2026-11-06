@@ -4,6 +4,7 @@ import 'package:lydera_app/app/data/models/api_response.dart';
 import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 import 'package:lydera_app/app/data/providers/teacher_provider.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/modules/generate-exam/models/generated_question.dart';
 
 class MockTeacherProvider extends Mock implements TeacherProvider {}
 
@@ -239,6 +240,121 @@ void main() {
 
       expect(result.questionText, 'Pertanyaan Diedit');
       expect(result.bloomLevel, 3);
+    });
+
+    test('QuizRequestQuestionModel & GeneratedQuestion parse new stimulus (gambar/tabel), source_point, and markup fields', () {
+      final gambarJson = {
+        'id': 90,
+        'chapter_id': 15,
+        'stimulus': {
+          'id': 38,
+          'source_markup': '',
+          'readable_text': 'Gambar menunjukkan ruang sampel pelemparan dua dadu.',
+          'ringkasan': null,
+          'tabel': null,
+          'jenis': 'gambar',
+          'spesifikasi': {
+            'svg': '<svg viewBox="0 0 240 220"></svg>',
+            'deskripsi': 'Tabel 6 kali 6 dengan tiga sel diarsir.',
+            'skema_versi': 1,
+          },
+          'review_status': 'pending',
+          'source_reading_order_start': 840,
+          'source_reading_order_end': 860,
+        },
+        'bloom_level': 4,
+        'question_text': 'Berdasarkan gambar tadi, manakah pernyataan yang tepat?',
+        'correct_option': 'D',
+        'kesimpulan': 'Peluang diarsir lebih kecil.',
+        'source_reading_order_start': 840,
+        'source_reading_order_end': 860,
+        'review_status': 'pending',
+        'review_priority': 'high',
+        'validation_notes': 'Jangan memakai kata stimulus.',
+        'source_point': 'Tabel ruang sampel untuk peluang.',
+        'markup': {
+          'langkah': [r'Tabel memuat $6 \times 6 = 36$ sel.'],
+          'options': {'A': 'opsi A', 'D': 'opsi D'},
+          'question': 'Pertanyaan markup?',
+          'kesimpulan': 'Kesimpulan markup.',
+        },
+        'options': [
+          {'id': 369, 'label': 'A', 'opsi_text': 'opsi A'},
+          {'id': 370, 'label': 'B', 'opsi_text': 'opsi B'},
+          {'id': 371, 'label': 'C', 'opsi_text': 'opsi C'},
+          {'id': 372, 'label': 'D', 'opsi_text': 'opsi D'},
+        ],
+        'explanation_steps': [
+          {'id': 328, 'steps': 1, 'text': 'Tabel memuat enam kali enam sel.'},
+        ],
+      };
+
+      final tabelJson = {
+        'id': 91,
+        'chapter_id': 15,
+        'stimulus': {
+          'id': 39,
+          'source_markup': '',
+          'readable_text': 'Tabel distribusi peluang.',
+          'ringkasan': 'Ada 2 kolom dan 2 baris.',
+          'tabel': {
+            'baris': [
+              ['1', 'satu per tiga puluh enam'],
+            ],
+            'judul': 'Tabel distribusi peluang',
+            'kolom': ['Angka', 'Peluang'],
+          },
+          'jenis': 'tabel',
+          'spesifikasi': {
+            'baris': [
+              ['1', r'$\frac{1}{36}$'],
+            ],
+            'judul': 'Tabel distribusi peluang',
+            'kolom': ['Angka', 'Peluang'],
+            'skema_versi': 1,
+          },
+          'review_status': 'pending',
+          'source_reading_order_start': 900,
+          'source_reading_order_end': 920,
+        },
+        'bloom_level': 4,
+        'question_text': 'Soal tabel?',
+        'correct_option': 'B',
+        'kesimpulan': 'Kesimpulan tabel.',
+        'source_reading_order_start': 900,
+        'source_reading_order_end': 920,
+        'review_status': 'pending',
+        'review_priority': 'normal',
+        'validation_notes': null,
+        'source_point': 'Peluang dari tabel.',
+        'markup': null,
+        'options': [
+          {'id': 373, 'label': 'A', 'opsi_text': 'A'},
+          {'id': 374, 'label': 'B', 'opsi_text': 'B'},
+        ],
+        'explanation_steps': [],
+      };
+
+      final qGambar = QuizRequestQuestionModel.fromJson(gambarJson);
+      expect(qGambar.stimulus?.jenis, 'gambar');
+      expect(qGambar.stimulus?.svgMarkup, '<svg viewBox="0 0 240 220"></svg>');
+      expect(qGambar.sourcePoint, 'Tabel ruang sampel untuk peluang.');
+      expect(qGambar.validationNotes, 'Jangan memakai kata stimulus.');
+      expect(qGambar.reviewPriority, 'high');
+      expect(qGambar.markup?.langkah.first, r'Tabel memuat $6 \times 6 = 36$ sel.');
+
+      final genGambar = GeneratedQuestion.fromQuizRequestQuestion(qGambar);
+      expect(genGambar.hasStimulus, isTrue);
+      expect(genGambar.sourcePoint, 'Tabel ruang sampel untuk peluang.');
+      expect(genGambar.validationNotes, 'Jangan memakai kata stimulus.');
+      expect(genGambar.clone().id, 90);
+      expect(genGambar.clone().stimulus?.svgMarkup, isNotNull);
+
+      final qTabel = QuizRequestQuestionModel.fromJson(tabelJson);
+      expect(qTabel.stimulus?.jenis, 'tabel');
+      expect(qTabel.stimulus?.ringkasan, 'Ada 2 kolom dan 2 baris.');
+      expect(qTabel.stimulus?.effectiveTable?.judul, 'Tabel distribusi peluang');
+      expect(qTabel.stimulus?.effectiveTable?.baris.first.last, r'$\frac{1}{36}$');
     });
   });
 }

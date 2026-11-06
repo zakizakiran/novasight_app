@@ -11,6 +11,8 @@ import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
 import '../../../core/utils/snackbar_helper.dart';
 import '../../generate-exam/models/generated_question.dart';
+import '../../generate-exam/views/widgets/step_3_view.dart'
+    show QuestionStimulusContentWidget;
 import '../controllers/exam_teacher_detail_controller.dart';
 
 class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
@@ -211,6 +213,27 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
                             ),
                           ),
                         ),
+                        if (question.reviewPriority?.toLowerCase() == 'high')
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: ColorConstant.redColor.withValues(
+                                alpha: 0.12,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              'Perlu Tinjau',
+                              style: TextStyle(
+                                color: ColorConstant.redColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -292,17 +315,42 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         const SizedBox(height: 12),
 
         // Stimulus section if exists
-        if (question.stimulusText != null &&
-            question.stimulusText!.isNotEmpty) ...[
+        if (question.hasStimulus) ...[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                context.l10n.readingStimulus,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: ColorConstant.primary,
-                      fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Text(
+                    context.l10n.readingStimulus,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: ColorConstant.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  if (question.stimulus?.jenis != null &&
+                      question.stimulus!.jenis!.isNotEmpty) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorConstant.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        question.stimulus!.jenis!.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: ColorConstant.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
+                  ],
+                ],
               ),
               TextButton.icon(
                 onPressed: () => _showRegenerateStimulusDialog(context, index),
@@ -323,25 +371,76 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
             ],
           ),
           const SizedBox(height: 6),
+          QuestionStimulusContentWidget(question: question),
+          const SizedBox(height: 16),
+        ],
+
+        if (question.validationNotes != null &&
+            question.validationNotes!.trim().isNotEmpty) ...[
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFFF4F7FC),
+              color: const Color(0xFFFFF8E1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFFFFB300)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  size: 16,
+                  color: Color(0xFFF57C00),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    question.validationNotes!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFFE65100),
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+
+        if (question.sourcePoint != null &&
+            question.sourcePoint!.trim().isNotEmpty) ...[
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: ColorConstant.primary.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: ColorConstant.primary.withValues(alpha: 0.2),
               ),
             ),
-            child: Text(
-              question.stimulusText!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: ColorConstant.textDarkGreyColor,
-                    height: 1.4,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.lightbulb_outline,
+                  size: 16,
+                  color: ColorConstant.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Poin Materi: ${question.sourcePoint!}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ColorConstant.textDarkGreyColor,
+                        ),
                   ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
         ],
 
         Text(
@@ -575,15 +674,14 @@ class QuestionEditFormState extends State<QuestionEditForm> {
   }
 
   void _save() {
-    final updated = GeneratedQuestion(
-      question: _questionController.text,
-      options: _optionControllers.map((c) => c.text).toList(),
-      correctOptionIndex: _correctOptionIndex,
-      justificationSteps: _stepControllers.map((c) => c.text).toList(),
-      conclusion: _conclusionController.text,
-      isExpanded: true,
-      isEditing: false,
-    );
+    final updated = widget.question.clone()
+      ..question = _questionController.text
+      ..options = _optionControllers.map((c) => c.text).toList()
+      ..correctOptionIndex = _correctOptionIndex
+      ..justificationSteps = _stepControllers.map((c) => c.text).toList()
+      ..conclusion = _conclusionController.text
+      ..isExpanded = true
+      ..isEditing = false;
     widget.onSave(updated);
     SnackbarHelper.showSuccess(
       title: "Perubahan Berhasil Disimpan!",

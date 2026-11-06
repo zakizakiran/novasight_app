@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
+import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 import 'package:lydera_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
@@ -298,6 +302,27 @@ class Step3View extends GetView<GenerateExamController> {
                             ),
                           ),
                         ),
+                        if (question.reviewPriority?.toLowerCase() == 'high')
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: ColorConstant.redColor.withValues(
+                                alpha: 0.12,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              'Perlu Tinjau',
+                              style: TextStyle(
+                                color: ColorConstant.redColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -403,17 +428,42 @@ class Step3View extends GetView<GenerateExamController> {
         const SizedBox(height: 12),
 
         // Stimulus section if exists
-        if (question.stimulusText != null &&
-            question.stimulusText!.isNotEmpty) ...[
+        if (question.hasStimulus) ...[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                context.l10n.readingStimulus,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: ColorConstant.primary,
-                      fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Text(
+                    context.l10n.readingStimulus,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: ColorConstant.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  if (question.stimulus?.jenis != null &&
+                      question.stimulus!.jenis!.isNotEmpty) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorConstant.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        question.stimulus!.jenis!.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: ColorConstant.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
+                  ],
+                ],
               ),
               TextButton.icon(
                 onPressed: () => _showRegenerateStimulusDialog(context, index),
@@ -434,25 +484,76 @@ class Step3View extends GetView<GenerateExamController> {
             ],
           ),
           const SizedBox(height: 6),
+          QuestionStimulusContentWidget(question: question),
+          const SizedBox(height: 16),
+        ],
+
+        if (question.validationNotes != null &&
+            question.validationNotes!.trim().isNotEmpty) ...[
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFFF4F7FC),
+              color: const Color(0xFFFFF8E1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFFFFB300)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  size: 16,
+                  color: Color(0xFFF57C00),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    question.validationNotes!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFFE65100),
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+
+        if (question.sourcePoint != null &&
+            question.sourcePoint!.trim().isNotEmpty) ...[
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: ColorConstant.primary.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: ColorConstant.primary.withValues(alpha: 0.2),
               ),
             ),
-            child: Text(
-              question.stimulusText!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: ColorConstant.textDarkGreyColor,
-                    height: 1.4,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.lightbulb_outline,
+                  size: 16,
+                  color: ColorConstant.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Poin Materi: ${question.sourcePoint!}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ColorConstant.textDarkGreyColor,
+                        ),
                   ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
         ],
 
         Text(
@@ -923,15 +1024,14 @@ class QuestionEditFormState extends State<QuestionEditForm> {
   }
 
   void _save() {
-    final updated = GeneratedQuestion(
-      question: _questionController.text,
-      options: _optionControllers.map((c) => c.text).toList(),
-      correctOptionIndex: _correctOptionIndex,
-      justificationSteps: _stepControllers.map((c) => c.text).toList(),
-      conclusion: _conclusionController.text,
-      isExpanded: true,
-      isEditing: false,
-    );
+    final updated = widget.question.clone()
+      ..question = _questionController.text
+      ..options = _optionControllers.map((c) => c.text).toList()
+      ..correctOptionIndex = _correctOptionIndex
+      ..justificationSteps = _stepControllers.map((c) => c.text).toList()
+      ..conclusion = _conclusionController.text
+      ..isExpanded = true
+      ..isEditing = false;
     widget.onSave(updated);
     SnackbarHelper.showSuccess(title: "Perubahan Berhasil Disimpan!", message: "Soal telah diperbarui berdasarkan perbaikan.");
   }
@@ -1256,6 +1356,208 @@ class QuestionEditFormState extends State<QuestionEditForm> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class QuestionStimulusContentWidget extends StatelessWidget {
+  final GeneratedQuestion question;
+
+  const QuestionStimulusContentWidget({
+    super.key,
+    required this.question,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final stimulus = question.stimulus;
+    final svgMarkup = stimulus?.svgMarkup;
+    final tableModel = stimulus?.effectiveTable;
+    final readableText =
+        question.stimulusText ?? stimulus?.readableText ?? stimulus?.ringkasan ?? '';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF4F7FC),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: ColorConstant.primary.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (svgMarkup != null && svgMarkup.trim().isNotEmpty) ...[
+            Semantics(
+              label: stimulus?.spesifikasi?.deskripsi ?? readableText,
+              excludeSemantics: true,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: ColorConstant.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: ColorConstant.borderBlueGrey),
+                ),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 220),
+                  child: SvgPicture.string(
+                    svgMarkup,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+          if (tableModel != null &&
+              (tableModel.kolom.isNotEmpty || tableModel.baris.isNotEmpty)) ...[
+            _buildStructuredTable(context, tableModel, readableText),
+            const SizedBox(height: 10),
+          ],
+          if (readableText.isNotEmpty)
+            Semantics(
+              label: MathSemanticSerializer.toAccessibleText(readableText),
+              excludeSemantics: true,
+              child: Text(
+                readableText,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ColorConstant.textDarkGreyColor,
+                      height: 1.4,
+                    ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStructuredTable(
+    BuildContext context,
+    StimulusTableModel table,
+    String fallbackSemantic,
+  ) {
+    final colCount = table.kolom.isNotEmpty
+        ? table.kolom.length
+        : (table.baris.isNotEmpty ? table.baris.first.length : 0);
+    if (colCount == 0) return const SizedBox.shrink();
+
+    return Semantics(
+      label: MathSemanticSerializer.toAccessibleText(
+        table.judul != null && table.judul!.isNotEmpty
+            ? '${table.judul}. $fallbackSemantic'
+            : fallbackSemantic,
+      ),
+      excludeSemantics: true,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: ColorConstant.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: ColorConstant.borderBlueGrey),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (table.judul != null && table.judul!.trim().isNotEmpty) ...[
+              Text(
+                table.judul!,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstant.primary,
+                    ),
+              ),
+              const SizedBox(height: 6),
+            ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Table(
+                defaultColumnWidth: const IntrinsicColumnWidth(),
+                border: TableBorder.all(
+                  color: ColorConstant.borderBlueGrey,
+                  width: 0.8,
+                ),
+                children: [
+                  if (table.kolom.isNotEmpty)
+                    TableRow(
+                      decoration: BoxDecoration(
+                        color: ColorConstant.primary.withValues(alpha: 0.08),
+                      ),
+                      children: List.generate(colCount, (i) {
+                        final header =
+                            i < table.kolom.length ? table.kolom[i] : '';
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          child: _buildCellContent(
+                            context,
+                            header,
+                            isHeader: true,
+                          ),
+                        );
+                      }),
+                    ),
+                  ...table.baris.map((row) {
+                    return TableRow(
+                      children: List.generate(colCount, (i) {
+                        final cell = i < row.length ? row[i] : '';
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          child: _buildCellContent(context, cell),
+                        );
+                      }),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCellContent(
+    BuildContext context,
+    String text, {
+    bool isHeader = false,
+  }) {
+    final trimmed = text.trim();
+    if (trimmed.startsWith(r'$') &&
+        trimmed.endsWith(r'$') &&
+        trimmed.length > 2) {
+      final latex = trimmed.substring(1, trimmed.length - 1).trim();
+      return Math.tex(
+        latex,
+        mathStyle: MathStyle.text,
+        textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+              fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+              color: ColorConstant.textDarkGreyColor,
+            ),
+        onErrorFallback: (_) => Text(
+          trimmed,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+                color: ColorConstant.textDarkGreyColor,
+              ),
+        ),
+      );
+    }
+
+    return Text(
+      trimmed,
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+            color: ColorConstant.textDarkGreyColor,
+          ),
     );
   }
 }
