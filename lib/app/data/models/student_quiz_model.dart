@@ -295,11 +295,140 @@ class StudentStep extends QuestionExplanationSteps {
   }
 }
 
+enum StimulusType {
+  image('gambar'),
+  table('tabel'),
+  text('teks');
+
+  final String value;
+
+  const StimulusType(this.value);
+  factory StimulusType.fromJson(String value) {
+    return StimulusType.values.firstWhere(
+          (type) => type.value == value,
+      orElse: () => throw FormatException(
+        'Unknown stimulus type: $value',
+      ),
+    );
+  }
+}
+
+abstract class StimulusSpecification {
+  int? get schemaVersion;
+
+  factory StimulusSpecification.fromJson(
+      Map<String, dynamic>? json, {
+        required StimulusType type,
+      }) {
+    if (json == null) {
+      throw ArgumentError('Specification JSON cannot be null');
+    }
+    switch (type) {
+      case StimulusType.table:
+        return TableSpecification.fromJson(json);
+
+      case StimulusType.image:
+        return ImageSpecification.fromJson(json);
+      case StimulusType.text:
+        throw ArgumentError(
+          'Text stimulus does not have a specification',
+        );
+    }
+  }
+}
+
+class TableSpecification implements StimulusSpecification {
+  final List<List<String>> rows;
+  final String title;
+  final List<String> columns;
+
+  @override
+  final int? schemaVersion;
+
+  TableSpecification({
+    required this.rows,
+    required this.title,
+    required this.columns,
+    required this.schemaVersion,
+  });
+
+  factory TableSpecification.fromJson(Map<String, dynamic> json) {
+    return TableSpecification(
+      rows: (json['baris'] as List<dynamic>)
+          .map(
+            (row) => (row as List<dynamic>)
+            .map((cell) => cell.toString())
+            .toList(),
+      )
+          .toList(),
+      title: json['judul'] as String,
+      columns: (json['kolom'] as List<dynamic>)
+          .map((column) => column.toString())
+          .toList(),
+      schemaVersion: (json['skema_versi'] as num?)?.toInt(),
+    );
+  }
+}
+
+class ImageSpecification implements StimulusSpecification {
+  final String svg;
+  final String description;
+
+  @override
+  final int? schemaVersion;
+
+  ImageSpecification({
+    required this.svg,
+    required this.description,
+    this.schemaVersion,
+  });
+
+  factory ImageSpecification.fromJson(Map<String, dynamic> json) {
+    return ImageSpecification(
+      svg: json['svg'] as String,
+      description: json['deskripsi'] as String,
+      schemaVersion: (json['skema_versi'] as num?)?.toInt(),
+    );
+  }
+}
+
+class StimulusTable {
+  final List<List<String>> rows;
+  final String title;
+  final List<String> columns;
+
+  StimulusTable({
+    required this.rows,
+    required this.title,
+    required this.columns,
+  });
+
+  factory StimulusTable.fromJson(Map<String, dynamic> json) {
+    return StimulusTable(
+      rows: (json['baris'] as List<dynamic>)
+          .map(
+            (row) => (row as List<dynamic>)
+            .map((cell) => cell.toString())
+            .toList(),
+      )
+          .toList(),
+      title: json['judul'] as String,
+      columns: (json['kolom'] as List<dynamic>)
+          .map((column) => column.toString())
+          .toList(),
+    );
+  }
+}
+
 class QuestionStimulusResponse {
   final int id;
   final String sourceMarkup;
   final String readableText;
   final String reviewStatus;
+  final StimulusType type;
+  final String? summary;
+  final StimulusTable? table;
+  final StimulusSpecification? specification;
   final int sourceReadingOrderStart;
   final int sourceReadingOrderEnd;
 
@@ -310,9 +439,15 @@ class QuestionStimulusResponse {
     required this.reviewStatus,
     required this.sourceReadingOrderStart,
     required this.sourceReadingOrderEnd,
+    required this.type,
+    this.summary,
+    this.table,
+    this.specification,
   });
 
   factory QuestionStimulusResponse.fromJson(Map<String, dynamic> json) {
+    final type = StimulusType.fromJson(json['jenis'] as String);
+
     return QuestionStimulusResponse(
       id: json['id'] as int? ?? 0,
       sourceMarkup: json['source_markup'] as String? ?? '',
@@ -320,6 +455,19 @@ class QuestionStimulusResponse {
       reviewStatus: json['review_status'] as String? ?? '',
       sourceReadingOrderStart: json['source_reading_order_start'] as int? ?? 0,
       sourceReadingOrderEnd: json['source_reading_order_end'] as int? ?? 0,
+      type: type,
+      specification: json['spesifikasi'] == null
+          ? null
+          : StimulusSpecification.fromJson(
+        Map<String, dynamic>.from(json['spesifikasi'] as Map),
+        type: type,
+      ),
+      summary: json['ringkasan'],
+      table: json['tabel'] == null
+          ? null
+          : StimulusTable.fromJson(
+        Map<String, dynamic>.from(json['tabel'] as Map),
+      ),
     );
   }
 
@@ -584,7 +732,10 @@ class QuizResultItem {
   final String correctOption;
   final List<QuestionOptionResponse> options;
   final bool? isCorrect;
+  final QuestionStimulusResponse? stimulus;
   final SoalJustification? justification;
+  final List<String>? importantNote;
+  final String? conclusion;
   final List<StudentStep> studentSteps;
 
   QuizResultItem({
@@ -596,9 +747,12 @@ class QuizResultItem {
     required this.correctOption,
     this.isCorrect,
     this.justification,
+    this.importantNote, this.conclusion,
+    this.stimulus,
   });
 
   factory QuizResultItem.fromJson(Map<String, dynamic> json) {
+    final stimulus = json['stimulus'];
     return QuizResultItem(
       soalId: json['soal_id'] != null
           ? (int.tryParse(json['soal_id'].toString()) ?? 0)
@@ -611,19 +765,24 @@ class QuizResultItem {
         }
         return StudentStep(id: 0, steps: 0, text: '');
       }).toList() ?? [],
+      stimulus: stimulus != null ? QuestionStimulusResponse.fromJson(json['stimulus']) : null,
       questionText: json['question_text'] as String? ?? '',
       options: (json['options'] as List<dynamic>?)
           ?.map((item) => QuestionOptionResponse.fromJson(item as Map<String, dynamic>))
           .toList() ?? [],
       selectedOption: json['selected_option'] as String?,
       correctOption: json['correct_option'] as String? ?? '',
+      importantNote: (json['langkah_kunci'] as List<dynamic>?)
+          ?.map((item) => item.toString())
+          .toList(),
+      conclusion: json['kesimpulan'],
       isCorrect: json['is_correct'] as bool?,
-      justification: json['justification'] != null &&
-              json['justification'] is Map<String, dynamic>
-          ? SoalJustification.fromJson(
-              json['justification'] as Map<String, dynamic>,
-            )
-          : null,
+      // justification: json['justification'] != null &&
+      //         json['justification'] is Map<String, dynamic>
+      //     ? SoalJustification.fromJson(
+      //         json['justification'] as Map<String, dynamic>,
+      //       )
+      //     : null,
     );
   }
 

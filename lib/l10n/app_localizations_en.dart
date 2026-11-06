@@ -270,6 +270,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get beforeStartingExam => 'Before Starting the Exam';
 
   @override
+  String get diagnosis => 'Diagnosis';
+
+  @override
   String get welcomeStudentGreeting => 'Happy learning 👋';
 
   @override

@@ -11,9 +11,11 @@ import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
+import 'package:lydera_app/app/modules/exam_active/views/widget/stimulus_widget.dart';
 
 import 'package:lydera_app/app/routes/app_pages.dart';
 import '../controllers/exam_active_controller.dart';
+import 'widget/accessible_sentence_widget.dart';
 
 class ExamActiveView extends GetView<ExamActiveController> {
   const ExamActiveView({super.key});
@@ -125,20 +127,31 @@ class ExamActiveView extends GetView<ExamActiveController> {
                                   ),
                             ),
                             const SizedBox(height: Dimens.spaceSmallPadding),
-                            Semantics(
-                              label: MathSemanticSerializer.toAccessibleText(
-                                currentQuestion.questionText,
+                            if (currentQuestion.stimulus != null)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: Dimens.innerPadding),
+                                child: StimulusWidget(stimulus: currentQuestion.stimulus!, selectedMode: controller.selectedMode,),
                               ),
-                              excludeSemantics: true,
-                              child: Text(
-                                currentQuestion.questionText,
-                                style: Theme.of(context).textTheme.bodyLarge
-                                    ?.copyWith(
-                                      color: ColorConstant.textDarkGreyColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            AccessibleSentenceWidget(
+                              text: MathSemanticSerializer.toAccessibleText(
+                            currentQuestion.questionText,
+                            ),
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: ColorConstant.textDarkGreyColor,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
+                            // Semantics(
+                            //   excludeSemantics: true,
+                            //   child: Text(
+                            //     currentQuestion.questionText,
+                            //     style: Theme.of(context).textTheme.bodyLarge
+                            //         ?.copyWith(
+                            //           color: ColorConstant.textDarkGreyColor,
+                            //           fontWeight: FontWeight.bold,
+                            //         ),
+                            //   ),
+                            // ),
                             const SizedBox(height: Dimens.spacePadding),
                             Text(
                               context.l10n.answersLabel,

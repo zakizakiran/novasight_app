@@ -590,6 +590,12 @@ abstract class AppLocalizations {
   /// **'Before Starting the Exam'**
   String get beforeStartingExam;
 
+  /// No description provided for @diagnosis.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosis'**
+  String get diagnosis;
+
   /// No description provided for @welcomeStudentGreeting.
   ///
   /// In en, this message translates to:

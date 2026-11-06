@@ -93,7 +93,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                                 ),
                                 child: Text(
                                   context.l10n.tryAgain,
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ],
@@ -127,7 +127,7 @@ class ExamReviewView extends GetView<ExamReviewController> {
                     children: [
                       StatusBanner(question: question),
                       const SizedBox(height: 20),
-                      QuestionCard(question: question),
+                      QuestionCard(question: question, selectedMode: controller.selectedMode,),
                       const SizedBox(height: 20),
                       JustificationCard(question: question, parser: controller.parser, serializer: controller.serializer)
                     ],

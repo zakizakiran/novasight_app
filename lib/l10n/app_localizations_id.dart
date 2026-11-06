@@ -269,6 +269,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get beforeStartingExam => 'Sebelum Memulai Ujian';
 
   @override
+  String get diagnosis => 'Keterangan';
+
+  @override
   String get welcomeStudentGreeting => 'Selamat belajar 👋';
 
   @override

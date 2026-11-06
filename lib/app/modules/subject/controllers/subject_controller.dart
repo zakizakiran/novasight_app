@@ -329,5 +329,4 @@ class SubjectController extends GetxController {
       Get.find<StudentDashboardController>().onRefresh();
     }
   }
-
 }

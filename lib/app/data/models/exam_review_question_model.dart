@@ -8,6 +8,7 @@ class ExamReviewQuestion {
   final int userAnswerIndex;
   final bool isCorrect;
   final double score;
+  final QuestionStimulusResponse? stimulus;
   final List<String> explanationSteps;
   final List<StudentStep> userStep;
   final int? errorStepIndex;
@@ -27,5 +28,6 @@ class ExamReviewQuestion {
     this.errorStepIndex,
     this.errorExplanation,
     this.correction,
+    this.stimulus,
   });
 }

@@ -10,6 +10,7 @@ import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
 import 'package:lydera_app/app/core/utils/user_roles.dart';
+import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 import 'package:lydera_app/app/routes/app_pages.dart';
@@ -17,13 +18,13 @@ import 'package:lydera_app/l10n/app_localizations.dart';
 
 import '../../../common/common_button_widget.dart';
 import '../../../core/Dimens.dart';
+import '../../../core/utils/table_mode.dart';
 import '../../main_layout/controllers/main_layout_controller.dart';
 
 class ExamOptionModel {
   final String id;
   final String letter;
   final String text;
-
   ExamOptionModel({required this.id, required this.letter, required this.text});
 }
 
@@ -32,6 +33,7 @@ class ExamQuestionModel {
   final String questionText;
   final List<ExamOptionModel> options;
   final List<StudentStep> steps;
+  final QuestionStimulusResponse? stimulus;
   String? selectedOptionId;
 
   ExamQuestionModel({
@@ -40,11 +42,13 @@ class ExamQuestionModel {
     required this.options,
     required this.steps,
     this.selectedOptionId,
+    this.stimulus,
   });
 }
 
 class ExamActiveController extends GetxController {
   final StudentRepository? studentRepository;
+  final Rx<TableMode> selectedMode = TableMode.cell.obs;
 
   ExamActiveController({
     StudentRepository? studentRepository,
@@ -180,6 +184,7 @@ class ExamActiveController extends GetxController {
                 return ExamQuestionModel(
                   id: q.id.toString(),
                   selectedOptionId: q.answer?.selectedOption,
+                  stimulus: q.stimulus,
                   questionText: q.questionText,
                   options: q.options.map((opt) {
                     return ExamOptionModel(

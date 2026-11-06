@@ -6,11 +6,13 @@ import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 
 import '../../../core/utils/math_latex_parser.dart';
+import '../../../core/utils/table_mode.dart';
 
 class ExamReviewController extends GetxController {
   final StudentRepository? studentRepository;
   final MathLatexParser parser = MathLatexParser();
   final MathSemanticSerializer serializer = MathSemanticSerializer();
+  final Rx<TableMode> selectedMode = TableMode.cell.obs;
 
   ExamReviewController({
     StudentRepository? studentRepository,
@@ -66,10 +68,11 @@ class ExamReviewController extends GetxController {
         questions.value = results.map((item) {
           final List<String> options = item.options.map((option) => option.opsiText,).toList();
           const defaultOptions = ['A','B','C','D'];
-          final correctIdx = options.indexOf(item.correctOption.trim().toUpperCase());
+          final correctIdx = defaultOptions.indexOf(item.correctOption.trim().toUpperCase());
           final userIdx = item.selectedOption != null
               ? defaultOptions.indexOf(item.selectedOption!.trim().toUpperCase())
               : -1;
+
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
           return ExamReviewQuestion(
@@ -77,6 +80,7 @@ class ExamReviewController extends GetxController {
             userStep: item.studentSteps,
             question: item.questionText,
             options: options,
+            stimulus: item.stimulus,
             correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
             userAnswerIndex: userIdx != -1 ? userIdx : -1,
             isCorrect: item.isCorrect ?? false,
@@ -89,8 +93,10 @@ class ExamReviewController extends GetxController {
                     ? item.justification!.divergenceStep! - 1
                     : 0)
                 : null,
-            errorExplanation: item.justification?.diagnosis,
-            correction: item.justification?.personalizedJustification,
+            // errorExplanation: item.justification?.diagnosis,
+            errorExplanation: item.conclusion,
+            // correction: item.justification?.personalizedJustification,
+            correction: item.importantNote?.join('. ')
           );
         }).toList();
         currentIndex.value = 0;

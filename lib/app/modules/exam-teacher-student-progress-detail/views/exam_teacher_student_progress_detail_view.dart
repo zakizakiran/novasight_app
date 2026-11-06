@@ -121,7 +121,7 @@ class ExamTeacherStudentProgressDetailView extends GetView<ExamTeacherStudentPro
                       children: [
                         StatusBanner(question: question),
                         const SizedBox(height: 20),
-                        QuestionCard(question: question),
+                        QuestionCard(question: question, selectedMode: controller.selectedMode,),
                         const SizedBox(height: 20),
                         JustificationCard(
                           question: question,
