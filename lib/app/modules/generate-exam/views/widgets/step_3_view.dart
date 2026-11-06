@@ -429,7 +429,7 @@ class Step3View extends GetView<GenerateExamController> {
         // Stimulus section if exists
         if (question.hasStimulus) ...[
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -464,19 +464,22 @@ class Step3View extends GetView<GenerateExamController> {
                   ],
                 ],
               ),
-              TextButton.icon(
-                onPressed: () => _showRegenerateStimulusDialog(context, index),
-                icon: const Icon(
-                  Icons.auto_awesome,
-                  size: 14,
-                  color: ColorConstant.primary,
-                ),
-                label: Text(
-                  context.l10n.regenerateStimulus,
-                  style: const TextStyle(
-                    fontSize: 11,
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: () => _showRegenerateStimulusDialog(context, index),
+                  icon: const Icon(
+                    Icons.auto_awesome,
+                    size: 14,
                     color: ColorConstant.primary,
-                    fontWeight: FontWeight.bold,
+                  ),
+                  label: Text(
+                    context.l10n.regenerateStimulus,
+                    // textAlign: TextAlign.end,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: ColorConstant.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

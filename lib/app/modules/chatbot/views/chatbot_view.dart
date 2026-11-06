@@ -467,11 +467,13 @@ class ChatbotView extends GetView<ChatbotController> {
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              '${AppStrings.aiName} AI sedang berpikir...',
-              style: const MainTextTheme().bodyMedium?.copyWith(
-                color: ColorConstant.textGreyColor,
-                fontStyle: FontStyle.italic,
+            Expanded(
+              child: Text(
+                '${AppStrings.aiName} AI sedang berpikir...',
+                style: const MainTextTheme().bodyMedium?.copyWith(
+                  color: ColorConstant.textGreyColor,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
           ],

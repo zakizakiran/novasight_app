@@ -39,7 +39,7 @@ class RegisterView extends GetView<RegisterController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Halo Faris 👋",
+                      "Halo 👋",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(

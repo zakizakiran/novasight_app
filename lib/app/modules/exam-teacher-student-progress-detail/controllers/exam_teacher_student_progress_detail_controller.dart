@@ -81,32 +81,53 @@ class ExamTeacherStudentProgressDetailController extends GetxController {
         questions.value = results.map((item) {
           final List<String> options = item.options.map((option) => option.opsiText,).toList();
           const defaultOptions = ['A','B','C','D'];
-          final correctIdx = options.indexOf(item.correctOption.trim().toUpperCase());
+          final correctIdx = defaultOptions.indexOf(item.correctOption.trim().toUpperCase());
           final userIdx = item.selectedOption != null
               ? defaultOptions.indexOf(item.selectedOption!.trim().toUpperCase())
               : -1;
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
+          print('Stimulus : ${item.stimulus?.type}');
           return ExamReviewQuestion(
-            id: item.soalId,
-            userStep: item.studentSteps,
-            question: item.questionText,
-            options: options,
-            correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
-            userAnswerIndex: userIdx != -1 ? userIdx : -1,
-            isCorrect: item.isCorrect ?? false,
-            score: (item.isCorrect == true) ? scorePerQuestion : 0,
-            explanationSteps: item.justification?.diagnosis.isNotEmpty == true
-                ? [item.justification!.diagnosis]
-                : [],
-            errorStepIndex: item.justification?.divergenceStep != null
-                ? (item.justification!.divergenceStep! > 0
-                ? item.justification!.divergenceStep! - 1
-                : 0)
-                : null,
-            errorExplanation: item.justification?.diagnosis,
-            correction: item.justification?.personalizedJustification,
+              id: item.soalId,
+              userStep: item.studentSteps,
+              question: item.questionText,
+              options: options,
+              stimulus: item.stimulus,
+              correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
+              userAnswerIndex: userIdx != -1 ? userIdx : -1,
+              isCorrect: item.isCorrect ?? false,
+              score: (item.isCorrect == true) ? scorePerQuestion : 0,
+              explanationSteps: item.justification?.diagnosis.isNotEmpty == true
+                  ? [item.justification!.diagnosis]
+                  : [],
+              errorStepIndex: item.divergenceStep,
+              // errorExplanation: item.justification?.diagnosis,
+              errorExplanation: item.conclusion,
+              // correction: item.justification?.personalizedJustification,
+              correction: item.importantNote?.join('. ')
           );
+          // return ExamReviewQuestion(
+          //   id: item.soalId,
+          //   userStep: item.studentSteps,
+          //   question: item.questionText,
+          //   options: options,
+          //   correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
+          //   stimulus: item.stimulus,
+          //   userAnswerIndex: userIdx != -1 ? userIdx : -1,
+          //   isCorrect: item.isCorrect ?? false,
+          //   score: (item.isCorrect == true) ? scorePerQuestion : 0,
+          //   explanationSteps: item.justification?.diagnosis.isNotEmpty == true
+          //       ? [item.justification!.diagnosis]
+          //       : [],
+          //   errorStepIndex: item.justification?.divergenceStep != null
+          //       ? (item.justification!.divergenceStep! > 0
+          //       ? item.justification!.divergenceStep! - 1
+          //       : 0)
+          //       : null,
+          //   errorExplanation: item.justification?.diagnosis,
+          //   correction: item.justification?.personalizedJustification,
+          // );
         }).toList();
         currentIndex.value = 0;
       } else {
