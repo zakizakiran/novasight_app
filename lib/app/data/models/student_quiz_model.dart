@@ -548,7 +548,7 @@ class QuizRequestQuestionResponse {
     this.reviewPriority = 'normal',
     this.validationNotes,
     required this.options,
-    required this.explanationSteps,
+    required this.explanationSteps
   });
 
   factory QuizRequestQuestionResponse.fromJson(Map<String, dynamic> json) {
@@ -732,6 +732,7 @@ class QuizResultItem {
   final String correctOption;
   final List<QuestionOptionResponse> options;
   final bool? isCorrect;
+  final int? divergenceStep;
   final QuestionStimulusResponse? stimulus;
   final SoalJustification? justification;
   final List<String>? importantNote;
@@ -748,7 +749,7 @@ class QuizResultItem {
     this.isCorrect,
     this.justification,
     this.importantNote, this.conclusion,
-    this.stimulus,
+    this.stimulus, this.divergenceStep,
   });
 
   factory QuizResultItem.fromJson(Map<String, dynamic> json) {
@@ -757,6 +758,7 @@ class QuizResultItem {
       soalId: json['soal_id'] != null
           ? (int.tryParse(json['soal_id'].toString()) ?? 0)
           : 0,
+      divergenceStep: json['divergence_step'],
       studentSteps: (json['langkah'] as List<dynamic>?)?.map((item) {
         if (item is Map<String, dynamic>) {
           return StudentStep.fromJson(item);

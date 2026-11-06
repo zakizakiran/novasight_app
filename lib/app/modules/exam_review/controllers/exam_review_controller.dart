@@ -88,11 +88,7 @@ class ExamReviewController extends GetxController {
             explanationSteps: item.justification?.diagnosis.isNotEmpty == true
                 ? [item.justification!.diagnosis]
                 : [],
-            errorStepIndex: item.justification?.divergenceStep != null
-                ? (item.justification!.divergenceStep! > 0
-                    ? item.justification!.divergenceStep! - 1
-                    : 0)
-                : null,
+            errorStepIndex: item.divergenceStep,
             // errorExplanation: item.justification?.diagnosis,
             errorExplanation: item.conclusion,
             // correction: item.justification?.personalizedJustification,

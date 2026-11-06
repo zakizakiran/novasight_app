@@ -249,12 +249,16 @@ class ExamActiveController extends GetxController {
 
   Future<void> selectOption(String questionId, String optionId) async {
     final questionIndex = questions.indexWhere((q) => q.id == questionId);
+    print('Question Id : $questionId');
+    print('Question Index : $questionId');
     if (questionIndex != -1) {
       questions[questionIndex].selectedOptionId = optionId;
       questions.refresh();
 
       // Submit answer to backend via POST /api/students/soal/{soal_id}/submit
       final soalId = int.tryParse(questionId);
+      print('Select Option Id : $optionId');
+      print('Soal Id : $soalId');
       if (soalId != null && studentRepository != null) {
         try {
           await studentRepository!.submitSoalAnswer(

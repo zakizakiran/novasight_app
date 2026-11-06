@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:lydera_app/app/core/constants/api_endpoints.dart';
 import 'package:lydera_app/app/core/errors/api_exception.dart';
 import 'package:lydera_app/app/core/network/dio_client.dart';
@@ -397,6 +398,10 @@ class StudentProvider {
     try {
       final response = await dioClient.get(
         ApiEndpoints.studentQuizMyResults(quizRequestId),
+      );
+      print('Quiz result');
+      debugPrint(
+        const JsonEncoder.withIndent('  ').convert(response.data),
       );
       return ApiResponse<List<QuizResultItem>>.fromJson(
         response.data as Map<String, dynamic>,
