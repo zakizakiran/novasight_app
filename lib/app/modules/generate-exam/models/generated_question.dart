@@ -152,12 +152,28 @@ class GeneratedQuestion extends Equatable {
             ? String.fromCharCode('A'.codeUnitAt(0) + correctOptionIndex)
             : (correctOptionLabel ?? 'A');
 
+    final bool hasLatexOrMarkup = markup != null ||
+        question.contains(r'$') ||
+        conclusion.contains(r'$') ||
+        options.any((o) => o.contains(r'$')) ||
+        justificationSteps.any((s) => s.contains(r'$'));
+
+    final Map<String, dynamic>? markupPayload = hasLatexOrMarkup
+        ? QuestionMarkupModel(
+            question: question,
+            options: optsMap,
+            langkah: justificationSteps,
+            kesimpulan: conclusion,
+          ).toJson()
+        : null;
+
     return SoalEditRequest(
       questionText: question,
       options: optsMap,
       correctOption: correctLabel,
       langkah: justificationSteps,
       kesimpulan: conclusion,
+      markup: markupPayload,
     );
   }
 

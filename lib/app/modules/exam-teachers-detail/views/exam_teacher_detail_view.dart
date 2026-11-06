@@ -9,7 +9,6 @@ import 'package:lydera_app/app/modules/exam-teachers-detail/views/widgets/icon_s
 
 import '../../../core/Dimens.dart';
 import '../../../core/styles/colors/color_constant.dart';
-import '../../../core/utils/snackbar_helper.dart';
 import '../../generate-exam/models/generated_question.dart';
 import '../../generate-exam/views/widgets/step_3_view.dart'
     show QuestionStimulusContentWidget;
@@ -675,18 +674,17 @@ class QuestionEditFormState extends State<QuestionEditForm> {
 
   void _save() {
     final updated = widget.question.clone()
-      ..question = _questionController.text
-      ..options = _optionControllers.map((c) => c.text).toList()
+      ..question = _questionController.text.trim()
+      ..options = _optionControllers.map((c) => c.text.trim()).toList()
       ..correctOptionIndex = _correctOptionIndex
-      ..justificationSteps = _stepControllers.map((c) => c.text).toList()
-      ..conclusion = _conclusionController.text
+      ..correctOptionLabel =
+          String.fromCharCode('A'.codeUnitAt(0) + _correctOptionIndex)
+      ..justificationSteps =
+          _stepControllers.map((c) => c.text.trim()).toList()
+      ..conclusion = _conclusionController.text.trim()
       ..isExpanded = true
       ..isEditing = false;
     widget.onSave(updated);
-    SnackbarHelper.showSuccess(
-      title: "Perubahan Berhasil Disimpan!",
-      message: "Soal telah diperbarui berdasarkan perbaikan.",
-    );
   }
 
   @override

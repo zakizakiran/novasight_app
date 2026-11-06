@@ -436,6 +436,7 @@ class GenerateExamController extends GetxController {
     int index,
     GeneratedQuestion updatedQuestion,
   ) async {
+    final previous = editingCache[index] ?? generatedQuestions[index].clone();
     updatedQuestion.isEditing = false;
     generatedQuestions[index] = updatedQuestion;
     editingCache.remove(index);
@@ -445,20 +446,37 @@ class GenerateExamController extends GetxController {
     if (updatedQuestion.id != null && teacherRepository != null) {
       try {
         final payload = updatedQuestion.toSoalEditRequest();
-        await teacherRepository!.editSoal(
+        final updatedSoal = await teacherRepository!.editSoal(
           soalId: updatedQuestion.id!,
           payload: payload,
         );
+        final serverQ = GeneratedQuestion.fromSoalResponse(updatedSoal)
+          ..stimulus = updatedSoal.stimulus ?? updatedQuestion.stimulus
+          ..stimulusText =
+              updatedSoal.stimulusText ?? updatedQuestion.stimulusText
+          ..isExpanded = true
+          ..isEditing = false;
+        generatedQuestions[index] = serverQ;
+        generatedQuestions.refresh();
         SnackbarHelper.showSuccess(
           title: 'Soal Diperbarui',
           message: 'Perubahan pada soal berhasil disimpan di server.',
         );
       } catch (e) {
+        generatedQuestions[index] = previous
+          ..isExpanded = true
+          ..isEditing = false;
+        generatedQuestions.refresh();
         SnackbarHelper.showError(
           title: 'Gagal Menyimpan Soal',
           message: e.toString(),
         );
       }
+    } else {
+      SnackbarHelper.showSuccess(
+        title: 'Perubahan Berhasil Disimpan!',
+        message: 'Soal telah diperbarui.',
+      );
     }
   }
 
@@ -473,10 +491,16 @@ class GenerateExamController extends GetxController {
       );
 
       if (updatedList.isNotEmpty) {
-        final updatedSoal = updatedList.first;
-        final newQ = GeneratedQuestion.fromSoalResponse(updatedSoal);
-        newQ.isExpanded = true;
-        generatedQuestions[index] = newQ;
+        for (final updatedSoal in updatedList) {
+          final targetIdx =
+              generatedQuestions.indexWhere((q) => q.id == updatedSoal.id);
+          final idxToUpdate = targetIdx != -1 ? targetIdx : index;
+          final prev = generatedQuestions[idxToUpdate];
+          final newQ = GeneratedQuestion.fromSoalResponse(updatedSoal)
+            ..stimulus = updatedSoal.stimulus ?? prev.stimulus
+            ..isExpanded = idxToUpdate == index ? true : prev.isExpanded;
+          generatedQuestions[idxToUpdate] = newQ;
+        }
         generatedQuestions.refresh();
 
         SnackbarHelper.showSuccess(

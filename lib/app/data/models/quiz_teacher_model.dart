@@ -924,6 +924,7 @@ class SoalEditRequest {
   final String? correctOption;
   final List<String>? langkah;
   final String? kesimpulan;
+  final Map<String, dynamic>? markup;
 
   SoalEditRequest({
     this.questionText,
@@ -931,6 +932,7 @@ class SoalEditRequest {
     this.correctOption,
     this.langkah,
     this.kesimpulan,
+    this.markup,
   });
 
   Map<String, dynamic> toJson() {
@@ -940,6 +942,7 @@ class SoalEditRequest {
     if (correctOption != null) map['correct_option'] = correctOption;
     if (langkah != null) map['langkah'] = langkah;
     if (kesimpulan != null) map['kesimpulan'] = kesimpulan;
+    if (markup != null) map['markup'] = markup;
     return map;
   }
 }

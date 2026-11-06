@@ -10,7 +10,6 @@ import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 import 'package:lydera_app/app/modules/module_teachers/create_module/views/widgets/orbiting_head_widget.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
-import '../../../../core/utils/snackbar_helper.dart';
 import '../../controllers/generate_exam_controller.dart';
 import '../../models/generated_question.dart';
 
@@ -993,6 +992,7 @@ class QuestionEditFormState extends State<QuestionEditForm> {
   }
 
   void _addOption() {
+    if (_optionControllers.length >= 4) return;
     setState(() {
       _optionControllers.add(TextEditingController());
     });
@@ -1025,15 +1025,17 @@ class QuestionEditFormState extends State<QuestionEditForm> {
 
   void _save() {
     final updated = widget.question.clone()
-      ..question = _questionController.text
-      ..options = _optionControllers.map((c) => c.text).toList()
+      ..question = _questionController.text.trim()
+      ..options = _optionControllers.map((c) => c.text.trim()).toList()
       ..correctOptionIndex = _correctOptionIndex
-      ..justificationSteps = _stepControllers.map((c) => c.text).toList()
-      ..conclusion = _conclusionController.text
+      ..correctOptionLabel =
+          String.fromCharCode('A'.codeUnitAt(0) + _correctOptionIndex)
+      ..justificationSteps =
+          _stepControllers.map((c) => c.text.trim()).toList()
+      ..conclusion = _conclusionController.text.trim()
       ..isExpanded = true
       ..isEditing = false;
     widget.onSave(updated);
-    SnackbarHelper.showSuccess(title: "Perubahan Berhasil Disimpan!", message: "Soal telah diperbarui berdasarkan perbaikan.");
   }
 
   @override
