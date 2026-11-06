@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/exam_student_detail_progress_args.dart';
+import 'package:lydera_app/app/core/utils/table_mode.dart';
 
 import '../../../core/errors/api_exception.dart';
 import '../../../core/utils/math_latex_parser.dart';
@@ -16,6 +17,7 @@ class ExamTeacherStudentProgressDetailController extends GetxController {
   final StorageService? storageService;
   final MathLatexParser parser = MathLatexParser();
   final MathSemanticSerializer serializer = MathSemanticSerializer();
+  final Rx<TableMode> selectedMode = TableMode.cell.obs;
   final Rx<StudentProgressQuiz?> quizProgress = Rx<StudentProgressQuiz?>(null);
 
   final RxString quizTitle = 'Hasil Ujian'.obs;

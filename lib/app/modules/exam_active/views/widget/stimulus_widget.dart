@@ -35,7 +35,7 @@ class StimulusWidget extends StatelessWidget {
   Widget _buildText(BuildContext context) {
     return AccessibleSentenceWidget(
       text: stimulus.readableText,
-      style: Theme.of(context).textTheme.bodyLarge  ?.copyWith(
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
         color: ColorConstant.textDarkGreyColor,
     ));
   }
@@ -81,7 +81,7 @@ class StimulusWidget extends StatelessWidget {
           // Table title
           Text(
             specification.title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: ColorConstant.textDarkGreyColor,
             ),

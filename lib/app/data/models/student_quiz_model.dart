@@ -732,6 +732,7 @@ class QuizResultItem {
   final String correctOption;
   final List<QuestionOptionResponse> options;
   final bool? isCorrect;
+  final QuestionStimulusResponse? stimulus;
   final SoalJustification? justification;
   final List<String>? importantNote;
   final String? conclusion;
@@ -747,9 +748,11 @@ class QuizResultItem {
     this.isCorrect,
     this.justification,
     this.importantNote, this.conclusion,
+    this.stimulus,
   });
 
   factory QuizResultItem.fromJson(Map<String, dynamic> json) {
+    final stimulus = json['stimulus'];
     return QuizResultItem(
       soalId: json['soal_id'] != null
           ? (int.tryParse(json['soal_id'].toString()) ?? 0)
@@ -762,6 +765,7 @@ class QuizResultItem {
         }
         return StudentStep(id: 0, steps: 0, text: '');
       }).toList() ?? [],
+      stimulus: stimulus != null ? QuestionStimulusResponse.fromJson(json['stimulus']) : null,
       questionText: json['question_text'] as String? ?? '',
       options: (json['options'] as List<dynamic>?)
           ?.map((item) => QuestionOptionResponse.fromJson(item as Map<String, dynamic>))

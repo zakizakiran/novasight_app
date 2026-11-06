@@ -6,11 +6,13 @@ import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 
 import '../../../core/utils/math_latex_parser.dart';
+import '../../../core/utils/table_mode.dart';
 
 class ExamReviewController extends GetxController {
   final StudentRepository? studentRepository;
   final MathLatexParser parser = MathLatexParser();
   final MathSemanticSerializer serializer = MathSemanticSerializer();
+  final Rx<TableMode> selectedMode = TableMode.cell.obs;
 
   ExamReviewController({
     StudentRepository? studentRepository,
@@ -70,13 +72,7 @@ class ExamReviewController extends GetxController {
           final userIdx = item.selectedOption != null
               ? defaultOptions.indexOf(item.selectedOption!.trim().toUpperCase())
               : -1;
-          print('Correct Answer');
-          print(item.correctOption);
-          print(correctIdx);
-          print('');
-          print('Select Answer');
-          print(item.selectedOption);
-          print(userIdx);
+
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
           return ExamReviewQuestion(
@@ -84,6 +80,7 @@ class ExamReviewController extends GetxController {
             userStep: item.studentSteps,
             question: item.questionText,
             options: options,
+            stimulus: item.stimulus,
             correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
             userAnswerIndex: userIdx != -1 ? userIdx : -1,
             isCorrect: item.isCorrect ?? false,

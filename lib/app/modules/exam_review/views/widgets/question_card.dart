@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/table_mode.dart';
 
+import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/text_theme.dart';
 import '../../../../core/utils/math_semantic_serializer.dart';
 import '../../../../data/models/exam_review_question_model.dart';
+import '../../../exam_active/views/widget/accessible_sentence_widget.dart';
+import '../../../exam_active/views/widget/stimulus_widget.dart';
 
 class QuestionCard extends StatelessWidget {
   const QuestionCard({
     super.key,
     required this.question,
+    required this.selectedMode
   });
 
+  final Rx<TableMode> selectedMode;
   final ExamReviewQuestion question;
 
   @override
@@ -32,6 +39,15 @@ class QuestionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // AccessibleSentenceWidget(
+          //   text: MathSemanticSerializer.toAccessibleText(
+          //     question.question,
+          //   ),
+          //   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          //     color: ColorConstant.textDarkGreyColor,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
           Semantics(
             label:
                 'Soal: ${MathSemanticSerializer.toAccessibleText(question.question)}',
@@ -46,6 +62,11 @@ class QuestionCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                if (question.stimulus != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: Dimens.innerPadding),
+                    child: StimulusWidget(stimulus: question.stimulus!, selectedMode: selectedMode,),
+                  ),
                 const SizedBox(height: 8),
                 Text(question.question, style: const MainTextTheme().bodyLarge),
               ],
