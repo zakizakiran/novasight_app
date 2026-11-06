@@ -7,6 +7,12 @@ class GeneratedQuestion extends Equatable {
   int? chapterId;
   int? stimulusId;
   String? stimulusText;
+  QuestionStimulusModel? stimulus;
+  String? sourcePoint;
+  String? validationNotes;
+  String? reviewPriority;
+  String? reviewStatus;
+  QuestionMarkupModel? markup;
   int bloomLevel;
   String question;
   List<String> options;
@@ -22,6 +28,12 @@ class GeneratedQuestion extends Equatable {
     this.chapterId,
     this.stimulusId,
     this.stimulusText,
+    this.stimulus,
+    this.sourcePoint,
+    this.validationNotes,
+    this.reviewPriority,
+    this.reviewStatus,
+    this.markup,
     this.bloomLevel = 3,
     required this.question,
     required this.options,
@@ -33,7 +45,13 @@ class GeneratedQuestion extends Equatable {
     this.isExpanded = false,
   });
 
-  bool get isHots => (stimulusText != null && stimulusText!.isNotEmpty) || bloomLevel >= 4;
+  bool get hasStimulus =>
+      (stimulusText != null && stimulusText!.isNotEmpty) ||
+      (stimulus?.svgMarkup != null) ||
+      (stimulus?.effectiveTable != null) ||
+      (stimulus?.sourceMarkup.trim().isNotEmpty ?? false);
+
+  bool get isHots => hasStimulus || bloomLevel >= 4;
 
   factory GeneratedQuestion.fromQuizRequestQuestion(QuizRequestQuestionModel q) {
     int correctIndex = 0;
@@ -59,7 +77,15 @@ class GeneratedQuestion extends Equatable {
       id: q.id,
       chapterId: q.chapterId,
       stimulusId: q.stimulus?.id,
-      stimulusText: q.stimulus?.readableText,
+      stimulusText: q.stimulus?.readableText.isNotEmpty == true
+          ? q.stimulus?.readableText
+          : q.stimulus?.ringkasan,
+      stimulus: q.stimulus,
+      sourcePoint: q.sourcePoint,
+      validationNotes: q.validationNotes,
+      reviewPriority: q.reviewPriority,
+      reviewStatus: q.reviewStatus,
+      markup: q.markup,
       bloomLevel: q.bloomLevel,
       question: q.questionText,
       options: opts,
@@ -95,6 +121,12 @@ class GeneratedQuestion extends Equatable {
       chapterId: s.chapterId,
       stimulusId: s.stimulusId,
       stimulusText: s.stimulusText,
+      stimulus: s.stimulus,
+      sourcePoint: s.sourcePoint,
+      validationNotes: s.validationNotes,
+      reviewPriority: s.reviewPriority,
+      reviewStatus: s.reviewStatus,
+      markup: s.markup,
       bloomLevel: s.bloomLevel,
       question: s.questionText,
       options: opts,
@@ -120,12 +152,28 @@ class GeneratedQuestion extends Equatable {
             ? String.fromCharCode('A'.codeUnitAt(0) + correctOptionIndex)
             : (correctOptionLabel ?? 'A');
 
+    final bool hasLatexOrMarkup = markup != null ||
+        question.contains(r'$') ||
+        conclusion.contains(r'$') ||
+        options.any((o) => o.contains(r'$')) ||
+        justificationSteps.any((s) => s.contains(r'$'));
+
+    final Map<String, dynamic>? markupPayload = hasLatexOrMarkup
+        ? QuestionMarkupModel(
+            question: question,
+            options: optsMap,
+            langkah: justificationSteps,
+            kesimpulan: conclusion,
+          ).toJson()
+        : null;
+
     return SoalEditRequest(
       questionText: question,
       options: optsMap,
       correctOption: correctLabel,
       langkah: justificationSteps,
       kesimpulan: conclusion,
+      markup: markupPayload,
     );
   }
 
@@ -135,6 +183,12 @@ class GeneratedQuestion extends Equatable {
       chapterId: chapterId,
       stimulusId: stimulusId,
       stimulusText: stimulusText,
+      stimulus: stimulus,
+      sourcePoint: sourcePoint,
+      validationNotes: validationNotes,
+      reviewPriority: reviewPriority,
+      reviewStatus: reviewStatus,
+      markup: markup,
       bloomLevel: bloomLevel,
       question: question,
       options: List.from(options),
@@ -153,6 +207,12 @@ class GeneratedQuestion extends Equatable {
         chapterId,
         stimulusId,
         stimulusText,
+        stimulus,
+        sourcePoint,
+        validationNotes,
+        reviewPriority,
+        reviewStatus,
+        markup,
         bloomLevel,
         question,
         options,

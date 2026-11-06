@@ -4,6 +4,7 @@ import 'package:lydera_app/app/data/models/api_response.dart';
 import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 import 'package:lydera_app/app/data/providers/teacher_provider.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
+import 'package:lydera_app/app/modules/generate-exam/models/generated_question.dart';
 
 class MockTeacherProvider extends Mock implements TeacherProvider {}
 
@@ -239,6 +240,69 @@ void main() {
 
       expect(result.questionText, 'Pertanyaan Diedit');
       expect(result.bloomLevel, 3);
+    });
+
+    test('GeneratedQuestion.toSoalEditRequest includes markup and clone preserves id', () {
+      final raw = QuizRequestQuestionModel.fromJson({
+        'id': 90,
+        'chapter_id': 15,
+        'stimulus': {
+          'id': 38,
+          'source_markup': '',
+          'readable_text': 'Gambar ruang sampel.',
+          'jenis': 'gambar',
+          'spesifikasi': {
+            'svg': '<svg viewBox="0 0 240 220"></svg>',
+            'deskripsi': 'Grid 6 kali 6.',
+            'skema_versi': 1,
+          },
+          'review_status': 'pending',
+          'source_reading_order_start': 840,
+          'source_reading_order_end': 860,
+        },
+        'bloom_level': 4,
+        'question_text': 'Pertanyaan awal',
+        'correct_option': 'D',
+        'kesimpulan': 'Kesimpulan awal',
+        'source_reading_order_start': 840,
+        'source_reading_order_end': 860,
+        'review_status': 'pending',
+        'review_priority': 'normal',
+        'validation_notes': null,
+        'source_point': 'Tabel ruang sampel.',
+        'markup': {
+          'langkah': [r'Tabel memuat $6 \times 6 = 36$ sel.'],
+          'options': {'A': 'opsi A', 'B': 'opsi B', 'C': 'opsi C', 'D': 'opsi D'},
+          'question': 'Pertanyaan awal',
+          'kesimpulan': 'Kesimpulan awal',
+        },
+        'options': [
+          {'id': 369, 'label': 'A', 'opsi_text': 'opsi A'},
+          {'id': 370, 'label': 'B', 'opsi_text': 'opsi B'},
+          {'id': 371, 'label': 'C', 'opsi_text': 'opsi C'},
+          {'id': 372, 'label': 'D', 'opsi_text': 'opsi D'},
+        ],
+        'explanation_steps': [
+          {'id': 328, 'steps': 1, 'text': 'Langkah 1'},
+        ],
+      });
+
+      final q = GeneratedQuestion.fromQuizRequestQuestion(raw);
+      final edited = q.clone()
+        ..question = 'Pertanyaan Baru'
+        ..correctOptionIndex = 1;
+
+      expect(edited.id, 90);
+      expect(edited.stimulus?.svgMarkup, '<svg viewBox="0 0 240 220"></svg>');
+
+      final reqJson = edited.toSoalEditRequest().toJson();
+      expect(reqJson['question_text'], 'Pertanyaan Baru');
+      expect(reqJson['correct_option'], 'B');
+      expect(reqJson['options'], {'A': 'opsi A', 'B': 'opsi B', 'C': 'opsi C', 'D': 'opsi D'});
+      expect(reqJson['langkah'], ['Langkah 1']);
+      expect(reqJson['kesimpulan'], 'Kesimpulan awal');
+      expect(reqJson['markup'], isA<Map<String, dynamic>>());
+      expect((reqJson['markup'] as Map)['question'], 'Pertanyaan Baru');
     });
   });
 }

@@ -139,10 +139,160 @@ class QuizRequestTeacherModel {
   }
 }
 
+class StimulusTableModel {
+  final String? judul;
+  final List<String> kolom;
+  final List<List<String>> baris;
+  final int? skemaVersi;
+
+  const StimulusTableModel({
+    this.judul,
+    this.kolom = const [],
+    this.baris = const [],
+    this.skemaVersi,
+  });
+
+  factory StimulusTableModel.fromJson(Map<String, dynamic> json) {
+    final rawKolom = json['kolom'];
+    final rawBaris = json['baris'];
+
+    return StimulusTableModel(
+      judul: json['judul'] as String?,
+      kolom: rawKolom is List
+          ? rawKolom.map((e) => e?.toString() ?? '').toList()
+          : const [],
+      baris: rawBaris is List
+          ? rawBaris
+              .whereType<List>()
+              .map((row) => row.map((cell) => cell?.toString() ?? '').toList())
+              .toList()
+          : const [],
+      skemaVersi: json['skema_versi'] as int?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (judul != null) 'judul': judul,
+      'kolom': kolom,
+      'baris': baris,
+      if (skemaVersi != null) 'skema_versi': skemaVersi,
+    };
+  }
+}
+
+class StimulusSpecModel {
+  final String? svg;
+  final String? deskripsi;
+  final String? judul;
+  final List<String> kolom;
+  final List<List<String>> baris;
+  final int? skemaVersi;
+
+  const StimulusSpecModel({
+    this.svg,
+    this.deskripsi,
+    this.judul,
+    this.kolom = const [],
+    this.baris = const [],
+    this.skemaVersi,
+  });
+
+  bool get hasSvg => svg != null && svg!.trim().isNotEmpty;
+  bool get hasTable => kolom.isNotEmpty || baris.isNotEmpty;
+
+  StimulusTableModel? toTableModel() {
+    if (!hasTable) return null;
+    return StimulusTableModel(
+      judul: judul,
+      kolom: kolom,
+      baris: baris,
+      skemaVersi: skemaVersi,
+    );
+  }
+
+  factory StimulusSpecModel.fromJson(Map<String, dynamic> json) {
+    final rawKolom = json['kolom'];
+    final rawBaris = json['baris'];
+
+    return StimulusSpecModel(
+      svg: json['svg'] as String?,
+      deskripsi: json['deskripsi'] as String?,
+      judul: json['judul'] as String?,
+      kolom: rawKolom is List
+          ? rawKolom.map((e) => e?.toString() ?? '').toList()
+          : const [],
+      baris: rawBaris is List
+          ? rawBaris
+              .whereType<List>()
+              .map((row) => row.map((cell) => cell?.toString() ?? '').toList())
+              .toList()
+          : const [],
+      skemaVersi: json['skema_versi'] as int?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (svg != null) 'svg': svg,
+      if (deskripsi != null) 'deskripsi': deskripsi,
+      if (judul != null) 'judul': judul,
+      if (kolom.isNotEmpty) 'kolom': kolom,
+      if (baris.isNotEmpty) 'baris': baris,
+      if (skemaVersi != null) 'skema_versi': skemaVersi,
+    };
+  }
+}
+
+class QuestionMarkupModel {
+  final String? question;
+  final Map<String, String> options;
+  final List<String> langkah;
+  final String? kesimpulan;
+
+  const QuestionMarkupModel({
+    this.question,
+    this.options = const {},
+    this.langkah = const [],
+    this.kesimpulan,
+  });
+
+  factory QuestionMarkupModel.fromJson(Map<String, dynamic> json) {
+    final rawOptions = json['options'];
+    final rawLangkah = json['langkah'];
+
+    return QuestionMarkupModel(
+      question: json['question'] as String?,
+      options: rawOptions is Map
+          ? rawOptions.map(
+              (k, v) => MapEntry(k.toString(), v?.toString() ?? ''),
+            )
+          : const {},
+      langkah: rawLangkah is List
+          ? rawLangkah.map((e) => e?.toString() ?? '').toList()
+          : const [],
+      kesimpulan: json['kesimpulan'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (question != null) 'question': question,
+      if (options.isNotEmpty) 'options': options,
+      if (langkah.isNotEmpty) 'langkah': langkah,
+      if (kesimpulan != null) 'kesimpulan': kesimpulan,
+    };
+  }
+}
+
 class QuestionStimulusModel {
   final int id;
   final String sourceMarkup;
   final String readableText;
+  final String? ringkasan;
+  final StimulusTableModel? tabel;
+  final String? jenis;
+  final StimulusSpecModel? spesifikasi;
   final String reviewStatus;
   final int sourceReadingOrderStart;
   final int sourceReadingOrderEnd;
@@ -151,16 +301,36 @@ class QuestionStimulusModel {
     required this.id,
     required this.sourceMarkup,
     required this.readableText,
+    this.ringkasan,
+    this.tabel,
+    this.jenis,
+    this.spesifikasi,
     required this.reviewStatus,
     required this.sourceReadingOrderStart,
     required this.sourceReadingOrderEnd,
   });
+
+  StimulusTableModel? get effectiveTable =>
+      spesifikasi?.toTableModel() ?? tabel;
+
+  String? get svgMarkup =>
+      (spesifikasi?.hasSvg ?? false) ? spesifikasi!.svg : null;
 
   factory QuestionStimulusModel.fromJson(Map<String, dynamic> json) {
     return QuestionStimulusModel(
       id: json['id'] as int? ?? 0,
       sourceMarkup: json['source_markup'] as String? ?? '',
       readableText: json['readable_text'] as String? ?? '',
+      ringkasan: json['ringkasan'] as String?,
+      tabel: json['tabel'] is Map<String, dynamic>
+          ? StimulusTableModel.fromJson(json['tabel'] as Map<String, dynamic>)
+          : null,
+      jenis: json['jenis'] as String?,
+      spesifikasi: json['spesifikasi'] is Map<String, dynamic>
+          ? StimulusSpecModel.fromJson(
+              json['spesifikasi'] as Map<String, dynamic>,
+            )
+          : null,
       reviewStatus: json['review_status'] as String? ?? '',
       sourceReadingOrderStart: json['source_reading_order_start'] as int? ?? 0,
       sourceReadingOrderEnd: json['source_reading_order_end'] as int? ?? 0,
@@ -172,6 +342,10 @@ class QuestionStimulusModel {
       'id': id,
       'source_markup': sourceMarkup,
       'readable_text': readableText,
+      'ringkasan': ringkasan,
+      'tabel': tabel?.toJson(),
+      'jenis': jenis,
+      'spesifikasi': spesifikasi?.toJson(),
       'review_status': reviewStatus,
       'source_reading_order_start': sourceReadingOrderStart,
       'source_reading_order_end': sourceReadingOrderEnd,
@@ -248,6 +422,8 @@ class QuizRequestQuestionModel {
   final String reviewStatus;
   final String reviewPriority;
   final String? validationNotes;
+  final String? sourcePoint;
+  final QuestionMarkupModel? markup;
   final List<QuestionOptionModel> options;
   final List<QuestionExplanationStepModel> explanationSteps;
 
@@ -264,6 +440,8 @@ class QuizRequestQuestionModel {
     this.reviewStatus = 'pending',
     this.reviewPriority = 'normal',
     this.validationNotes,
+    this.sourcePoint,
+    this.markup,
     required this.options,
     required this.explanationSteps,
   });
@@ -287,6 +465,10 @@ class QuizRequestQuestionModel {
       reviewStatus: json['review_status'] as String? ?? 'pending',
       reviewPriority: json['review_priority'] as String? ?? 'normal',
       validationNotes: json['validation_notes'] as String?,
+      sourcePoint: json['source_point'] as String?,
+      markup: json['markup'] is Map<String, dynamic>
+          ? QuestionMarkupModel.fromJson(json['markup'] as Map<String, dynamic>)
+          : null,
       options: json['options'] != null
           ? (json['options'] as List)
               .map((e) =>
@@ -316,6 +498,8 @@ class QuizRequestQuestionModel {
       'review_status': reviewStatus,
       'review_priority': reviewPriority,
       'validation_notes': validationNotes,
+      'source_point': sourcePoint,
+      'markup': markup?.toJson(),
       'options': options.map((e) => e.toJson()).toList(),
       'explanation_steps': explanationSteps.map((e) => e.toJson()).toList(),
     };
@@ -334,6 +518,8 @@ class QuizRequestQuestionModel {
     String? reviewStatus,
     String? reviewPriority,
     String? validationNotes,
+    String? sourcePoint,
+    QuestionMarkupModel? markup,
     List<QuestionOptionModel>? options,
     List<QuestionExplanationStepModel>? explanationSteps,
   }) {
@@ -352,6 +538,8 @@ class QuizRequestQuestionModel {
       reviewStatus: reviewStatus ?? this.reviewStatus,
       reviewPriority: reviewPriority ?? this.reviewPriority,
       validationNotes: validationNotes ?? this.validationNotes,
+      sourcePoint: sourcePoint ?? this.sourcePoint,
+      markup: markup ?? this.markup,
       options: options ?? this.options,
       explanationSteps: explanationSteps ?? this.explanationSteps,
     );
@@ -650,6 +838,7 @@ class SoalResponseModel {
   final int id;
   final int chapterId;
   final int? stimulusId;
+  final QuestionStimulusModel? stimulus;
   final int bloomLevel;
   final String questionText;
   final List<SoalOpsiResponseModel> options;
@@ -660,11 +849,14 @@ class SoalResponseModel {
   final String reviewStatus;
   final String reviewPriority;
   final String? validationNotes;
+  final String? sourcePoint;
+  final QuestionMarkupModel? markup;
 
   SoalResponseModel({
     required this.id,
     required this.chapterId,
     this.stimulusId,
+    this.stimulus,
     required this.bloomLevel,
     required this.questionText,
     required this.options,
@@ -675,13 +867,33 @@ class SoalResponseModel {
     required this.reviewStatus,
     required this.reviewPriority,
     this.validationNotes,
+    this.sourcePoint,
+    this.markup,
   });
 
   factory SoalResponseModel.fromJson(Map<String, dynamic> json) {
+    final parsedStimulus = json['stimulus'] is Map<String, dynamic>
+        ? QuestionStimulusModel.fromJson(
+            json['stimulus'] as Map<String, dynamic>,
+          )
+        : null;
+
+    List<String> parsedLangkah = [];
+    if (json['langkah'] is List) {
+      parsedLangkah = (json['langkah'] as List).map((e) => e.toString()).toList();
+    } else if (json['explanation_steps'] is List) {
+      parsedLangkah = (json['explanation_steps'] as List)
+          .whereType<Map<String, dynamic>>()
+          .map((e) => e['text']?.toString() ?? '')
+          .where((e) => e.isNotEmpty)
+          .toList();
+    }
+
     return SoalResponseModel(
       id: json['id'] as int? ?? 0,
       chapterId: json['chapter_id'] as int? ?? 0,
-      stimulusId: json['stimulus_id'] as int?,
+      stimulusId: json['stimulus_id'] as int? ?? parsedStimulus?.id,
+      stimulus: parsedStimulus,
       bloomLevel: json['bloom_level'] as int? ?? 1,
       questionText: json['question_text'] as String? ?? '',
       options: json['options'] != null
@@ -691,14 +903,17 @@ class SoalResponseModel {
               .toList()
           : [],
       correctOption: json['correct_option'] as String? ?? 'A',
-      langkah: json['langkah'] != null
-          ? List<String>.from(json['langkah'] as List)
-          : [],
+      langkah: parsedLangkah,
       kesimpulan: json['kesimpulan'] as String? ?? '',
-      stimulusText: json['stimulus_text'] as String?,
+      stimulusText:
+          json['stimulus_text'] as String? ?? parsedStimulus?.readableText,
       reviewStatus: json['review_status'] as String? ?? '',
       reviewPriority: json['review_priority'] as String? ?? '',
       validationNotes: json['validation_notes'] as String?,
+      sourcePoint: json['source_point'] as String?,
+      markup: json['markup'] is Map<String, dynamic>
+          ? QuestionMarkupModel.fromJson(json['markup'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
@@ -709,6 +924,7 @@ class SoalEditRequest {
   final String? correctOption;
   final List<String>? langkah;
   final String? kesimpulan;
+  final Map<String, dynamic>? markup;
 
   SoalEditRequest({
     this.questionText,
@@ -716,6 +932,7 @@ class SoalEditRequest {
     this.correctOption,
     this.langkah,
     this.kesimpulan,
+    this.markup,
   });
 
   Map<String, dynamic> toJson() {
@@ -725,6 +942,7 @@ class SoalEditRequest {
     if (correctOption != null) map['correct_option'] = correctOption;
     if (langkah != null) map['langkah'] = langkah;
     if (kesimpulan != null) map['kesimpulan'] = kesimpulan;
+    if (markup != null) map['markup'] = markup;
     return map;
   }
 }
