@@ -1,7 +1,82 @@
 import '../../data/models/math_symbol.dart';
 import 'indonesian_number_to_word.dart';
+import 'math_latex_parser.dart';
 
 class MathSemanticSerializer {
+  // ponytail: regex-based inline detector covers 1-level nested braces; upgrade to full TeX lexer if deeply nested inline formulas appear without $ delimiters.
+  static final MathLatexParser _defaultParser = MathLatexParser();
+  static final MathSemanticSerializer _instance = MathSemanticSerializer();
+
+  static String toAccessibleText(String text, [MathLatexParser? parser]) {
+    return _instance.serializeTextWithMath(text, parser);
+  }
+
+  String serializeLatex(String latex, [MathLatexParser? parser]) {
+    if (latex.trim().isEmpty) return '';
+    final nodes = (parser ?? _defaultParser).parse(latex);
+    return serializeNodes(nodes);
+  }
+
+  String serializeTextWithMath(String text, [MathLatexParser? parser]) {
+    if (text.trim().isEmpty) return '';
+    final p = parser ?? _defaultParser;
+
+    var result = text.replaceAllMapped(
+      RegExp(
+        r'\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\(([\s\S]+?)\\\)|\$([^$\n]+?)\$',
+      ),
+      (m) {
+        final expr = m.group(1) ?? m.group(2) ?? m.group(3) ?? m.group(4) ?? '';
+        final spoken = serializeLatex(expr, p);
+        return spoken.isEmpty ? expr : ' $spoken ';
+      },
+    );
+
+    result = result.replaceAllMapped(
+      RegExp(r'\\(?:text|mathrm|mathbf|mathit)\s*\{([^{}]*)\}'),
+      (m) => m.group(1) ?? '',
+    );
+
+    result = result.replaceAllMapped(
+      RegExp(
+        r'\\(?:frac|binom)\s*\{(?:[^{}]|\{[^{}]*\})*\}\s*\{(?:[^{}]|\{[^{}]*\})*\}'
+        r'|\\sqrt\s*(?:\[[^\]]*\])?\s*\{(?:[^{}]|\{[^{}]*\})*\}'
+        r'|\\(?:bar|overline)\s*\{(?:[^{}]|\{[^{}]*\})*\}'
+        r'|\\(?:lim|sum|int)(?:\s*[_^]\s*(?:\{(?:[^{}]|\{[^{}]*\})*\}|[a-zA-Z0-9]+))+(?:\s*(?:\{(?:[^{}]|\{[^{}]*\})*\}|[a-zA-Z0-9^_\\]+))?'
+        r'|\\(?:sin|cos|tan|cot|sec|csc|arcsin|arccos|arctan|arccot|arcsec|arccsc|sinh|cosh|tanh|coth|ln|log)(?:_\{[^{}]+\}|_\d+)?\s*(?:\([^()]+\)|\{[^{}]+\})'
+        r'|\\left\|[^|]+\\right\|'
+        r'|\b[a-zA-Z0-9]+(?:\^(?:\{[^{}]+\}|[0-9a-zA-Z+-]+)|_(?:\{[^{}]+\}|[0-9a-zA-Z+-]+))+'
+        r'|\\(?:times|div|pm|mp|cdot|le|leq|ge|geq|ne|neq|approx|equiv|propto|infty|pi|alpha|beta|gamma|Gamma|delta|Delta|epsilon|varepsilon|theta|Theta|lambda|Lambda|mu|sigma|Sigma|tau|phi|varphi|Phi|omega|Omega|to|rightarrow|degree|circ)\b',
+      ),
+      (m) {
+        final expr = m.group(0) ?? '';
+        final spoken = serializeLatex(expr, p);
+        return spoken.isEmpty ? expr : ' $spoken ';
+      },
+    );
+
+    const unicodeReplacements = <String, String>{
+      '×': ' kali ',
+      '÷': ' bagi ',
+      '±': ' kurang lebih ',
+      '∓': ' lebih kurang ',
+      '≤': ' lebih kecil atau sama dengan ',
+      '≥': ' lebih besar atau sama dengan ',
+      '≠': ' tidak sama dengan ',
+      '≈': ' kira-kira sama dengan ',
+      '≡': ' ekuivalen dengan ',
+      '∝': ' sebanding dengan ',
+      '∞': ' tak hingga ',
+      'π': ' pi ',
+      '°': ' derajat ',
+      '→': ' mendekati ',
+    };
+    unicodeReplacements.forEach((symbol, spoken) {
+      result = result.replaceAll(symbol, spoken);
+    });
+
+    return result.replaceAll(RegExp(r'[ \t]{2,}'), ' ').trim();
+  }
 
   String serializeNodes(List<MathNode> nodes) {
     return _serializeSequence(nodes);
@@ -40,6 +115,18 @@ class MathSemanticSerializer {
         return _serializeSummation(node);
 
       case MathSymbolType.text:
+        if (node.symbol.id == 'vector' && node.slots.isNotEmpty) {
+          final items = node.slots.map(serializeSlot).toList();
+          if (items.every((e) => e.isEmpty)) {
+            return 'vektor tiga dimensi kosong';
+          }
+          return 'vektor ${items.map((e) => e.isEmpty ? 'kosong' : e).join(' koma ')}';
+        }
+        if (node.symbol.id == 'dvar' && node.slots.isNotEmpty) {
+          final v = serializeSlot(node.slots[0]);
+          return v.isEmpty ? 'diferensial variabel kosong' : 'diferensial d $v';
+        }
+        return node.symbol.semanticText;
       case MathSymbolType.number:
       case MathSymbolType.operator:
       default:
@@ -81,6 +168,25 @@ class MathSemanticSerializer {
             parts.addAll(rawNumber.split('').map(
                   (digit) => IndonesianNumberToWords.convert(int.parse(digit)),
             ));
+          }
+
+          if (index + 1 < nodes.length &&
+              (nodes[index].symbol.id == 'dot' ||
+                  nodes[index].symbol.renderSyntax == '.') &&
+              nodes[index + 1].symbol.type == MathSymbolType.number) {
+            index++; // consume decimal dot
+            parts.add('koma');
+            while (index < nodes.length &&
+                nodes[index].symbol.type == MathSymbolType.number) {
+              final decDigits = _extractNumber(nodes[index]);
+              if (decDigits == null) break;
+              parts.addAll(
+                decDigits.split('').map(
+                      (d) => IndonesianNumberToWords.convert(int.parse(d)),
+                    ),
+              );
+              index++;
+            }
           }
 
           continue;
@@ -183,18 +289,34 @@ class MathSemanticSerializer {
     final base = serializeSlot(node.slots[0]);
     final exponent = serializeSlot(node.slots[1]);
 
+    if (base.isEmpty && exponent.isEmpty) {
+      return 'pangkat kosong';
+    }
+
     if (base.isEmpty) {
-      return '';
+      return 'basis kosong pangkat $exponent';
     }
 
     if (exponent.isEmpty) {
-      return base;
+      return '$base pangkat kosong';
+    }
+
+    if (exponent.toLowerCase() == 'derajat') {
+      return '$base derajat';
     }
 
     return '$base pangkat $exponent';
   }
 
   String _serializeSubscript(MathNode node) {
+    if (node.slots.length == 1) {
+      final index = serializeSlot(node.slots[0]);
+      if (index.isEmpty) {
+        return 'a indeks kosong';
+      }
+      return 'a indeks $index';
+    }
+
     if (node.slots.length < 2) {
       return '';
     }
@@ -202,32 +324,72 @@ class MathSemanticSerializer {
     final base = serializeSlot(node.slots[0]);
     final index = serializeSlot(node.slots[1]);
 
+    if (base.isEmpty && index.isEmpty) {
+      return 'indeks kosong';
+    }
+
     if (base.isEmpty) {
-      return '';
+      return 'basis kosong indeks $index';
     }
 
     if (index.isEmpty) {
-      return base;
+      return '$base indeks kosong';
     }
 
     return '$base indeks $index';
   }
 
   String _serializeParentheses(MathNode node) {
+    final isAbs = node.symbol.id == 'abs';
+
     if (node.slots.isEmpty) {
-      return 'kurung kosong';
+      return isAbs ? 'nilai mutlak kosong' : 'kurung kosong';
     }
 
     final content = serializeSlot(node.slots[0]);
 
     if (content.isEmpty) {
-      return 'kurung kosong';
+      return isAbs ? 'nilai mutlak kosong' : 'kurung kosong';
+    }
+
+    if (isAbs) {
+      return 'nilai mutlak dari $content';
     }
 
     return 'kurung buka $content kurung tutup';
   }
 
   String _serializeFunction(MathNode node) {
+    switch (node.symbol.id) {
+      case 'log_base':
+        final base = node.slots.isNotEmpty ? serializeSlot(node.slots[0]) : '';
+        final arg = node.slots.length > 1 ? serializeSlot(node.slots[1]) : '';
+        if (base.isEmpty && arg.isEmpty) {
+          return 'logaritma dengan basis kosong';
+        }
+        if (base.isEmpty) {
+          return 'logaritma dari $arg';
+        }
+        if (arg.isEmpty) {
+          return 'logaritma basis $base';
+        }
+        return 'logaritma basis $base dari $arg';
+
+      case 'fact':
+        final arg = node.slots.isNotEmpty ? serializeSlot(node.slots[0]) : '';
+        if (arg.isEmpty) {
+          return 'faktorial kosong';
+        }
+        return '$arg faktorial';
+
+      case 'bar':
+        final arg = node.slots.isNotEmpty ? serializeSlot(node.slots[0]) : '';
+        if (arg.isEmpty) {
+          return 'bar kosong';
+        }
+        return '$arg bar';
+    }
+
     final functionName = _functionSemanticName(node.symbol.id);
 
     if (node.slots.isEmpty) {
@@ -252,6 +414,10 @@ class MathSemanticSerializer {
 
   String _functionSemanticName(String id) {
     switch (id) {
+      case 'fx':
+      case 'fxy':
+        return 'fungsi f';
+
       case 'sin':
         return 'sinus';
 
@@ -300,18 +466,44 @@ class MathSemanticSerializer {
       case 'coth':
         return 'kotangen hiperbolik';
 
+      case 'arsinh':
+        return 'arkus sinus hiperbolik';
+
+      case 'arcosh':
+        return 'arkus cosinus hiperbolik';
+
+      case 'artanh':
+        return 'arkus tangen hiperbolik';
+
+      case 'arcoth':
+        return 'arkus kotangen hiperbolik';
+
       case 'ln':
         return 'logaritma natural';
 
       case 'log':
-      case 'log10':
         return 'logaritma';
+
+      case 'log10':
+        return 'logaritma basis sepuluh';
+
+      case 'log2':
+        return 'logaritma basis dua';
 
       case 'exp':
         return 'eksponensial';
 
       case 'sign':
         return 'fungsi tanda';
+
+      case 'binom':
+        return 'koefisien binomial';
+
+      case 'perm':
+        return 'permutasi';
+
+      case 'comb':
+        return 'kombinasi';
 
       default:
         return id;
@@ -363,7 +555,14 @@ class MathSemanticSerializer {
         return 'integral tentu kosong';
       }
 
-      return 'integral dari $lower sampai $upper '
+      final lowerText = lower.isEmpty ? 'batas bawah kosong' : lower;
+      final upperText = upper.isEmpty ? 'batas atas kosong' : upper;
+
+      if (integrand.isEmpty) {
+        return 'integral dari $lowerText sampai $upperText';
+      }
+
+      return 'integral dari $lowerText sampai $upperText '
           'dari $integrand';
     }
 

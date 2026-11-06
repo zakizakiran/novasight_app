@@ -103,7 +103,9 @@ class NoteDisplayWidget extends StatelessWidget {
             ),
             const SizedBox(height: Dimens.spaceSmallPadding),
             Semantics(
-              label: question?.questionText ?? "",
+              label: _semanticSerializer.serializeTextWithMath(
+                question?.questionText ?? "",
+              ),
               child: ExcludeSemantics(
                 child: Text(
                   question?.questionText ?? "",
@@ -291,11 +293,13 @@ class NoteDisplayWidget extends StatelessWidget {
                             controller.activeSlot.value == null &&
                             controller.isInputActive.value)
                           _buildCursor(theme),
-                        if (!hasInput)
-                          Text(
-                            'Ketuk untuk input langkah baru...',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: ColorConstant.textGreyColor,
+                         if (!hasInput)
+                          ExcludeSemantics(
+                            child: Text(
+                              'Ketuk untuk input langkah baru...',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: ColorConstant.textGreyColor,
+                              ),
                             ),
                           ),
                       ],
@@ -342,6 +346,32 @@ class NoteDisplayWidget extends StatelessWidget {
       case MathSymbolType.summation:
         return _buildSummation(context, node, controller);
       case MathSymbolType.text:
+        if (node.symbol.id == 'vector' && node.slots.isNotEmpty) {
+          final style = Theme.of(context).textTheme.titleLarge;
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ExcludeSemantics(child: Text('⟨', style: style)),
+              for (int i = 0; i < node.slots.length; i++) ...[
+                if (i > 0) ExcludeSemantics(child: Text(',', style: style)),
+                _buildSlotContainer(context, node.slots[i], controller),
+              ],
+              ExcludeSemantics(child: Text('⟩', style: style)),
+            ],
+          );
+        }
+        if (node.symbol.id == 'dvar' && node.slots.isNotEmpty) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ExcludeSemantics(
+                child: Text('d', style: Theme.of(context).textTheme.titleLarge),
+              ),
+              _buildSlotContainer(context, node.slots[0], controller),
+            ],
+          );
+        }
+        return _buildTextNode(context, node);
       case MathSymbolType.number:
       case MathSymbolType.operator:
         return _buildTextNode(context, node);
@@ -349,11 +379,13 @@ class NoteDisplayWidget extends StatelessWidget {
   }
 
   Widget _buildTextNode(BuildContext context, MathNode node) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1),
-      child: Text(
-        node.symbol.renderSyntax,
-        style: Theme.of(context).textTheme.titleLarge,
+    return ExcludeSemantics(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 1),
+        child: Text(
+          node.symbol.visualLabel,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
     );
   }
@@ -382,7 +414,7 @@ class NoteDisplayWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text('√', style: theme.textTheme.headlineMedium,),
+          ExcludeSemantics(child: Text('√', style: theme.textTheme.headlineMedium,)),
           _buildRadicand(context, contentSlot, controller,),
         ],
       ),
@@ -409,7 +441,7 @@ class NoteDisplayWidget extends StatelessWidget {
               child: _buildSlotContainer(context, indexSlot, controller,),
             ),
           ),
-          Text('√', style: theme.textTheme.headlineMedium,),
+          ExcludeSemantics(child: Text('√', style: theme.textTheme.headlineMedium,)),
           _buildRadicand(context, contentSlot, controller,),
         ],
       ),
@@ -459,6 +491,26 @@ class NoteDisplayWidget extends StatelessWidget {
   }
 
   Widget _buildSubscript(BuildContext context, MathNode node, NoteController controller,) {
+    if (node.slots.length == 1) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          ExcludeSemantics(
+            child: Text('a', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          Transform.translate(
+            offset: const Offset(0, 7),
+            child: Transform.scale(
+              scale: 0.72,
+              alignment: Alignment.topLeft,
+              child: _buildSlotContainer(context, node.slots[0], controller,),
+            ),
+          ),
+        ],
+      );
+    }
+
     if (node.slots.length < 2) {
       return const SizedBox.shrink();
     }
@@ -504,8 +556,14 @@ class NoteDisplayWidget extends StatelessWidget {
   }
 
   Widget _buildParentheses(BuildContext context, MathNode node, NoteController controller,) {
+    final isAbs = node.symbol.id == 'abs';
+    final openChar = isAbs ? '|' : '(';
+    final closeChar = isAbs ? '|' : ')';
+
     if (node.slots.isEmpty) {
-      return Text('()', style: Theme.of(context).textTheme.titleLarge,);
+      return ExcludeSemantics(
+        child: Text('$openChar$closeChar', style: Theme.of(context).textTheme.titleLarge,),
+      );
     }
 
     final style = Theme.of(context).textTheme.headlineSmall;
@@ -513,9 +571,9 @@ class NoteDisplayWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('(', style: style),
+        ExcludeSemantics(child: Text(openChar, style: style)),
         _buildSlotContainer(context, node.slots[0], controller,),
-        Text(')', style: style),
+        ExcludeSemantics(child: Text(closeChar, style: style)),
       ],
     );
   }
@@ -523,10 +581,41 @@ class NoteDisplayWidget extends StatelessWidget {
   Widget _buildFunction(BuildContext context, MathNode node, NoteController controller,) {
     final style = Theme.of(context).textTheme.titleLarge;
 
+    if (node.symbol.id == 'fact' && node.slots.isNotEmpty) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildSlotContainer(context, node.slots[0], controller),
+          ExcludeSemantics(child: Text('!', style: style)),
+        ],
+      );
+    }
+
+    if (node.symbol.id == 'log_base' && node.slots.length >= 2) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          ExcludeSemantics(child: Text('log', style: style)),
+          Transform.translate(
+            offset: const Offset(0, 7),
+            child: Transform.scale(
+              scale: 0.72,
+              alignment: Alignment.topLeft,
+              child: _buildSlotContainer(context, node.slots[0], controller),
+            ),
+          ),
+          _buildSlotContainer(context, node.slots[1], controller),
+        ],
+      );
+    }
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(_functionVisualName(node.symbol.id), style: style,),
+        ExcludeSemantics(
+          child: Text(_functionVisualName(node.symbol.id), style: style,),
+        ),
         for (final slot in node.slots)
           _buildSlotContainer(context, slot, controller,),
       ],
@@ -535,6 +624,9 @@ class NoteDisplayWidget extends StatelessWidget {
 
   String _functionVisualName(String id) {
     switch (id) {
+      case 'fx':
+      case 'fxy':
+        return 'f';
       case 'sin':
         return 'sin';
       case 'cos':
@@ -567,15 +659,31 @@ class NoteDisplayWidget extends StatelessWidget {
         return 'tanh';
       case 'coth':
         return 'coth';
+      case 'arsinh':
+        return 'arsinh';
+      case 'arcosh':
+        return 'arcosh';
+      case 'artanh':
+        return 'artanh';
+      case 'arcoth':
+        return 'arcoth';
       case 'ln':
         return 'ln';
       case 'log':
-      case 'log10':
         return 'log';
+      case 'log10':
+        return 'log₁₀';
+      case 'log2':
+        return 'log₂';
       case 'exp':
         return 'exp';
       case 'sign':
         return 'sgn';
+      case 'binom':
+      case 'comb':
+        return 'C';
+      case 'perm':
+        return 'P';
       default:
         return id;
     }
@@ -586,7 +694,7 @@ class NoteDisplayWidget extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('∫', style: Theme.of(context).textTheme.headlineMedium,),
+          ExcludeSemantics(child: Text('∫', style: Theme.of(context).textTheme.headlineMedium,)),
           _buildSlotContainer(context, node.slots[0], controller,),
         ],
       );
@@ -596,7 +704,7 @@ class NoteDisplayWidget extends StatelessWidget {
       return _buildDefiniteIntegral(context, node.slots[0], node.slots[1], node.slots[2], controller,);
     }
 
-    return Text('∫', style: Theme.of(context).textTheme.headlineMedium,);
+    return ExcludeSemantics(child: Text('∫', style: Theme.of(context).textTheme.headlineMedium,));
   }
 
   Widget _buildDefiniteIntegral(BuildContext context, MathSlot lowerSlot, MathSlot upperSlot, MathSlot integrandSlot, NoteController controller,) {
@@ -613,7 +721,7 @@ class NoteDisplayWidget extends StatelessWidget {
               Positioned(
                 left: 8,
                 top: 8,
-                child: Text('∫', style: style),
+                child: ExcludeSemantics(child: Text('∫', style: style)),
               ),
               Positioned(
                 left: 0,
@@ -659,7 +767,7 @@ class NoteDisplayWidget extends StatelessWidget {
         symbol = 'y″';
         break;
       default:
-        symbol = node.symbol.renderSyntax;
+        symbol = node.symbol.visualLabel;
     }
 
     final style = Theme.of(context).textTheme.titleLarge;
@@ -667,7 +775,7 @@ class NoteDisplayWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(symbol, style: style),
+        ExcludeSemantics(child: Text(symbol, style: style)),
         for (final slot in node.slots)
           _buildSlotContainer(context, slot, controller,),
       ],
@@ -676,7 +784,9 @@ class NoteDisplayWidget extends StatelessWidget {
 
   Widget _buildLimit(BuildContext context, MathNode node, NoteController controller,) {
     if (node.slots.length < 3) {
-      return Text(node.symbol.renderSyntax, style: Theme.of(context).textTheme.titleLarge,);
+      return ExcludeSemantics(
+        child: Text(node.symbol.visualLabel, style: Theme.of(context).textTheme.titleLarge,),
+      );
     }
 
     final style = Theme.of(context).textTheme.titleLarge;
@@ -687,12 +797,12 @@ class NoteDisplayWidget extends StatelessWidget {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('lim', style: style),
+            ExcludeSemantics(child: Text('lim', style: style)),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 _buildSlotContainer(context, node.slots[0], controller,),
-                Text('→', style: Theme.of(context).textTheme.bodyMedium,),
+                ExcludeSemantics(child: Text('→', style: Theme.of(context).textTheme.bodyMedium,)),
                 _buildSlotContainer(context, node.slots[1], controller,),
               ],
             ),
@@ -706,7 +816,7 @@ class NoteDisplayWidget extends StatelessWidget {
 
   Widget _buildSummation(BuildContext context, MathNode node, NoteController controller,) {
     if (node.slots.length < 4) {
-      return Text('∑', style: Theme.of(context).textTheme.headlineMedium,);
+      return ExcludeSemantics(child: Text('∑', style: Theme.of(context).textTheme.headlineMedium,));
     }
 
     return Row(
@@ -718,7 +828,7 @@ class NoteDisplayWidget extends StatelessWidget {
           child: Stack(
             children: [
               Center(
-                child: Text('∑', style: Theme.of(context).textTheme.headlineMedium,),
+                child: ExcludeSemantics(child: Text('∑', style: Theme.of(context).textTheme.headlineMedium,)),
               ),
               Positioned(
                 top: 0,
@@ -742,7 +852,7 @@ class NoteDisplayWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       _buildSlotContainer(context, node.slots[0], controller,),
-                      Text('=', style: Theme.of(context).textTheme.bodySmall,),
+                      ExcludeSemantics(child: Text('=', style: Theme.of(context).textTheme.bodySmall,)),
                       _buildSlotContainer(context, node.slots[1], controller,),
                     ],
                   ),

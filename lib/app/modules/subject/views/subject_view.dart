@@ -20,6 +20,7 @@ import '../../../common/common_text_form_field_widget.dart';
 import '../../../core/styles/icon_txt.dart';
 import '../../../core/styles/svg/svg_constant.dart';
 import '../../../core/utils/dialog_helper.dart';
+import '../../../core/utils/math_semantic_serializer.dart';
 import '../../../core/utils/table_mode.dart';
 import '../controllers/subject_controller.dart';
 import 'package:flutter/gestures.dart';
@@ -191,7 +192,8 @@ class SubjectView extends GetView<SubjectController> {
   Widget _subject({required BuildContext context, required String subject}) {
     final sentences = subject.split(RegExp(r'(?<=[.!?])\s+'));
     return Semantics(
-      label: subject,
+      label: MathSemanticSerializer.toAccessibleText(subject),
+      excludeSemantics: true,
       button: false,
       child: GestureDetector(
         onTap: () {
@@ -278,8 +280,10 @@ class SubjectView extends GetView<SubjectController> {
     required String semantic,
     required String latex,
   }){
+    final rawLabel = semantic.trim().isNotEmpty ? semantic : latex;
+    final spokenLabel = MathSemanticSerializer.toAccessibleText(rawLabel);
     return Semantics(
-      label: semantic,
+      label: spokenLabel.isNotEmpty ? spokenLabel : rawLabel,
       excludeSemantics: true,
       child: Math.tex(
         latex,
@@ -313,7 +317,7 @@ class SubjectView extends GetView<SubjectController> {
         ...sentences.map(
               (sentence) => Semantics(
             container: true,
-            label: sentence,
+            label: MathSemanticSerializer.toAccessibleText(sentence),
             child: const SizedBox(
               width: 1,
               height: 1,

@@ -10,6 +10,7 @@ import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
 import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
 
 import 'package:lydera_app/app/routes/app_pages.dart';
 import '../controllers/exam_active_controller.dart';
@@ -124,13 +125,19 @@ class ExamActiveView extends GetView<ExamActiveController> {
                                   ),
                             ),
                             const SizedBox(height: Dimens.spaceSmallPadding),
-                            Text(
-                              currentQuestion.questionText,
-                              style: Theme.of(context).textTheme.bodyLarge
-                                  ?.copyWith(
-                                    color: ColorConstant.textDarkGreyColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            Semantics(
+                              label: MathSemanticSerializer.toAccessibleText(
+                                currentQuestion.questionText,
+                              ),
+                              excludeSemantics: true,
+                              child: Text(
+                                currentQuestion.questionText,
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(
+                                      color: ColorConstant.textDarkGreyColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                             ),
                             const SizedBox(height: Dimens.spacePadding),
                             Text(
@@ -247,7 +254,9 @@ class ExamActiveView extends GetView<ExamActiveController> {
     return Semantics(
       button: true,
       checked: isSelected,
-      label: "Pilihan ${option.letter}. ${option.text}",
+      excludeSemantics: true,
+      label:
+          "Pilihan ${option.letter}. ${MathSemanticSerializer.toAccessibleText(option.text)}",
       child: GestureDetector(
         onTap: onTap,
         child: Container(

@@ -143,25 +143,37 @@ class JustificationCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      question.errorExplanation!,
-                      style: const MainTextTheme().bodyMedium,
+                    Semantics(
+                      label: serializer.serializeTextWithMath(
+                        question.errorExplanation!,
+                        parser,
+                      ),
+                      excludeSemantics: true,
+                      child: Text(
+                        question.errorExplanation!,
+                        style: const MainTextTheme().bodyMedium,
+                      ),
                     ),
                   ],
                 ),
               ),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE3F2FD),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFF2196F3)),
-              ),
-              child: Text(
-                'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${question.options[question.correctAnswerIndex]}.',
-                style: const MainTextTheme().bodyLarge?.copyWith(
-                  color: const Color(0xFF1565C0),
-                  fontWeight: FontWeight.bold,
+            Semantics(
+              label:
+                  'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${serializer.serializeTextWithMath(question.options[question.correctAnswerIndex], parser)}.',
+              excludeSemantics: true,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE3F2FD),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFF2196F3)),
+                ),
+                child: Text(
+                  'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${question.options[question.correctAnswerIndex]}.',
+                  style: const MainTextTheme().bodyLarge?.copyWith(
+                    color: const Color(0xFF1565C0),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -169,7 +181,7 @@ class JustificationCard extends StatelessWidget {
             ...List.generate(question.explanationSteps.length, (index) {
               return Semantics(
                 label:
-                    'Langkah ${index + 1}: ${question.explanationSteps[index]}',
+                    'Langkah ${index + 1}: ${serializer.serializeTextWithMath(question.explanationSteps[index], parser)}',
                 excludeSemantics: true,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 16),
@@ -225,9 +237,16 @@ class JustificationCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      question.correction!,
-                      style: const MainTextTheme().bodyMedium,
+                    Semantics(
+                      label: serializer.serializeTextWithMath(
+                        question.correction!,
+                        parser,
+                      ),
+                      excludeSemantics: true,
+                      child: Text(
+                        question.correction!,
+                        style: const MainTextTheme().bodyMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -241,18 +260,23 @@ class JustificationCard extends StatelessWidget {
                 final correctOptionText = question.options.isNotEmpty
                     ? question.options[correctIdx]
                     : '-';
-                return Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5E9),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFF4CAF50)),
-                  ),
-                  child: Text(
-                    'Jawaban benar adalah ${String.fromCharCode(65 + correctIdx)} — $correctOptionText.',
-                    style: const MainTextTheme().bodyLarge?.copyWith(
-                      color: const Color(0xFF2E7D32),
-                      fontWeight: FontWeight.bold,
+                return Semantics(
+                  label:
+                      'Jawaban benar adalah ${String.fromCharCode(65 + correctIdx)} — ${serializer.serializeTextWithMath(correctOptionText, parser)}.',
+                  excludeSemantics: true,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8F5E9),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFF4CAF50)),
+                    ),
+                    child: Text(
+                      'Jawaban benar adalah ${String.fromCharCode(65 + correctIdx)} — $correctOptionText.',
+                      style: const MainTextTheme().bodyLarge?.copyWith(
+                        color: const Color(0xFF2E7D32),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 );

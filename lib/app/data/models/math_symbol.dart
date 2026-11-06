@@ -97,6 +97,11 @@ class MathNode {
         ];
 
       case MathSymbolType.subscript:
+        if (symbol.slotCount == 1) {
+          return [
+            MathSlot(label: 'Indeks'),
+          ];
+        }
         return [
           MathSlot(label: 'Basis'),
           MathSlot(label: 'Indeks'),
@@ -138,6 +143,11 @@ class MathNode {
         ];
 
       case MathSymbolType.derivative:
+        if (symbol.slotCount == 1) {
+          return [
+            MathSlot(label: 'Fungsi'),
+          ];
+        }
         return [
           MathSlot(label: 'Variabel'),
           MathSlot(label: 'Fungsi'),

@@ -131,6 +131,27 @@ class MathLatexParser {
       return parent;
     }
 
+    if (char == '|') {
+      _index++;
+
+      final children = _parseSequence(endChar: '|');
+
+      final parent = MathNode(
+        symbol: _findSymbol('abs') ??
+            _customSymbol(
+              id: 'abs',
+              label: '|□|',
+              syntax: r'\left|□\right|',
+              semantic: 'Nilai mutlak',
+              type: MathSymbolType.parens,
+              slots: 1,
+            ),
+      );
+
+      _putInSlot(parent, 0, children);
+      return parent;
+    }
+
     if (char == ')' || char == ']') return null;
 
     // Read consecutive digits as one number.
@@ -172,6 +193,23 @@ class MathLatexParser {
       if (_index >= _latex.length) break;
 
       final marker = _latex[_index];
+
+      if (marker == '!') {
+        _index++;
+        final symbol = _findSymbol('fact') ??
+            _customSymbol(
+              id: 'fact',
+              label: '□!',
+              syntax: '□!',
+              semantic: 'Faktorial',
+              type: MathSymbolType.function,
+              slots: 1,
+            );
+        final parent = MathNode(symbol: symbol);
+        _putInSlot(parent, 0, [current]);
+        current = parent;
+        continue;
+      }
 
       if (marker != '^' && marker != '_') break;
 
@@ -557,6 +595,7 @@ class MathLatexParser {
             id: 'to',
             label: '→',
             syntax: command == 'to' ? r'\to' : r'\rightarrow',
+            semantic: 'mendekati',
             type: MathSymbolType.operator,
             slots: 0,
           ),
@@ -589,6 +628,68 @@ class MathLatexParser {
       case 'cdot':
         return _symbolNodeFor('·');
 
+      case 'pm':
+        return _symbolNodeFor('±');
+
+      case 'mp':
+        return _symbolNodeFor('∓');
+
+      case 'approx':
+        return _symbolNodeFor('≈');
+
+      case 'equiv':
+        return _symbolNodeFor('≡');
+
+      case 'propto':
+        return _symbolNodeFor('∝');
+
+      case 'degree':
+      case 'circ':
+        return _symbolNodeFor('°');
+
+      case '%':
+        return _symbolNodeFor('%');
+
+      case 'text':
+      case 'mathrm':
+      case 'mathbf':
+      case 'mathit':
+        final literal = _readBracedLiteral();
+        if (literal.isEmpty) return null;
+        return MathNode(
+          symbol: _customSymbol(
+            id: 'text_$literal',
+            label: literal,
+            syntax: literal,
+            semantic: literal,
+            type: MathSymbolType.text,
+            slots: 0,
+          ),
+        );
+
+      case 'operatorname':
+        final opName = _readBracedLiteral().trim();
+        final mappedId = opName == 'sgn' ? 'sign' : opName;
+        final opSymbol = _findSymbol(mappedId);
+        if (opSymbol != null) {
+          final node = MathNode(symbol: opSymbol);
+          if (opSymbol.type == MathSymbolType.function &&
+              opSymbol.slotCount > 0) {
+            _parseFunctionArguments(node);
+          }
+          return node;
+        }
+        return MathNode(
+          symbol: _customSymbol(
+            id: mappedId,
+            label: opName,
+            syntax: opName,
+            semantic: opName,
+            type: MathSymbolType.text,
+            slots: 0,
+          ),
+        );
+
       case ' ':
       case ',':
       case ';':
@@ -610,6 +711,7 @@ class MathLatexParser {
         return parent;
 
       case 'bar':
+      case 'overline':
         final content = _parseArgument();
 
         final parent = MathNode(
@@ -617,6 +719,7 @@ class MathLatexParser {
             id: 'bar',
             label: 'bar(□)',
             syntax: r'\bar{□}',
+            semantic: 'bar',
             type: MathSymbolType.function,
             slots: 1,
           ),
@@ -626,6 +729,20 @@ class MathLatexParser {
         return parent;
 
       default:
+        final greek = _greekCommandMap[command];
+        if (greek != null) {
+          return MathNode(
+            symbol: _customSymbol(
+              id: command,
+              label: greek.$1,
+              syntax: '\\$command',
+              semantic: greek.$2,
+              type: MathSymbolType.text,
+              slots: 0,
+            ),
+          );
+        }
+
         final symbol = _findSymbol(command);
 
         if (symbol != null) {
@@ -799,13 +916,15 @@ class MathLatexParser {
     }
 
     final isNumber = RegExp(r'^\d$').hasMatch(value);
-    final isOperator = '+-=<>*/×÷−≤≥≠·'.contains(value);
+    final isOperator = '+-=<>*/×÷−≤≥≠·±∓≈≡∝°!,:→'.contains(value);
+    final semantic = _charSemanticMap[value] ?? value;
 
     return MathNode(
       symbol: _customSymbol(
         id: value,
         label: value,
         syntax: value,
+        semantic: semantic,
         type: isNumber
             ? MathSymbolType.number
             : isOperator
@@ -815,6 +934,103 @@ class MathLatexParser {
       ),
     );
   }
+
+  String _readBracedLiteral() {
+    _skipWhitespace();
+    if (_index >= _latex.length || _latex[_index] != '{') return '';
+    _index++;
+    final start = _index;
+    var depth = 1;
+    while (_index < _latex.length && depth > 0) {
+      if (_latex[_index] == '{') {
+        depth++;
+      } else if (_latex[_index] == '}') {
+        depth--;
+        if (depth == 0) break;
+      }
+      _index++;
+    }
+    final content = _latex.substring(start, _index);
+    if (_index < _latex.length && _latex[_index] == '}') _index++;
+    return content;
+  }
+
+  static const Map<String, (String, String)> _greekCommandMap = {
+    'alpha': ('α', 'alfa'),
+    'beta': ('β', 'beta'),
+    'gamma': ('γ', 'gamma'),
+    'Gamma': ('Γ', 'gamma besar'),
+    'delta': ('δ', 'delta'),
+    'Delta': ('Δ', 'delta besar'),
+    'epsilon': ('ε', 'epsilon'),
+    'varepsilon': ('ε', 'epsilon'),
+    'zeta': ('ζ', 'zeta'),
+    'eta': ('η', 'eta'),
+    'theta': ('θ', 'teta'),
+    'vartheta': ('θ', 'teta'),
+    'Theta': ('Θ', 'teta besar'),
+    'iota': ('ι', 'iota'),
+    'kappa': ('κ', 'kapa'),
+    'lambda': ('λ', 'lambda'),
+    'Lambda': ('Λ', 'lambda besar'),
+    'mu': ('μ', 'mu'),
+    'nu': ('ν', 'nu'),
+    'xi': ('ξ', 'ksi'),
+    'Xi': ('Ξ', 'ksi besar'),
+    'Pi': ('Π', 'pi besar'),
+    'rho': ('ρ', 'ro'),
+    'sigma': ('σ', 'sigma'),
+    'Sigma': ('Σ', 'sigma besar'),
+    'tau': ('τ', 'tau'),
+    'upsilon': ('υ', 'upsilon'),
+    'phi': ('φ', 'fi'),
+    'varphi': ('φ', 'fi'),
+    'Phi': ('Φ', 'fi besar'),
+    'chi': ('χ', 'khi'),
+    'psi': ('ψ', 'psi'),
+    'Psi': ('Ψ', 'psi besar'),
+    'omega': ('ω', 'omega'),
+    'Omega': ('Ω', 'omega besar'),
+  };
+
+  static const Map<String, String> _charSemanticMap = {
+    '*': 'Kali',
+    '·': 'Kali',
+    '/': 'Per',
+    '±': 'Kurang lebih',
+    '∓': 'Lebih kurang',
+    '≈': 'Kira-kira sama dengan',
+    '≡': 'Ekuivalen dengan',
+    '∝': 'Sebanding dengan',
+    '°': 'Derajat',
+    '!': 'Faktorial',
+    ',': 'koma',
+    ':': 'banding',
+    '→': 'mendekati',
+    '√': 'Akar kuadrat',
+    'α': 'alfa',
+    'β': 'beta',
+    'γ': 'gamma',
+    'Γ': 'gamma besar',
+    'δ': 'delta',
+    'Δ': 'delta besar',
+    'ε': 'epsilon',
+    'ζ': 'zeta',
+    'η': 'eta',
+    'θ': 'teta',
+    'Θ': 'teta besar',
+    'λ': 'lambda',
+    'Λ': 'lambda besar',
+    'μ': 'mu',
+    'σ': 'sigma',
+    'Σ': 'sigma besar',
+    'τ': 'tau',
+    'φ': 'fi',
+    'Φ': 'fi besar',
+    'ψ': 'psi',
+    'ω': 'omega',
+    'Ω': 'omega besar',
+  };
 
   MathSymbol? _findSymbol(String id) {
     for (final symbol in _allSymbols) {
@@ -828,6 +1044,7 @@ class MathLatexParser {
     required String id,
     required String label,
     required String syntax,
+    String? semantic,
     required MathSymbolType type,
     required int slots,
   }) {
@@ -835,7 +1052,7 @@ class MathLatexParser {
       id: id,
       visualLabel: label,
       renderSyntax: syntax,
-      semanticText: label,
+      semanticText: semantic ?? label,
       type: type,
       slotCount: slots,
     );
