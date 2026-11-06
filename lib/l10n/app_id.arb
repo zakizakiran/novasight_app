@@ -558,6 +558,7 @@
   "discussionSteps": "Langkah Pembahasan:",
   "saveStep": "Simpan Langkah",
   "workingSteps": "Langkah Pengerjaan",
+  "errorStep":"Letak Kesalahan",
   "noConversationsYet": "Belum Ada Percakapan",
   "startNewConversation": "Mulai Percakapan Baru",
   "emptyConversationDesc": "Mulai tanya materi matematika atau diskusikan soal dengan menekan tombol (+) di atas!",

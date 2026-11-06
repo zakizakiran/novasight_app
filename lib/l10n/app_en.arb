@@ -556,6 +556,7 @@
   "discussionSteps": "Discussion Steps:",
   "saveStep": "Save Step",
   "workingSteps": "Working Steps",
+  "errorStep":"Error Step",
   "noConversationsYet": "No Conversations Yet",
   "startNewConversation": "Start New Conversation",
   "emptyConversationDesc": "Start asking math topics or discussing questions by tapping the (+) button above!",

@@ -81,6 +81,7 @@ class ExamReviewController extends GetxController {
             question: item.questionText,
             options: options,
             stimulus: item.stimulus,
+            stepError: item.stepError,
             correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
             userAnswerIndex: userIdx != -1 ? userIdx : -1,
             isCorrect: item.isCorrect ?? false,

@@ -2084,6 +2084,12 @@ abstract class AppLocalizations {
   /// **'Working Steps'**
   String get workingSteps;
 
+  /// No description provided for @errorStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Error Step'**
+  String get errorStep;
+
   /// No description provided for @noConversationsYet.
   ///
   /// In en, this message translates to:

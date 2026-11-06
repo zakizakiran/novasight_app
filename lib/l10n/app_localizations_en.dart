@@ -1083,6 +1083,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get workingSteps => 'Working Steps';
 
   @override
+  String get errorStep => 'Error Step';
+
+  @override
   String get noConversationsYet => 'No Conversations Yet';
 
   @override

@@ -96,6 +96,7 @@ class ExamTeacherStudentProgressDetailController extends GetxController {
               stimulus: item.stimulus,
               correctAnswerIndex: correctIdx != -1 ? correctIdx : 0,
               userAnswerIndex: userIdx != -1 ? userIdx : -1,
+              stepError: item.stepError,
               isCorrect: item.isCorrect ?? false,
               score: (item.isCorrect == true) ? scorePerQuestion : 0,
               explanationSteps: item.justification?.diagnosis.isNotEmpty == true

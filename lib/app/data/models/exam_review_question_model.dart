@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 
 class ExamReviewQuestion {
@@ -8,6 +9,7 @@ class ExamReviewQuestion {
   final int userAnswerIndex;
   final bool isCorrect;
   final double score;
+  final StepError? stepError;
   final QuestionStimulusResponse? stimulus;
   final List<String> explanationSteps;
   final List<StudentStep> userStep;
@@ -29,5 +31,6 @@ class ExamReviewQuestion {
     this.errorExplanation,
     this.correction,
     this.stimulus,
+    this.stepError,
   });
 }

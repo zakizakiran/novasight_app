@@ -1087,6 +1087,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get workingSteps => 'Langkah Pengerjaan';
 
   @override
+  String get errorStep => 'Letak Kesalahan';
+
+  @override
   String get noConversationsYet => 'Belum Ada Percakapan';
 
   @override

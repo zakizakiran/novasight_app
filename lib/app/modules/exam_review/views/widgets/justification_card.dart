@@ -161,6 +161,40 @@ class JustificationCard extends StatelessWidget {
                   ],
                 ),
               ),
+            if (question.stepError != null)
+              Container(
+                margin: const EdgeInsets.only(top: 8, bottom: 12),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFCDD2), // Light red
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFF44336)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.l10n.errorStep,
+                      style: const TextStyle(
+                        color: Color(0xFFF44336),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Semantics(
+                      label: serializer.serializeTextWithMath(
+                        question.stepError!.description,
+                        parser,
+                      ),
+                      excludeSemantics: true,
+                      child: Text(
+                        question.stepError!.description,
+                        style: const MainTextTheme().bodyMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             Semantics(
               label:
                   'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${serializer.serializeTextWithMath(question.options[question.correctAnswerIndex], parser)}.',

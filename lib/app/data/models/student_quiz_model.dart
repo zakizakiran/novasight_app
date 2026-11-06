@@ -725,6 +725,27 @@ class SoalJustification {
   }
 }
 
+class StepError {
+  final String description;
+  final String? quote;
+  final int? divergenceStep;
+
+  StepError({
+    required this.description,
+    this.quote,
+    this.divergenceStep
+  });
+
+  factory StepError.fromJson(Map<String, dynamic> json) {
+    return StepError(
+      divergenceStep: json['langkah_ke'],
+      quote: json['kutipan'],
+      description: json['keterangan']
+    );
+  }
+
+}
+
 class QuizResultItem {
   final int soalId;
   final String questionText;
@@ -733,6 +754,7 @@ class QuizResultItem {
   final List<QuestionOptionResponse> options;
   final bool? isCorrect;
   final int? divergenceStep;
+  final StepError? stepError;
   final QuestionStimulusResponse? stimulus;
   final SoalJustification? justification;
   final List<String>? importantNote;
@@ -750,10 +772,12 @@ class QuizResultItem {
     this.justification,
     this.importantNote, this.conclusion,
     this.stimulus, this.divergenceStep,
+    this.stepError
   });
 
   factory QuizResultItem.fromJson(Map<String, dynamic> json) {
     final stimulus = json['stimulus'];
+    final stepError = json['letak_kesalahan'];
     return QuizResultItem(
       soalId: json['soal_id'] != null
           ? (int.tryParse(json['soal_id'].toString()) ?? 0)
@@ -767,7 +791,8 @@ class QuizResultItem {
         }
         return StudentStep(id: 0, steps: 0, text: '');
       }).toList() ?? [],
-      stimulus: stimulus != null ? QuestionStimulusResponse.fromJson(json['stimulus']) : null,
+      stepError: stepError != null ? StepError.fromJson(stepError) : null,
+      stimulus: stimulus != null ? QuestionStimulusResponse.fromJson(stimulus) : null,
       questionText: json['question_text'] as String? ?? '',
       options: (json['options'] as List<dynamic>?)
           ?.map((item) => QuestionOptionResponse.fromJson(item as Map<String, dynamic>))
