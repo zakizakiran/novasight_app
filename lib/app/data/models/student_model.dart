@@ -194,6 +194,10 @@ class BlockResponseModel {
     this.imageUrl,
   });
 
+  bool get isFormula => blockType.toLowerCase().trim() == 'formula';
+  bool get isTable => blockType.toLowerCase().trim() == 'table';
+  bool get isImageUrl => blockType.toLowerCase().trim() == 'image';
+
   factory BlockResponseModel.fromJson(Map<String, dynamic> json) {
     return BlockResponseModel(
       id: json['id'] as int?,

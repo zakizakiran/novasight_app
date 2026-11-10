@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/date_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import '../../../../../common/common_html_table_renderer.dart';
 import '../../controllers/module_teacher_controller.dart';
 
 class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
@@ -234,15 +236,12 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
                                   ],
                                 ),
                                 const SizedBox(height: 6),
-                                if(block.imageUrl != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(Dimens.radius),
-                                    child: Image.network(
-                                      block.imageUrl!,
-                                      fit: BoxFit.fitWidth,
-                                      excludeFromSemantics: true,
-                                    ),
-                                  ),
+                                if(block.isImageUrl)
+                                  _imageUrl(block.imageUrl!),
+                                if(block.isFormula)
+                                  _formula(context: context, latex: block.sourceMarkup!),
+                                if(block.isTable)
+                                  _table(context: context, html: block.sourceMarkup!),
                                 Text(
                                   block.readableText,
                                   style: Theme.of(context)
@@ -263,6 +262,57 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
             }),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _imageUrl(String url){
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Dimens.radius),
+      child: Image.network(
+        url,
+        fit: BoxFit.fitWidth,
+        excludeFromSemantics: true,
+      ),
+    );
+  }
+
+  Widget _formula({
+    required BuildContext context,
+    required String latex,
+  }) {
+    return Semantics(
+      excludeSemantics: true,
+      child: SizedBox(
+        width: double.infinity,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Math.tex(
+            latex,
+            mathStyle: MathStyle.text,
+            textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(
+              color: ColorConstant.textDarkGreyColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _table({
+    required BuildContext context,
+    required String html,
+  }) {
+    return CommonHtmlTableRenderer(
+      html: html,
+      borderColor: Theme.of(context).colorScheme.outline,
+      headerBackgroundColor:
+      Theme.of(context).colorScheme.surfaceContainerHighest,
+      textStyle: Theme.of(context).textTheme.bodyMedium,
+      headerTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        fontWeight: FontWeight.bold,
       ),
     );
   }
