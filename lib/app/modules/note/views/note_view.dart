@@ -12,25 +12,17 @@ class NoteView extends GetView<NoteController> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-        canPop: !controller.isInputActive.value,
-        onPopInvokedWithResult: (didPop, result) {
-          if (!didPop && controller.isInputActive.value) {
-            controller.deactivateInput();
-          }
-        },
-        child: Scaffold(
-          backgroundColor: ColorConstant.background,
-          body: Column(
-            children: [
-              CommonAppBar(
-                title: context.l10n.noteAppBarTitle,
-                description: context.l10n.questionOf(controller.index + 1, controller.total),
-              ),
-              Expanded(child: NoteDisplayWidget()),
-            ],
+    return Scaffold(
+      backgroundColor: ColorConstant.background,
+      body: Column(
+        children: [
+          CommonAppBar(
+            title: context.l10n.noteAppBarTitle,
+            description: context.l10n.questionOf(controller.index + 1, controller.total),
           ),
-        )
+          Expanded(child: NoteDisplayWidget()),
+        ],
+      ),
     );
   }
 }

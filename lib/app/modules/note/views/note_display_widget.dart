@@ -27,45 +27,53 @@ class NoteDisplayWidget extends StatelessWidget {
       final cursor = controller.cursorIndex.value;
       final isInputActive = controller.isInputActive.value;
 
-      return Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: SingleChildScrollView(
-          controller: controller.scrollController,
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildQuestionCard(context, controller.question),
-              const SizedBox(height: Dimens.spaceBigPadding),
-              Semantics(
-                header: true,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Dimens.innerPadding,
-                  ),
-                  child: Text(
-                    context.l10n.workingSteps,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: ColorConstant.textDarkGreyColor,
-                      fontWeight: FontWeight.bold,
+      return PopScope(
+        canPop: !isInputActive,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop && isInputActive) {
+            controller.deactivateInput();
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: SingleChildScrollView(
+            controller: controller.scrollController,
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildQuestionCard(context, controller.question),
+                const SizedBox(height: Dimens.spaceBigPadding),
+                Semantics(
+                  header: true,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Dimens.innerPadding,
+                    ),
+                    child: Text(
+                      context.l10n.workingSteps,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: ColorConstant.textDarkGreyColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              for (int i = 0; i < controller.steps.length; i++)
-                _buildStepItem(context, controller, controller.steps[i], i),
-              _buildInputBox(context, controller, nodes, cursor),
-              if (isInputActive) ...[
-                const SizedBox(height: Dimens.spaceMediumPadding),
-                const MathKeyboardWidget(),
+                for (int i = 0; i < controller.steps.length; i++)
+                  _buildStepItem(context, controller, controller.steps[i], i),
+                _buildInputBox(context, controller, nodes, cursor),
+                if (isInputActive) ...[
+                  const SizedBox(height: Dimens.spaceMediumPadding),
+                  const MathKeyboardWidget(),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       );

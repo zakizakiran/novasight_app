@@ -147,6 +147,7 @@ class NoteController extends GetxController {
   }
 
   void deactivateInput() {
+    print('Deactivate input');
     isInputActive.value = false;
   }
 

@@ -234,6 +234,15 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
                                   ],
                                 ),
                                 const SizedBox(height: 6),
+                                if(block.imageUrl != null)
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(Dimens.radius),
+                                    child: Image.network(
+                                      block.imageUrl!,
+                                      fit: BoxFit.fitWidth,
+                                      excludeFromSemantics: true,
+                                    ),
+                                  ),
                                 Text(
                                   block.readableText,
                                   style: Theme.of(context)
