@@ -139,7 +139,7 @@ class ChatbotController extends GetxController {
           id: 0,
           role: 'assistant',
           content:
-              'Halo! 👋 Aku Learnify, asisten belajar modulmu di ${AppStrings.nameApp}. Ada bagian modul yang belum jelas atau materi yang ingin kamu tanyakan? Tanyakan langsung ya!',
+              'Halo! Aku Learnify, asisten belajar modulmu di ${AppStrings.nameApp}. Ada bagian modul yang belum jelas atau materi yang ingin kamu tanyakan? Tanyakan langsung ya!',
           createdAt: DateTime.now(),
         ),
       );

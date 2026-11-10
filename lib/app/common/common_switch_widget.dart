@@ -39,7 +39,7 @@ class CommonSwitchWidget<T> extends StatelessWidget {
     final selectedIndex = values.indexOf(selectedValue);
 
     return Container(
-      height: height,
+      constraints: BoxConstraints(minHeight: height),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -102,20 +102,25 @@ class CommonSwitchWidget<T> extends StatelessWidget {
         borderRadius: borderRadius,
         onTap: () => onChanged(value),
         child: Center(
-          child: AnimatedDefaultTextStyle(
-            duration: animationDuration,
-            curve: Curves.easeInOut,
-            style: (textStyle ?? theme.textTheme.titleMedium!).copyWith(
-              fontWeight: isSelected
-                  ? FontWeight.w700
-                  : FontWeight.w500,
-              color: isSelected
-                  ? selectedTextColor
-                  : unselectedTextColor,
-            ),
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            child: AnimatedDefaultTextStyle(
+              duration: animationDuration,
+              curve: Curves.easeInOut,
+              style: (textStyle ?? theme.textTheme.titleMedium!).copyWith(
+                fontWeight: isSelected
+                    ? FontWeight.w700
+                    : FontWeight.w500,
+                color: isSelected
+                    ? selectedTextColor
+                    : unselectedTextColor,
+              ),
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ),

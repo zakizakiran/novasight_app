@@ -4,14 +4,14 @@ import 'package:lydera_app/app/core/utils/user_roles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
-  static const String _PASSWORD_KEY = "passwordKey";
-  static const String _ACCESS_TOKEN_KEY = "accessTokenKey";
-  static const String _USER_ROLE_KEY = "roleKey";
-  static const String _NAME_KEY = "nameKey";
-  static const String _EMAIL_KEY = "emailKey";
-  static const String _CLASS_CODE_KEY = "classCodeKey";
-  static const String _CLASS_NAME_KEY = "classNameKey";
-  static const String _LANGUAGE_CODE_KEY = "languageCodeKey";
+  static const String _passwordKey = "passwordKey";
+  static const String _accessTokenKey = "accessTokenKey";
+  static const String _userRoleKey = "roleKey";
+  static const String _nameKey = "nameKey";
+  static const String _emailKey = "emailKey";
+  static const String _classCodeKey = "classCodeKey";
+  static const String _classNameKey = "classNameKey";
+  static const String _languageCodeKey = "languageCodeKey";
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions()
   );
@@ -22,68 +22,68 @@ class StorageService {
   }
 
   Future<void> writeClassCode(String value) async {
-    await _prefs.setString(_CLASS_CODE_KEY, value);
+    await _prefs.setString(_classCodeKey, value);
   }
 
   String? getClassCode() {
-    return _prefs.getString(_CLASS_CODE_KEY);
+    return _prefs.getString(_classCodeKey);
   }
 
   Future<void> writeClassName(String value) async {
-    await _prefs.setString(_CLASS_NAME_KEY, value);
+    await _prefs.setString(_classNameKey, value);
   }
 
   String? getClassName() {
-    return _prefs.getString(_CLASS_NAME_KEY);
+    return _prefs.getString(_classNameKey);
   }
 
   Future<void> writeUserName(String value) async {
-    await _prefs.setString(_NAME_KEY, value);
+    await _prefs.setString(_nameKey, value);
   }
 
   String? getUserName() {
-    return _prefs.getString(_NAME_KEY);
+    return _prefs.getString(_nameKey);
   }
 
   Future<void> writeUserEmail(String value) async {
-    await _prefs.setString(_EMAIL_KEY, value);
+    await _prefs.setString(_emailKey, value);
   }
 
   String? getUserEmail() {
-    return _prefs.getString(_EMAIL_KEY);
+    return _prefs.getString(_emailKey);
   }
 
   Future<void> writeUserRole(UserRoles value) async {
-    await _prefs.setString(_USER_ROLE_KEY, value.name);
+    await _prefs.setString(_userRoleKey, value.name);
   }
 
   UserRoles? getRole() {
-    final value = _prefs.getString(_USER_ROLE_KEY);
+    final value = _prefs.getString(_userRoleKey);
     return UserRoles.values.firstWhereOrNull((e) => e.name == value);
   }
 
   Future<void> writePassword(String value) async {
-    await _storage.write(key: _PASSWORD_KEY, value: value);
+    await _storage.write(key: _passwordKey, value: value);
   }
 
   Future<void> writeLanguageCode(String value) async {
-    await _prefs.setString(_LANGUAGE_CODE_KEY, value);
+    await _prefs.setString(_languageCodeKey, value);
   }
 
   String? getLanguageCode() {
-    return _prefs.getString(_LANGUAGE_CODE_KEY);
+    return _prefs.getString(_languageCodeKey);
   }
 
   Future<String?> getPassword() async {
-    return _storage.read(key: _PASSWORD_KEY);
+    return _storage.read(key: _passwordKey);
   }
 
   Future<void> writeAccessToken(String value) async {
-    await _storage.write(key: _ACCESS_TOKEN_KEY, value: value);
+    await _storage.write(key: _accessTokenKey, value: value);
   }
 
   Future<String?> getAccessToken() async {
-    return _storage.read(key: _ACCESS_TOKEN_KEY);
+    return _storage.read(key: _accessTokenKey);
   }
 
   Future<void> clearAll() async {
@@ -96,10 +96,10 @@ class StorageService {
   }
 
   Future<void> clearAccessToken() async {
-    await _storage.delete(key: _ACCESS_TOKEN_KEY);
+    await _storage.delete(key: _accessTokenKey);
   }
 
   Future<void> clearPassword() async {
-    await _storage.delete(key: _PASSWORD_KEY);
+    await _storage.delete(key: _passwordKey);
   }
 }

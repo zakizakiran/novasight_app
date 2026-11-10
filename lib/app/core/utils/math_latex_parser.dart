@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
@@ -18,7 +19,7 @@ class MathLatexParser {
   List<MathNode> parse(String latex) {
     _latex = latex;
     _index = 0;
-    print('Parser input: $latex');
+    debugPrint('Parser input: $latex');
     return _parseSequence();
   }
 
@@ -94,7 +95,7 @@ class MathLatexParser {
           nodes.add(_parsePostfix(node));
       }
 
-      print('Parser sequences $_index: $endChar');
+      debugPrint('Parser sequences $_index: $endChar');
     }
 
     return nodes;
@@ -856,16 +857,6 @@ class MathLatexParser {
   void _skipWhitespace() {
     while (_index < _latex.length &&
         _latex[_index].trim().isEmpty) {
-      _index++;
-    }
-  }
-
-  void _skipDelimiter() {
-    if (_index >= _latex.length) return;
-
-    if (_latex[_index] == r'\') {
-      _readCommand();
-    } else {
       _index++;
     }
   }

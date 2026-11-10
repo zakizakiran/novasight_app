@@ -17,48 +17,51 @@ class MathKeyboardWidget extends StatelessWidget {
     final controller = Get.find<NoteController>();
     final theme = Theme.of(context);
 
-    return Container(
-      color: theme.colorScheme.surface,
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Divider(height: 1, thickness: 1, color: theme.dividerColor),
-            _buildTopActionBar(context, controller),
-            Obx(() => controller.isAbcMode.value
-                ? const SizedBox.shrink()
-                : _buildCategoryTabBar(context, controller)),
-            Obx(() {
-              if (controller.isAbcMode.value) {
-                return _buildAbcKeyboardGrid(context, controller);
-              }
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.15,
+      child: Container(
+        color: theme.colorScheme.surface,
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Divider(height: 1, thickness: 1, color: theme.dividerColor),
+              _buildTopActionBar(context, controller),
+              Obx(() => controller.isAbcMode.value
+                  ? const SizedBox.shrink()
+                  : _buildCategoryTabBar(context, controller)),
+              Obx(() {
+                if (controller.isAbcMode.value) {
+                  return _buildAbcKeyboardGrid(context, controller);
+                }
 
-              switch (controller.activeCategoryTab.value) {
-                case 0:
-                  return _buildSymbolGrid(context, controller, MathSymbolRepository.basicCategory);
-                case 1:
-                  return _buildSymbolGrid(context, controller, MathSymbolRepository.functionsCategory);
-                case 2:
-                  return _buildSymbolGrid(context, controller, MathSymbolRepository.trigCategory);
-                case 3:
-                  return _buildSymbolGrid(context, controller, MathSymbolRepository.calculusCategory);
-                default:
-                  return _buildSymbolGrid(context, controller, MathSymbolRepository.basicCategory);
-              }
-            }),
-            Padding(
-              padding: const EdgeInsets.all(Dimens.innerPadding),
-              child: Semantics(
-                button: true,
-                label: context.l10n.saveStep,
-                child: CommonButtonWidget(
-                  buttonName: context.l10n.saveStep,
-                  onPressed: controller.saveStep,
+                switch (controller.activeCategoryTab.value) {
+                  case 0:
+                    return _buildSymbolGrid(context, controller, MathSymbolRepository.basicCategory);
+                  case 1:
+                    return _buildSymbolGrid(context, controller, MathSymbolRepository.functionsCategory);
+                  case 2:
+                    return _buildSymbolGrid(context, controller, MathSymbolRepository.trigCategory);
+                  case 3:
+                    return _buildSymbolGrid(context, controller, MathSymbolRepository.calculusCategory);
+                  default:
+                    return _buildSymbolGrid(context, controller, MathSymbolRepository.basicCategory);
+                }
+              }),
+              Padding(
+                padding: const EdgeInsets.all(Dimens.innerPadding),
+                child: Semantics(
+                  button: true,
+                  label: context.l10n.saveStep,
+                  child: CommonButtonWidget(
+                    buttonName: context.l10n.saveStep,
+                    onPressed: controller.saveStep,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

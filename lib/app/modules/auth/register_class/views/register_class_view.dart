@@ -10,9 +10,9 @@ import '../../../../common/common_button_widget.dart';
 import '../../../../common/common_text_form_field_widget.dart';
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
-import '../../../../core/styles/icon_txt.dart';
 import '../../../../core/utils/validate_helper.dart';
 import '../../../../common/common_card_widget.dart';
+import '../../../../data/services/local/storage_service.dart';
 import '../controllers/register_class_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
@@ -21,11 +21,23 @@ class RegisterView extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final appBarHeight = height * 0.3;
+    final storedName = Get.isRegistered<StorageService>()
+        ? Get.find<StorageService>().getUserName()
+        : null;
+    final greetingName =
+        (storedName != null && storedName.trim().isNotEmpty)
+            ? storedName.trim()
+            : context.l10n.student;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AuthAppbar(icon: IconTxt.key, title: context.l10n.joinClass, description: context.l10n.enterClassCodeFromTeacher,height: appBarHeight,),
+            AuthAppbar(
+              iconData: Icons.vpn_key_rounded,
+              title: context.l10n.joinClass,
+              description: context.l10n.enterClassCodeFromTeacher,
+              height: appBarHeight,
+            ),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
               child: CommonCardWidget(
@@ -39,7 +51,7 @@ class RegisterView extends GetView<RegisterController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Halo 👋",
+                      "Halo, $greetingName",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(

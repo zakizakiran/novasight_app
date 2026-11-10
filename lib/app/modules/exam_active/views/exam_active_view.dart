@@ -89,9 +89,44 @@ class ExamActiveView extends GetView<ExamActiveController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircularProgressIndicator(),
-                        SizedBox(height: 12),
+                        SizedBox(height: Dimens.spaceMd),
                         Text('Memulai ujian dan memuat soal...'),
                       ],
+                    ),
+                  );
+                }
+
+                if (controller.errorMessage.value.isNotEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(Dimens.spaceLg),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: ColorConstant.redColor,
+                          ),
+                          const SizedBox(height: Dimens.spaceMd),
+                          Text(
+                            controller.errorMessage.value,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: ColorConstant.textDarkGreyColor,
+                                ),
+                          ),
+                          const SizedBox(height: Dimens.spaceMd),
+                          CommonButtonWidget(
+                            buttonName: context.l10n.tryAgain,
+                            size: ButtonSize.small,
+                            onPressed: controller.startQuiz,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -212,7 +247,7 @@ class ExamActiveView extends GetView<ExamActiveController> {
             final isActive = currentIndex == index;
             final question = controller.questions[index];
             final isAnswered = question.selectedOptionId?.isNotEmpty ?? false;
-            print("Soal nomor ${index + 1}\nIs Answered $isAnswered ${question.selectedOptionId}");
+            debugPrint("Soal nomor ${index + 1}\nIs Answered $isAnswered ${question.selectedOptionId}");
             return Semantics(
               label:
                   context.l10n.questionOfTotal(index + 1, controller.questions.length),

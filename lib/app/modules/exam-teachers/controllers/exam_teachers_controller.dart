@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/exam_student_progress_args.dart';
 import 'package:lydera_app/app/core/errors/api_exception.dart';
@@ -253,7 +254,7 @@ class ExamTeachersController extends GetxController {
   }
 
   void onStudentExamProgress(QuizRequestTeacherModel quiz) {
-    print('Quiz Id : ${quiz.id}');
+    debugPrint('Quiz Id : ${quiz.id}');
     Get.toNamed(Routes.EXAM_TEACHER_STUDENT_PROGRESS,arguments: ExamStudentProgressArgs(quizId: quiz.id, title: quiz.title));
   }
 

@@ -1,6 +1,6 @@
+import '../../../core/utils/announce.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/modules/exam_active/controllers/exam_active_controller.dart';
@@ -971,7 +971,7 @@ class NoteDisplayWidget extends StatelessWidget {
       void selectAndAnnounce() {
         controller.selectSlot(slot);
 
-        SemanticsService.announce(
+        announceSemantics(
           '${slot.label}, dipilih',
           Directionality.of(context),
         );

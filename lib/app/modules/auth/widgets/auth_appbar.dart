@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
-import 'package:lydera_app/app/core/styles/icon_txt.dart';
 import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 
 import 'icon_auth_app.dart';
 
 class AuthAppbar extends StatelessWidget{
   final String? icon;
+  final IconData? iconData;
   final String? iconSvg;
   final double? height;
   final String title;
   final String description;
   final bool showBack;
   final Widget? top;
-  const AuthAppbar({super.key,this.iconSvg, this.icon, required this.title, required this.description, this.height, this.top, this.showBack = true});
+  const AuthAppbar({super.key,this.iconSvg, this.iconData, this.icon, required this.title, required this.description, this.height, this.top, this.showBack = true});
 
 
   @override
@@ -52,12 +52,13 @@ class AuthAppbar extends StatelessWidget{
               mainAxisSize: MainAxisSize.min,
               children: [
                 ? top,
-                if(icon != null)
+                if (icon != null || iconData != null || iconSvg != null)
                   IconAuthApp(
-                      icon: icon!,
-                      iconSvg : iconSvg,
-                      padding: Dimens.innerPadding,
-                      size: Dimens.iconMediumSize,
+                    icon: icon ?? '',
+                    iconData: iconData,
+                    iconSvg: iconSvg,
+                    padding: Dimens.innerPadding,
+                    size: Dimens.iconMediumSize,
                   ),
                 const SizedBox(height: Dimens.spacePadding),
                 Text(

@@ -95,7 +95,7 @@ void main() {
       expect(controller.isChatActive.value, isTrue);
       expect(controller.messages.length, equals(1));
       expect(controller.messages.first.role, equals('assistant'));
-      expect(controller.messages.first.content, contains('NovaSight AI'));
+      expect(controller.messages.first.content, contains('Learnify'));
     });
 
     test('openSession sets active session and loads messages', () async {

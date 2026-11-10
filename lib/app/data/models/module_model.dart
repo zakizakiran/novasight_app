@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:lydera_app/app/core/utils/module_status.dart';
 import 'package:lydera_app/app/data/model/subject_model.dart';
-import 'package:lydera_app/app/data/model/subject_page_module.dart';
 
 class ModuleModel extends Equatable {
   final int id;

@@ -272,7 +272,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get diagnosis => 'Keterangan';
 
   @override
-  String get welcomeStudentGreeting => 'Selamat belajar 👋';
+  String get welcomeStudentGreeting => 'Selamat belajar';
 
   @override
   String get student => 'Siswa';

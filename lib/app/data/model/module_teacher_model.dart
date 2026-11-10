@@ -2,8 +2,6 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import 'package:lydera_app/app/data/model/class_model.dart';
 
-import '../../core/styles/img/img_constant.dart';
-
 sealed class ModuleChunk extends Equatable {
   final int id;
   final String? annotation;

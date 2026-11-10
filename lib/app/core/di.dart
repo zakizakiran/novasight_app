@@ -21,7 +21,6 @@ import 'package:lydera_app/app/data/services/remote/module_service.dart';
 import 'package:lydera_app/app/data/services/remote/module_teacher_service.dart';
 
 import '../data/services/local/database_service.dart';
-import 'network/database.dart';
 
 Future<void> initDepedencies() async {
   Get.put(DatabaseService(), permanent: true,);

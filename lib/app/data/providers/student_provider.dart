@@ -399,7 +399,7 @@ class StudentProvider {
       final response = await dioClient.get(
         ApiEndpoints.studentQuizMyResults(quizRequestId),
       );
-      print('Quiz result');
+      debugPrint('Quiz result');
       debugPrint(
         const JsonEncoder.withIndent('  ').convert(response.data),
       );

@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeStudentGreeting.
   ///
   /// In en, this message translates to:
-  /// **'Happy learning 👋'**
+  /// **'Happy learning'**
   String get welcomeStudentGreeting;
 
   /// No description provided for @student.

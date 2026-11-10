@@ -1,6 +1,6 @@
+import 'package:lydera_app/app/core/utils/announce.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:drift/drift.dart' as drift;
@@ -129,7 +129,7 @@ class SubjectController extends GetxController {
       );
     }
 
-    SemanticsService.announce(
+    announceSemantics(
       reader ? 'Mode baca' : 'Mode edit',
       TextDirection.ltr,
     );
@@ -296,15 +296,15 @@ class SubjectController extends GetxController {
       return;
     }
     currentPageNumber.value = page;
-    SemanticsService.announce("Pergi ke halaman $page", TextDirection.ltr);
+    announceSemantics("Pergi ke halaman $page", TextDirection.ltr);
   }
 
   void onPrevious() {
     currentPageNumber.value -= 1;
   }
 
-  void onSentenceTapped(sentence) {
-    SemanticsService.announce(sentence, TextDirection.ltr);
+  void onSentenceTapped(String sentence) {
+    announceSemantics(sentence, TextDirection.ltr);
   }
 
   void onDone() {

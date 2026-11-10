@@ -28,22 +28,27 @@ class ProfileAppBarWidget extends GetView<ProfileController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: ColorConstant.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white24, width: 4),
-            ),
-            child: ClipOval(
-              child: SvgPicture.asset(
-                SvgConstant.iconProfileDefault,
-                height: 100,
-                width: 100,
-                colorFilter: const ColorFilter.mode(
-                  ColorConstant.grey,
-                  BlendMode.srcIn,
+          Semantics(
+            image: true,
+            label: 'Foto Profil',
+            child: Container(
+              decoration: BoxDecoration(
+                color: ColorConstant.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white24, width: 4),
+              ),
+              child: ClipOval(
+                child: SvgPicture.asset(
+                  SvgConstant.iconProfileDefault,
+                  height: 100,
+                  width: 100,
+                  colorFilter: const ColorFilter.mode(
+                    ColorConstant.grey,
+                    BlendMode.srcIn,
+                  ),
+                  fit: BoxFit.cover,
+                  excludeFromSemantics: true,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
           ),

@@ -1,4 +1,4 @@
-import 'package:flutter/semantics.dart';
+import '../../../core/utils/announce.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/data/repositories/note_repository.dart';
@@ -47,14 +47,14 @@ class NoteController extends GetxController {
     if (args is Map) {
       question = examActiveController.questions[index];
       question?.steps.forEach((step) {
-        print('Step text: ${step.text}');
+        debugPrint('Step text: ${step.text}');
 
         final nodes = _parser.parse(step.text);
         printNodes(nodes);
       });
       steps.assignAll(question?.steps.map((step) => MathDocument.fromStudentStep(step, _parser)).toList() ?? []);
     }
-    print("Test mas\n");
+    debugPrint("Test mas\n");
     // final testExpressions = [
     //   r'\lim_{x\to5} 5',
     //   r'x^2',
@@ -67,7 +67,7 @@ class NoteController extends GetxController {
     // ];
     //
     // for (final expression in testExpressions) {
-    //   print('\nExpression: $expression');
+    //   debugPrint('\nExpression: $expression');
     //
     //   final nodes = _parser.parse(expression);
     //   printNodes(nodes);
@@ -79,14 +79,14 @@ class NoteController extends GetxController {
 
     for (final node in nodes) {
       final symbol = node.symbol;
-      print('${indent}Node ID: ${symbol.id}');
-      print('${indent}Visual Label: ${symbol.visualLabel}');
-      print('${indent}LaTeX: ${symbol.renderSyntax}');
-      print('${indent}Semantic: ${symbol.semanticText}');
-      print('${indent}Type: ${symbol.type}');
+      debugPrint('${indent}Node ID: ${symbol.id}');
+      debugPrint('${indent}Visual Label: ${symbol.visualLabel}');
+      debugPrint('${indent}LaTeX: ${symbol.renderSyntax}');
+      debugPrint('${indent}Semantic: ${symbol.semanticText}');
+      debugPrint('${indent}Type: ${symbol.type}');
 
       for (final slot in node.slots) {
-        print('${indent}  Slot: ${slot.label}');
+        debugPrint('$indent  Slot: ${slot.label}');
 
         printNodes(
           slot.children.toList(),
@@ -94,7 +94,7 @@ class NoteController extends GetxController {
         );
       }
 
-      print('${indent}--------------------');
+      debugPrint('$indent--------------------');
     }
   }
 
@@ -152,7 +152,7 @@ class NoteController extends GetxController {
 
   Future<void> saveStep() async {
     if (noteNodes.isEmpty) return;
-    print('Note : ${_latexSerializer.serializeNodes(noteNodes)}',);
+    debugPrint('Note : ${_latexSerializer.serializeNodes(noteNodes)}',);
     final step = await noteRepository.submitStepAnswer(
       soalId: int.tryParse(question?.id.toString() ?? '') ?? 0,
       request: SoalStepRequest(step: _latexSerializer.serializeNodes(noteNodes)),
@@ -171,7 +171,7 @@ class NoteController extends GetxController {
   }
 
   Future<void> deleteStep(int index) async {
-    SemanticsService.announce(
+    announceSemantics(
       'Hapus langkah',
       TextDirection.ltr,
     );
@@ -194,7 +194,7 @@ class NoteController extends GetxController {
   }
 
   void insertSymbol(MathSymbol symbol) {
-    SemanticsService.announce(
+    announceSemantics(
       '${symbol.semanticText} Dipencet',
       TextDirection.ltr,
     );
@@ -248,7 +248,7 @@ class NoteController extends GetxController {
       removed = noteNodes.removeAt(cursorIndex.value - 1);
       cursorIndex.value--;
     }
-    SemanticsService.announce(
+    announceSemantics(
       removed != null
           ? '${removed.symbol.semanticText} dihapus'
           : 'Karakter dihapus',
@@ -374,18 +374,18 @@ class NoteController extends GetxController {
     final currentSlot = activeSlot.value;
     if (currentSlot != prevSlot) {
       if (currentSlot != null) {
-        SemanticsService.announce(
+        announceSemantics(
           'Kursor ke $direction, masuk ke ${currentSlot.label}',
           TextDirection.ltr,
         );
       } else {
-        SemanticsService.announce(
+        announceSemantics(
           'Kursor ke $direction, keluar dari kotak isian',
           TextDirection.ltr,
         );
       }
     } else {
-      SemanticsService.announce(
+      announceSemantics(
         'Kursor dipindahkan ke $direction',
         TextDirection.ltr,
       );
@@ -431,7 +431,7 @@ class NoteController extends GetxController {
   }
 
   void toggleAbcMode() {
-    SemanticsService.announce(
+    announceSemantics(
       isAbcMode.value ? 'Pindah ke angka & logika' : 'Pindah ke huruf',
       TextDirection.ltr,
     );
@@ -439,7 +439,7 @@ class NoteController extends GetxController {
   }
 
   void undo() {
-    SemanticsService.announce(
+    announceSemantics(
       'Perubahan di kembalikan',
       TextDirection.ltr,
     );

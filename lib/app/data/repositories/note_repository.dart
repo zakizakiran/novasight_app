@@ -1,7 +1,5 @@
-import 'package:lydera_app/app/data/models/student_model.dart';
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 import 'package:lydera_app/app/data/providers/student_provider.dart';
-import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class NoteRepository {
   final StudentProvider studentProvider;

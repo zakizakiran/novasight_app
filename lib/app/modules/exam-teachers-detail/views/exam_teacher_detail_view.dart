@@ -643,12 +643,6 @@ class QuestionEditFormState extends State<QuestionEditForm> {
     super.dispose();
   }
 
-  void _addOption() {
-    setState(() {
-      _optionControllers.add(TextEditingController());
-    });
-  }
-
   void _removeOption(int index) {
     setState(() {
       _optionControllers[index].dispose();
@@ -742,7 +736,9 @@ class QuestionEditFormState extends State<QuestionEditForm> {
                 // ignore: deprecated_member_use
                 Radio<int>(
                   value: index,
+                  // ignore: deprecated_member_use
                   groupValue: _correctOptionIndex,
+                  // ignore: deprecated_member_use
                   onChanged: (val) {
                     if (val != null) {
                       setState(() => _correctOptionIndex = val);

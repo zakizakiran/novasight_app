@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/common/common_app_bar.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
@@ -37,6 +38,10 @@ class ExamView extends GetView<ExamController> {
                     child: Obx(() {
                       if (controller.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (controller.errorMessage.value.isNotEmpty) {
+                        return _buildErrorState(context);
                       }
 
                       final exams = controller.filteredExams;
@@ -88,6 +93,38 @@ class ExamView extends GetView<ExamController> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: Dimens.spaceXl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              size: 48,
+              color: ColorConstant.redColor,
+            ),
+            const SizedBox(height: Dimens.spaceMd),
+            Text(
+              controller.errorMessage.value,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: ColorConstant.textDarkGreyColor,
+                  ),
+            ),
+            const SizedBox(height: Dimens.spaceMd),
+            CommonButtonWidget(
+              buttonName: context.l10n.tryAgain,
+              size: ButtonSize.small,
+              onPressed: controller.onLoad,
+            ),
+          ],
+        ),
       ),
     );
   }

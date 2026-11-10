@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
@@ -45,9 +44,16 @@ class RowSubjectButtonWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(prevIcon, color: ColorConstant.white,size: sizeIcon,),
-                const SizedBox(width: Dimens.spaceMediumPadding),
-                Expanded(child: Text(prev,style: style,)),
+                const Icon(prevIcon, color: ColorConstant.white, size: sizeIcon),
+                const SizedBox(width: Dimens.spaceSmallPadding),
+                Flexible(
+                  child: Text(
+                    prev,
+                    style: style,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),
@@ -64,9 +70,16 @@ class RowSubjectButtonWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Text(next,style: style,)),
-                  const SizedBox(width: Dimens.spaceMediumPadding),
-                  const Icon(nextIcon, color: ColorConstant.white,size: sizeIcon,),
+                  Flexible(
+                    child: Text(
+                      next,
+                      style: style,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: Dimens.spaceSmallPadding),
+                  const Icon(nextIcon, color: ColorConstant.white, size: sizeIcon),
                 ],
               ),
             ),

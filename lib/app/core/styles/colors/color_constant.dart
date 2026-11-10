@@ -11,6 +11,7 @@ class ColorConstant {
 
   static const Color green = Color(0xFF10B981);
   static const Color greenShadow = Color(0x6610B981);
+  static const Color greenText = Color(0xFF047857);
   static const Color secondaryLightGreen = Color(0xFFD3F5E3);
   static const Color lightGreen = Color(0xFFE0F9F0);
 
@@ -29,7 +30,7 @@ class ColorConstant {
 
   static const Color textPrimaryColor = Color(0xFF2977E5);
   static const Color textDarkGreyColor = Color(0xFF404040);
-  static const Color textGreyColor = Color(0xFF99A6B2);
+  static const Color textGreyColor = Color(0xFF5B6672);
   static const Color snackbarDescColor = Color(0xFFB2BFCC);
 
   static const Color yellowColor = Color(0xFFF3C82F);

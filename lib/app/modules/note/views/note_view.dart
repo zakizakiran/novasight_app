@@ -12,14 +12,12 @@ class NoteView extends GetView<NoteController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return WillPopScope(
-        onWillPop: () async {
-          if (controller.isInputActive.value) {
+    return PopScope(
+        canPop: !controller.isInputActive.value,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop && controller.isInputActive.value) {
             controller.deactivateInput();
-            return false;
           }
-          return true;
         },
         child: Scaffold(
           backgroundColor: ColorConstant.background,

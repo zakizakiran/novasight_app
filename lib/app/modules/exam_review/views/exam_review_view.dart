@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/common/common_app_bar.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/modules/exam_review/views/widgets/justification_card.dart';
@@ -73,27 +74,25 @@ class ExamReviewView extends GetView<ExamReviewController> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              OutlinedButton(
-                                onPressed: () => Get.back(),
-                                style: OutlinedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                              Expanded(
+                                child: CommonButtonWidget(
+                                  buttonName: context.l10n.back,
+                                  size: ButtonSize.medium,
+                                  buttonColor: ColorConstant.background,
+                                  textColor: ColorConstant.textDarkGreyColor,
+                                  boxShadows: const [],
+                                  border: const BorderSide(
+                                    color: ColorConstant.borderNormalGrey,
                                   ),
+                                  onPressed: () => Get.back(),
                                 ),
-                                child: Text(context.l10n.back),
                               ),
-                              const SizedBox(width: Dimens.spaceMediumPadding),
-                              ElevatedButton(
-                                onPressed: () => controller.fetchResults(),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: ColorConstant.primary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: Text(
-                                  context.l10n.tryAgain,
-                                  style: const TextStyle(color: Colors.white),
+                              const SizedBox(width: Dimens.spaceMd),
+                              Expanded(
+                                child: CommonButtonWidget(
+                                  buttonName: context.l10n.tryAgain,
+                                  size: ButtonSize.medium,
+                                  onPressed: () => controller.fetchResults(),
                                 ),
                               ),
                             ],

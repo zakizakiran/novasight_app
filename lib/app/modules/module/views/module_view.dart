@@ -190,7 +190,7 @@ class ModuleView extends GetView<ModuleController> {
                             l10n.filterDone,
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: ColorConstant.green,
+                                      color: ColorConstant.greenText,
                                       fontWeight: FontWeight.bold,
                                     ),
                           ),

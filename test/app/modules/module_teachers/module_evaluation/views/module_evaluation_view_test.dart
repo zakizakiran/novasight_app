@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:lydera_app/app/data/model/class_model.dart';
 import 'package:lydera_app/app/data/model/module_teacher_model.dart';
 import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
@@ -8,12 +7,8 @@ import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/m
 import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_correction_widget.dart';
 import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/show_modal_bottom_sheet_text_edit_widget.dart';
 
-class MockModuleTeacherRepository extends Mock {}
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  late MockModuleTeacherRepository mockRepo;
 
   const sampleModule = ModuleTeacherModel(
     id: 1,
@@ -37,7 +32,6 @@ void main() {
 
   setUp(() {
     Get.reset();
-    mockRepo = MockModuleTeacherRepository();
     Get.parameters = {};
     Get.routing.args = sampleModule;
     Get.put(ModuleEvaluationController());

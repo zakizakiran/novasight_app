@@ -5,14 +5,23 @@ import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 
 class IconAuthApp extends StatelessWidget {
   final String icon;
+  final IconData? iconData;
   final double? padding;
   final String? iconSvg;
   final double? size;
   final Color color;
   final Color shadowColor;
   final VoidCallback? onClick;
-  const IconAuthApp({super.key,this.iconSvg, required this.icon, this.padding, this.onClick, this.size = 12,
-    this.color = ColorConstant.white, this.shadowColor = ColorConstant.whiteShadowColor
+  const IconAuthApp({
+    super.key,
+    this.iconSvg,
+    this.iconData,
+    this.icon = '',
+    this.padding,
+    this.onClick,
+    this.size = 12,
+    this.color = ColorConstant.white,
+    this.shadowColor = ColorConstant.whiteShadowColor,
   });
 
   @override
@@ -28,22 +37,29 @@ class IconAuthApp extends StatelessWidget {
             color: shadowColor,
             shape: BoxShape.circle,
           ),
-          child:
-          iconSvg == null ? Text(
-              icon,
-            style: TextStyle(
-              fontSize: size,
-              color: color
-            ),
-          ) : SvgPicture.asset(
-            iconSvg!,
-            colorFilter: ColorFilter.mode(
-                color,
-                BlendMode.srcIn
-            ),
-            height: size ?? Dimens.iconMediumSize,
-            width: size ?? Dimens.iconMediumSize,
-          ),
+          child: iconData != null
+              ? Icon(
+                  iconData,
+                  size: size ?? Dimens.iconMediumSize,
+                  color: color,
+                )
+              : iconSvg == null
+                  ? Text(
+                      icon,
+                      style: TextStyle(
+                        fontSize: size,
+                        color: color,
+                      ),
+                    )
+                  : SvgPicture.asset(
+                      iconSvg!,
+                      colorFilter: ColorFilter.mode(
+                        color,
+                        BlendMode.srcIn,
+                      ),
+                      height: size ?? Dimens.iconMediumSize,
+                      width: size ?? Dimens.iconMediumSize,
+                    ),
         ),
       ),
     );

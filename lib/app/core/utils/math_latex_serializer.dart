@@ -51,7 +51,6 @@ class MathLatexSerializer {
         return node.symbol.renderSyntax;
       case MathSymbolType.number:
       case MathSymbolType.operator:
-      default:
         return node.symbol.renderSyntax;
     }
   }
@@ -236,7 +235,7 @@ class MathLatexSerializer {
 
   String _serializeDerivative(MathNode node) {
     if (node.symbol.id == 'ddx') {
-      if (node.slots.length < 1) {
+      if (node.slots.isEmpty) {
         return '';
       }
 
@@ -260,7 +259,7 @@ class MathLatexSerializer {
     }
 
     if (node.symbol.id == 'd2_dx2') {
-      if (node.slots.length < 1) {
+      if (node.slots.isEmpty) {
         return '';
       }
 

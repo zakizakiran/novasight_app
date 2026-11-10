@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:lydera_app/app/core/constants/api_endpoints.dart';
 import 'package:lydera_app/app/core/utils/user_roles.dart';
 import 'package:lydera_app/app/data/models/auth_request_model.dart';
-import 'package:lydera_app/app/data/providers/auth_provider.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
 
 class AuthInterceptor extends QueuedInterceptor {

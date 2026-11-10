@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -104,7 +103,6 @@ class CreateModuleController extends GetxController {
       TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  final bool _isCancelled = false;
 
   final Rxn<SelectedPdfModel> selectedPdf = Rxn<SelectedPdfModel>();
   final RxInt totalPages = 0.obs;
@@ -371,8 +369,6 @@ class CreateModuleController extends GetxController {
 
       // 2. Call POST /api/chapters
       // Resolves cp_id matching the module's fase (Fase E -> cp_id 1)
-      final int faseId =
-          savedModule.value?.faseId ?? selectedFase.value?.id ?? 1;
       final int cpId = selectedCp.value?.id ?? 1;
 
       ChapterCreateResponseModel? response;
@@ -817,7 +813,7 @@ class CreateModuleController extends GetxController {
     try {
       if (teacherRepository != null) {
         final cp = await teacherRepository!.getCpByFaseId(faseId);
-        print('Cp : $cp');
+        debugPrint('Cp : $cp');
         listCp.assignAll(cp);
         return;
       }

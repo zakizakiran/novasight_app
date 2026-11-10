@@ -4,8 +4,6 @@ import 'package:lydera_app/app/core/utils/math_latex_parser.dart';
 import 'package:lydera_app/app/core/utils/math_latex_serializer.dart';
 import 'package:lydera_app/app/core/utils/math_semantic_serializer.dart';
 
-import 'package:lydera_app/app/data/models/math_symbol.dart';
-
 
 void main() {
   late MathLatexParser parser;

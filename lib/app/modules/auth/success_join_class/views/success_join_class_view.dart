@@ -14,7 +14,6 @@ import '../../widgets/auth_appbar.dart';
 import '../../../../common/common_button_widget.dart';
 import '../../../../core/Dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
-import '../../../../core/styles/icon_txt.dart';
 import '../../../../common/common_card_widget.dart';
 import '../controllers/success_join_class_controller.dart';
 
@@ -43,14 +42,23 @@ class SuccessJoinClassView extends GetView<SuccessJoinClassController> {
                     _titleField(context: context, title: "Kelas Ditemukan"),
                     ClassCard(classModel: class1),
                     _titleField(context: context, title: "Selanjutnya kamu bisa:"),
-                    const FeatureCard(iconTxt: IconTxt.module, description: "Baca modul pelajaran dari gurumu"),
-                    const FeatureCard(iconTxt: IconTxt.pencil, description: "Kerjakan soal ujian yang diberikan"),
-                    const FeatureCard(iconTxt: IconTxt.chat, description: "Diskusi materi dengan AI"),
+                    const FeatureCard(
+                      iconData: Icons.view_agenda_outlined,
+                      description: "Baca modul pelajaran dari gurumu",
+                    ),
+                    const FeatureCard(
+                      iconData: Icons.menu_book_outlined,
+                      description: "Kerjakan soal ujian yang diberikan",
+                    ),
+                    const FeatureCard(
+                      iconData: Icons.chat_bubble_outline,
+                      description: "Diskusi materi dengan AI",
+                    ),
                     Obx(
-                            () => CommonButtonWidget(
-                            buttonWidth: double.infinity,
-                            isLoading: controller.isLoading.value,
-                            buttonName: "Mulai Belajar →",
+                      () => CommonButtonWidget(
+                        buttonWidth: double.infinity,
+                        isLoading: controller.isLoading.value,
+                        buttonName: "Mulai Belajar",
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

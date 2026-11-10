@@ -129,7 +129,6 @@ class MathSemanticSerializer {
         return node.symbol.semanticText;
       case MathSymbolType.number:
       case MathSymbolType.operator:
-      default:
         return node.symbol.semanticText;
     }
   }

@@ -52,7 +52,7 @@ class LoginController extends GetxController {
 
       SnackbarHelper.showSuccess(
         title: "Login Berhasil!",
-        message: "Selamat datang, $name 👋",
+        message: "Selamat datang, $name",
       );
 
       Get.offAllNamed(

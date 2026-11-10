@@ -132,7 +132,7 @@
   "beforeStartingExam": "Before Starting the Exam",
     "diagnosis":"Diagnosis",
 
-  "welcomeStudentGreeting": "Happy learning 👋",
+  "welcomeStudentGreeting": "Happy learning",
   "student": "Student",
   "loadingClassData": "Loading class data...",
   "uncompletedModules": "Incomplete Modules",

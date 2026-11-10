@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/common/common_card_widget.dart';
 import 'package:lydera_app/app/common/common_gradient_progress_bar_widget.dart';
 import 'package:lydera_app/app/core/Dimens.dart';
@@ -36,27 +37,48 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
             child: Column(
               children: [
                 Stack(
-                  clipBehavior: Clip.none,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      constraints: BoxConstraints(
-                        minHeight: minBlueHeight,
-                      ),
-                      color: ColorConstant.primary,
-                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 80),
-                      child: _buildHeader(context),
-                    ),
                     Positioned(
-                      left: 20,
-                      right: 20,
-                      bottom: -50,
-                      child: _buildMetricCards(context),
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 48,
+                      child: Container(
+                        color: ColorConstant.primary,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Dimens.spaceMd,
+                        Dimens.spaceLg,
+                        Dimens.spaceMd,
+                        0,
+                      ),
+                      child: Column(
+                        children: [
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: (minBlueHeight - 80).clamp(
+                                0.0,
+                                double.infinity,
+                              ),
+                            ),
+                            child: _buildHeader(context),
+                          ),
+                          const SizedBox(height: Dimens.spaceLg),
+                          _buildMetricCards(context),
+                        ],
+                      ),
                     ),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(
+                    Dimens.spaceMd,
+                    Dimens.spaceLg,
+                    Dimens.spaceMd,
+                    Dimens.spaceMd,
+                  ),
                   child: _buildTasksSection(context),
                 ),
               ],
@@ -150,7 +172,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               semanticsLabel: '$modulesCount ${l10n.uncompletedModules}',
             ),
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: Dimens.spaceMd),
           Expanded(
             child: _buildInfoCard(
               context,
@@ -190,14 +212,14 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               ),
             ),
             const SizedBox(height: 8),
-            FittedBox(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorConstant.textGreyColor,
-                ),
-                textAlign: TextAlign.center,
+            Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorConstant.textGreyColor,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -216,9 +238,9 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
             color: ColorConstant.textDarkGreyColor,
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: Dimens.spaceMd),
         _buildFilters(context),
-        const SizedBox(height: 20),
+        const SizedBox(height: Dimens.spaceLg),
         _buildTaskList(context),
       ],
     );
@@ -239,14 +261,14 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
               current == StudentTaskStatus.semua,
                   () => controller.onFilterChanged(StudentTaskStatus.semua),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: Dimens.spaceSm),
             _buildFilterChip(
               context,
               l10n.filterMaterial,
               current == StudentTaskStatus.materi,
                   () => controller.onFilterChanged(StudentTaskStatus.materi),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: Dimens.spaceSm),
             _buildFilterChip(
               context,
               l10n.filterExam,
@@ -344,7 +366,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
       } else if (controller.tasksErrorMessage.value.isNotEmpty) {
         content = Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32.0),
+            padding: const EdgeInsets.symmetric(vertical: Dimens.spaceXl),
             child: Column(
               children: [
                 const Icon(
@@ -352,7 +374,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                   size: 48,
                   color: ColorConstant.redColor,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: Dimens.spaceMd),
                 Text(
                   controller.tasksErrorMessage.value,
                   textAlign: TextAlign.center,
@@ -360,14 +382,11 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                     color: ColorConstant.textDarkGreyColor,
                   ),
                 ),
-                const SizedBox(height: 16),
-                Semantics(
-                  button: true,
-                  label: context.l10n.tryAgain,
-                  child: ElevatedButton(
-                    onPressed: controller.onRefresh,
-                    child: Text(context.l10n.tryAgain),
-                  ),
+                const SizedBox(height: Dimens.spaceMd),
+                CommonButtonWidget(
+                  buttonName: context.l10n.tryAgain,
+                  size: ButtonSize.small,
+                  onPressed: controller.onRefresh,
                 ),
               ],
             ),
@@ -394,7 +413,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
         if (totalItems == 0) {
           content = Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32.0),
+              padding: const EdgeInsets.symmetric(vertical: Dimens.spaceXl),
               child: Column(
                 children: [
                   Icon(
@@ -402,7 +421,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                     size: 48,
                     color: ColorConstant.textGreyColor.withValues(alpha: 0.5),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: Dimens.spaceMd),
                   Text(
                     context.l10n.emptyCategoryTasks,
                     textAlign: TextAlign.center,
@@ -511,7 +530,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                       child: Text(
                         '${context.l10n.score}: $scoreText',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: ColorConstant.green,
+                          color: ColorConstant.greenText,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -658,7 +677,7 @@ class StudentDashboardView extends GetView<StudentDashboardController> {
                       child: Text(
                         context.l10n.filterDone,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: ColorConstant.green,
+                          color: ColorConstant.greenText,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

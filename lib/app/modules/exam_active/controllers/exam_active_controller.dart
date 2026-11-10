@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,6 @@ import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
 import 'package:lydera_app/app/core/utils/user_roles.dart';
-import 'package:lydera_app/app/data/models/quiz_teacher_model.dart';
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 import 'package:lydera_app/app/routes/app_pages.dart';
@@ -249,16 +247,16 @@ class ExamActiveController extends GetxController {
 
   Future<void> selectOption(String questionId, String optionId) async {
     final questionIndex = questions.indexWhere((q) => q.id == questionId);
-    print('Question Id : $questionId');
-    print('Question Index : $questionId');
+    debugPrint('Question Id : $questionId');
+    debugPrint('Question Index : $questionId');
     if (questionIndex != -1) {
       questions[questionIndex].selectedOptionId = optionId;
       questions.refresh();
 
       // Submit answer to backend via POST /api/students/soal/{soal_id}/submit
       final soalId = int.tryParse(questionId);
-      print('Select Option Id : $optionId');
-      print('Soal Id : $soalId');
+      debugPrint('Select Option Id : $optionId');
+      debugPrint('Soal Id : $soalId');
       if (soalId != null && studentRepository != null) {
         try {
           await studentRepository!.submitSoalAnswer(

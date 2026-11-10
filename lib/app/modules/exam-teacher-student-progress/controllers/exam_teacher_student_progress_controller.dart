@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/exam_student_detail_progress_args.dart';
 import 'package:lydera_app/app/core/args/exam_student_progress_args.dart';
@@ -50,14 +50,13 @@ class ExamTeacherStudentProgressController extends GetxController {
   void onInit() {
     super.onInit();
     final args = Get.arguments as ExamStudentProgressArgs;
-    print('Arguments : $args\nQuiz Id ${args.quizId}');
+    debugPrint('Arguments : $args\nQuiz Id ${args.quizId}');
     quizId.value = args.quizId;
     title.value = args.title;
     fetchQuizzesProgress();
   }
 
   void onStudentDetailExamProgress(StudentProgressQuiz quiz) {
-    final id = quizId.value;
     Get.toNamed(Routes.EXAM_TEACHER_STUDENT_PROGRESS_DETAIL,
       arguments: ExamStudentDetailProgressArgs(quiz: quiz, title: title.value, quizId: quizId.value!)
     );

@@ -140,7 +140,7 @@ class ModuleEvaluationController extends GetxController {
 
   void onChange(String v) {
     isValid.value =
-        adviceController.text.isNotEmpty && selectedChunks.value.isNotEmpty;
+        adviceController.text.isNotEmpty && selectedChunks.isNotEmpty;
   }
 
   Future<void> onSendAdvice() async {

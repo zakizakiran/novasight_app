@@ -1,5 +1,5 @@
+import '../../../../core/utils/announce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/modules/subject/controllers/subject_controller.dart';
@@ -127,10 +127,17 @@ class ShowModalBottomSheetNote extends StatelessWidget {
               child: Icon(Icons.arrow_back, size: sizeIcon),
             ),
           ),
-          Text(
-            context.l10n.recordNote,
-            style: Theme.of(context).textTheme.headlineMedium,
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              context.l10n.recordNote,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
+          const SizedBox(width: 8),
           Row(
             mainAxisSize: MainAxisSize.min,
             spacing: Dimens.innerPadding,
@@ -202,7 +209,7 @@ class ShowModalBottomSheetNote extends StatelessWidget {
       final to = delta > 0 ? newExtent : extent;
       if (from >= 0 && to <= text.length && from < to) {
         final ch = text.substring(from, to);
-        SemanticsService.announce(
+        announceSemantics(
           ch.trim().isEmpty ? 'spasi' : ch,
           TextDirection.ltr,
         );
@@ -238,33 +245,37 @@ class ShowModalBottomSheetNote extends StatelessWidget {
       ),
       child: Obx(() {
         final selectedAlignment = subjectController.selectedAlignment.value;
-        return Row(
-          spacing: Dimens.spaceMediumPadding,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildIconWord(WordTyping.bold, context, subjectController.onChangeTextMode,
-                label: context.l10n.boldText, isSelected: subjectController.isBold.value),
-            _buildIconWord(WordTyping.italic, context, subjectController.onChangeTextMode,
-                label: context.l10n.italicText, isSelected: subjectController.isItalic.value),
-            _buildIconWord(WordTyping.underline, context, subjectController.onChangeTextMode,
-                label: context.l10n.underlineText, isSelected: subjectController.isUnderline.value),
-            _buildIconWord(WordTyping.strikethrough, context, subjectController.onChangeTextMode,
-                label: context.l10n.strikethroughText, isSelected: subjectController.isStrikethrough.value),
-            SizedBox(
-              height: 24,
-              child: VerticalDivider(
-                color: Theme.of(context).dividerColor,
-                thickness: 1,
-                width: 8,
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            spacing: Dimens.spaceMediumPadding,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildIconWord(WordTyping.bold, context, subjectController.onChangeTextMode,
+                  label: context.l10n.boldText, isSelected: subjectController.isBold.value),
+              _buildIconWord(WordTyping.italic, context, subjectController.onChangeTextMode,
+                  label: context.l10n.italicText, isSelected: subjectController.isItalic.value),
+              _buildIconWord(WordTyping.underline, context, subjectController.onChangeTextMode,
+                  label: context.l10n.underlineText, isSelected: subjectController.isUnderline.value),
+              _buildIconWord(WordTyping.strikethrough, context, subjectController.onChangeTextMode,
+                  label: context.l10n.strikethroughText, isSelected: subjectController.isStrikethrough.value),
+              SizedBox(
+                height: 24,
+                child: VerticalDivider(
+                  color: Theme.of(context).dividerColor,
+                  thickness: 1,
+                  width: 8,
+                ),
               ),
-            ),
-            _buildIconAlign(AlignParagraft.left, context, subjectController.onChangeAlignment,
-                label: context.l10n.alignLeft, selectedAlignment: selectedAlignment),
-            _buildIconAlign(AlignParagraft.center, context, subjectController.onChangeAlignment,
-                label: context.l10n.alignCenter, selectedAlignment: selectedAlignment),
-            _buildIconAlign(AlignParagraft.right, context, subjectController.onChangeAlignment,
-                label: context.l10n.alignRight, selectedAlignment: selectedAlignment),
-          ],
+              _buildIconAlign(AlignParagraft.left, context, subjectController.onChangeAlignment,
+                  label: context.l10n.alignLeft, selectedAlignment: selectedAlignment),
+              _buildIconAlign(AlignParagraft.center, context, subjectController.onChangeAlignment,
+                  label: context.l10n.alignCenter, selectedAlignment: selectedAlignment),
+              _buildIconAlign(AlignParagraft.right, context, subjectController.onChangeAlignment,
+                  label: context.l10n.alignRight, selectedAlignment: selectedAlignment),
+            ],
+          ),
         );
       }),
     );

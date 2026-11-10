@@ -100,14 +100,13 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
                     children: controller.selectedChunks.map((c) {
                       final idx = controller.moduleTeacherModel.value.listChunks.indexOf(c);
                       final blockName = idx != -1 ? "Block ${idx + 1}" : "Block #${c.id}";
-                      final isImage = c is ImageChunk;
 
                       Color badgeBg = Colors.blue.withValues(alpha: 0.15);
                       Color badgeColor = Colors.blue.shade800;
                       String typeLabel = "Teks";
 
-                      if (isImage) {
-                        final imgChunk = c as ImageChunk;
+                      if (c is ImageChunk) {
+                        final imgChunk = c;
                         typeLabel = imgChunk.displayTypeLabel;
                         if (imgChunk.isTable) {
                           badgeBg = Colors.teal.withValues(alpha: 0.15);

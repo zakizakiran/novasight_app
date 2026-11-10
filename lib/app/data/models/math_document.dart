@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 
 import '../../core/utils/math_latex_parser.dart';
@@ -16,7 +17,7 @@ class MathDocument {
 
   factory MathDocument.fromStudentStep(StudentStep step, MathLatexParser parser) {
     final nodes = parser.parse(step.text);
-    print(step.text);
+    debugPrint(step.text);
     return MathDocument(
       order: step.steps,
       nodes: nodes

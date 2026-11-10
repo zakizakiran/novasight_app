@@ -17,13 +17,11 @@ import 'package:lydera_app/app/modules/subject/views/widgets/table_mode_switch_w
 import '../../../common/common_button_widget.dart';
 import '../../../common/common_html_table_renderer.dart';
 import '../../../common/common_text_form_field_widget.dart';
-import '../../../core/styles/icon_txt.dart';
 import '../../../core/styles/svg/svg_constant.dart';
 import '../../../core/utils/dialog_helper.dart';
 import '../../../core/utils/math_semantic_serializer.dart';
 import '../../../core/utils/table_mode.dart';
 import '../controllers/subject_controller.dart';
-import 'package:flutter/gestures.dart';
 
 class SubjectView extends GetView<SubjectController> {
   const SubjectView({super.key});
@@ -154,7 +152,11 @@ class SubjectView extends GetView<SubjectController> {
         padding: const EdgeInsets.symmetric(horizontal: Dimens.innerBigPadding),
         child: CommonTextFormFieldWidget(
           controller: controller,
-          prefixIcon: const Text(IconTxt.lens),
+          prefixIcon: const Icon(
+            Icons.search_rounded,
+            color: ColorConstant.textGreyColor,
+            size: 20,
+          ),
           hint: context.l10n.searchPageHint,
           onChanged: (value) => onChange(int.tryParse(value) ?? -1),
           fillColor: ColorConstant.white,

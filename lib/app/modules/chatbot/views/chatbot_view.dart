@@ -514,31 +514,32 @@ class ChatbotView extends GetView<ChatbotController> {
               ),
             ),
             const SizedBox(height: 6),
-            SizedBox(
-              height: 38,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemCount: questions.length,
-                separatorBuilder: (context, index) => const SizedBox(width: 8),
-                itemBuilder: (context, index) {
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: List.generate(questions.length, (index) {
                   final q = questions[index];
-                  return ActionChip(
-                    label: Text(
-                      q,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: ColorConstant.primary,
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      right: index < questions.length - 1 ? 8 : 0,
+                    ),
+                    child: ActionChip(
+                      label: Text(
+                        q,
+                        style: const MainTextTheme().bodySmall?.copyWith(
+                          color: ColorConstant.primary,
+                        ),
                       ),
+                      backgroundColor: ColorConstant.white,
+                      side: const BorderSide(color: ColorConstant.primary),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      onPressed: () => controller.askSuggestedQuestion(q),
                     ),
-                    backgroundColor: ColorConstant.white,
-                    side: const BorderSide(color: ColorConstant.primary),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    onPressed: () => controller.askSuggestedQuestion(q),
                   );
-                },
+                }),
               ),
             ),
           ],
@@ -607,7 +608,6 @@ class ChatbotView extends GetView<ChatbotController> {
                     overflow: TextOverflow.ellipsis,
                     style: const MainTextTheme().bodyMedium?.copyWith(
                           color: const Color(0xE6FFFFFF),
-                          fontSize: 13,
                         ),
                   ),
                 ],

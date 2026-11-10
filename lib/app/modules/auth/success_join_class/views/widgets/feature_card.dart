@@ -3,9 +3,15 @@ import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 
 class FeatureCard extends StatelessWidget {
-  final String iconTxt;
+  final String? iconTxt;
+  final IconData? iconData;
   final String description;
-  const FeatureCard({super.key,required this.iconTxt,required this.description});
+  const FeatureCard({
+    super.key,
+    this.iconTxt,
+    this.iconData,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +24,21 @@ class FeatureCard extends StatelessWidget {
       child: Row(
         spacing: Dimens.spacePadding,
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            iconTxt,
-            style: const TextStyle(
-                fontSize: Dimens.iconRegularSize
+          if (iconData != null)
+            Icon(
+              iconData,
+              color: ColorConstant.primary,
+              size: Dimens.iconMidSize,
+            )
+          else if (iconTxt != null)
+            Text(
+              iconTxt!,
+              style: const TextStyle(
+                fontSize: Dimens.iconRegularSize,
+              ),
             ),
-          ),
           Expanded(
             child: Text(
               description,

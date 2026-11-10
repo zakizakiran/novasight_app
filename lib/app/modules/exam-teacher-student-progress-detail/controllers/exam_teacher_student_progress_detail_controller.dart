@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/exam_student_detail_progress_args.dart';
 import 'package:lydera_app/app/core/utils/table_mode.dart';
@@ -87,7 +88,7 @@ class ExamTeacherStudentProgressDetailController extends GetxController {
               : -1;
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
-          print('Stimulus : ${item.stimulus?.type}');
+          debugPrint('Stimulus : ${item.stimulus?.type}');
           return ExamReviewQuestion(
               id: item.soalId,
               userStep: item.studentSteps,

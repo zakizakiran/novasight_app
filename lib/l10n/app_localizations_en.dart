@@ -273,7 +273,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get diagnosis => 'Diagnosis';
 
   @override
-  String get welcomeStudentGreeting => 'Happy learning 👋';
+  String get welcomeStudentGreeting => 'Happy learning';
 
   @override
   String get student => 'Student';

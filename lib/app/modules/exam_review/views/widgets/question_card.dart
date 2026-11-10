@@ -8,7 +8,6 @@ import '../../../../core/styles/colors/color_constant.dart';
 import '../../../../core/styles/text_theme.dart';
 import '../../../../core/utils/math_semantic_serializer.dart';
 import '../../../../data/models/exam_review_question_model.dart';
-import '../../../exam_active/views/widget/accessible_sentence_widget.dart';
 import '../../../exam_active/views/widget/stimulus_widget.dart';
 
 class QuestionCard extends StatelessWidget {

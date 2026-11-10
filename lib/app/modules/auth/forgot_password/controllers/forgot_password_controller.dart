@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/utils/validate_helper.dart';
-import 'package:lydera_app/app/routes/app_pages.dart';
-
-import '../../login/controllers/login_controller.dart';
 
 class ForgotPasswordController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
@@ -79,7 +76,7 @@ class ForgotPasswordController extends GetxController {
 
   @override
   void onClose() {
-    print("LoginController disposed: $hashCode");
+    debugPrint("LoginController disposed: $hashCode");
     passwordController.dispose();
     confirmPasswordController.dispose();
     emailController.dispose();
