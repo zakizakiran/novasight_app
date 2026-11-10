@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/errors/api_exception.dart';
@@ -14,6 +13,30 @@ import '../../../core/args/main_bar_args.dart';
 import '../../../core/utils/user_roles.dart';
 import '../../../routes/app_pages.dart';
 import '../../generate-exam/models/generated_question.dart';
+
+class QuizSettings {
+  final String title;
+  final int maxDurationMinutes;
+  final int maxRetry;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  const QuizSettings({
+    required this.title,
+    required this.maxDurationMinutes,
+    required this.maxRetry,
+    required this.startTime,
+    required this.endTime,
+  });
+
+  bool isEqualTo(QuizSettings other) {
+    return title == other.title &&
+        maxDurationMinutes == other.maxDurationMinutes &&
+        maxRetry == other.maxRetry &&
+        startTime == other.startTime &&
+        endTime == other.endTime;
+  }
+}
 
 class ExamTeacherDetailController extends GetxController {
   final TeacherRepository? teacherRepository;
@@ -42,13 +65,15 @@ class ExamTeacherDetailController extends GetxController {
 
   final quizId = Rx<int?>(null);
   final quizDetail = Rxn<QuizRequestTeacherDetailModel>();
-  final Rxn<ExamTeacherModel> selectedExam = Rxn<ExamTeacherModel>();
 
   // Title configuration
   final titleController = TextEditingController();
-  final isTitleReadOnly = true.obs;
+  final isQuizSettingReadOnly = true.obs;
   final title = ''.obs;
   final maxDurationMinutes = 60.obs;
+  final maxRetry = 1.obs;
+  final Rx<DateTime> startTime = DateTime.now().obs;
+  final Rx<DateTime> endTime = DateTime.now().add(const Duration(hours: 1)).obs;
 
   // Compatibility fields
   final numberOfQuestions = 0.obs;
@@ -62,14 +87,31 @@ class ExamTeacherDetailController extends GetxController {
   // Backup saat diedit
   final Map<int, GeneratedQuestion> editingCache = {};
 
-  final isSaving = false.obs;
-  int? _cachedClassroomId;
+  QuizSettings? originalSettings;
+
+  QuizSettings get currentSettings => QuizSettings(
+    title: title.value.trim(),
+    maxDurationMinutes: maxDurationMinutes.value,
+    maxRetry: maxRetry.value,
+    startTime: startTime.value,
+    endTime: endTime.value,
+  );
 
   bool get hasChanges {
-    final titleChanged = title.value.trim() !=
-        (quizDetail.value?.title ?? selectedExam.value?.title ?? '').trim();
-    final questionsChanged = !listEquals(initialQuestion, generatedQuestions);
-    return titleChanged || questionsChanged;
+    if (originalSettings == null) return false;
+
+    return !currentSettings.isEqualTo(originalSettings!);
+  }
+
+  int? _cachedClassroomId;
+
+  bool get quizStatusPublish {
+    // final titleChanged = title.value.trim() !=
+    //     (quizDetail.value?.title ?? selectedExam.value?.title ?? '').trim();
+    // final questionsChanged = !listEquals(initialQuestion, generatedQuestions);
+    // return titleChanged || questionsChanged;
+
+    return quizDetail.value?.isPublished ?? false;
   }
 
   @override
@@ -94,25 +136,31 @@ class ExamTeacherDetailController extends GetxController {
     super.onClose();
   }
 
+  void setInitialSettings() {
+    originalSettings = currentSettings;
+  }
+
   void _parseArguments() {
     final args = Get.arguments;
     if (args is QuizRequestTeacherModel) {
+      print('Start Time : ${args.startTime}');
       quizId.value = args.id;
       titleController.text = args.title;
       title.value = args.title;
+      maxRetry.value = args.maxRetry;
       maxDurationMinutes.value = args.maxDurationMinutes;
       numberOfQuestions.value = args.questionCounts;
-      selectedExam.value = ExamTeacherModel(
-        id: args.id.toString(),
-        title: args.title,
-        questionCount: args.questionCounts,
-        type: 'Pilihan Ganda',
-        difficulty: 'Campuran',
-        moduleName: args.module.title,
-        status: args.isPublished ? 'Publish' : 'Draft',
+      startTime.value = args.startTime;
+      endTime.value = args.endTime;
+      originalSettings = QuizSettings(
+          title: args.title,
+          maxDurationMinutes: args.maxDurationMinutes,
+          maxRetry: args.maxRetry,
+          startTime: args.startTime,
+          endTime: args.endTime
       );
     } else if (args is ExamTeacherModel) {
-      selectedExam.value = args;
+      // selectedExam.value = args;
       quizId.value = int.tryParse(args.id);
       titleController.text = args.title;
       title.value = args.title;
@@ -157,6 +205,9 @@ class ExamTeacherDetailController extends GetxController {
       quizDetail.value = detail;
       titleController.text = detail.title;
       title.value = detail.title;
+      startTime.value = detail.startTime;
+      endTime.value = detail.startTime;
+      maxRetry.value = detail.maxRetry;
       maxDurationMinutes.value = detail.maxDurationMinutes;
       numberOfQuestions.value = detail.questionCounts;
 
@@ -221,8 +272,20 @@ class ExamTeacherDetailController extends GetxController {
     initialQuestion = generatedQuestions.map((q) => q.clone()).toList();
   }
 
-  void onToggleTitle() {
-    isTitleReadOnly.value = !isTitleReadOnly.value;
+  void stillPublish(){
+    SnackbarHelper.showError(title: 'Status Quiz', message: 'Ubah status ke draft terlebih dahulu');
+  }
+
+  Future<void> onToggleQuizSetting() async {
+    if(quizStatusPublish){
+      stillPublish();
+      return;
+    }
+
+    if (!isQuizSettingReadOnly.value && hasChanges){
+      await saveQuizSetting();
+    }
+    isQuizSettingReadOnly.value = !isQuizSettingReadOnly.value;
   }
 
   void toggleExpand(int index) {
@@ -234,6 +297,11 @@ class ExamTeacherDetailController extends GetxController {
   }
 
   void toggleEdit(int index) {
+    if(quizStatusPublish){
+      stillPublish();
+      return;
+    }
+
     if (index >= 0 && index < generatedQuestions.length) {
       var q = generatedQuestions[index];
       if (!q.isEditing) {
@@ -250,6 +318,49 @@ class ExamTeacherDetailController extends GetxController {
     }
   }
 
+  Future<void> saveQuizSetting() async {
+    final classroomId = await _resolveClassroomId();
+    final currentQuizId = quizId.value;
+
+    if (currentQuizId != null &&
+        classroomId != null &&
+        teacherRepository != null) {
+      try {
+       final result = await teacherRepository!.updateQuizSetting(
+          quizId: currentQuizId,
+          classroomId: classroomId,
+          payload: QuizRequestUpdatePayload(
+              title: title.value,
+              maxDurationMinutes: maxDurationMinutes.value,
+              startTime: startTime.value,
+              endTime: endTime.value
+          )
+        );
+       title.value = result.title;
+       maxDurationMinutes.value = result.maxDurationMinutes;
+       startTime.value = result.startTime;
+       endTime.value = result.endTime;
+       setInitialSettings();
+
+      } catch (_) {}
+      SnackbarHelper.showSuccess(
+        title: "Ujian Berhasil Diubah",
+        message: "Soal ujian saat ini bersifat draft.",
+      );
+    }
+  }
+
+  void setDuration(int minutes) {
+    if (minutes > 0) {
+      maxDurationMinutes.value = minutes;
+    }
+  }
+
+  void setMaxRetry(int retry) {
+    if (retry >= 1) {
+      maxRetry.value = retry;
+    }
+  }
   Future<void> saveChanges(int index, GeneratedQuestion updatedQuestion) async {
     final previous = editingCache[index] ?? generatedQuestions[index].clone();
     updatedQuestion.isEditing = false;
@@ -332,7 +443,6 @@ class ExamTeacherDetailController extends GetxController {
   }
 
   Future<void> onConfirmChange() async {
-    isSaving.value = true;
     final classroomId = await _resolveClassroomId();
     final currentQuizId = quizId.value;
 
@@ -352,7 +462,6 @@ class ExamTeacherDetailController extends GetxController {
       Get.find<ExamTeachersController>().fetchQuizzes(showLoading: false);
     }
 
-    isSaving.value = false;
     SnackbarHelper.showSuccess(
       title: "Soal Ujian Berhasil Diubah",
       message: "Soal ujian saat ini bersifat draft.",

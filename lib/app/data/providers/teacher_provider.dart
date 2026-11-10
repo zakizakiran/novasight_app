@@ -636,6 +636,137 @@ class TeacherProvider {
     }
   }
 
+  /// PATCH /api/teachers/quizzes/{quiz_id}
+  Future<ApiResponse<QuizRequestUpdateResponse>> updateQuizSetting({
+    required int quizId,
+    required int classroomId,
+    required QuizRequestUpdatePayload payload,
+  }) async {
+    try {
+      final response = await dioClient.patch(
+        ApiEndpoints.teacherQuizUpdate(quizId),
+        data: {
+          'classroom_id': classroomId,
+          ...payload.toJson()
+        },
+      );
+
+      return ApiResponse<QuizRequestUpdateResponse>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => QuizRequestUpdateResponse.fromJson(data as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat memperbarui status kuis: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/v2/teachers/quizzes — Create quiz
+  Future<ApiResponse<QuizCreateResponse>> createQuizV2({
+    required QuizRequestCreatePayload payload
+  }) async {
+    try {
+      final response = await dioClient.post(ApiEndpoints.teacherQuizzesV2,
+          data: payload.toJson());
+
+      return ApiResponse<QuizCreateResponse>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => QuizCreateResponse.fromJson(data as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Terjadi kesalahan saat memperbarui status kuis: ${e.toString()}',
+      );
+    }
+  }
+
+  /// POST /api/v2/teachers/quizzes/{quiz_id}/strean — SSE Stream
+  Stream<QuizStreamEvent> quizStreamV2(
+      int classroomId,
+      int quizId) async* {
+    try {
+      debugPrint('[TeacherProvider.quizStreamV2] POST ${ApiEndpoints.teacherQuizzes}');
+
+      final response = await dioClient.dio.get<ResponseBody>(
+        ApiEndpoints.teacherQuizzesStreamV2(quizId),
+        queryParameters: {
+          'classroom_id':classroomId
+        },
+        options: Options(
+          responseType: ResponseType.stream,
+          headers: {
+            'Accept': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+          },
+        ),
+      );
+
+      final stream = response.data!.stream
+          .cast<List<int>>()
+          .transform(utf8.decoder)
+          .transform(const LineSplitter());
+
+      await for (final line in stream) {
+        debugPrint('[TeacherProvider.quizStreamV2] Raw SSE Line: $line');
+        final trimmed = line.trim();
+        if (trimmed.isEmpty || trimmed.startsWith(':')) continue;
+
+        String jsonStr = trimmed;
+        if (trimmed.startsWith('data:')) {
+          jsonStr = trimmed.substring(5).trim();
+        }
+        if (jsonStr.isEmpty) continue;
+
+        try {
+          final decoded = jsonDecode(jsonStr);
+          if (decoded is Map<String, dynamic>) {
+            final event = QuizStreamEvent.fromJson(decoded);
+            debugPrint('[TeacherProvider.quizStreamV2] Parsed Event -> status: "${event.status}", msg: "${event.message}", completed: ${event.completed}/${event.total}');
+            yield event;
+          }
+        } catch (jsonErr) {
+          debugPrint('[TeacherProvider.quizStreamV2] JSON parse error: $jsonErr on: $jsonStr');
+        }
+      }
+    } on DioException catch (e) {
+      debugPrint('[TeacherProvider.quizStreamV2] DioException caught: ${e.message} (status: ${e.response?.statusCode})');
+      String? errorBody;
+      if (e.response?.data is ResponseBody) {
+        try {
+          final responseBody = e.response!.data as ResponseBody;
+          final bytes = await responseBody.stream.toList();
+          final fullBytes = bytes.expand((x) => x).toList();
+          errorBody = utf8.decode(fullBytes);
+          debugPrint('[TeacherProvider.quizStreamV2] Extracted server error body: $errorBody');
+        } catch (streamErr) {
+          debugPrint('[TeacherProvider.quizStreamV2] Could not read error response stream: $streamErr');
+        }
+      }
+      if (errorBody != null && errorBody.isNotEmpty) {
+        throw ApiException(
+          message: ApiException.extractErrorMessageFromString(
+              errorBody, e.response?.statusCode),
+          statusCode: e.response?.statusCode,
+          data: errorBody,
+        );
+      }
+      throw ApiException.fromDioException(e);
+    } catch (e, stack) {
+      debugPrint('[TeacherProvider.quizStreamV2] Unexpected exception: $e\n$stack');
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message: 'Gagal mendengarkan progress pembuatan kuis: ${e.toString()}',
+      );
+    }
+  }
+
   /// POST /api/teachers/quizzes — SSE Stream
   Stream<QuizStreamEvent> createQuizStream(
       QuizRequestCreatePayload payload) async* {

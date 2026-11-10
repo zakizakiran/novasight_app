@@ -45,6 +45,7 @@ class GenerateExamView extends GetView<GenerateExamController> {
         ),
       ),
       bottomNavigationBar: Obx(() {
+        final isDisabled = controller.currentStep.value == 1 && controller.isGenerating.value;
         if (controller.currentStep.value == 2 &&
             !controller.isGenerating.value &&
             controller.generatedQuestions.isNotEmpty) {
@@ -53,7 +54,8 @@ class GenerateExamView extends GetView<GenerateExamController> {
         if(!controller.isGenerating.value){
           return buildBottomButton(
             context,
-            controller.currentStep.value == 0 ? context.l10n.nextStep : context.l10n.createQuestions,
+            isDisabled,
+            controller.currentStep.value == 0 ? context.l10n.nextStep : controller.isGenerating.value ? context.l10n.aiGeneratingQuestions : context.l10n.createQuestions,
             controller.nextStep,
           );
         }

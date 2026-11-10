@@ -1,3 +1,4 @@
+import 'package:lydera_app/app/data/models/api_response.dart';
 import 'package:lydera_app/app/data/models/block_regenerate_model.dart';
 import 'package:lydera_app/app/data/models/chapter_create_response_model.dart';
 import 'package:lydera_app/app/data/models/chapter_job_stream_model.dart';
@@ -262,6 +263,20 @@ class TeacherRepository {
     return response.data;
   }
 
+  /// Update quiz setting: PATCH /api/teachers/quizzes/{quiz_id}
+  Future<QuizRequestUpdateResponse> updateQuizSetting({
+    required int quizId,
+    required int classroomId,
+    required QuizRequestUpdatePayload payload,
+  }) async {
+    final response = await teacherProvider.updateQuizSetting(
+      quizId: quizId,
+      classroomId: classroomId,
+      payload: payload,
+    );
+    return response.data;
+  }
+
   /// Update quiz status (draft/publish): PATCH /api/teachers/quizzes/statuses/{quiz_id}
   Future<bool> updateQuizStatus({
     required int quizId,
@@ -279,6 +294,18 @@ class TeacherRepository {
   /// Create quiz stream (SSE): POST /api/teachers/quizzes
   Stream<QuizStreamEvent> createQuizStream(QuizRequestCreatePayload payload) {
     return teacherProvider.createQuizStream(payload);
+  }
+
+  /// Create quiz V2: POST /api/v2/teachers/quizzes
+  Future<QuizCreateResponse> createQuizV2(QuizRequestCreatePayload payload) async {
+    print('Berhasil memanggil create quiz');
+    final result = await teacherProvider.createQuizV2(payload: payload);
+    return result.data;
+  }
+
+  /// Create quiz stream (SSE): POST /api/teachers/quizzes
+  Stream<QuizStreamEvent> quizStreamV2(int classroomId, int quizId) {
+    return teacherProvider.quizStreamV2(classroomId, quizId);
   }
 
   /// Regenerate question stimulus: POST /api/teachers/soal/stimulus/regenerate/{soal_id}

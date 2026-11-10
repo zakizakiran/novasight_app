@@ -301,6 +301,17 @@
       }
     }
   },
+  "processingQuizProgress": "Processing: {completed}/{total}",
+  "@processingQuizProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "saveModule": "Save Module",
   "saveRecordNote": "Save Note",
   "hintRecordNote": "Enter a note for this chapter...",
@@ -557,6 +568,18 @@
   "saveStep": "Save Step",
   "workingSteps": "Working Steps",
   "errorStep":"Error Step",
+  "saveDraft":"Change to Draft",
+  "questionsRange": "Questions {start} - {end}",
+  "@questionsRange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
   "noConversationsYet": "No Conversations Yet",
   "startNewConversation": "Start New Conversation",
   "emptyConversationDesc": "Start asking math topics or discussing questions by tapping the (+) button above!",

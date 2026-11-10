@@ -19,12 +19,22 @@ class Step3View extends GetView<GenerateExamController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      // If AI is generating or there are no questions yet
-      if (controller.isGenerating.value ||
-          controller.generatedQuestions.isEmpty) {
-        return _buildLoadingUI(context);
-      }
-      return _buildReviewUI(context);
+      final isLoading = controller.isGenerating.value ||
+          controller.generatedQuestions.isEmpty;
+
+      return PopScope(
+        canPop: !isLoading,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+
+          if (isLoading) {
+            controller.previousStep();
+          }
+        },
+        child: isLoading
+            ? _buildLoadingUI(context)
+            : _buildReviewUI(context),
+      );
     });
   }
 

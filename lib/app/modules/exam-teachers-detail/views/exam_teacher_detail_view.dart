@@ -35,8 +35,8 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
         return Padding(
           padding: const EdgeInsets.all(Dimens.innerPadding),
           child: CommonButtonWidget(
-            buttonName: context.l10n.saveChanges,
-            isValid: controller.hasChanges,
+            buttonName: context.l10n.saveDraft,
+            isValid: controller.quizStatusPublish,
             onPressed: () {
               controller.onConfirmChange();
             },
@@ -87,15 +87,19 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
       return Column(
         children: [
           ExamHeaderWidget(
-            isReadOnly: controller.isTitleReadOnly.value,
+            isReadOnly: controller.isQuizSettingReadOnly.value,
             controller: controller.titleController,
             numberOfQuestions: controller.generatedQuestions.length,
             durationMinutes: controller.maxDurationMinutes.value,
+            startTime: controller.startTime.value,
+            endTime: controller.endTime.value,
+            maxRetry: controller.maxRetry.value,
+
             trailing: IconStatus(
-              type: controller.isTitleReadOnly.value
+              type: controller.isQuizSettingReadOnly.value
                   ? IconStatusType.edit
                   : IconStatusType.submit,
-              toggle: controller.onToggleTitle,
+              toggle: controller.onToggleQuizSetting,
             ),
           ),
 
@@ -273,6 +277,10 @@ class ExamTeacherDetailView extends GetView<ExamTeacherDetailController> {
   }
 
   void _showRegenerateStimulusDialog(BuildContext context, int index) {
+    if(controller.quizStatusPublish){
+      controller.stillPublish();
+      return;
+    }
     final feedbackController = TextEditingController();
     DialogHelper.show(
       title: context.l10n.regenerateAiStimulus,

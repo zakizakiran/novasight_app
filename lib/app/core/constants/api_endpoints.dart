@@ -53,12 +53,17 @@ class ApiEndpoints {
 
   // Teacher Quiz endpoints
   static const String teacherQuizzes = '/api/teachers/quizzes';
+  static String teacherQuizUpdate(int quizId) => '/api/teachers/quizzes/$quizId';
   static String teacherQuizDetail(int quizId) => '/api/teachers/quizzes/$quizId';
   static String teacherQuizDelete(int quizId) => '/api/teachers/quizzes/$quizId';
   static String teacherQuizStudentProgress(int quizId) => '/api/teachers/quizzes/$quizId/students';
   static String teacherQuizStatus(int quizId) => '/api/teachers/quizzes/statuses/$quizId';
   static String teacherSoalStimulusRegenerate(int soalId) => '/api/teachers/soal/stimulus/regenerate/$soalId';
   static String teacherSoalEdit(int soalId) => '/api/teachers/soal/$soalId';
+
+  // Teacher Quiz V2 endpoints
+  static const String teacherQuizzesV2 = '/api/v2/teachers/quizzes';
+  static String teacherQuizzesStreamV2(int quizId) => '/api/v2/teachers/quizzes/$quizId/stream';
 
   // Chatbot endpoints
   static const String chatbotSessions = '/api/clarifier/sessions';

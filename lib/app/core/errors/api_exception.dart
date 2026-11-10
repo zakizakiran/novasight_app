@@ -145,7 +145,7 @@ class ApiException implements Exception {
       return 'Sesi Anda telah berakhir. Silakan masuk kembali.';
     }
     if (lower.contains('internal server error')) {
-      return 'Terjadi gangguan pada server saat memproses evaluasi ujian. Silakan coba beberapa saat lagi.';
+      return 'Terjadi gangguan pada server';
     }
     return rawDetail;
   }

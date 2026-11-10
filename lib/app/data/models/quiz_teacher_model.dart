@@ -49,6 +49,7 @@ class QuizRequestTeacherModel {
   final String title;
   final String statusPublished; // 'draft' | 'publish'
   final int maxDurationMinutes;
+  final int maxRetry;
   final DateTime startTime;
   final DateTime endTime;
   final String status; // 'running', 'done', 'failed', etc.
@@ -65,6 +66,7 @@ class QuizRequestTeacherModel {
     required this.startTime,
     required this.endTime,
     required this.status,
+    required this.maxRetry,
     this.error,
     this.questionCounts = 0,
     required this.module,
@@ -79,6 +81,7 @@ class QuizRequestTeacherModel {
       title: json['title'] as String? ?? '',
       statusPublished: json['status_published'] as String? ?? 'draft',
       maxDurationMinutes: json['max_duration_minutes'] as int? ?? 0,
+      maxRetry: json['max_retry'] as int? ?? 1,
       startTime: json['start_time'] != null
           ? DateTime.parse(json['start_time'] as String)
           : DateTime.now(),
@@ -100,6 +103,7 @@ class QuizRequestTeacherModel {
       'module_id': moduleId,
       'title': title,
       'status_published': statusPublished,
+      'max_retry':maxRetry,
       'max_duration_minutes': maxDurationMinutes,
       'start_time': startTime.toIso8601String(),
       'end_time': endTime.toIso8601String(),
@@ -135,6 +139,7 @@ class QuizRequestTeacherModel {
       error: error ?? this.error,
       questionCounts: questionCounts ?? this.questionCounts,
       module: module ?? this.module,
+      maxRetry: this.maxRetry,
     );
   }
 }
@@ -585,6 +590,7 @@ class QuizRequestTeacherDetailModel {
   final String statusPublished;
   final String status;
   final int maxDurationMinutes;
+  final int maxRetry;
   final DateTime startTime;
   final DateTime endTime;
   final String? error;
@@ -605,6 +611,7 @@ class QuizRequestTeacherDetailModel {
     required this.questions,
     required this.quizRequestChapters,
     required this.module,
+    required this.maxRetry,
   });
 
   bool get isPublished => statusPublished.toLowerCase() == 'publish';
@@ -640,6 +647,7 @@ class QuizRequestTeacherDetailModel {
       module: json['module'] != null
           ? ModuleQuizModel.fromJson(json['module'] as Map<String, dynamic>)
           : ModuleQuizModel(id: 0, title: ''),
+      maxRetry: json['max_retry'],
     );
   }
 
@@ -743,6 +751,68 @@ class QuizRequestCreateResponse {
       quizRequestId: json['quiz_request_id'] as int? ?? 0,
       status: json['status'] as String? ?? '',
       isCached: json['is_cached'] as bool? ?? false,
+    );
+  }
+}
+
+class QuizRequestUpdatePayload extends QuizRequestUpdateResponse{
+  QuizRequestUpdatePayload({required super.title, required super.maxDurationMinutes, required super.startTime, required super.endTime});
+}
+
+class QuizRequestUpdateResponse {
+  final String title;
+  final int maxDurationMinutes;
+  final int maxRetry;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  QuizRequestUpdateResponse({
+    required this.title,
+    required this.maxDurationMinutes,
+    this.maxRetry = 1,
+    required this.startTime,
+    required this.endTime,
+  });
+
+  factory QuizRequestUpdateResponse.fromJson(Map<String, dynamic> json) {
+    return QuizRequestUpdateResponse(
+        title: json['title'],
+        maxDurationMinutes: json['max_duration_minutes'],
+        startTime: json['start_time'],
+        endTime: json['end_time'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'max_duration_minutes': maxDurationMinutes,
+      'max_retry': maxRetry,
+      'start_time': startTime.toUtc().toIso8601String(),
+      'end_time': endTime.toUtc().toIso8601String(),
+    };
+  }
+}
+
+class QuizCreateResponse{
+  final int quizRequestId;
+  final String status;
+  final String idemKey;
+  final bool isCached;
+
+  QuizCreateResponse({
+    required this.quizRequestId,
+    required this.status,
+    required this.idemKey,
+    required this.isCached
+  });
+
+  factory QuizCreateResponse.fromJson(Map<String, dynamic> json){
+    return QuizCreateResponse(
+        quizRequestId: json['quiz_request_id'],
+        status: json['status'],
+        idemKey: json['idem_key'],
+        isCached: json['is_cached']
     );
   }
 }

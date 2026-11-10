@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import '../../../../core/dimens.dart';
 import '../../../../core/styles/colors/color_constant.dart';
-import '../../../../core/utils/snackbar_helper.dart';
+import '../../../../core/utils/date_helper.dart';
 import '../../controllers/generate_exam_controller.dart';
 import '../../models/chapter_exam_config.dart';
 import 'shared_widgets.dart';
@@ -12,82 +12,6 @@ import 'shared_widgets.dart';
 class Step2View extends GetView<GenerateExamController> {
   const Step2View({super.key});
 
-  Future<void> _pickDateTime(BuildContext context, bool isStart) async {
-    final initialDate = isStart
-        ? controller.startTime.value
-        : controller.endTime.value;
-
-    final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: ColorConstant.primary,
-              onPrimary: ColorConstant.white,
-              onSurface: ColorConstant.textDarkGreyColor,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate == null || !context.mounted) return;
-
-    final pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(initialDate),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: ColorConstant.primary,
-              onPrimary: ColorConstant.white,
-              onSurface: ColorConstant.textDarkGreyColor,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedTime == null) return;
-
-    final fullDateTime = DateTime(
-      pickedDate.year,
-      pickedDate.month,
-      pickedDate.day,
-      pickedTime.hour,
-      pickedTime.minute,
-    );
-
-    if (isStart) {
-      if (fullDateTime.isBefore(DateTime.now().subtract(const Duration(minutes: 1)))) {
-        SnackbarHelper.showError(
-          title: 'Perhatian',
-          message: 'Waktu mulai tidak boleh di masa lalu.',
-        );
-        return;
-      }
-      controller.startTime.value = fullDateTime;
-      if (controller.endTime.value.isBefore(fullDateTime)) {
-        controller.endTime.value = fullDateTime.add(const Duration(hours: 2));
-      }
-    } else {
-      if (fullDateTime.isBefore(controller.startTime.value)) {
-        SnackbarHelper.showError(
-          title: 'Perhatian',
-          message: 'Waktu selesai harus setelah waktu mulai.',
-        );
-        return;
-      }
-      controller.endTime.value = fullDateTime;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +68,7 @@ class Step2View extends GetView<GenerateExamController> {
           buildFieldLabel(context, context.l10n.examTitleField),
           TextField(
             controller: controller.titleController,
+            enabled: !controller.isGenerating.value,
             decoration: InputDecoration(
               hintText: context.l10n.examTitleHint,
               hintStyle: const TextStyle(color: ColorConstant.grey),
@@ -185,7 +110,11 @@ class Step2View extends GetView<GenerateExamController> {
                           context,
                           context.l10n.minuteShort(val),
                           controller.maxDurationMinutes.value == val,
-                          () => controller.setDuration(val),
+                          () {
+                            if(!controller.isGenerating.value) {
+                              controller.setDuration(val);
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -214,7 +143,13 @@ class Step2View extends GetView<GenerateExamController> {
                     ),
                     const SizedBox(height: 6),
                     InkWell(
-                      onTap: () => _pickDateTime(context, true),
+                      onTap: () {
+                        if(!controller.isGenerating.value){
+                          DateHelper.pickDateTime(
+                              context, true, controller.startTime,
+                              controller.endTime);
+                        }
+                      },
                       borderRadius: BorderRadius.circular(Dimens.radius),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -272,7 +207,13 @@ class Step2View extends GetView<GenerateExamController> {
                     ),
                     const SizedBox(height: 6),
                     InkWell(
-                      onTap: () => _pickDateTime(context, false),
+                      onTap: (){
+                        if(!controller.isGenerating.value){
+                          DateHelper.pickDateTime(
+                              context, false, controller.startTime,
+                              controller.endTime);
+                        }
+                      },
                       borderRadius: BorderRadius.circular(Dimens.radius),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -331,7 +272,11 @@ class Step2View extends GetView<GenerateExamController> {
                           context,
                           context.l10n.timesCount(val),
                           controller.maxRetry.value == val,
-                          () => controller.setMaxRetry(val),
+                          () {
+                            if(!controller.isGenerating.value){
+                              controller.setMaxRetry(val);
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -449,6 +394,9 @@ class Step2View extends GetView<GenerateExamController> {
               ),
             ),
           ),
+          const SizedBox(height: 20),
+          if(controller.trackedQuiz.value != null)
+            _buildTrackedChapterTile(context, controller.trackedQuiz.value!),
           const SizedBox(height: 32),
         ],
       ),
@@ -639,6 +587,193 @@ class Step2View extends GetView<GenerateExamController> {
             padding: EdgeInsets.zero,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTrackedChapterTile(
+      BuildContext context,
+      TrackedQuiz job,
+      ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: ColorConstant.white,
+        borderRadius: BorderRadius.circular(Dimens.radius),
+        border: Border.all(color: ColorConstant.grey),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: Obx(
+              () => InkWell(
+            borderRadius: BorderRadius.circular(Dimens.radius),
+            onTap: () => controller.onTapQuizItem(),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: ColorConstant.primary.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            "${job.id}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstant.primary,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.titleController.text,
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              context.l10n.questionsRange(job.completed.value, job.total.value),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                color: ColorConstant.textGreyColor,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Obx(() {
+                        final isDone = job.isDone;
+                        final isFailed = job.isFailed;
+                        final progInt = job.completed;
+
+                        if (isDone) {
+
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.green.shade200),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_rounded,
+                                  size: 14,
+                                  color: Colors.green.shade700,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  context.l10n.reviewed,
+                                  style: TextStyle(
+                                    color: Colors.green.shade700,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        if (isFailed) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.red.shade200),
+                            ),
+                            child: Text(
+                              context.l10n.failed,
+                              style: TextStyle(
+                                color: Colors.red.shade700,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade50,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.blue.shade200),
+                          ),
+                          child: Text(
+                            context.l10n.processingQuizProgress(job.completed.value, job.total.value),
+                            style: TextStyle(
+                              color: Colors.blue.shade700,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      }),
+                      const SizedBox(width: 6),
+                    ],
+                  ),
+                  Obx(() {
+                    if (job.isDone || job.isFailed) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          value: job.progress,
+                          minHeight: 6,
+                          backgroundColor: const Color(0xFFF1F5F9),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            ColorConstant.primary,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

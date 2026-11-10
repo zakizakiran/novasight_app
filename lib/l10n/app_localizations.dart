@@ -1130,6 +1130,12 @@ abstract class AppLocalizations {
   /// **'Processing: {progress}%'**
   String processingProgress(int progress);
 
+  /// No description provided for @processingQuizProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing: {completed}/{total}'**
+  String processingQuizProgress(int completed, int total);
+
   /// No description provided for @saveModule.
   ///
   /// In en, this message translates to:
@@ -1667,7 +1673,7 @@ abstract class AppLocalizations {
   /// No description provided for @saveDraft.
   ///
   /// In en, this message translates to:
-  /// **'Save Draft'**
+  /// **'Change to Draft'**
   String get saveDraft;
 
   /// No description provided for @saveAndPublish.
@@ -2089,6 +2095,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error Step'**
   String get errorStep;
+
+  /// No description provided for @questionsRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions {start} - {end}'**
+  String questionsRange(int start, int end);
 
   /// No description provided for @noConversationsYet.
   ///

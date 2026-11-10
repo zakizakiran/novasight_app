@@ -39,6 +39,7 @@ Widget buildReviewBottomBar(
                 ),
               ),
               child: Text(
+                textAlign: TextAlign.center,
                 context.l10n.saveDraft,
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -60,6 +61,7 @@ Widget buildReviewBottomBar(
                 ),
               ),
               child: Text(
+                textAlign: TextAlign.center,
                 context.l10n.saveAndPublish,
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -73,6 +75,7 @@ Widget buildReviewBottomBar(
 
 Widget buildBottomButton(
   BuildContext context,
+  bool isValid,
   String text,
   VoidCallback onPressed,
 ) {
@@ -101,6 +104,7 @@ Widget buildBottomButton(
         ),
         child: Text(
           text,
+          textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),

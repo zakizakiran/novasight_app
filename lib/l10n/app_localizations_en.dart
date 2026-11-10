@@ -563,6 +563,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String processingQuizProgress(int completed, int total) {
+    return 'Processing: $completed/$total';
+  }
+
+  @override
   String get saveModule => 'Save Module';
 
   @override
@@ -846,7 +851,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiGeneratingQuestions => 'AI is Generating Questions';
 
   @override
-  String get saveDraft => 'Save Draft';
+  String get saveDraft => 'Change to Draft';
 
   @override
   String get saveAndPublish => 'Save & Publish';
@@ -1084,6 +1089,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorStep => 'Error Step';
+
+  @override
+  String questionsRange(int start, int end) {
+    return 'Questions $start - $end';
+  }
 
   @override
   String get noConversationsYet => 'No Conversations Yet';

@@ -269,6 +269,7 @@
       }
     }
   },
+  "saveDraft":"Ubah Sebagai Draft",
   "chapterSplitConfig": "Konfigurasi Pemotongan BAB",
   "chapterSplitDesc": "Masukkan rentang halaman yang akan dipotong menjadi BAB baru.",
   "chapterTitleField": "Judul BAB *",
@@ -297,12 +298,34 @@
       }
     }
   },
+  "questionsRange": "Soal {start} - {end}",
+  "@questionsRange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
   "needsReview": "Perlu Ditinjau",
   "reviewed": "Sudah Ditinjau",
   "processingProgress": "Proses: {progress}%",
   "@processingProgress": {
     "placeholders": {
       "progress": {
+        "type": "int"
+      }
+    }
+  },
+  "processingQuizProgress": "Proses: {completed}/{total}",
+  "@processingQuizProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -423,7 +446,7 @@
   "lotsDesc": "Pemahaman & ingatan dasar",
   "questionsCreatedSuccess": "Soal Berhasil Dibuat!",
   "aiGeneratingQuestions": "AI Sedang Membuat Soal",
-  "saveDraft": "Simpan Draft",
+  "saveDraft": "Simpan Sebagai Draft",
   "saveAndPublish": "Simpan & Publish",
   "nextStep": "Selanjutnya",
   "createQuestions": "Buat Soal",

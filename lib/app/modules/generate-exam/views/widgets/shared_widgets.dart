@@ -24,7 +24,7 @@ Widget buildSelectableButton(
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
       decoration: BoxDecoration(
         color: isSelected ? ColorConstant.primary : ColorConstant.white,
         borderRadius: BorderRadius.circular(Dimens.radius),
