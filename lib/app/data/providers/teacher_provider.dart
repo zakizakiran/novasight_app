@@ -158,6 +158,27 @@ class TeacherProvider {
     }
   }
 
+  /// POST /api/modules/publish/{module_id}
+  Future<ApiResponse<bool>> draftModule({required int moduleId}) async {
+    try {
+      final response = await dioClient.post(
+        ApiEndpoints.draftModule(moduleId),
+      );
+      return ApiResponse<bool>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => data as bool? ?? true,
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message:
+        'Terjadi kesalahan saat mempublikasikan modul: ${e.toString()}',
+      );
+    }
+  }
+
   /// DELETE /api/teachers/modules/{module_id}?classroom_id={classroom_id}
   Future<ApiResponse<bool>> deleteModule({
     required int moduleId,

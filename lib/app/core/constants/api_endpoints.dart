@@ -42,6 +42,7 @@ class ApiEndpoints {
   static String teacherChapterDetail(int chapterId) => '/api/teachers/chapters/$chapterId';
   static const String createModule = '/api/modules';
   static String publishModule(int moduleId) => '/api/modules/publish/$moduleId';
+  static String draftModule(int moduleId) => '/api/modules/draft/$moduleId';
   static const String fases = '/api/fases';
   static const String createChapter = '/api/chapters';
   static String chapterJobStream(int jobId) => '/api/chapters/jobs/$jobId/stream';

@@ -5,7 +5,9 @@ import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/date_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/student_model.dart';
 import '../../../../../common/common_html_table_renderer.dart';
+import '../../../../../data/models/teacher_model.dart';
 import '../../controllers/module_teacher_controller.dart';
 
 class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
@@ -73,195 +75,224 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
                 );
               }
 
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Chapter Title & Info
-                    Text(
-                      chapter.title ?? context.l10n.chapterNumber(chapter.number?.toString() ?? ''),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: ColorConstant.textDarkGreyColor,
-                          ),
-                    ),
-                    const SizedBox(height: Dimens.spaceSmallPadding),
-                    Row(
-                      children: [
-                        if (chapter.number != null) ...[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.secondary,
-                              borderRadius:
-                                  BorderRadius.circular(Dimens.radius),
-                            ),
-                            child: Text(
-                              context.l10n.chapterNumber(chapter.number.toString()),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    color: ColorConstant.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(width: Dimens.spaceSmallPadding),
-                        ],
-                        Text(
-                          DateHelper.dateFormat(chapter.createdAt),
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: ColorConstant.textGreyColor,
-                                  ),
-                        ),
-                      ],
-                    ),
-
-                    if (chapter.sourceFile != null &&
-                        chapter.sourceFile!.isNotEmpty) ...[
-                      const SizedBox(height: Dimens.spaceSmallPadding),
-                      Row(
+              return CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.picture_as_pdf,
-                            size: 16,
-                            color: ColorConstant.primary,
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              chapter.sourceFile!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: ColorConstant.textGreyColor,
-                                  ),
+                          _buildChapterInfo(context, chapter),
+
+                          if (chapter.sourceFile != null &&
+                              chapter.sourceFile!.isNotEmpty) ...[
+                            _buildSourcesFile(context, chapter)
+                          ],
+
+                          const SizedBox(height: Dimens.spacePadding),
+                          Text(
+                            context.l10n.learningContentBlocks(chapter.blocks.length),
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstant.textDarkGreyColor,
                             ),
                           ),
+                          const SizedBox(height: Dimens.spaceSmallPadding),
                         ],
                       ),
-                    ],
-
-                    const SizedBox(height: Dimens.spacePadding),
-                    Text(
-                      context.l10n.learningContentBlocks(chapter.blocks.length),
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: ColorConstant.textDarkGreyColor,
-                          ),
                     ),
-                    const SizedBox(height: Dimens.spaceSmallPadding),
 
                     if (chapter.blocks.isEmpty)
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(Dimens.spacePadding),
-                        decoration: BoxDecoration(
-                          color: ColorConstant.grey,
-                          borderRadius: BorderRadius.circular(Dimens.radius),
-                        ),
-                        child: Text(
-                          context.l10n.noContentBlocksInChapter,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: ColorConstant.textGreyColor,
-                                  ),
-                        ),
+                      SliverToBoxAdapter(
+                        child: _buildBlocksEmpty(context),
                       )
                     else
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                      SliverList.separated(
                         itemCount: chapter.blocks.length,
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: Dimens.spaceSmallPadding),
                         itemBuilder: (context, index) {
                           final block = chapter.blocks[index];
-                          return Container(
-                            padding: const EdgeInsets.all(Dimens.spacePadding),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.white,
-                              borderRadius:
-                                  BorderRadius.circular(Dimens.radius),
-                              border: Border.all(
-                                color: ColorConstant.borderBlueGrey,
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: ColorConstant.secondary,
-                                        borderRadius:
-                                            BorderRadius.circular(4),
-                                      ),
-                                      child: Text(
-                                        block.blockType.toUpperCase(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall
-                                            ?.copyWith(
-                                              fontSize: 10,
-                                              color: ColorConstant.primary,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      "#${block.readingOrder}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall
-                                          ?.copyWith(
-                                            color: ColorConstant.textGreyColor,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                if(block.isImageUrl)
-                                  _imageUrl(block.imageUrl!),
-                                if(block.isFormula)
-                                  _formula(context: context, latex: block.sourceMarkup!),
-                                if(block.isTable)
-                                  _table(context: context, html: block.sourceMarkup!),
-                                Text(
-                                  block.readableText,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        color: ColorConstant.textDarkGreyColor,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          );
+                          return _buildBlockItem(context, block);
                         },
                       ),
                   ],
-                ),
               );
             }),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildChapterInfo(BuildContext context, TeacherChapterDetailModel chapter){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          chapter.title ?? context.l10n.chapterNumber(chapter.number?.toString() ?? ''),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: ColorConstant.textDarkGreyColor,
+          ),
+        ),
+        const SizedBox(height: Dimens.spaceSmallPadding),
+        Row(
+          children: [
+            if (chapter.number != null) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: ColorConstant.secondary,
+                  borderRadius:
+                  BorderRadius.circular(Dimens.radius),
+                ),
+                child: Text(
+                  context.l10n.chapterNumber(chapter.number.toString()),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall
+                      ?.copyWith(
+                    color: ColorConstant.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: Dimens.spaceSmallPadding),
+            ],
+            Text(
+              DateHelper.dateFormat(chapter.createdAt),
+              style:
+              Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorConstant.textGreyColor,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSourcesFile(BuildContext context, TeacherChapterDetailModel chapter){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: Dimens.spaceSmallPadding),
+        Row(
+          children: [
+            const Icon(
+              Icons.picture_as_pdf,
+              size: 16,
+              color: ColorConstant.primary,
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                chapter.sourceFile!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(
+                  color: ColorConstant.textGreyColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBlockItem(BuildContext context, BlockResponseModel block){
+    return Container(
+      padding: const EdgeInsets.all(Dimens.spacePadding),
+      decoration: BoxDecoration(
+        color: ColorConstant.white,
+        borderRadius:
+        BorderRadius.circular(Dimens.radius),
+        border: Border.all(
+          color: ColorConstant.borderBlueGrey,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  color: ColorConstant.secondary,
+                  borderRadius:
+                  BorderRadius.circular(4),
+                ),
+                child: Text(
+                  block.blockType.toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall
+                      ?.copyWith(
+                    fontSize: 10,
+                    color: ColorConstant.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Text(
+                "#${block.readingOrder}",
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(
+                  color: ColorConstant.textGreyColor,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          if(block.isImageUrl)
+            _imageUrl(block.imageUrl!),
+          if(block.isFormula)
+            _formula(context: context, latex: block.sourceMarkup!),
+          if(block.isTable)
+            _table(context: context, html: block.sourceMarkup!),
+          Text(
+            block.readableText,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
+              color: ColorConstant.textDarkGreyColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBlocksEmpty(BuildContext context){
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Dimens.spacePadding),
+      decoration: BoxDecoration(
+        color: ColorConstant.grey,
+        borderRadius: BorderRadius.circular(Dimens.radius),
+      ),
+      child: Text(
+        context.l10n.noContentBlocksInChapter,
+        textAlign: TextAlign.center,
+        style:
+        Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: ColorConstant.textGreyColor,
+        ),
       ),
     );
   }

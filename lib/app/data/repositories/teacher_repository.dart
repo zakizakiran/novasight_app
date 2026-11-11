@@ -93,6 +93,12 @@ class TeacherRepository {
     return response.data;
   }
 
+  /// Draft a module for teacher
+  Future<bool> draftModule(int moduleId) async {
+    final response = await teacherProvider.draftModule(moduleId: moduleId);
+    return response.data;
+  }
+
   /// Delete a module for teacher
   Future<bool> deleteModule({
     required int moduleId,
