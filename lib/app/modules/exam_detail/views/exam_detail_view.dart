@@ -48,37 +48,45 @@ class ExamDetailView extends GetView<ExamDetailController> {
                             controller.questionCount.value,
                             controller.durationMinutes.value,
                           ),
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: ColorConstant.textDarkGreyColor,
-                            height: 1.5,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: ColorConstant.textDarkGreyColor,
+                                height: 1.5,
+                              ),
                         ),
                         const SizedBox(height: Dimens.spaceMediumPadding),
                         Text(
                           context.l10n.examInstructionsParagraph2,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: ColorConstant.textDarkGreyColor,
-                            height: 1.5,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: ColorConstant.textDarkGreyColor,
+                                height: 1.5,
+                              ),
                         ),
                         const SizedBox(height: Dimens.spaceMediumPadding),
                         RichText(
                           text: TextSpan(
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(
-                              color: ColorConstant.textDarkGreyColor,
-                              height: 1.5,
-                            ),
+                                  color: ColorConstant.textDarkGreyColor,
+                                  height: 1.5,
+                                ),
                             children: [
                               TextSpan(text: context.l10n.examStartsAt),
                               TextSpan(
-                                text: "${DateHelper.dateTimeFormat(controller.quiz.value!.startTime)} ",
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                text:
+                                    "${DateHelper.dateTimeFormat(controller.quiz.value!.startTime)} ",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               TextSpan(text: "\n${context.l10n.examEndsAt}"),
                               TextSpan(
-                                text: "${DateHelper.dateTimeFormat(controller.quiz.value!.endTime)} ",
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                text:
+                                    "${DateHelper.dateTimeFormat(controller.quiz.value!.endTime)} ",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
@@ -86,11 +94,12 @@ class ExamDetailView extends GetView<ExamDetailController> {
                         const SizedBox(height: Dimens.spaceMediumPadding),
                         Text(
                           context.l10n.goodLuck,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: ColorConstant.textDarkGreyColor,
-                            fontWeight: FontWeight.bold,
-                            height: 1.5,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: ColorConstant.textDarkGreyColor,
+                                fontWeight: FontWeight.bold,
+                                height: 1.5,
+                              ),
                         ),
                       ],
                     ),
@@ -100,9 +109,14 @@ class ExamDetailView extends GetView<ExamDetailController> {
             ),
             Padding(
               padding: const EdgeInsets.all(Dimens.innerPadding),
-              child: CommonButtonWidget(
-                buttonName: context.l10n.startExamButton,
-                onPressed: controller.onStartExam,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  CommonButtonWidget(
+                    buttonName: context.l10n.startExamButton,
+                    onPressed: controller.onStartExam,
+                  ),
+                ],
               ),
             ),
           ],
