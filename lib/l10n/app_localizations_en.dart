@@ -577,6 +577,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintRecordNote => 'Enter a note for this chapter...';
 
   @override
+  String get draftModule => 'Draft Module';
+
+  @override
   String get recordNote => 'Text Note';
 
   @override

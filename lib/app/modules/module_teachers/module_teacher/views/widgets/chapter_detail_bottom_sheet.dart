@@ -6,8 +6,14 @@ import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/date_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/data/models/student_model.dart';
+import 'package:lydera_app/app/modules/module_teachers/module_evaluation/views/widgets/select_widget.dart';
+import '../../../../../common/common_button_widget.dart';
 import '../../../../../common/common_html_table_renderer.dart';
+import '../../../../../core/utils/show_modal_bottom_sheet_helper.dart';
+import '../../../../../core/utils/snackbar_helper.dart';
 import '../../../../../data/models/teacher_model.dart';
+import '../../../module_evaluation/views/widgets/show_modal_bottom_sheet_correction_widget.dart';
+import '../../../module_evaluation/views/widgets/show_modal_bottom_sheet_text_edit_widget.dart';
 import '../../controllers/module_teacher_controller.dart';
 
 class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
@@ -119,6 +125,78 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
               );
             }),
           ),
+
+          // Footer
+          Obx(() {
+            if (controller.isLoadingChapter.value) {
+              return const SizedBox.shrink();
+            }
+
+            final count = controller.selectedBlocks.length;
+            final isText = controller.isTextSelected;
+
+            String buttonName;
+            if (count == 0) {
+              buttonName = context.l10n.editAnnotation;
+            } else if (isText) {
+              buttonName = context.l10n.editTextAnnotation;
+            } else {
+              buttonName = context.l10n.reviseWithAi(count);
+            }
+
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 10,
+                    spreadRadius: 0,
+                    offset: const Offset(0, -4),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: Dimens.spaceSm),
+                child: Center(
+                  child: CommonButtonWidget(
+                    buttonName: buttonName,
+                    boxShadows: const [],
+                    textColor: ColorConstant.primary,
+                    onPressed: () {
+                      if (controller.selectedBlocks.isEmpty) {
+                        SnackbarHelper.showError(
+                          title: "Pilih Block Terlebih Dahulu",
+                          message:
+                          "Silakan centang block teks untuk edit langsung, atau block gambar untuk revisi AI.",
+                        );
+                        return;
+                      }
+
+                      if (isText) {
+                        ShowModalBottomSheetHelper.showCustomBottomSheet(
+                          ShowModalBottomSheetTextEditWidget(
+                            controller: Get.find<ModuleTeacherController>(),
+                          ),
+                        );
+                      } else {
+                        ShowModalBottomSheetHelper.showCustomBottomSheet(
+                          ShowModalBottomSheetCorrectionWidget(
+                            controller: Get.find<ModuleTeacherController>(),
+                          ),
+                        );
+                      }
+                    },
+                    buttonColor: ColorConstant.white,
+                    border: const BorderSide(
+                      color: ColorConstant.primary,
+                      width: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -221,6 +299,8 @@ class ChapterDetailBottomSheet extends GetView<ModuleTeacherController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SelectWidget(chunk: block.toModuleChunk(), controller: Get.find<ModuleTeacherController>(),),
+          const SizedBox(height: 6),
           Row(
             children: [
               Container(

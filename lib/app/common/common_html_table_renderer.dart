@@ -15,10 +15,12 @@ class CommonHtmlTableRenderer extends StatelessWidget {
     this.headerBackgroundColor,
     this.cellPadding = const EdgeInsets.all(8),
     this.minRowHeight = 40,
+    this.minColumnWidth = 88,
     this.textStyle,
     this.headerTextStyle,
   });
 
+  final double minColumnWidth;
   final String html;
   final String? semanticLabel;
   final Color? borderColor, headerBackgroundColor;
@@ -62,7 +64,7 @@ class CommonHtmlTableRenderer extends StatelessWidget {
             return const SizedBox.shrink();
           }
 
-          return _buildTable(
+          return _buildResponsiveTable(
             grid: grid,
             width: width,
             config: config,
@@ -109,6 +111,33 @@ class CommonHtmlTableRenderer extends StatelessWidget {
               cell, grid, columnWidth, offsets, config, direction, scaler,
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildResponsiveTable({
+    required _HtmlTableGrid grid,
+    required double width,
+    required _TableStyle config,
+    required TextDirection direction,
+    required TextScaler scaler,
+  }) {
+    final tableWidth = math.max(
+      width,
+      grid.columnCount * minColumnWidth,
+    );
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width: tableWidth,
+        child: _buildTable(
+          grid: grid,
+          width: tableWidth,
+          config: config,
+          direction: direction,
+          scaler: scaler,
+        ),
       ),
     );
   }

@@ -1154,6 +1154,12 @@ abstract class AppLocalizations {
   /// **'Enter a note for this chapter...'**
   String get hintRecordNote;
 
+  /// No description provided for @draftModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft Module'**
+  String get draftModule;
+
   /// No description provided for @recordNote.
   ///
   /// In en, this message translates to:

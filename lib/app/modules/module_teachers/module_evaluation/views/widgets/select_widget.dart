@@ -5,18 +5,17 @@ import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/data/model/module_teacher_model.dart';
-import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 import '../../../../../core/Dimens.dart';
+import '../../../../../core/utils/correction_controller.dart';
 
-class SelectWidget extends GetView<ModuleEvaluationController> {
+class SelectWidget extends StatelessWidget {
+  final SelectChunkController controller;
   final ModuleChunk chunk;
-  final int? blockNumber;
-  const SelectWidget({super.key, required this.chunk, this.blockNumber});
+  const SelectWidget({super.key, require, required this.chunk, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    final displayBlock =
-        blockNumber != null ? "Block $blockNumber" : "Block #${chunk.id}";
+    final displayBlock = "Block #${chunk.id}";
     final isImage = chunk is ImageChunk;
     final imageChunk = isImage ? (chunk as ImageChunk) : null;
     final badgeLabel = imageChunk != null ? imageChunk.displayTypeLabel : "Teks";

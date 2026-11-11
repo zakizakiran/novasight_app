@@ -4,6 +4,7 @@ import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
 import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/utils/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 
@@ -11,8 +12,9 @@ import '../../../../../data/model/module_teacher_model.dart';
 import '../../../../../core/Dimens.dart';
 import '../../../../../core/styles/icon_txt.dart';
 import '../../../../../core/utils/validate_helper.dart';
-class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationController> {
-  const ShowModalBottomSheetCorrectionWidget({super.key});
+class ShowModalBottomSheetCorrectionWidget extends StatelessWidget {
+  final CorrectionAIController controller;
+  const ShowModalBottomSheetCorrectionWidget({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +100,7 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: controller.selectedChunks.map((c) {
-                      final idx = controller.moduleTeacherModel.value.listChunks.indexOf(c);
-                      final blockName = idx != -1 ? "Block ${idx + 1}" : "Block #${c.id}";
+                      final blockName = "Block #${c.id}";
 
                       Color badgeBg = Colors.blue.withValues(alpha: 0.15);
                       Color badgeColor = Colors.blue.shade800;
@@ -239,8 +240,8 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
               maxLength: 500,
               minLines: 4,
               validator: ValidateHelper.isNormalValidate("Saran"),
-              isReadOnly: controller.isLoading.value,
-              onChanged: controller.onChange,
+              isReadOnly: controller.isLoadingRevision.value,
+              onChanged: controller.onChangeAdviceController,
               borderSideFocused: const BorderSide(width: 1.5),
               hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: ColorConstant.textGreyColor,
@@ -252,7 +253,7 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
             children: [
               Expanded(
                 child: CommonButtonWidget(
-                  buttonName: context.l10n.cancel,
+                  buttonName: context.l10n.back,
                   onPressed: () => Get.back(),
                   boxShadows: const [],
                   buttonColor: ColorConstant.secondary,
@@ -268,7 +269,7 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
                 child: Obx(() => CommonButtonWidget(
                   buttonName: context.l10n.sendToAi,
                   isValid: controller.isValid.value,
-                  isLoading: controller.isLoading.value,
+                  isLoading: controller.isLoadingRevision.value,
                   onPressed: () => controller.onSendAdvice(),
                 )),
               ),
@@ -292,14 +293,14 @@ class ShowModalBottomSheetCorrectionWidget extends GetView<ModuleEvaluationContr
   Widget _buildSuggestionChip(BuildContext context, String text) {
     return InkWell(
       onTap: () {
-        if (controller.isLoading.value) return;
+        if (controller.isLoadingRevision.value) return;
         final current = controller.adviceController.text.trim();
         if (current.isEmpty) {
           controller.adviceController.text = text;
         } else if (!current.contains(text)) {
           controller.adviceController.text = "$current. $text";
         }
-        controller.onChange(controller.adviceController.text);
+        controller.onChangeAdviceController(controller.adviceController.text);
       },
       borderRadius: BorderRadius.circular(Dimens.circle),
       child: Container(

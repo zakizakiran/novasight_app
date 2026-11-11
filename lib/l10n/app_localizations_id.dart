@@ -576,6 +576,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get hintRecordNote => 'Masukkan catatan untuk bab ini...';
 
   @override
+  String get draftModule => 'Draft Modul';
+
+  @override
   String get recordNote => 'Teks Catatan';
 
   @override

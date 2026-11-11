@@ -315,6 +315,7 @@
   "saveModule": "Save Module",
   "saveRecordNote": "Save Note",
   "hintRecordNote": "Enter a note for this chapter...",
+  "draftModule": "Draft Module",
   "recordNote": "Text Note",
   "finish": "Finish",
   "tapToUploadFile": "Tap to upload file",

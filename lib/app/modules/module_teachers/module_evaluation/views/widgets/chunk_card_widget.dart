@@ -12,8 +12,7 @@ import '../../shimmer/chunk_text_shimmer.dart';
 
 class ChunkCardWidget extends GetView<ModuleEvaluationController> {
   final ModuleChunk chunk;
-  final int? blockNumber;
-  const ChunkCardWidget({super.key, required this.chunk, this.blockNumber});
+  const ChunkCardWidget({super.key, required this.chunk});
 
   @override
   Widget build(BuildContext context) {
@@ -46,53 +45,52 @@ class ChunkCardWidget extends GetView<ModuleEvaluationController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SelectWidget(chunk: chunk, blockNumber: blockNumber),
-
-          Table(
-            columnWidths: const {0: FlexColumnWidth(1), 1: FlexColumnWidth(1)},
-            children: [
-              TableRow(
+              SelectWidget(chunk: chunk, controller: Get.find<ModuleEvaluationController>()),
+              Table(
+                columnWidths: const {0: FlexColumnWidth(1), 1: FlexColumnWidth(1)},
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(Dimens.innerPadding),
-                    child: switch (chunk) {
-                      TextChunk textChunk => Text(
-                        textChunk.text,
-                        textAlign: TextAlign.justify,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(Dimens.innerPadding),
+                        child: switch (chunk) {
+                          TextChunk textChunk => Text(
+                            textChunk.text,
+                            textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          ImageChunk imageChunk => _buildImageChunk(
+                            context,
+                            imageChunk,
+                          ),
+                        },
                       ),
-                      ImageChunk imageChunk => _buildImageChunk(
-                        context,
-                        imageChunk,
-                      ),
-                    },
+
+                      Obx(() {
+                        final isThisChunkUpdating =
+                            controller.selectedChunks.contains(chunk) &&
+                                controller.isLoadingRevision.value;
+
+                        if (isThisChunkUpdating) {
+                          return const Padding(
+                            padding: EdgeInsets.all(Dimens.innerPadding),
+                            child: ChunkTextShimmer(),
+                          );
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.all(Dimens.innerPadding),
+                          child: Text(
+                            chunk.annotation ?? "-",
+                            textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        );
+                      }),
+                    ],
                   ),
-
-                  Obx(() {
-                    final isThisChunkUpdating =
-                        controller.selectedChunks.contains(chunk) &&
-                        controller.isLoading.value;
-
-                    if (isThisChunkUpdating) {
-                      return const Padding(
-                        padding: EdgeInsets.all(Dimens.innerPadding),
-                        child: ChunkTextShimmer(),
-                      );
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.all(Dimens.innerPadding),
-                      child: Text(
-                        chunk.annotation ?? "-",
-                        textAlign: TextAlign.justify,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    );
-                  }),
                 ],
               ),
-            ],
-          ),
             ],
           ),
         ),

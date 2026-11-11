@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -6,19 +8,22 @@ import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/errors/api_exception.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/utils/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/show_modal_bottom_sheet_helper.dart';
 import 'package:lydera_app/app/core/utils/snackbar_helper.dart';
 import 'package:lydera_app/app/core/utils/ui_state.dart';
+import 'package:lydera_app/app/data/model/module_teacher_model.dart';
 import 'package:lydera_app/app/data/models/teacher_model.dart';
 import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import '../../../../data/models/student_model.dart';
 import '../views/widgets/chapter_detail_bottom_sheet.dart';
 import '../views/widgets/module_detail_bottom_sheet.dart';
 
-class ModuleTeacherController extends GetxController {
+class ModuleTeacherController extends GetxController implements CorrectionAIController, CorrectionNormalTextController, SelectChunkController {
   final TeacherRepository? teacherRepository;
   final ClassroomRepository? classroomRepository;
   final StorageService? storageService;
@@ -41,6 +46,11 @@ class ModuleTeacherController extends GetxController {
                 : null);
 
   final TextEditingController searchController = TextEditingController();
+  @override
+  final TextEditingController adviceController = TextEditingController();
+  @override
+  final TextEditingController textEditController = TextEditingController();
+
 
   // Reactive State Variables (Adheres to Section 5 of flutter-implementation-requirements.md)
   final RxBool isLoading = false.obs;
@@ -65,6 +75,22 @@ class ModuleTeacherController extends GetxController {
   final Rxn<TeacherChapterDetailModel> selectedChapterDetail =
       Rxn<TeacherChapterDetailModel>();
 
+  final RxBool _isValid = false.obs;
+  final RxBool _isLoadingRevision = false.obs;
+  final RxBool _isTextValid = false.obs;
+
+  @override
+  RxBool get isValid => _isValid;
+
+  @override
+  RxBool get isLoadingRevision => _isLoadingRevision;
+
+  @override
+  RxBool get isTextValid => _isTextValid;
+
+  final RxList<BlockResponseModel> selectedBlocks = <BlockResponseModel>[].obs;
+
+
   final state = Rx<UiState<void>>(
     const UiStateInitial<void>(),
   );
@@ -72,6 +98,15 @@ class ModuleTeacherController extends GetxController {
   late Worker _searchWorker;
 
   bool get isUsingApi => teacherRepository != null;
+
+  bool get isTextSelected => selectedBlocks.isNotEmpty && selectedBlocks.every((c) => !c.isRevisionWithAI);
+
+  bool get canSelectAllSpecial => selectedBlocks.value.where((element) => element.isRevisionWithAI).isNotEmpty;
+
+  bool get isAllSpecialSelected {
+    final specials = selectedBlocks.value.where((element) => element.isRevisionWithAI).toList();
+    return specials.isNotEmpty && selectedBlocks.length == specials.length && specials.every((s) => selectedBlocks.contains(s));
+  }
 
   @override
   void onInit() {
@@ -87,6 +122,167 @@ class ModuleTeacherController extends GetxController {
 
   int? _cachedClassroomId;
   final List<TeacherModuleModel> _masterModules = [];
+
+  @override
+  void onSelectChunk(ModuleChunk chunk) {
+    if (isLoadingRevision.value) return;
+    final block = chunk.toBlockResponseModel();
+
+    final selectedIndex = selectedBlocks.indexWhere(
+          (item) => item.id == block.id,
+    );
+    for (var element in selectedBlocks){
+    }
+
+    if (selectedIndex != -1) {
+      selectedBlocks.removeAt(selectedIndex);
+      return;
+    }
+
+    if (selectedBlocks.isEmpty) {
+      if (block.isRevisionWithAI) {
+        selectedBlocks.add(block);
+      } else {
+        selectedBlocks.assignAll([block]);
+        prepareTextEdit();
+      }
+      return;
+    }
+
+    final firstBlock = selectedBlocks.first;
+    final isSameType = block.isRevisionWithAI == firstBlock.isRevisionWithAI;
+
+    if (!isSameType) {
+      SnackbarHelper.showError(
+        title: 'Pilih Block',
+        message: 'Mempunyai tipe yang berbeda untuk revisi',
+      );
+      return;
+    }
+
+    if (block.isRevisionWithAI) {
+      selectedBlocks.add(block);
+      return;
+    }
+
+    selectedBlocks.assignAll([block]);
+    prepareTextEdit();
+    return;
+  }
+
+  void toggleSelectAllSpecial() {
+    if (isLoadingRevision.value) return;
+
+    final specials = selectedBlocks.value.where((element) => element.isRevisionWithAI);
+    if (specials.isEmpty) return;
+
+    if (isAllSpecialSelected) {
+      selectedBlocks.clear();
+    } else {
+      selectedBlocks.clear();
+      selectedBlocks.addAll(specials);
+    }
+  }
+
+  @override
+  Future<void> onSendAdvice() async {
+    final feedback = adviceController.text.trim();
+    if (feedback.isEmpty || selectedBlocks.isEmpty) return;
+
+    isLoadingRevision.value = true;
+    try {
+      final blockRevisionAIIds = selectedBlocks.where((element) => element.isRevisionWithAI,).map((e) => e.id).whereType<int>().toList();
+
+
+      if (teacherRepository != null && blockRevisionAIIds.isNotEmpty) {
+        final results = await teacherRepository!.bulkRegenerateSpecial(
+          blockIds: blockRevisionAIIds,
+          feedback: feedback,
+        );
+
+        final current = selectedChapterDetail.value;
+
+        final updatedList = current?.blocks.map((c) {
+          final match = results.firstWhereOrNull((r) => r.blockId == c.id);
+          if (match != null) {
+            return c.copyWith(readableText: match.readableText);
+          }
+          return c;
+        }).toList();
+
+        selectedChapterDetail.value = current?.copyWith(blocks: updatedList);
+      }
+
+      if (Get.isBottomSheetOpen ?? false) {
+        Get.back();
+      }
+
+      selectedBlocks.clear();
+      adviceController.clear();
+      SnackbarHelper.showSuccess(
+        title: "Anotasi Berhasil Diperbarui!",
+        message: "Anotasi AI untuk gambar sudah diperbarui.",
+      );
+    } catch (e) {
+      debugPrint('Error bulk regenerating special blocks: $e');
+      SnackbarHelper.showError(
+        title: "Gagal Merevisi Anotasi",
+        message: e.toString(),
+      );
+    } finally {
+      isLoadingRevision.value = false;
+    }
+  }
+
+  @override
+  Future<void> onSaveDirectText() async {
+    if (selectedBlocks.isEmpty || selectedBlocks.first.isRevisionWithAI) return;
+
+    final chunk = selectedBlocks.first;
+    final newText = textEditController.text.trim();
+
+    if (newText.isEmpty) return;
+
+    if (teacherRepository != null) {
+      await teacherRepository!.bulkRegenerateText(
+        blockIds: [?chunk.id],
+        feedback: newText,
+      );
+    }
+
+    final current = selectedChapterDetail.value;
+    final updatedList = current?.blocks.map((c) {
+      if (c.id == chunk.id) {
+        return c.copyWith(readableText: newText);
+      }
+      return c;
+    }).toList();
+
+    selectedChapterDetail.value = current?.copyWith(blocks: updatedList);
+    selectedBlocks.clear();
+    textEditController.clear();
+
+    if (Get.isBottomSheetOpen ?? false) {
+      Get.back();
+    }
+    SnackbarHelper.showSuccess(
+      title: "Anotasi Teks Disimpan!",
+      message: "Perubahan anotasi berhasil disimpan.",
+    );
+  }
+
+  void prepareTextEdit() {
+
+    if (selectedBlocks.isEmpty || selectedBlocks.first.isRevisionWithAI) return;
+    final chunk = selectedBlocks.first;
+    textEditController.text = chunk.readableText;
+    isTextValid.value = textEditController.text.trim().isNotEmpty;
+  }
+
+  @override
+  void onTextChange(String v) {
+    isTextValid.value = v.trim().isNotEmpty;
+  }
 
   Future<int?> _resolveClassroomId({bool forceRefresh = false}) async {
     if (!forceRefresh && _cachedClassroomId != null) return _cachedClassroomId;
@@ -262,6 +458,69 @@ class ModuleTeacherController extends GetxController {
     }
   }
 
+  /// Aksi Draft Modul: POST /api/modules/draft/{module_id}
+  Future<void> onDraftModule(TeacherModuleModel module) async {
+    if (module.status?.toLowerCase() == 'draft') return;
+
+    try {
+      isPublishing.value = true;
+      publishingModuleId.value = module.id;
+
+      if (teacherRepository != null) {
+        final success = await teacherRepository!.draftModule(module.id);
+        if (success) {
+          final index = teacherModules.indexWhere((m) => m.id == module.id);
+          if (index != -1) {
+            final updated = TeacherModuleModel(
+              id: module.id,
+              title: module.title,
+              faseId: module.faseId,
+              createdAt: module.createdAt,
+              status: 'draft',
+            );
+            teacherModules[index] = updated;
+            teacherModules.refresh();
+
+            final mIndex = _masterModules.indexWhere((m) => m.id == module.id);
+            if (mIndex != -1) {
+              _masterModules[mIndex] = updated;
+            }
+          }
+
+          if (selectedModuleDetail.value != null &&
+              selectedModuleDetail.value!.id == module.id) {
+            selectedModuleDetail.value = TeacherModuleDetailModel(
+              id: selectedModuleDetail.value!.id,
+              title: selectedModuleDetail.value!.title,
+              faseId: selectedModuleDetail.value!.faseId,
+              createdAt: selectedModuleDetail.value!.createdAt,
+              status: 'draft',
+              chapters: selectedModuleDetail.value!.chapters,
+            );
+          }
+
+          SnackbarHelper.showSuccess(
+            title: "Modul Berhasil Menjadi draft!",
+            message: "Siswa sekarang tidak dapat mengakses modul ini.",
+          );
+        }
+      }
+    } on ApiException catch (e) {
+      SnackbarHelper.showError(
+        title: "Gagal Menjadi Draft Modul",
+        message: e.message,
+      );
+    } catch (e) {
+      SnackbarHelper.showError(
+        title: "Gagal Menjadi Draft Modul",
+        message: e.toString(),
+      );
+    } finally {
+      isPublishing.value = true;
+      publishingModuleId.value = 0;
+    }
+  }
+
   /// Aksi Delete Modul: DELETE /api/teachers/modules/{module_id}?classroom_id={classroom_id}
   Future<void> onDeleteModule(TeacherModuleModel module) async {
     try {
@@ -416,7 +675,27 @@ class ModuleTeacherController extends GetxController {
   @override
   void onClose() {
     searchController.dispose();
+    adviceController.dispose();
+    textEditController.dispose();
     _searchWorker.dispose();
     super.onClose();
+  }
+
+  @override
+  GlobalKey<FormState> get formKey => GlobalKey<FormState>();
+
+  @override
+  GlobalKey<FormState> get textFormKey => GlobalKey<FormState>();
+
+  @override
+  RxList<ModuleChunk> get selectedChunks => RxList(selectedBlocks.map((block) => block.toModuleChunk()).toList());
+
+  @override
+  void onChangeAdviceController(String value) {
+    print('Change advide dipanggil $value');
+    print('Advice controller ${adviceController.text.isNotEmpty}');
+    print('Selected Blocks ${selectedBlocks.isNotEmpty}');
+    isValid.value = adviceController.text.isNotEmpty && selectedBlocks.isNotEmpty;
+    print('IsValid ${isValid.value}');
   }
 }

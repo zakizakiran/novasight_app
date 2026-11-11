@@ -24,7 +24,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: !controller.isLoading.value,
+      canPop: !controller.isLoadingRevision.value,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         DialogHelper.show(
@@ -240,7 +240,6 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                           controller.moduleTeacherModel.value.listChunks[i];
                       return ChunkCardWidget(
                         chunk: chunk,
-                        blockNumber: i + 1,
                       );
                     },
                   ),
@@ -288,11 +287,15 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                       if (isText) {
                         controller.prepareTextEdit();
                         ShowModalBottomSheetHelper.showCustomBottomSheet(
-                          const ShowModalBottomSheetTextEditWidget(),
+                          ShowModalBottomSheetTextEditWidget(
+                            controller: Get.find<ModuleEvaluationController>(),
+                          ),
                         );
                       } else {
                         ShowModalBottomSheetHelper.showCustomBottomSheet(
-                          const ShowModalBottomSheetCorrectionWidget(),
+                          ShowModalBottomSheetCorrectionWidget(
+                            controller: Get.find<ModuleEvaluationController>(),
+                          ),
                         );
                       }
                     },
@@ -309,7 +312,7 @@ class ModuleEvaluationView extends GetView<ModuleEvaluationController> {
                 child: Obx(
                   () => CommonButtonWidget(
                     buttonName: context.l10n.saveToModule,
-                    isValid: !controller.isLoading.value,
+                    isValid: !controller.isLoadingRevision.value,
                     onPressed: controller.onSaveModule,
                   ),
                 ),

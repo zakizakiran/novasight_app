@@ -206,7 +206,7 @@ class ModuleTeacherCardWidget extends GetView<ModuleTeacherController> {
         borderRadius: BorderRadius.all(Radius.circular(Dimens.radius)),
       ),
       child: Text(
-        module.faseId != null ? "${context.l10n.fase} ${module.faseId}" : context.l10n.navModule,
+        module.faseId != null ? "${context.l10n.fase} ${module.fase?.kode ?? module.faseId}" : context.l10n.navModule,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: ColorConstant.primary,
               fontWeight: FontWeight.bold,

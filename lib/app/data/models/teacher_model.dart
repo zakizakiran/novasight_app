@@ -10,6 +10,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
+import 'package:lydera_app/app/data/models/fase_model.dart';
 import 'package:lydera_app/app/data/models/student_model.dart';
 
 enum TeacherModuleStatus {
@@ -141,6 +142,7 @@ class TeacherModuleModel {
   final int id;
   final String title;
   final int? faseId;
+  final FaseModel? fase;
   final DateTime createdAt;
   final String? status;
 
@@ -150,6 +152,7 @@ class TeacherModuleModel {
     this.faseId,
     required this.createdAt,
     this.status,
+    this.fase,
   });
 
   factory TeacherModuleModel.fromJson(Map<String, dynamic> json) {
@@ -157,6 +160,9 @@ class TeacherModuleModel {
       id: json['id'] as int,
       title: json['title'] as String? ?? '',
       faseId: json['fase_id'] as int?,
+      fase: json['fase'] != null
+          ? FaseModel.fromJson(json['fase'] as Map<String, dynamic>)
+          : null,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)
           : DateTime.now(),
@@ -228,6 +234,9 @@ class TeacherModuleDetailModel {
   final DateTime createdAt;
   final String? status;
   final List<TeacherChapterSummaryModel> chapters;
+
+  bool get isPublished => status?.toLowerCase() == 'publish';
+  bool get isDraft => status?.toLowerCase() == 'draft';
 
   TeacherModuleDetailModel({
     required this.id,
@@ -320,4 +329,27 @@ class TeacherChapterDetailModel {
       'blocks': blocks.map((e) => e.toJson()).toList(),
     };
   }
+
+  TeacherChapterDetailModel copyWith({
+    int? id,
+    int? moduleId,
+    int? number,
+    String? title,
+    String? sourceFile,
+    int? cpId,
+    DateTime? createdAt,
+    List<BlockResponseModel>? blocks,
+  }) {
+    return TeacherChapterDetailModel(
+      id: id ?? this.id,
+      moduleId: moduleId ?? this.moduleId,
+      number: number ?? this.number,
+      title: title ?? this.title,
+      sourceFile: sourceFile ?? this.sourceFile,
+      cpId: cpId ?? this.cpId,
+      createdAt: createdAt ?? this.createdAt,
+      blocks: blocks ?? this.blocks,
+    );
+  }
 }
+

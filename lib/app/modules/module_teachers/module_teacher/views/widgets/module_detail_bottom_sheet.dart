@@ -247,50 +247,6 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
           // Actions Footer
           const SizedBox(height: Dimens.spacePadding),
           Obx(() {
-            final isPublished = (module.status ?? '').toLowerCase() == 'publish';
-            final isPublishingThis = controller.isPublishing.value &&
-                controller.publishingModuleId.value == module.id;
-
-            if (isPublished) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: CommonButtonWidget(
-                      buttonName: context.l10n.close,
-                      onPressed: () => Get.back(),
-                    ),
-                  ),
-                  const SizedBox(width: Dimens.spacePadding),
-                  Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      color: ColorConstant.redColor.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(Dimens.radius),
-                      border: Border.all(
-                        color: ColorConstant.redColor.withValues(alpha: 0.4),
-                        width: 1.2,
-                      ),
-                    ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(Dimens.radius),
-                      onTap: () {
-                        Get.back();
-                        controller.confirmDeleteModule(context, module);
-                      },
-                      child: const Center(
-                        child: Icon(
-                          Icons.delete_outline_rounded,
-                          color: ColorConstant.redColor,
-                          size: 22,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
-
             return Row(
               children: [
                 Expanded(
@@ -310,34 +266,21 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                   ),
                 ),
                 const SizedBox(width: Dimens.spacePadding),
-                Expanded(
-                  flex: 4,
-                  child: isPublishingThis
-                      ? Container(
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: ColorConstant.primary.withValues(alpha: 0.7),
-                            borderRadius: BorderRadius.circular(Dimens.radius),
-                          ),
-                          child: const Center(
-                            child: SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        )
-                      : CommonButtonWidget(
-                          buttonName: context.l10n.publishModule,
-                          boxShadows: const [],
-                          onPressed: () async {
-                            await controller.onPublishModule(module);
-                          },
-                        ),
-                ),
+                if(controller.selectedModuleDetail.value != null)
+                  Expanded(
+                    flex: 4,
+                    child: CommonButtonWidget(
+                      buttonName: controller.selectedModuleDetail.value!.isPublished ? context.l10n.draftModule : context.l10n.publishModule,
+                      boxShadows: const [],
+                      onPressed: () async {
+                        if(controller.selectedModuleDetail.value!.isPublished){
+                          await controller.onDraftModule(module);
+                        } else {
+                          await controller.onPublishModule(module);
+                        }
+                      },
+                    ),
+                  ),
                 const SizedBox(width: Dimens.spacePadding),
                 Container(
                   height: 48,

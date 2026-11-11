@@ -6,14 +6,15 @@ import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/styles/icon_txt.dart';
+import 'package:lydera_app/app/core/utils/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/validate_helper.dart';
 import 'package:lydera_app/app/data/model/module_teacher_model.dart';
 import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 
-class ShowModalBottomSheetTextEditWidget
-    extends GetView<ModuleEvaluationController> {
-  const ShowModalBottomSheetTextEditWidget({super.key});
+class ShowModalBottomSheetTextEditWidget extends StatelessWidget {
+  final CorrectionNormalTextController controller;
+  const ShowModalBottomSheetTextEditWidget({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +68,8 @@ class ShowModalBottomSheetTextEditWidget
               return const SizedBox.shrink();
             }
             final chunk = controller.selectedChunks.first as TextChunk;
-            final idx = controller.moduleTeacherModel.value.listChunks
-                .indexOf(chunk);
-            final blockName =
-                idx != -1 ? "Block ${idx + 1}" : "Block #${chunk.id}";
+
+            final blockName = "Block #${chunk.id}";
 
             return Container(
               width: double.infinity,
@@ -172,7 +171,7 @@ class ShowModalBottomSheetTextEditWidget
             children: [
               Expanded(
                 child: CommonButtonWidget(
-                  buttonName: context.l10n.cancel,
+                  buttonName: context.l10n.back,
                   onPressed: () => Get.back(),
                   boxShadows: const [],
                   buttonColor: ColorConstant.secondary,

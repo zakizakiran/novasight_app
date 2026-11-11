@@ -1,5 +1,7 @@
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 
+import '../model/module_teacher_model.dart';
+
 // DTO models for Student API endpoints.
 // Maps strictly to OpenAPI schema contract:
 // - StudentTaskStatus
@@ -197,6 +199,7 @@ class BlockResponseModel {
   bool get isFormula => blockType.toLowerCase().trim() == 'formula';
   bool get isTable => blockType.toLowerCase().trim() == 'table';
   bool get isImageUrl => blockType.toLowerCase().trim() == 'image';
+  bool get isRevisionWithAI => isTable || isImageUrl || isFormula;
 
   factory BlockResponseModel.fromJson(Map<String, dynamic> json) {
     return BlockResponseModel(
@@ -228,6 +231,54 @@ class BlockResponseModel {
       'image_file': imageFile,
       if (imageUrl != null) 'image_url': imageUrl,
     };
+  }
+
+  BlockResponseModel copyWith({
+    int? id,
+    int? readingOrder,
+    String? blockType,
+    String? readableText,
+    String? previousText,
+    String? reviewPriority,
+    int? headingLevel,
+    String? sourceMarkup,
+    String? caption,
+    String? imageFile,
+    String? imageUrl,
+  }) {
+    return BlockResponseModel(
+      id: id ?? this.id,
+      readingOrder: readingOrder ?? this.readingOrder,
+      blockType: blockType ?? this.blockType,
+      readableText: readableText ?? this.readableText,
+      previousText: previousText ?? this.previousText,
+      reviewPriority: reviewPriority ?? this.reviewPriority,
+      headingLevel: headingLevel ?? this.headingLevel,
+      sourceMarkup: sourceMarkup ?? this.sourceMarkup,
+      caption: caption ?? this.caption,
+      imageFile: imageFile ?? this.imageFile,
+      imageUrl: imageUrl ?? this.imageUrl,
+    );
+  }
+}
+
+extension BlockResponseMapper on BlockResponseModel {
+  ModuleChunk toModuleChunk() {
+    if (isRevisionWithAI) {
+      return ImageChunk(
+        id: id ?? 0,
+        annotation: readableText,
+        imagePath: imageUrl ?? imageFile ?? '',
+        blockType: blockType,
+        sourceMarkup: sourceMarkup,
+      );
+    }
+
+    return TextChunk(
+      id: id ?? 0,
+      annotation: readableText,
+      text: readableText,
+    );
   }
 }
 

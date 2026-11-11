@@ -211,6 +211,7 @@
 
   "viewModule": "Lihat Modul",
   "publishModule": "Publish Modul",
+  "draftModule": "Draft Modul",
   "published": "Terpublikasi",
   "deleteModule": "Hapus Modul",
   "deleteModuleConfirm": "Anda yakin ingin menghapus \"{title}\"? Seluruh bab dan anotasi di dalamnya akan terhapus secara permanen.",

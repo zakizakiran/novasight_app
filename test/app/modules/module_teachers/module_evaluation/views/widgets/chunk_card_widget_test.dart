@@ -221,7 +221,7 @@ void main() {
 
       await tester.pumpWidget(
         buildTestableWidget(
-          const ChunkCardWidget(chunk: textChunk, blockNumber: 1),
+          const ChunkCardWidget(chunk: textChunk),
         ),
       );
       await tester.pump();

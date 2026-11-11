@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/main_bar_args.dart';
 import 'package:lydera_app/app/core/args/module_result_args.dart';
+import 'package:lydera_app/app/core/utils/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/user_roles.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
 import '../../../../core/utils/snackbar_helper.dart';
@@ -11,20 +12,35 @@ import '../../create_module/controllers/create_module_controller.dart';
 import 'package:lydera_app/app/modules/main_layout/controllers/main_layout_controller.dart';
 import 'package:lydera_app/app/modules/module_teachers/module_teacher/controllers/module_teacher_controller.dart';
 
-class ModuleEvaluationController extends GetxController {
+class ModuleEvaluationController extends GetxController implements CorrectionAIController, CorrectionNormalTextController, SelectChunkController{
+  @override
   final TextEditingController adviceController = TextEditingController();
+  @override
   final TextEditingController textEditController = TextEditingController();
+  @override
   final formKey = GlobalKey<FormState>();
+  @override
   final textFormKey = GlobalKey<FormState>();
   final TeacherRepository? teacherRepository;
+  @override
   final RxList<ModuleChunk> selectedChunks = <ModuleChunk>[].obs;
+
   late final Rx<ModuleTeacherModel> moduleTeacherModel;
   int? chapterId;
   String? annotationPath;
 
-  final Rx<bool> isLoading = false.obs;
-  final Rx<bool> isValid = false.obs;
-  final Rx<bool> isTextValid = false.obs;
+  final RxBool _isValid = false.obs;
+  final RxBool _isLoadingRevision = false.obs;
+  final RxBool _isTextValid = false.obs;
+
+  @override
+  RxBool get isValid => _isValid;
+
+  @override
+  RxBool get isLoadingRevision => _isLoadingRevision;
+
+  @override
+  RxBool get isTextValid => _isTextValid;
 
   bool get isTextSelected =>
       selectedChunks.isNotEmpty && selectedChunks.every((c) => c is TextChunk);
@@ -44,7 +60,7 @@ class ModuleEvaluationController extends GetxController {
   }
 
   void toggleSelectAllSpecial() {
-    if (isLoading.value) return;
+    if (isLoadingRevision.value) return;
     final specials =
         moduleTeacherModel.value.listChunks.whereType<ImageChunk>().toList();
     if (specials.isEmpty) return;
@@ -55,7 +71,7 @@ class ModuleEvaluationController extends GetxController {
       selectedChunks.clear();
       selectedChunks.addAll(specials);
     }
-    onChange("");
+    onChangeAdviceController("");
   }
 
   ModuleEvaluationController({
@@ -64,13 +80,14 @@ class ModuleEvaluationController extends GetxController {
 
   bool _isCancelled = false;
 
+  @override
   void onSelectChunk(ModuleChunk value) {
-    if (isLoading.value) return;
+    if (isLoadingRevision.value) return;
 
     final isAlreadySelected = selectedChunks.contains(value);
     if (isAlreadySelected) {
       selectedChunks.remove(value);
-      onChange("");
+      onChangeAdviceController("");
       return;
     }
 
@@ -93,7 +110,7 @@ class ModuleEvaluationController extends GetxController {
       // Image blocks can be multi-selected for bulk AI regeneration
       selectedChunks.add(value);
     }
-    onChange("");
+    onChangeAdviceController("");
   }
 
   void prepareTextEdit() {
@@ -107,15 +124,28 @@ class ModuleEvaluationController extends GetxController {
     isTextValid.value = textEditController.text.trim().isNotEmpty;
   }
 
+  @override
   void onTextChange(String v) {
     isTextValid.value = v.trim().isNotEmpty;
   }
 
-  void onSaveDirectText() {
+  @override
+  Future<void> onSaveDirectText() async {
     if (selectedChunks.isEmpty || selectedChunks.first is! TextChunk) return;
+
     final chunk = selectedChunks.first as TextChunk;
     final newText = textEditController.text.trim();
+
     if (newText.isEmpty) return;
+
+    if (teacherRepository != null) {
+      await teacherRepository!.bulkRegenerateText(
+        blockIds: [chunk.id],
+        feedback: newText,
+      );
+
+      if (_isCancelled) return;
+    }
 
     final current = moduleTeacherModel.value;
     final updatedList = current.listChunks.map((c) {
@@ -138,17 +168,18 @@ class ModuleEvaluationController extends GetxController {
     );
   }
 
-  void onChange(String v) {
-    isValid.value =
-        adviceController.text.isNotEmpty && selectedChunks.isNotEmpty;
+  @override
+  void onChangeAdviceController(String v) {
+    isValid.value = adviceController.text.isNotEmpty && selectedChunks.isNotEmpty;
   }
 
+  @override
   Future<void> onSendAdvice() async {
     _isCancelled = false;
     final feedback = adviceController.text.trim();
     if (feedback.isEmpty || selectedChunks.isEmpty) return;
 
-    isLoading.value = true;
+    isLoadingRevision.value = true;
     try {
       final imageBlockIds = selectedChunks
           .whereType<ImageChunk>()
@@ -191,7 +222,7 @@ class ModuleEvaluationController extends GetxController {
         message: e.toString(),
       );
     } finally {
-      isLoading.value = false;
+      isLoadingRevision.value = false;
     }
   }
 
@@ -219,11 +250,11 @@ class ModuleEvaluationController extends GetxController {
 
   void cancelLoadingProcess() {
     _isCancelled = true;
-    isLoading.value = false;
+    isLoadingRevision.value = false;
   }
 
   Future<void> onSaveModule() async {
-    isLoading.value = true;
+    isLoadingRevision.value = true;
     try {
       if (chapterId != null &&
           annotationPath != null &&
@@ -272,7 +303,7 @@ class ModuleEvaluationController extends GetxController {
         message: e.toString(),
       );
     } finally {
-      isLoading.value = false;
+      isLoadingRevision.value = false;
     }
   }
 }

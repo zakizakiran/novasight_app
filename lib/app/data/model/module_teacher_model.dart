@@ -2,6 +2,8 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import 'package:lydera_app/app/data/model/class_model.dart';
 
+import '../models/student_model.dart';
+
 sealed class ModuleChunk extends Equatable {
   final int id;
   final String? annotation;
@@ -91,6 +93,32 @@ class ImageChunk extends ModuleChunk {
         blockType,
         sourceMarkup,
       ];
+}
+
+extension ModuleChunkMapper on ModuleChunk {
+  BlockResponseModel toBlockResponseModel() {
+    return switch (this) {
+      TextChunk chunk => BlockResponseModel(
+        id: chunk.id,
+        readingOrder: 0,
+        blockType: 'text',
+        readableText: chunk.annotation ?? chunk.text,
+        previousText: chunk.annotation,
+        reviewPriority: '',
+      ),
+      ImageChunk chunk => BlockResponseModel(
+        id: chunk.id,
+        readingOrder: 0,
+        blockType: chunk.blockType,
+        readableText: chunk.annotation ?? '',
+        previousText: chunk.annotation,
+        reviewPriority: '',
+        sourceMarkup: chunk.sourceMarkup,
+        imageFile: chunk.imagePath,
+        imageUrl: chunk.imagePath,
+      ),
+    };
+  }
 }
 
 class ModuleTeacherModel extends Equatable {
