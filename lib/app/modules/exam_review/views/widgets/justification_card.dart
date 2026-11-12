@@ -127,9 +127,10 @@ class JustificationCard extends StatelessWidget {
                 ),
               );
             }),
+          ],
             if (question.errorExplanation != null)
               Container(
-                margin: const EdgeInsets.only(top: 8, bottom: 12),
+                margin: const EdgeInsets.only(top: 8, bottom: 8),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFF3E0), // Light orange
@@ -195,6 +196,40 @@ class JustificationCard extends StatelessWidget {
                   ],
                 ),
               ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE8F5E9),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFF4CAF50)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.l10n.diagnosis,
+                    style: const TextStyle(
+                      color: Color(0xFF2E7D32),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Semantics(
+                    label: serializer.serializeTextWithMath(
+                      question.correction!,
+                      parser,
+                    ),
+                    excludeSemantics: true,
+                    child: Text(
+                      question.correction!,
+                      style: const MainTextTheme().bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             Semantics(
               label:
                   'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${serializer.serializeTextWithMath(question.options[question.correctAnswerIndex], parser)}.',
@@ -215,112 +250,6 @@ class JustificationCard extends StatelessWidget {
                 ),
               ),
             ),
-          ] else ...[
-            ...List.generate(question.explanationSteps.length, (index) {
-              return Semantics(
-                label:
-                    'Langkah ${index + 1}: ${serializer.serializeTextWithMath(question.explanationSteps[index], parser)}',
-                excludeSemantics: true,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: ColorConstant.primary,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${index + 1}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          question.explanationSteps[index],
-                          style: const MainTextTheme().bodyLarge,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-            if (question.correction != null)
-              Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8F5E9),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF4CAF50)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      context.l10n.diagnosis,
-                      style: const TextStyle(
-                        color: Color(0xFF2E7D32),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Semantics(
-                      label: serializer.serializeTextWithMath(
-                        question.correction!,
-                        parser,
-                      ),
-                      excludeSemantics: true,
-                      child: Text(
-                        question.correction!,
-                        style: const MainTextTheme().bodyMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            Builder(
-              builder: (context) {
-                final correctIdx = question.correctAnswerIndex.clamp(
-                  0,
-                  question.options.isEmpty ? 0 : question.options.length - 1,
-                );
-                final correctOptionText = question.options.isNotEmpty
-                    ? question.options[correctIdx]
-                    : '-';
-                return Semantics(
-                  label:
-                      'Jawaban benar adalah ${String.fromCharCode(65 + correctIdx)} — ${serializer.serializeTextWithMath(correctOptionText, parser)}.',
-                  excludeSemantics: true,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE8F5E9),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xFF4CAF50)),
-                    ),
-                    child: Text(
-                      'Jawaban benar adalah ${String.fromCharCode(65 + correctIdx)} — $correctOptionText.',
-                      style: const MainTextTheme().bodyLarge?.copyWith(
-                        color: const Color(0xFF2E7D32),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
         ],
       ),
     );

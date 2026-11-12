@@ -138,10 +138,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navDashboard => 'Dashboard';
 
   @override
-  String get navModule => 'Module';
+  String get navModule => 'Annotify';
 
   @override
-  String get navExam => 'Exam Questions';
+  String get navExam => 'Questify';
 
   @override
   String get navLearnify => 'Learnify';
@@ -578,6 +578,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get draftModule => 'Draft Module';
+
+  @override
+  String get addChapter => 'Add Chapter';
 
   @override
   String get recordNote => 'Text Note';

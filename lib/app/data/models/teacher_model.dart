@@ -11,6 +11,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/data/models/fase_model.dart';
+import 'package:lydera_app/app/data/models/job_response.dart';
 import 'package:lydera_app/app/data/models/student_model.dart';
 
 enum TeacherModuleStatus {
@@ -183,22 +184,28 @@ class TeacherModuleModel {
 
 class TeacherChapterSummaryModel {
   final int id;
-  final int moduleId;
+  final int? moduleId;
   final int? number;
   final String? title;
+  final JobResponse? job;
   final String? sourceFile;
+  final bool isNeedReview;
   final int? cpId;
   final DateTime createdAt;
 
   TeacherChapterSummaryModel({
     required this.id,
-    required this.moduleId,
+    this.moduleId,
     this.number,
     this.title,
     this.sourceFile,
     this.cpId,
     required this.createdAt,
+    this.job,
+    this.isNeedReview = false,
   });
+
+  bool get needsReview => isNeedReview || ((job?.isDone ?? false) && !(job?.isReviewed.value ?? false));
 
   factory TeacherChapterSummaryModel.fromJson(Map<String, dynamic> json) {
     return TeacherChapterSummaryModel(
@@ -207,6 +214,10 @@ class TeacherChapterSummaryModel {
       number: json['number'] as int?,
       title: json['title'] as String?,
       sourceFile: json['source_file'] as String?,
+      isNeedReview: json['is_need_review'],
+      job: json['job'] != null
+          ? JobResponse.fromJson(json['job'])
+          : null,
       cpId: json['cp_id'] as int?,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)

@@ -347,13 +347,13 @@ abstract class AppLocalizations {
   /// No description provided for @navModule.
   ///
   /// In en, this message translates to:
-  /// **'Module'**
+  /// **'Annotify'**
   String get navModule;
 
   /// No description provided for @navExam.
   ///
   /// In en, this message translates to:
-  /// **'Exam Questions'**
+  /// **'Questify'**
   String get navExam;
 
   /// No description provided for @navLearnify.
@@ -1159,6 +1159,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Draft Module'**
   String get draftModule;
+
+  /// No description provided for @addChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Chapter'**
+  String get addChapter;
 
   /// No description provided for @recordNote.
   ///

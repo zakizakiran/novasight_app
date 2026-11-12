@@ -19,6 +19,7 @@ import 'package:lydera_app/app/data/models/teacher_model.dart';
 import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import '../../../../data/models/job_response.dart';
 import '../../../../data/models/student_model.dart';
 import '../views/widgets/chapter_detail_bottom_sheet.dart';
 import '../views/widgets/module_detail_bottom_sheet.dart';
@@ -51,8 +52,6 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
   @override
   final TextEditingController textEditController = TextEditingController();
 
-
-  // Reactive State Variables (Adheres to Section 5 of flutter-implementation-requirements.md)
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final RxList<TeacherModuleModel> teacherModules = <TeacherModuleModel>[].obs;
@@ -68,16 +67,26 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
 
   // Detail & Chapter Inspection States
   final RxBool isLoadingDetail = false.obs;
-  final Rxn<TeacherModuleDetailModel> selectedModuleDetail =
-      Rxn<TeacherModuleDetailModel>();
+  final Rxn<TeacherModuleDetailModel> selectedModuleDetail = Rxn<TeacherModuleDetailModel>();
 
   final RxBool isLoadingChapter = false.obs;
-  final Rxn<TeacherChapterDetailModel> selectedChapterDetail =
-      Rxn<TeacherChapterDetailModel>();
+  final Rxn<TeacherChapterDetailModel> selectedChapterDetail = Rxn<TeacherChapterDetailModel>();
 
   final RxBool _isValid = false.obs;
   final RxBool _isLoadingRevision = false.obs;
   final RxBool _isTextValid = false.obs;
+
+  List<TeacherChapterSummaryModel> get chaptersJobs {
+    final chapters = selectedModuleDetail.value?.chapters ?? [];
+    return chapters.where((element) {
+      final job = element.job;
+      if (job == null) return false;
+      final isInProgress = job.isInProgress;
+      final needsReview = element.isNeedReview || (job.isDone && !job.isReviewed.value);
+
+      return isInProgress;
+    }).toList();
+  }
 
   @override
   RxBool get isValid => _isValid;
@@ -89,7 +98,6 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
   RxBool get isTextValid => _isTextValid;
 
   final RxList<BlockResponseModel> selectedBlocks = <BlockResponseModel>[].obs;
-
 
   final state = Rx<UiState<void>>(
     const UiStateInitial<void>(),
@@ -131,8 +139,6 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
     final selectedIndex = selectedBlocks.indexWhere(
           (item) => item.id == block.id,
     );
-    for (var element in selectedBlocks){
-    }
 
     if (selectedIndex != -1) {
       selectedBlocks.removeAt(selectedIndex);
@@ -272,7 +278,6 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
   }
 
   void prepareTextEdit() {
-
     if (selectedBlocks.isEmpty || selectedBlocks.first.isRevisionWithAI) return;
     final chunk = selectedBlocks.first;
     textEditController.text = chunk.readableText;
@@ -294,6 +299,15 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
         list.firstWhereOrNull((c) => c.code == cachedCode) ?? list.first;
     _cachedClassroomId = selected.id;
     return selected.id;
+  }
+
+  void addChapter(TeacherChapterSummaryModel newChapter) {
+    final detail = selectedModuleDetail.value;
+    if (detail == null) return;
+
+    detail.chapters.add(newChapter);
+    _startTrackingChapterJobs([newChapter]);
+    selectedModuleDetail.refresh();
   }
 
   void _sortNewestFirst(List<TeacherModuleModel> list) {
@@ -516,7 +530,7 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
         message: e.toString(),
       );
     } finally {
-      isPublishing.value = true;
+      isPublishing.value = false;
       publishingModuleId.value = 0;
     }
   }
@@ -599,6 +613,7 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
   /// Aksi Detail Modul: GET /api/teachers/modules/{module_id}
   Future<TeacherModuleDetailModel?> fetchModuleDetail(int moduleId) async {
     if (teacherRepository == null) return null;
+    _cancelAllJobStreams();
     isLoadingDetail.value = true;
     selectedModuleDetail.value = null;
 
@@ -611,6 +626,7 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
         classroomId: classroomId,
       );
       selectedModuleDetail.value = detail;
+      _startTrackingChapterJobs(chaptersJobs);
       return detail;
     } on ApiException catch (e) {
       SnackbarHelper.showError(
@@ -678,24 +694,66 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
     adviceController.dispose();
     textEditController.dispose();
     _searchWorker.dispose();
+    _cancelAllJobStreams();
     super.onClose();
   }
 
   @override
-  GlobalKey<FormState> get formKey => GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
-  GlobalKey<FormState> get textFormKey => GlobalKey<FormState>();
+  final GlobalKey<FormState> textFormKey = GlobalKey<FormState>();
 
   @override
   RxList<ModuleChunk> get selectedChunks => RxList(selectedBlocks.map((block) => block.toModuleChunk()).toList());
 
   @override
   void onChangeAdviceController(String value) {
-    print('Change advide dipanggil $value');
-    print('Advice controller ${adviceController.text.isNotEmpty}');
-    print('Selected Blocks ${selectedBlocks.isNotEmpty}');
     isValid.value = adviceController.text.isNotEmpty && selectedBlocks.isNotEmpty;
-    print('IsValid ${isValid.value}');
+  }
+
+  void _startTrackingChapterJobs(List<TeacherChapterSummaryModel> chapters) {
+    if (teacherRepository == null) return;
+
+    for (final chapter in chapters) {
+      final job = chapter.job;
+      if (job == null || job.isDone || job.isFailed) continue;
+
+      // Skip if this job already has an active stream subscription
+      if (job.subscription != null) continue;
+
+      job.subscription = teacherRepository?.streamChapterJob(job.id).listen(
+            (event) {
+          // Update reactive fields on the JobResponse model
+          job.progress.value = event.progress;
+          job.status.value = JobStatus.fromString(event.status.toLowerCase());
+
+          if (event.annotationPath != null && event.annotationPath!.isNotEmpty) {
+            job.pdfPath.value = event.annotationPath!;
+          }
+
+          // Stop listening once the job finishes or fails
+          if (event.isDone || event.isFailed) {
+            job.dispose();
+            job.subscription = null;
+            selectedModuleDetail.refresh();
+          }
+        },
+        onError: (error) {
+          job.status.value = JobStatus.failed;
+          job.dispose();
+          job.subscription = null;
+          selectedModuleDetail.refresh();
+        },
+      );
+    }
+  }
+
+  void _cancelAllJobStreams() {
+    final chapters = selectedModuleDetail.value?.chapters ?? [];
+    for (final chapter in chapters) {
+      chapter.job?.dispose();
+      chapter.job?.subscription = null;
+    }
   }
 }

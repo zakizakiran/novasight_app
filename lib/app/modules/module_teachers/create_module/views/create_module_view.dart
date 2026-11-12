@@ -158,7 +158,7 @@ class CreateModuleView extends GetView<CreateModuleController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const PickModuleWidget(),
+        PickModuleWidget(selectedPdf: controller.selectedPdf, onPickModule: controller.onPickModule),
         const SizedBox(height: Dimens.spacePadding),
         Obx(() {
           if (controller.totalPages.value > 0) {

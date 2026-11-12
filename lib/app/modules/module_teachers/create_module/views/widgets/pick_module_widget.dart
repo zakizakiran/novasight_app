@@ -6,12 +6,14 @@ import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 import 'package:lydera_app/app/core/utils/file_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/data/model/module_teacher_model.dart';
-import 'package:lydera_app/app/modules/module_teachers/create_module/controllers/create_module_controller.dart';
-
 import '../../../../../core/Dimens.dart';
-class PickModuleWidget extends GetView<CreateModuleController> {
+import '../../../../../data/model/selected_pdf_model.dart';
 
-  const PickModuleWidget({super.key});
+class PickModuleWidget extends StatelessWidget {
+  final Rxn<SelectedPdfModel> selectedPdf;
+  final Function() onPickModule;
+
+  const PickModuleWidget({super.key, required this.selectedPdf, required this.onPickModule});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class PickModuleWidget extends GetView<CreateModuleController> {
             borderRadius: const BorderRadius.all(
               Radius.circular(Dimens.radius),
             ),
-            onTap: controller.onPickModule,
+            onTap: onPickModule,
             child: Container(
               height: 200,
               width: double.infinity,
@@ -72,7 +74,7 @@ class PickModuleWidget extends GetView<CreateModuleController> {
           ),
         ),
         Obx(() {
-          final pdf = controller.selectedPdf.value;
+          final pdf = selectedPdf.value;
           return pdf != null ? Container(
             padding: const EdgeInsets.all(
                 Dimens.innerPadding

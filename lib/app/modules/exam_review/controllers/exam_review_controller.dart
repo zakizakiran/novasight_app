@@ -75,6 +75,7 @@ class ExamReviewController extends GetxController {
 
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
+          print('Important Note : ${item.importantNote}');
           return ExamReviewQuestion(
             id: item.soalId,
             userStep: item.studentSteps,

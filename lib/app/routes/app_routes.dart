@@ -39,6 +39,9 @@ abstract class Routes {
       _Paths.EXAM_TEACHER_STUDENT_PROGRESS;
   static const EXAM_TEACHER_STUDENT_PROGRESS_DETAIL =
       _Paths.EXAM_TEACHER_STUDENT_PROGRESS_DETAIL;
+  static const ADD_CHAPTER = _Paths.ADD_CHAPTER;
+  static const ADD_LOADING_CHAPTER = _Paths.ADD_LOADING_CHAPTER;
+  static const ADD_CONFIRM_CHAPTER = _Paths.ADD_CONFIRM_CHAPTER;
 }
 
 abstract class _Paths {
@@ -77,4 +80,7 @@ abstract class _Paths {
   static const EXAM_TEACHER_STUDENT_PROGRESS = '/exam-teacher-student-progress';
   static const EXAM_TEACHER_STUDENT_PROGRESS_DETAIL =
       '/exam-teacher-student-progress-detail';
+  static const ADD_CHAPTER = '/add-chapter';
+  static const ADD_LOADING_CHAPTER = '/add-loading-chapter';
+  static const ADD_CONFIRM_CHAPTER = '/add-confirm-chapter';
 }

@@ -53,8 +53,8 @@
   "leaveClass": "Leave Class",
 
   "navDashboard": "Dashboard",
-  "navModule": "Module",
-  "navExam": "Exam Questions",
+  "navModule": "Annotify",
+  "navExam": "Questify",
   "navLearnify": "Learnify",
   "navProfile": "Profile",
   "currentPosition": "Current position at",
@@ -316,6 +316,7 @@
   "saveRecordNote": "Save Note",
   "hintRecordNote": "Enter a note for this chapter...",
   "draftModule": "Draft Module",
+  "addChapter":"Add Chapter",
   "recordNote": "Text Note",
   "finish": "Finish",
   "tapToUploadFile": "Tap to upload file",

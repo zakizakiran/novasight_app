@@ -127,8 +127,7 @@ class CreateModuleController extends GetxController {
   final TextEditingController endPageController = TextEditingController();
 
   final RxBool isCreatingChapter = false.obs;
-  final RxList<ChapterCreateResponseModel> createdChapters =
-      <ChapterCreateResponseModel>[].obs;
+  final RxList<ChapterCreateResponseModel> createdChapters = <ChapterCreateResponseModel>[].obs;
   final RxList<TrackedChapterJob> trackedJobs = <TrackedChapterJob>[].obs;
   final Rxn<TrackedChapterJob> activeInspectedJob = Rxn<TrackedChapterJob>();
   final RxBool isOpeningChapter = false.obs;

@@ -48,8 +48,8 @@
   "leaveClass": "Keluar Kelas",
 
   "navDashboard": "Dashboard",
-  "navModule": "Modul",
-  "navExam": "Soal Ujian",
+  "navModule": "Annotify",
+  "navExam": "Questify",
   "navLearnify": "Learnify",
   "navProfile": "Profil",
   "currentPosition": "Posisi di",
@@ -411,6 +411,7 @@
     }
   },
   "addStep": "Tambah Langkah",
+  "addChapter":"Tambah Bab",
   "conclusion": "Kesimpulan",
   "noExamData": "Tidak ada data ujian",
   "noExamReviewResultsYet": "Belum ada hasil evaluasi ujian yang tersedia.",

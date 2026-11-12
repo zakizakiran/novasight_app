@@ -1,6 +1,9 @@
-// ignore_for_file: constant_identifier_names
 import 'package:get/get.dart';
 
+import '../modules/add_chapter/bindings/add_chapter_binding.dart';
+import '../modules/add_chapter/views/add_chapter_view.dart';
+import '../modules/add_loading_chapter/bindings/add_loading_chapter_binding.dart';
+import '../modules/add_loading_chapter/views/add_loading_chapter_view.dart';
 import '../modules/auth/create_class/bindings/create_class_binding.dart';
 import '../modules/auth/create_class/views/create_class_view.dart';
 import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
@@ -63,6 +66,8 @@ import '../modules/subject/bindings/subject_binding.dart';
 import '../modules/subject/views/subject_view.dart';
 import '../modules/teacher-dashboard/bindings/teacher_dashboard_binding.dart';
 import '../modules/teacher-dashboard/views/teacher_dashboard_view.dart';
+
+// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -243,6 +248,16 @@ class AppPages {
       name: _Paths.EXAM_TEACHER_STUDENT_PROGRESS_DETAIL,
       page: () => const ExamTeacherStudentProgressDetailView(),
       binding: ExamTeacherStudentProgressDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_CHAPTER,
+      page: () => const AddChapterView(),
+      binding: AddChapterBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_LOADING_CHAPTER,
+      page: () => const AddLoadingChapterView(),
+      binding: AddLoadingChapterBinding(),
     ),
   ];
 }

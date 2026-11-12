@@ -160,7 +160,7 @@ class SelectWidget extends StatelessWidget {
                 )
               else
                 Text(
-                  isImage ? context.l10n.selectToRevisionAI : context.l10n.selectToRevisionAI,
+                  isImage ? context.l10n.selectToRevisionAI : context.l10n.directEdit,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                         color: ColorConstant.textGreyColor,

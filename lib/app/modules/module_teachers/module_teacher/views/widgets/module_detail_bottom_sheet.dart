@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/Dimens.dart';
+import 'package:lydera_app/app/core/args/add_chapter_args.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/utils/date_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/data/models/teacher_model.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
 import '../../controllers/module_teacher_controller.dart';
 
 class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
@@ -239,6 +241,31 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
                       },
                     );
                   }),
+                  const SizedBox(height: Dimens.spaceSmallPadding),
+                  Obx(() {
+                    final chapters = controller.chaptersJobs;
+                    if (!controller.isLoadingDetail.value && chapters.isNotEmpty) {
+                      return _buildTrackedChapter(chapters);
+                    }
+                    return const SizedBox.shrink();
+                  }),
+                  const SizedBox(height: Dimens.spaceBigPadding),
+                  Obx(() {
+                    if (!controller.isLoadingDetail.value) {
+                      return CommonButtonWidget(
+                        buttonName: context.l10n.addChapter,
+                        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        buttonWidth: double.infinity,
+                        onPressed: () {
+                          Get.toNamed(Routes.ADD_CHAPTER, arguments: AddChapterArgs(module: controller.selectedModuleDetail.value!, onChapterAdded: controller.addChapter));
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
                 ],
               ),
             ),
@@ -313,6 +340,206 @@ class ModuleDetailBottomSheet extends GetView<ModuleTeacherController> {
           }),
         ],
       ),
+    );
+  }
+
+  Widget _buildTrackedChapter(List<TeacherChapterSummaryModel> chapters){
+    return ListView.separated(
+      itemCount: chapters.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      separatorBuilder: (context, index) =>
+      const SizedBox(height: Dimens.spaceSmallPadding),
+      itemBuilder: (context, index) {
+        final chapter = chapters[index];
+        final job = chapter.job!;
+        return InkWell(
+          onTap: () {
+            if(chapter.needsReview){
+              controller.showChapterDetailModal(
+                context,
+                chapter.id,
+              );
+            }
+            if(job.isInProgress){
+              Get.toNamed(Routes.ADD_LOADING_CHAPTER, arguments: job.id);
+            }
+          },
+          borderRadius: BorderRadius.circular(Dimens.radius),
+          child: Container(
+            padding: const EdgeInsets.all(Dimens.spacePadding),
+            decoration: BoxDecoration(
+              color: ColorConstant.white,
+              borderRadius:
+              BorderRadius.circular(Dimens.radius),
+              border: Border.all(
+                color: ColorConstant.borderBlueGrey,
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: ColorConstant.primary.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+
+                  child: Center(
+                    child: Text(
+                      "${job.id}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.primary,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        chapter.title ?? '',
+                        style: Theme.of(context).textTheme.titleSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Obx(() {
+                  final isDone = job.isDone;
+                  final isFailed = job.isFailed;
+                  final progInt = job.progress.value.toInt();
+
+                  if (isDone) {
+                    final isReviewed = job.isReviewed.value;
+                    if (!isReviewed) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.amber.shade50,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.amber.shade300),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.visibility_outlined,
+                              size: 14,
+                              color: Colors.amber.shade900,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              context.l10n.needsReview,
+                              style: TextStyle(
+                                color: Colors.amber.shade900,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.green.shade200),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.check_circle_rounded,
+                            size: 14,
+                            color: Colors.green.shade700,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            context.l10n.reviewed,
+                            style: TextStyle(
+                              color: Colors.green.shade700,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (isFailed) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.red.shade200),
+                      ),
+                      child: Text(
+                        context.l10n.failed,
+                        style: TextStyle(
+                          color: Colors.red.shade700,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.blue.shade200),
+                    ),
+                    child: Text(
+                      context.l10n.processingProgress(progInt),
+                      style: TextStyle(
+                        color: Colors.blue.shade700,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                }),
+                const SizedBox(width: 6),
+                const Icon(
+                  Icons.chevron_right,
+                  size: 20,
+                  color: ColorConstant.textGreyColor,
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
