@@ -209,6 +209,19 @@ class QuizRequestStudentResponse {
 
   bool get isPublished => statusPublished.toLowerCase() == 'publish';
   bool get isDone => progress?.isDone ?? false;
+
+  /// Sisa kesempatan mengerjakan. `max_retry` adalah total percobaan.
+  int get remainingAttempts {
+    final remaining = maxRetry - (progress?.attemptCount ?? 0);
+    return remaining < 0 ? 0 : remaining;
+  }
+
+  /// Ujian boleh diulang jika sudah selesai, masih ada sisa percobaan,
+  /// dan belum melewati `end_time`.
+  bool canRetryAt(DateTime now) =>
+      isDone && remainingAttempts > 0 && now.isBefore(endTime);
+
+  bool get canRetry => canRetryAt(DateTime.now());
 }
 
 class QuestionOptionResponse {

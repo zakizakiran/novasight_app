@@ -72,6 +72,11 @@ class ExamActiveController extends GetxController {
   Timer? _countdownTimer;
   int _remainingSeconds = 45 * 60;
 
+  /// True jika halaman ini membuka percobaan baru dari ujian yang sudah
+  /// selesai (tombol "Ulang Ujian"). Event INIT dari server masih membawa
+  /// pilihan jawaban percobaan sebelumnya, jadi pilihan itu tidak dipulihkan.
+  bool _isNewAttempt = false;
+
   bool get isAllAnswered => questions.every((q) => q.selectedOptionId != null);
 
   @override
@@ -94,6 +99,8 @@ class ExamActiveController extends GetxController {
       }
     } else if (args is QuizRequestStudentResponse) {
       quizId.value = args.id;
+      // Membuka lagi ujian yang sudah selesai berarti memulai percobaan baru.
+      _isNewAttempt = args.isDone;
       if (args.maxDurationMinutes > 0) {
         durationMinutes.value = args.maxDurationMinutes;
       }
@@ -178,10 +185,19 @@ class ExamActiveController extends GetxController {
               }
             }
             if (event.questions.isNotEmpty) {
+              // Pada percobaan baru, hanya pilihan yang dibuat di halaman ini
+              // yang ditampilkan, termasuk saat INIT dikirim ulang lewat
+              // tombol "Coba Lagi".
+              final optionsPickedHere = {
+                for (final q in questions) q.id: q.selectedOptionId,
+              };
               questions.value = event.questions.map((q) {
+                final id = q.id.toString();
                 return ExamQuestionModel(
-                  id: q.id.toString(),
-                  selectedOptionId: q.answer?.selectedOption,
+                  id: id,
+                  selectedOptionId: _isNewAttempt
+                      ? optionsPickedHere[id]
+                      : q.answer?.selectedOption,
                   stimulus: q.stimulus,
                   questionText: q.questionText,
                   options: q.options.map((opt) {

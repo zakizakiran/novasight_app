@@ -530,6 +530,18 @@
     }
   },
   "startExamButton": "Start Exam",
+  "retryExamButton": "Retry Exam",
+  "@retryExamButton": {
+    "description": "Button on a completed exam card to start another attempt"
+  },
+  "retryExamConfirmTitle": "Retry Exam?",
+  "retryExamConfirmDesc": "You have {remaining} of {max} attempts left. Start the exam again now?",
+  "@retryExamConfirmDesc": {
+    "placeholders": {
+      "remaining": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
   "submitExamConfirmTitle": "Are you sure you want to submit now?",
   "submitExamConfirmDesc": "Submitted answers cannot be changed.",
   "sendButton": "Submit",

@@ -1004,6 +1004,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startExamButton => 'Start Exam';
 
   @override
+  String get retryExamButton => 'Retry Exam';
+
+  @override
+  String get retryExamConfirmTitle => 'Retry Exam?';
+
+  @override
+  String retryExamConfirmDesc(int remaining, int max) {
+    return 'You have $remaining of $max attempts left. Start the exam again now?';
+  }
+
+  @override
   String get submitExamConfirmTitle => 'Are you sure you want to submit now?';
 
   @override

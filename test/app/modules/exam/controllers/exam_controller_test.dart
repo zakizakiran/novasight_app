@@ -147,5 +147,45 @@ void main() {
       expect(controller.errorMessage.value, equals('Gagal mengambil soal ujian'));
       expect(controller.filteredExams, isNotEmpty);
     });
+
+    test('filteredExams sets canRetry from max_retry and attempt_count', () {
+      QuizRequestStudentResponse doneQuiz({
+        required int id,
+        required int maxRetry,
+        required int attemptCount,
+      }) {
+        return QuizRequestStudentResponse(
+          id: id,
+          moduleId: 12,
+          title: 'Ujian $id',
+          statusPublished: 'publish',
+          maxDurationMinutes: 60,
+          maxRetry: maxRetry,
+          startTime: DateTime.now().subtract(const Duration(days: 1)),
+          endTime: DateTime.now().add(const Duration(days: 7)),
+          module: ModuleQuizResponse(id: 12, title: 'Modul', description: ''),
+          progress: QuizRequestStudentProgressResponse(
+            isDone: true,
+            attemptCount: attemptCount,
+            score: 80,
+          ),
+        );
+      }
+
+      final controller = ExamController(
+        studentRepository: mockStudentRepo,
+        classroomRepository: mockClassroomRepo,
+        storageService: mockStorage,
+      );
+      controller.quizzes.value = [
+        doneQuiz(id: 1, maxRetry: 2, attemptCount: 1),
+        doneQuiz(id: 2, maxRetry: 1, attemptCount: 1),
+      ];
+
+      final exams = controller.filteredExams;
+
+      expect(exams.firstWhere((e) => e.id == '1').canRetry, isTrue);
+      expect(exams.firstWhere((e) => e.id == '2').canRetry, isFalse);
+    });
   });
 }

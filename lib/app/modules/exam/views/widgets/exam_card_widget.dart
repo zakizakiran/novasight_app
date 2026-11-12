@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/common/common_card_widget.dart';
 import 'package:lydera_app/app/core/Dimens.dart';
 import 'package:lydera_app/app/core/styles/border_style.dart';
@@ -13,11 +14,21 @@ class ExamCardWidget extends StatelessWidget {
   final ExamModel exam;
   final VoidCallback onDetail;
 
-  const ExamCardWidget({super.key, required this.exam, required this.onDetail});
+  /// Dipanggil saat tombol "Ulang Ujian" ditekan. Tombol hanya tampil jika
+  /// [ExamModel.canRetry] bernilai true dan callback ini tidak null.
+  final VoidCallback? onRetry;
+
+  const ExamCardWidget({
+    super.key,
+    required this.exam,
+    required this.onDetail,
+    this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isDone = exam.status == PublicStatus.done;
+    final showRetry = exam.canRetry && onRetry != null;
 
     return Semantics(
       button: true,
@@ -152,6 +163,21 @@ class ExamCardWidget extends StatelessWidget {
                   ),
                 ],
               ),
+              if (showRetry) ...[
+                const SizedBox(height: Dimens.spaceSmallPadding),
+                SizedBox(
+                  width: double.infinity,
+                  child: CommonButtonWidget(
+                    buttonName: context.l10n.retryExamButton,
+                    size: ButtonSize.small,
+                    buttonColor: ColorConstant.background,
+                    textColor: ColorConstant.primary,
+                    boxShadows: const [],
+                    border: const BorderSide(color: ColorConstant.primary),
+                    onPressed: onRetry!,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

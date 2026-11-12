@@ -10,6 +10,7 @@ class ExamModel {
   final String score;
   final PublicStatus status;
   final QuizRequestStudentResponse? rawQuiz;
+  final bool canRetry;
 
   ExamModel({
     required this.id,
@@ -19,5 +20,6 @@ class ExamModel {
     required this.score,
     required this.status,
     this.rawQuiz,
+    this.canRetry = false,
   });
 }

@@ -1006,6 +1006,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get startExamButton => 'Mulai Ujian';
 
   @override
+  String get retryExamButton => 'Ulang Ujian';
+
+  @override
+  String get retryExamConfirmTitle => 'Ulang Ujian?';
+
+  @override
+  String retryExamConfirmDesc(int remaining, int max) {
+    return 'Kamu masih punya $remaining dari $max kesempatan. Mulai ulang ujian sekarang?';
+  }
+
+  @override
   String get submitExamConfirmTitle =>
       'Apakah Kamu Yakin Mengumpulkan Sekarang?';
 

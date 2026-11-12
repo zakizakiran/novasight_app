@@ -63,8 +63,12 @@ class ExamView extends GetView<ExamController> {
                         itemCount: exams.length,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, i) {
+                          final rawQuiz = exams[i].rawQuiz;
                           return ExamCardWidget(
                             exam: exams[i],
+                            onRetry: rawQuiz == null
+                                ? null
+                                : () => controller.confirmRetryExam(rawQuiz),
                             onDetail: () async {
                               final examItem = exams[i];
                               if (examItem.status == PublicStatus.done) {

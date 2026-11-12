@@ -1,10 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
+import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/errors/api_exception.dart';
+import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
+import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
+import 'package:lydera_app/app/core/utils/dialog_helper.dart';
+import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/module_status.dart';
 import 'package:lydera_app/app/data/models/student_quiz_model.dart';
 import 'package:lydera_app/app/data/repositories/classroom_repository.dart';
 import 'package:lydera_app/app/data/repositories/student_repository.dart';
 import 'package:lydera_app/app/data/services/local/storage_service.dart';
+import 'package:lydera_app/app/routes/app_pages.dart';
+import 'package:lydera_app/l10n/app_localizations.dart';
 
 import '../../../data/models/exam_model.dart';
 
@@ -52,6 +62,7 @@ class ExamController extends GetxController {
               : '-',
           status: isDone ? PublicStatus.done : PublicStatus.notDone,
           rawQuiz: q,
+          canRetry: q.canRetry,
         );
       }).toList();
 
@@ -109,6 +120,63 @@ class ExamController extends GetxController {
 
   void onChangeStatus(PublicStatus status) {
     selectedStatus.value = status;
+    onLoad();
+  }
+
+  /// Menampilkan dialog konfirmasi sebelum mengulang ujian, agar jatah
+  /// percobaan tidak terpakai karena salah tekan.
+  Future<void> confirmRetryExam(QuizRequestStudentResponse quiz) async {
+    final l10n =
+        Get.context?.l10n ?? lookupAppLocalizations(const Locale('id', 'ID'));
+
+    // Dialog ditutup lewat Navigator milik dialog, bukan Get.back(), karena
+    // Get.back() menutup snackbar terlebih dulu jika ada yang sedang tampil.
+    final confirmed = await DialogHelper.show<bool>(
+      icon: SvgPicture.asset(
+        SvgConstant.iconInformation,
+        height: Dimens.iconBigSize,
+        width: Dimens.iconBigSize,
+      ),
+      title: l10n.retryExamConfirmTitle,
+      description: l10n.retryExamConfirmDesc(
+        quiz.remainingAttempts,
+        quiz.maxRetry,
+      ),
+      actions: Builder(
+        builder: (dialogContext) => Row(
+          children: [
+            Expanded(
+              child: CommonButtonWidget(
+                buttonName: l10n.cancel,
+                buttonColor: ColorConstant.background,
+                textColor: ColorConstant.textDarkGreyColor,
+                boxShadows: const [],
+                border: const BorderSide(color: ColorConstant.borderNormalGrey),
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+              ),
+            ),
+            const SizedBox(width: Dimens.innerPadding),
+            Expanded(
+              child: CommonButtonWidget(
+                buttonName: l10n.retryExamButton,
+                boxShadows: const [],
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (confirmed == true) {
+      await retryExam(quiz);
+    }
+  }
+
+  /// Membuka halaman pengerjaan ujian. ExamActiveController memanggil
+  /// POST /api/students/quizzes/{id}/start saat halaman dibuka.
+  Future<void> retryExam(QuizRequestStudentResponse quiz) async {
+    await Get.toNamed(Routes.EXAM_ACTIVE, arguments: quiz);
     onLoad();
   }
 

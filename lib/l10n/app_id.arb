@@ -544,6 +544,15 @@
     }
   },
   "startExamButton": "Mulai Ujian",
+  "retryExamButton": "Ulang Ujian",
+  "retryExamConfirmTitle": "Ulang Ujian?",
+  "retryExamConfirmDesc": "Kamu masih punya {remaining} dari {max} kesempatan. Mulai ulang ujian sekarang?",
+  "@retryExamConfirmDesc": {
+    "placeholders": {
+      "remaining": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
   "submitExamConfirmTitle": "Apakah Kamu Yakin Mengumpulkan Sekarang?",
   "submitExamConfirmDesc": "Jawaban yang sudah dikirim tidak bisa diubah.",
   "sendButton": "Kirim",

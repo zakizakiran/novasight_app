@@ -1934,6 +1934,24 @@ abstract class AppLocalizations {
   /// **'Start Exam'**
   String get startExamButton;
 
+  /// Button on a completed exam card to start another attempt
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Exam'**
+  String get retryExamButton;
+
+  /// No description provided for @retryExamConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Exam?'**
+  String get retryExamConfirmTitle;
+
+  /// No description provided for @retryExamConfirmDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {remaining} of {max} attempts left. Start the exam again now?'**
+  String retryExamConfirmDesc(int remaining, int max);
+
   /// No description provided for @submitExamConfirmTitle.
   ///
   /// In en, this message translates to:
