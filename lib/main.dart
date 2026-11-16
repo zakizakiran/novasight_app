@@ -41,7 +41,13 @@ void main() async {
             data: MediaQuery.of(
               context,
             ).copyWith(textScaler: TextScaler.linear(systemScale * appScale)),
-            child: child ?? const SizedBox.shrink(),
+            child: ColoredBox(
+              color: Colors.white,
+              child: SafeArea(
+                top: false,
+                child: child ?? const SizedBox.shrink(),
+              ),
+            ),
           );
         });
       },
