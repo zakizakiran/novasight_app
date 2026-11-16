@@ -127,7 +127,7 @@ class ExamHeaderWidget extends StatelessWidget {
 
         const SizedBox(height: Dimens.spaceXs),
         Text(
-          'Maksimal Pengerjaan : ${maxRetry}',
+          'Maksimal Pengerjaan : $maxRetry',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: ColorConstant.textGreyColor,
           ),

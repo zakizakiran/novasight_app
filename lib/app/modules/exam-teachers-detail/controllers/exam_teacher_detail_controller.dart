@@ -143,7 +143,6 @@ class ExamTeacherDetailController extends GetxController {
   void _parseArguments() {
     final args = Get.arguments;
     if (args is QuizRequestTeacherModel) {
-      print('Start Time : ${args.startTime}');
       quizId.value = args.id;
       titleController.text = args.title;
       title.value = args.title;
@@ -206,7 +205,7 @@ class ExamTeacherDetailController extends GetxController {
       titleController.text = detail.title;
       title.value = detail.title;
       startTime.value = detail.startTime;
-      endTime.value = detail.startTime;
+      endTime.value = detail.endTime;
       maxRetry.value = detail.maxRetry;
       maxDurationMinutes.value = detail.maxDurationMinutes;
       numberOfQuestions.value = detail.questionCounts;

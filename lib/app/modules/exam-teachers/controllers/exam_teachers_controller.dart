@@ -118,6 +118,11 @@ class ExamTeachersController extends GetxController {
         classroomId: classroomId,
       );
 
+      for(final i in result){
+        print('Title : ${i.title}');
+        print('Start Time : ${i.startTime}');
+        print('End Time : ${i.endTime}');
+      }
       _sortNewestFirst(result);
       _masterQuizzes.clear();
       _masterQuizzes.addAll(result);
