@@ -240,8 +240,10 @@ class SubjectView extends GetView<SubjectController> {
     final mode = controller.selectedMode.value;
 
     if (mode == TableMode.sentence) {
-      return _buildSentenceSemantics(
-        semantic: semantic,
+      return Semantics(
+        container: true,
+        label: MathSemanticSerializer.toAccessibleText(semantic),
+        excludeSemantics: true,
         child: CommonHtmlTableRenderer(
           html: html,
           semanticLabel: '',
@@ -274,8 +276,11 @@ class SubjectView extends GetView<SubjectController> {
     required String semantic,
     required String imageUrl,
   }) {
-    return _buildSentenceSemantics(
-      semantic: semantic,
+    return Semantics(
+      image: true,
+      container: true,
+      label: MathSemanticSerializer.toAccessibleText(semantic),
+      excludeSemantics: true,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimens.radius),
         child: Image.network(
@@ -305,39 +310,6 @@ class SubjectView extends GetView<SubjectController> {
             fontWeight: FontWeight.w500
         )
       ),
-    );
-  }
-
-  Widget _buildSentenceSemantics({
-    required String semantic,
-    required Widget child,
-  }) {
-    final sentences = semantic
-        .split(RegExp(r'(?<=[.!?])\s+'))
-        .map((sentence) => sentence.trim())
-        .where((sentence) => sentence.isNotEmpty)
-        .toList();
-
-    if (sentences.isEmpty) {
-      return child;
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ExcludeSemantics(child: child),
-        ...sentences.map(
-              (sentence) => Semantics(
-            container: true,
-            label: MathSemanticSerializer.toAccessibleText(sentence),
-            child: const SizedBox(
-              width: 1,
-              height: 1,
-              child: SizedBox.shrink(),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -139,24 +139,17 @@ class StimulusWidget extends StatelessWidget {
       BuildContext context, {
         required TableSpecification specification,
       }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ExcludeSemantics(
-          child: _buildDataTable(
-            context,
-            specification: specification,
-            semanticColumns: const [],
-            semanticRows: const [],
-            excludeTableSemantics: true,
-          ),
-        ),
-
-        const SizedBox(height: 8),
-        _buildSentenceSemantics(
-          semantic: stimulus.readableText,
-        ),
-      ],
+    return Semantics(
+      container: true,
+      label: MathSemanticSerializer.toAccessibleText(stimulus.readableText),
+      excludeSemantics: true,
+      child: _buildDataTable(
+        context,
+        specification: specification,
+        semanticColumns: const [],
+        semanticRows: const [],
+        excludeTableSemantics: true,
+      ),
     );
   }
 
@@ -277,34 +270,6 @@ class StimulusWidget extends StatelessWidget {
     }
 
     return dataTable;
-  }
-
-  Widget _buildSentenceSemantics({
-    required String semantic,
-  }) {
-    final sentences = semantic
-        .split(RegExp(r'(?<=[.!?])\s+'))
-        .map((sentence) => sentence.trim())
-        .where((sentence) => sentence.isNotEmpty)
-        .toList();
-
-    if (sentences.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      children: sentences.map((sentence) {
-        return Semantics(
-          container: true,
-          label: MathSemanticSerializer.toAccessibleText(sentence),
-          excludeSemantics: true,
-          child: const SizedBox(
-            width: 1,
-            height: 1,
-          ),
-        );
-      }).toList(),
-    );
   }
 
   Widget _buildLatexText(
