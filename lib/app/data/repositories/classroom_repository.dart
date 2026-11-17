@@ -48,4 +48,13 @@ class ClassroomRepository {
     final response = await classroomProvider.getClassrooms();
     return response.data;
   }
+
+  Future<ClassroomResponseModel?> getByIdClassrooms(int id) async {
+    final response = await classroomProvider.getClassroomById(id);
+    return response.data;
+  }
+
+  Future<void> deleteByIdClassrooms(int id) async {
+    await classroomProvider.deleteClassroomById(id);
+  }
 }

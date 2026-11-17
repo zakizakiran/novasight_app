@@ -54,7 +54,7 @@ class JustificationCard extends StatelessWidget {
             const SizedBox(height: 12),
             ...List.generate(question.userStep.length, (index) {
               final step = question.userStep[index];
-              final isErrorStep = step.steps == question.errorStepIndex;
+              final isErrorStep = step.steps == question.stepError?.divergenceStep;
               final nodes = parser.parse(step.text);
               final semantic = serializer.serializeNodes(nodes);
               return Semantics(

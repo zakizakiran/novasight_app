@@ -189,11 +189,23 @@ class CreateModuleController extends GetxController {
   Future<int?> _resolveClassroomId() async {
     if (classroomRepository == null) return null;
     try {
+      final cacheId = storageService?.getClassId();
+      if (cacheId != null) {
+        try {
+          final classroom = await classroomRepository!.getByIdClassrooms(cacheId);
+          if (classroom != null) return classroom.id;
+        } catch (_) {
+        }
+      }
+
       final list = await classroomRepository!.getClassrooms();
       if (list.isEmpty) return null;
+
       final cachedCode = storageService?.getClassCode();
       final selected =
           list.firstWhereOrNull((c) => c.code == cachedCode) ?? list.first;
+
+      await storageService?.writeClassId(selected.id);
       return selected.id;
     } catch (e) {
       debugPrint('Error resolving classroom id: $e');

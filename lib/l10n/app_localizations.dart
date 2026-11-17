@@ -2138,6 +2138,24 @@ abstract class AppLocalizations {
   /// **'Crucial Step'**
   String get crucialStep;
 
+  /// No description provided for @addClassroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Classroom'**
+  String get addClassroom;
+
+  /// No description provided for @changeClassroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Class'**
+  String get changeClassroom;
+
+  /// No description provided for @deleteClassroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Class'**
+  String get deleteClassroom;
+
   /// No description provided for @noConversationsYet.
   ///
   /// In en, this message translates to:

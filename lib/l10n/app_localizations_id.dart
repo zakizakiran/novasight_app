@@ -1120,6 +1120,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get crucialStep => 'Langkah Kunci';
 
   @override
+  String get addClassroom => 'Tambah Kelas';
+
+  @override
+  String get changeClassroom => 'Ubah Kelas';
+
+  @override
+  String get deleteClassroom => 'Hapus Kelas';
+
+  @override
   String get noConversationsYet => 'Belum Ada Percakapan';
 
   @override

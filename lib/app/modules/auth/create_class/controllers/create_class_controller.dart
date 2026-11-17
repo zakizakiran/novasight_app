@@ -38,12 +38,12 @@ class CreateClassController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadInitialData();
+    loadInitialData();
   }
 
-  Future<void> retryLoadInitialData() => _loadInitialData();
+  Future<void> retryLoadInitialData() => loadInitialData();
 
-  Future<void> _loadInitialData() async {
+  Future<void> loadInitialData() async {
     try {
       isLoadingData.value = true;
       errorMessage.value = '';

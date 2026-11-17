@@ -6,7 +6,7 @@ import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/data/model/module_teacher_model.dart';
 import '../../../../../core/Dimens.dart';
-import '../../../../../core/utils/correction_controller.dart';
+import '../../../../../core/abstract/correction_controller.dart';
 
 class SelectWidget extends StatelessWidget {
   final SelectChunkController controller;

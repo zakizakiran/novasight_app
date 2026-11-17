@@ -45,14 +45,14 @@ class ProfileStudentWidget extends StatelessWidget {
       return Column(
         spacing: Dimens.spacePadding,
         children: [
-          _buildField(
-            context: context,
-            icon: Icons.person,
-            title: l10n.studentId,
-            description: nisText,
-            spellDigits: true,
-          ),
-          const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
+          // _buildField(
+          //   context: context,
+          //   icon: Icons.person,
+          //   title: l10n.studentId,
+          //   description: nisText,
+          //   spellDigits: true,
+          // ),
+          // const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
           _buildField(
             context: context,
             icon: Icons.school,

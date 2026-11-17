@@ -8,7 +8,7 @@ import 'package:lydera_app/app/core/dimens.dart';
 import 'package:lydera_app/app/core/errors/api_exception.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
 import 'package:lydera_app/app/core/styles/svg/svg_constant.dart';
-import 'package:lydera_app/app/core/utils/correction_controller.dart';
+import 'package:lydera_app/app/core/abstract/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/dialog_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/core/utils/show_modal_bottom_sheet_helper.dart';
@@ -290,7 +290,7 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
   }
 
   Future<int?> _resolveClassroomId({bool forceRefresh = false}) async {
-    if (!forceRefresh && _cachedClassroomId != null) return _cachedClassroomId;
+    // if (!forceRefresh && _cachedClassroomId != null) return _cachedClassroomId;
     if (classroomRepository == null) return null;
     final list = await classroomRepository!.getClassrooms();
     if (list.isEmpty) return null;
@@ -351,7 +351,7 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
     try {
       if (teacherRepository != null) {
         final classroomId = await _resolveClassroomId();
-
+        print('Classroom id $classroomId');
         if (classroomId != null) {
           final result = await teacherRepository!.getModules(
             classroomId: classroomId,
