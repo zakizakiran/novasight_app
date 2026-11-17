@@ -105,7 +105,9 @@ class ExamTeacherStudentProgressDetailController extends GetxController {
                   : [],
               errorStepIndex: item.divergenceStep,
               // errorExplanation: item.justification?.diagnosis,
-              errorExplanation: item.conclusion,
+              isEvaluationOnProcess: item.isEvaluationOnProcess,
+              isEvaluationFailed: item.isEvaluationFailed,
+              conclusion: item.conclusion,
               // correction: item.justification?.personalizedJustification,
               correction: item.importantNote?.join('. ')
           );

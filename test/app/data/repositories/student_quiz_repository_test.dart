@@ -168,6 +168,9 @@ void main() {
             diagnosis: 'Pemahaman konsep respirasi seluler sudah sangat baik.',
             personalizedJustification: 'Jawaban Anda konsisten dengan konsep.',
           ),
+          conclusion: 'kesimpulan',
+          isEvaluationFailed: false,
+          isEvaluationOnProcess: false,
         ),
       ];
 

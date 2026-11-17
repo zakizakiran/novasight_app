@@ -594,6 +594,7 @@
       }
     }
   },
+  "crucialStep": "Crucial Step",
   "noConversationsYet": "No Conversations Yet",
   "startNewConversation": "Start New Conversation",
   "emptyConversationDesc": "Start asking math topics or discussing questions by tapping the (+) button above!",

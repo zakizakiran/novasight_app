@@ -20,46 +20,49 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 230 + MediaQuery.of(context).padding.top,
-                      decoration: const BoxDecoration(
-                        color: ColorConstant.primary,
+              child: RefreshIndicator(
+                onRefresh: controller.refreshDashboard,
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 230 + MediaQuery.of(context).padding.top,
+                        decoration: const BoxDecoration(
+                          color: ColorConstant.primary,
+                        ),
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).padding.top + 20,
-                        ),
-                        _buildHeaderContent(context),
-                        const SizedBox(height: 24),
-                        _buildStatsRow(context),
-                        const SizedBox(height: 16),
-                        _buildClassCodeCard(context),
-                        const SizedBox(height: 24),
-                        _buildSectionTitle(
-                          context,
-                          context.l10n.newestModules,
-                          context.l10n.seeAll,
-                          onActionTap: () => controller.onSeeAllModule(),
-                        ),
-                        _buildModuleList(context),
-                        const SizedBox(height: 24),
-                        _buildSectionTitle(
-                          context,
-                          context.l10n.newestExams,
-                          context.l10n.seeAll,
-                          onActionTap: () => controller.onSeeAllExam()
-                        ),
-                        _buildExamList(context),
-                        const SizedBox(height: 32),
-                      ],
-                    ),
-                  ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).padding.top + 20,
+                          ),
+                          _buildHeaderContent(context),
+                          const SizedBox(height: 24),
+                          _buildStatsRow(context),
+                          const SizedBox(height: 16),
+                          _buildClassCodeCard(context),
+                          const SizedBox(height: 24),
+                          _buildSectionTitle(
+                            context,
+                            context.l10n.newestModules,
+                            context.l10n.seeAll,
+                            onActionTap: () => controller.onSeeAllModule(),
+                          ),
+                          _buildModuleList(context),
+                          const SizedBox(height: 24),
+                          _buildSectionTitle(
+                            context,
+                            context.l10n.newestExams,
+                            context.l10n.seeAll,
+                            onActionTap: () => controller.onSeeAllExam()
+                          ),
+                          _buildExamList(context),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -13,8 +13,10 @@ class ExamReviewQuestion {
   final List<String> explanationSteps;
   final List<StudentStep> userStep;
   final int? errorStepIndex;
-  final String? errorExplanation;
   final String? correction;
+  final String conclusion;
+  final bool isEvaluationFailed;
+  final bool isEvaluationOnProcess;
 
   ExamReviewQuestion({
     required this.id,
@@ -27,9 +29,11 @@ class ExamReviewQuestion {
     required this.explanationSteps,
     required this.userStep,
     this.errorStepIndex,
-    this.errorExplanation,
     this.correction,
     this.stimulus,
     this.stepError,
+    required this.conclusion,
+    required this.isEvaluationFailed,
+    required this.isEvaluationOnProcess,
   });
 }

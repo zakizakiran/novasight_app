@@ -1113,6 +1113,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get crucialStep => 'Crucial Step';
+
+  @override
   String get noConversationsYet => 'No Conversations Yet';
 
   @override

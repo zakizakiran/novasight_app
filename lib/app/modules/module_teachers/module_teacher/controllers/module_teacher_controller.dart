@@ -603,6 +603,9 @@ class ModuleTeacherController extends GetxController implements CorrectionAICont
         buttonName: context.l10n.confirm,
         buttonColor: ColorConstant.redColor,
         onPressed: () {
+          if(Get.isDialogOpen == true){
+            Get.back();
+          }
           Get.back();
           onDeleteModule(module);
         },

@@ -764,12 +764,14 @@ class QuizResultItem {
   final String correctOption;
   final List<QuestionOptionResponse> options;
   final bool? isCorrect;
+  final bool isEvaluationFailed;
+  final bool isEvaluationOnProcess;
   final int? divergenceStep;
   final StepError? stepError;
   final QuestionStimulusResponse? stimulus;
   final SoalJustification? justification;
   final List<String>? importantNote;
-  final String? conclusion;
+  final String conclusion;
   final List<StudentStep> studentSteps;
 
   QuizResultItem({
@@ -781,9 +783,12 @@ class QuizResultItem {
     required this.correctOption,
     this.isCorrect,
     this.justification,
-    this.importantNote, this.conclusion,
+    this.importantNote,
     this.stimulus, this.divergenceStep,
-    this.stepError
+    this.stepError,
+    required this.conclusion,
+    required this.isEvaluationFailed,
+    required this.isEvaluationOnProcess
   });
 
   factory QuizResultItem.fromJson(Map<String, dynamic> json) {
@@ -815,6 +820,8 @@ class QuizResultItem {
           .toList(),
       conclusion: json['kesimpulan'],
       isCorrect: json['is_correct'] as bool?,
+      isEvaluationFailed: json['evaluasi_gagal'],
+      isEvaluationOnProcess: json['evaluasi_diproses'],
       // justification: json['justification'] != null &&
       //         json['justification'] is Map<String, dynamic>
       //     ? SoalJustification.fromJson(

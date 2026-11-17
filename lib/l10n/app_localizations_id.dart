@@ -1117,6 +1117,9 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get crucialStep => 'Langkah Kunci';
+
+  @override
   String get noConversationsYet => 'Belum Ada Percakapan';
 
   @override

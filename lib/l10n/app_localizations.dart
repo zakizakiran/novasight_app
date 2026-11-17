@@ -2132,6 +2132,12 @@ abstract class AppLocalizations {
   /// **'Questions {start} - {end}'**
   String questionsRange(int start, int end);
 
+  /// No description provided for @crucialStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Crucial Step'**
+  String get crucialStep;
+
   /// No description provided for @noConversationsYet.
   ///
   /// In en, this message translates to:

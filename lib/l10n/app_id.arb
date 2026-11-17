@@ -592,6 +592,7 @@
   "discussionSteps": "Langkah Pembahasan:",
   "saveStep": "Simpan Langkah",
   "workingSteps": "Langkah Pengerjaan",
+  "crucialStep": "Langkah Kunci",
   "errorStep":"Letak Kesalahan",
   "noConversationsYet": "Belum Ada Percakapan",
   "startNewConversation": "Mulai Percakapan Baru",
@@ -601,3 +602,4 @@
   "suggestedFollowUpQuestions": "Pertanyaan Lanjutan yang Disarankan:",
   "askQuestionHint": "Tanya materi atau soal..."
 }
+

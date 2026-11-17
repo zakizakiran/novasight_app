@@ -33,6 +33,9 @@ void main() {
             QuestionOptionResponse(id: 1, label: 'A', opsiText: 'Opsi A'),
             QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
           ],
+          conclusion: 'kesimpulan',
+          isEvaluationFailed: false,
+          isEvaluationOnProcess: false,
         ),
         QuizResultItem(
           soalId: 102,
@@ -50,6 +53,9 @@ void main() {
             diagnosis: 'Salah perkalian',
             personalizedJustification: '5 * 5 = 25',
           ),
+          conclusion: 'kesimpulan',
+          isEvaluationFailed: false,
+          isEvaluationOnProcess: false,
         ),
       ];
 
@@ -115,6 +121,9 @@ void main() {
             QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
           ],
           isCorrect: true,
+          conclusion: 'kesimpulan',
+          isEvaluationFailed: false,
+          isEvaluationOnProcess: false,
         ),
         QuizResultItem(
           soalId: 2,
@@ -127,6 +136,9 @@ void main() {
             QuestionOptionResponse(id: 2, label: 'B', opsiText: 'Opsi B'),
           ],
           isCorrect: true,
+          conclusion: 'kesimpulan',
+          isEvaluationFailed: false,
+          isEvaluationOnProcess: false,
         ),
       ];
 
