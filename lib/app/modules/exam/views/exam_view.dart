@@ -59,36 +59,39 @@ class ExamView extends GetView<ExamController> {
                         );
                       }
 
-                      return ListView.separated(
-                        itemCount: exams.length,
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, i) {
-                          final rawQuiz = exams[i].rawQuiz;
-                          return ExamCardWidget(
-                            exam: exams[i],
-                            onRetry: rawQuiz == null
-                                ? null
-                                : () => controller.confirmRetryExam(rawQuiz),
-                            onDetail: () async {
-                              final examItem = exams[i];
-                              if (examItem.status == PublicStatus.done) {
-                                await Get.toNamed(
-                                  Routes.EXAM_REVIEW,
-                                  arguments: examItem.rawQuiz ?? int.tryParse(examItem.id) ?? examItem.id,
-                                );
-                              } else {
-                                await Get.toNamed(
-                                  Routes.EXAM_DETAIL,
-                                  arguments: examItem.rawQuiz ?? examItem,
-                                );
-                              }
-                              controller.onLoad();
-                            },
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(height: Dimens.spacePadding);
-                        },
+                      return RefreshIndicator(
+                        onRefresh: controller.onLoad,
+                        child: ListView.separated(
+                          itemCount: exams.length,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, i) {
+                            final rawQuiz = exams[i].rawQuiz;
+                            return ExamCardWidget(
+                              exam: exams[i],
+                              onRetry: rawQuiz == null
+                                  ? null
+                                  : () => controller.confirmRetryExam(rawQuiz),
+                              onDetail: () async {
+                                final examItem = exams[i];
+                                if (examItem.status == PublicStatus.done) {
+                                  await Get.toNamed(
+                                    Routes.EXAM_REVIEW,
+                                    arguments: examItem.rawQuiz ?? int.tryParse(examItem.id) ?? examItem.id,
+                                  );
+                                } else {
+                                  await Get.toNamed(
+                                    Routes.EXAM_DETAIL,
+                                    arguments: examItem.rawQuiz ?? examItem,
+                                  );
+                                }
+                                controller.onLoad();
+                              },
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(height: Dimens.spacePadding);
+                          },
+                        ),
                       );
                     }),
                   ),

@@ -75,7 +75,6 @@ class ExamReviewController extends GetxController {
 
           int totalQuestions = results.length;
           double scorePerQuestion = totalQuestions > 0 ? 100.0 / totalQuestions : 0.0;
-          print('Important Note : ${item.importantNote}');
           return ExamReviewQuestion(
             id: item.soalId,
             userStep: item.studentSteps,
@@ -92,7 +91,9 @@ class ExamReviewController extends GetxController {
                 : [],
             errorStepIndex: item.divergenceStep,
             // errorExplanation: item.justification?.diagnosis,
-            errorExplanation: item.conclusion,
+            conclusion: item.conclusion,
+            isEvaluationFailed: item.isEvaluationFailed,
+            isEvaluationOnProcess: item.isEvaluationOnProcess,
             // correction: item.justification?.personalizedJustification,
             correction: item.importantNote?.join('. ')
           );

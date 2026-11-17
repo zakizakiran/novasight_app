@@ -221,7 +221,7 @@ class AddChapterView extends GetView<AddChapterController> {
                   initialLabel: controller.isLoadingCp.value
                       ? context.l10n.loadingCompetency
                       : context.l10n.selectCompetency,
-                  itemLabel: (c) => c.cpText,
+                  itemLabel: (c) => c.domain,
                   onSelect: controller.onSelectCp,
                   isEnabled: !controller.isLoadingCp.value,
                 ),

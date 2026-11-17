@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:lydera_app/app/core/args/main_bar_args.dart';
 import 'package:lydera_app/app/core/args/module_result_args.dart';
-import 'package:lydera_app/app/core/utils/correction_controller.dart';
+import 'package:lydera_app/app/core/abstract/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/user_roles.dart';
 import 'package:lydera_app/app/data/repositories/teacher_repository.dart';
 import '../../../../core/utils/snackbar_helper.dart';

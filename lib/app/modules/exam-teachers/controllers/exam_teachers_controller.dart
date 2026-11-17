@@ -55,7 +55,7 @@ class ExamTeachersController extends GetxController {
   }
 
   Future<int?> _resolveClassroomId({bool forceRefresh = false}) async {
-    if (!forceRefresh && _cachedClassroomId != null) return _cachedClassroomId;
+    // if (!forceRefresh && _cachedClassroomId != null) return _cachedClassroomId;
     if (classroomRepository == null) return null;
     final list = await classroomRepository!.getClassrooms();
     if (list.isEmpty) return null;

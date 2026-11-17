@@ -449,27 +449,32 @@ class ExamTeacherDetailController extends GetxController {
         classroomId != null &&
         teacherRepository != null) {
       try {
-        await teacherRepository!.updateQuizStatus(
+        final result = await teacherRepository!.updateQuizStatus(
           quizId: currentQuizId,
           classroomId: classroomId,
           status: "draft",
         );
-      } catch (_) {}
+        if (Get.isRegistered<ExamTeachersController>()) {
+          Get.find<ExamTeachersController>().fetchQuizzes(showLoading: false);
+        }
+        if(result){
+          SnackbarHelper.showSuccess(
+            title: "Soal Ujian Berhasil Diubah",
+            message: "Soal ujian saat ini bersifat draft.",
+          );
+
+          Get.offNamedUntil(
+            Routes.MAIN_LAYOUT,
+            arguments: const MainBarArgs(role: UserRoles.guru, index: 2),
+                (route) => route.settings.name == Routes.MAIN_LAYOUT,
+          );
+        }
+      } catch (e) {
+        SnackbarHelper.showError(
+          title: "Soal Ujian Gagal Diubah",
+          message: e.toString(),
+        );
+      }
     }
-
-    if (Get.isRegistered<ExamTeachersController>()) {
-      Get.find<ExamTeachersController>().fetchQuizzes(showLoading: false);
-    }
-
-    SnackbarHelper.showSuccess(
-      title: "Soal Ujian Berhasil Diubah",
-      message: "Soal ujian saat ini bersifat draft.",
-    );
-
-    Get.offNamedUntil(
-      Routes.MAIN_LAYOUT,
-      arguments: const MainBarArgs(role: UserRoles.guru, index: 2),
-      (route) => route.settings.name == Routes.MAIN_LAYOUT,
-    );
   }
 }

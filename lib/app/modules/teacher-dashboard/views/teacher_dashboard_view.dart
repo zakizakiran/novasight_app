@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/core/utils/date_helper.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import '../../../common/common_card_widget.dart';
@@ -20,46 +21,49 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 230 + MediaQuery.of(context).padding.top,
-                      decoration: const BoxDecoration(
-                        color: ColorConstant.primary,
+              child: RefreshIndicator(
+                onRefresh: controller.refreshDashboard,
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 230 + MediaQuery.of(context).padding.top,
+                        decoration: const BoxDecoration(
+                          color: ColorConstant.primary,
+                        ),
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).padding.top + 20,
-                        ),
-                        _buildHeaderContent(context),
-                        const SizedBox(height: 24),
-                        _buildStatsRow(context),
-                        const SizedBox(height: 16),
-                        _buildClassCodeCard(context),
-                        const SizedBox(height: 24),
-                        _buildSectionTitle(
-                          context,
-                          context.l10n.newestModules,
-                          context.l10n.seeAll,
-                          onActionTap: () => controller.onSeeAllModule(),
-                        ),
-                        _buildModuleList(context),
-                        const SizedBox(height: 24),
-                        _buildSectionTitle(
-                          context,
-                          context.l10n.newestExams,
-                          context.l10n.seeAll,
-                          onActionTap: () => controller.onSeeAllExam()
-                        ),
-                        _buildExamList(context),
-                        const SizedBox(height: 32),
-                      ],
-                    ),
-                  ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).padding.top + 20,
+                          ),
+                          _buildHeaderContent(context),
+                          const SizedBox(height: 24),
+                          _buildStatsRow(context),
+                          const SizedBox(height: 16),
+                          _buildClassCodeCard(context),
+                          const SizedBox(height: 24),
+                          _buildSectionTitle(
+                            context,
+                            context.l10n.newestModules,
+                            context.l10n.seeAll,
+                            onActionTap: () => controller.onSeeAllModule(),
+                          ),
+                          _buildModuleList(context),
+                          const SizedBox(height: 24),
+                          _buildSectionTitle(
+                            context,
+                            context.l10n.newestExams,
+                            context.l10n.seeAll,
+                            onActionTap: () => controller.onSeeAllExam()
+                          ),
+                          _buildExamList(context),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -274,14 +278,26 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    context.l10n.classCode,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: ColorConstant.textGreyColor,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          context.l10n.classCode,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color: ColorConstant.textGreyColor,
+                                              ),
                                         ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () => controller.showModuleSelectClassModal(context),
+                                        icon: const Icon(Icons.swap_horiz),
+                                        tooltip: context.l10n.changeClassroom,
+                                      )
+                                    ],
                                   ),
                                   const SizedBox(height: 4),
                                   Obx(
@@ -317,57 +333,74 @@ class TeacherDashboardView extends GetView<TeacherDashboardController> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Material(
-                            color: ColorConstant.primary.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(
-                              Dimens.radiusMedium,
+                        _buildShareCode(context),
+                        const SizedBox(height: 8),
+                        CommonButtonWidget(
+                            buttonWidth: double.infinity,
+                            buttonName: context.l10n.addClassroom,
+                            rounded: Dimens.radiusMedium,
+                            textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              color: ColorConstant.white,
+                              fontWeight: FontWeight.w600,
                             ),
-                            child: Semantics(
-                              button: true,
-                              label: context.l10n.copyClassCode,
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(
-                                  Dimens.radiusMedium,
-                                ),
-                                onTap: () => controller.onCopyClassCode(),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.copy,
-                                        size: 18,
-                                        color: ColorConstant.primary,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        context.l10n.copyClassCode,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.copyWith(
-                                              color: ColorConstant.primary,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                            onPressed: () {
+                              controller.showModuleAddClassModal(context);
+                            },
+                        )
                       ],
                     ),
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShareCode(BuildContext context){
+    return SizedBox(
+      width: double.infinity,
+      child: Material(
+        color: ColorConstant.primary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(
+          Dimens.radiusMedium,
+        ),
+        child: Semantics(
+          button: true,
+          label: context.l10n.copyClassCode,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(
+              Dimens.radiusMedium,
+            ),
+            onTap: () => controller.onCopyClassCode(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.copy,
+                    size: 18,
+                    color: ColorConstant.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    context.l10n.copyClassCode,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(
+                      color: ColorConstant.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

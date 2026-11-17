@@ -54,7 +54,7 @@ class JustificationCard extends StatelessWidget {
             const SizedBox(height: 12),
             ...List.generate(question.userStep.length, (index) {
               final step = question.userStep[index];
-              final isErrorStep = step.steps == question.errorStepIndex;
+              final isErrorStep = step.steps == question.stepError?.divergenceStep;
               final nodes = parser.parse(step.text);
               final semantic = serializer.serializeNodes(nodes);
               return Semantics(
@@ -128,7 +128,7 @@ class JustificationCard extends StatelessWidget {
               );
             }),
           ],
-            if (question.errorExplanation != null)
+          if (question.stepError != null) ...[
               Container(
                 margin: const EdgeInsets.only(top: 8, bottom: 8),
                 padding: const EdgeInsets.all(12),
@@ -150,19 +150,18 @@ class JustificationCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Semantics(
                       label: serializer.serializeTextWithMath(
-                        question.errorExplanation!,
+                        question.stepError!.description,
                         parser,
                       ),
                       excludeSemantics: true,
                       child: Text(
-                        question.errorExplanation!,
+                        question.stepError!.description,
                         style: const MainTextTheme().bodyMedium,
                       ),
                     ),
                   ],
                 ),
               ),
-            if (question.stepError != null)
               Container(
                 margin: const EdgeInsets.only(top: 8, bottom: 12),
                 padding: const EdgeInsets.all(12),
@@ -196,62 +195,103 @@ class JustificationCard extends StatelessWidget {
                   ],
                 ),
               ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F5E9),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFF4CAF50)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    context.l10n.diagnosis,
-                    style: const TextStyle(
-                      color: Color(0xFF2E7D32),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Semantics(
-                    label: serializer.serializeTextWithMath(
-                      question.correction!,
-                      parser,
-                    ),
-                    excludeSemantics: true,
-                    child: Text(
-                      question.correction!,
-                      style: const MainTextTheme().bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
+            ],
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE8F5E9),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFF4CAF50)),
             ),
-
-            Semantics(
-              label:
-                  'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${serializer.serializeTextWithMath(question.options[question.correctAnswerIndex], parser)}.',
-              excludeSemantics: true,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE3F2FD),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF2196F3)),
-                ),
-                child: Text(
-                  'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${question.options[question.correctAnswerIndex]}.',
-                  style: const MainTextTheme().bodyLarge?.copyWith(
-                    color: const Color(0xFF1565C0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.crucialStep,
+                  style: const TextStyle(
+                    color: Color(0xFF2E7D32),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const SizedBox(height: 4),
+                Semantics(
+                  label: serializer.serializeTextWithMath(
+                    question.correction!,
+                    parser,
+                  ),
+                  excludeSemantics: true,
+                  child: Text(
+                    question.correction!,
+                    style: const MainTextTheme().bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFF2196F3)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.conclusion,
+                  style: const TextStyle(
+                    color: ColorConstant.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Semantics(
+                  label: serializer.serializeTextWithMath(
+                    question.conclusion,
+                    parser,
+                  ),
+                  excludeSemantics: true,
+                  child: Text(
+                    serializer.serializeTextWithMath(
+                      question.conclusion,
+                      parser,
+                    ),
+                    style: const MainTextTheme().bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Semantics(
+            label:
+            'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${serializer.serializeTextWithMath(question.options[question.correctAnswerIndex], parser)}',
+            excludeSemantics: true,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE3F2FD),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFF2196F3)),
+              ),
+              child: Text(
+                'Jawaban yang benar adalah ${String.fromCharCode(65 + question.correctAnswerIndex)} — ${question.options[question.correctAnswerIndex]}',
+                style: const MainTextTheme().bodyLarge?.copyWith(
+                  color: const Color(0xFF1565C0),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+          ),
         ],
       ),
     );
   }
+
+  // Widget _buildEvaluationOnProcess(bool isEvaluationOnProcess){
+  //
+  // }
+  //
+  // Widget _buildEvaluationOnError(){}
 }

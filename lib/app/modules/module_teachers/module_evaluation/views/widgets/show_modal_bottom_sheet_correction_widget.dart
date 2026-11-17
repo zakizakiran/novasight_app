@@ -4,7 +4,7 @@ import 'package:lydera_app/app/common/common_button_widget.dart';
 import 'package:lydera_app/app/common/common_text_form_field_widget.dart';
 import 'package:lydera_app/app/core/styles/box_shadow_style.dart';
 import 'package:lydera_app/app/core/styles/colors/color_constant.dart';
-import 'package:lydera_app/app/core/utils/correction_controller.dart';
+import 'package:lydera_app/app/core/abstract/correction_controller.dart';
 import 'package:lydera_app/app/core/utils/l10n_extension.dart';
 import 'package:lydera_app/app/modules/module_teachers/module_evaluation/controllers/module_evaluation_controller.dart';
 

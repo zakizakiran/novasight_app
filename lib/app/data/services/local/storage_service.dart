@@ -9,6 +9,7 @@ class StorageService {
   static const String _userRoleKey = "roleKey";
   static const String _nameKey = "nameKey";
   static const String _emailKey = "emailKey";
+  static const String _classroomIdKey = "classIdKey";
   static const String _classCodeKey = "classCodeKey";
   static const String _classNameKey = "classNameKey";
   static const String _languageCodeKey = "languageCodeKey";
@@ -19,6 +20,14 @@ class StorageService {
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<void> writeClassId(int value) async {
+    await _prefs.setInt(_classroomIdKey, value);
+  }
+
+  int? getClassId() {
+    return _prefs.getInt(_classroomIdKey);
   }
 
   Future<void> writeClassCode(String value) async {

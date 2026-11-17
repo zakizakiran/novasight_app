@@ -23,13 +23,13 @@ class ProfileTeacherWidget extends StatelessWidget {
           description: teacher.nameSchools,
         ),
         const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
-        _buildField(
-          context: context,
-          icon: Icons.class_,
-          title: "Ajar Tingkat Kelas : ",
-          description: teacher.grades.map((g) => g.name).join(", "),
-        ),
-        const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
+        // _buildField(
+        //   context: context,
+        //   icon: Icons.class_,
+        //   title: "Ajar Tingkat Kelas : ",
+        //   description: teacher.grades.map((g) => g.name).join(", "),
+        // ),
+        // const Divider(color: ColorConstant.darkGrey, thickness: 0.4),
         _buildField(
           context: context,
           icon: Icons.settings,

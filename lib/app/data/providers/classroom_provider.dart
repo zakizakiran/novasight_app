@@ -146,4 +146,37 @@ class ClassroomProvider {
       );
     }
   }
+
+  /// GET /api/classrooms/{classroom_id} — requires TEACHER or STUDENT role
+  Future<ApiResponse<ClassroomResponseModel?>> getClassroomById(int id) async {
+    try {
+      final response = await dioClient.get(ApiEndpoints.classroomsById(id));
+      return ApiResponse<ClassroomResponseModel>.fromJson(
+        response.data as Map<String, dynamic>,
+            (data) => ClassroomResponseModel.fromJson(data as Map<String, dynamic>));
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message:
+        'Terjadi kesalahan saat mengambil daftar kelas: ${e.toString()}',
+      );
+    }
+  }
+
+  /// DELETE /api/classrooms/{classroom_id} — requires TEACHER
+  Future<void> deleteClassroomById(int id) async {
+    try {
+      await dioClient.delete(ApiEndpoints.classroomsById(id));
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        message:
+        'Terjadi kesalahan saat mengambil daftar kelas: ${e.toString()}',
+      );
+    }
+  }
 }

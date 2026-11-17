@@ -9,6 +9,7 @@ class ApiEndpoints {
 
   // Classroom endpoints
   static const String classrooms = '/api/classrooms';
+  static String classroomsById(int classroomId) => '/api/classrooms/$classroomId';
   static const String joinClassroom = '/api/classrooms/join';
   static const String classroomTypes = '/api/classroom-types';
 
